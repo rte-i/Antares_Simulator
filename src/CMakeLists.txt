@@ -195,6 +195,14 @@ message(STATUS "CMAKE_PREFIX_PATH : ${CMAKE_PREFIX_PATH}")
 add_subdirectory(antares-deps)
 
 # Define needed external library
+option(XPRESS_USE "Compilation with XPRESS use" OFF)
+
+if (XPRESS_USE)
+
+    list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/xpress)
+    find_package(XPRESS REQUIRED)
+
+endif()
 
 #libcurl
 find_package(CURL REQUIRED)

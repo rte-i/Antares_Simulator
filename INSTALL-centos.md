@@ -132,6 +132,8 @@ Here is a list of available CMake configure option :
 |`USE_PRECOMPILED_EXT`| This option must be set if you use precompiled external librairies (default `OFF`)|
 |`BUILD_TESTING`| Enable test build (default `OFF`)|
 |`BUILD_OUTPUT_TEST`| Enable test with output compare build (default `OFF`)|
+|`USE_XPRESS`| Build with XPress support (default `OFF`)|
+|`XPRESS_ROOT`|Define XPress install root (for example `/opt/xpressmp/`)|
 
 
 ```
