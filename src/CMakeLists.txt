@@ -219,13 +219,19 @@ if (NOT sirius_solver_FOUND)
 	message (FATAL_ERROR "Sirius solver not found. Sirius solver can be compiled with -DBUILD_sirius=ON or you can specify previous dependency install directory with -DCMAKE_PREFIX_PATH or -DDEPS_INSTALL_DIR")
 endif()
 
-#gflags needed for ortools
-set(GFLAGS_USE_TARGET_NAMESPACE TRUE) 
-find_package(gflags)
+if (PRECOMPILED_ORTOOLS_PATH)
+  add_library(ortools::ortools SHARED IMPORTED)
+  target_include_directories(ortools::ortools INTERFACE "${PRECOMPILED_ORTOOLS_PATH}/include")
+  set_property(TARGET ortools::ortools PROPERTY IMPORTED_LOCATION "${PRECOMPILED_ORTOOLS_PATH}/lib64/libortools.so.7") # FIXME : handle other versions/platforms ?
+else()
+  #gflags needed for ortools
+  set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
+  find_package(gflags)
 
-find_package(ortools)
-if(NOT ortools_FOUND)
+  find_package(ortools)
+  if(NOT ortools_FOUND)
 	message (FATAL_ERROR "OR-Tools not found. OR-Tools can be compiled with -DBUILD_ortools=ON or you can specify previous dependency install directory with -DCMAKE_PREFIX_PATH or -DDEPS_INSTALL_DIR")
+  endif()
 endif()
 
 #wxWidget not needed for all library find is done in ui CMakeLists.txt
