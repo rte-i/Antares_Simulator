@@ -193,7 +193,7 @@ if(WIN32)
 endif()
 
 # Thread safety
-add_definitions("-D_REENTRANT -DXUSE_MTSAFE_API -D_GLIBCXX_USE_CXX11_ABI 0")
+add_definitions("-D_REENTRANT -DXUSE_MTSAFE_API -D_GLIBCXX_USE_CXX11_ABI=0")
 
 # ICC Optimizations
 if (ICC)
