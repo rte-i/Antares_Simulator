@@ -27,8 +27,10 @@
 #ifndef __ANTARES_LIBS_STUDY_RUNTIME_RUNTIME_INFOS_H__
 #define __ANTARES_LIBS_STUDY_RUNTIME_RUNTIME_INFOS_H__
 
+#include <string>
 #include "../study.h"
 #include "../../mersenne-twister/mersenne-twister.h"
+
 
 namespace Antares
 {
@@ -93,6 +95,7 @@ public:
     int* clusterOffset;
     long* clusterIndex;
     long* clustersAreaIndex;
+    std::string name;
 };
 
 /*!
@@ -213,7 +216,8 @@ private:
     //! Prepare all thermal clusters in 'must-run' mode
     void initializeThermalClustersInMustRunMode(Study& study);
     void removeDisabledThermalClustersFromSolverComputations(Study& study);
-
+    void removeDisabledRenewableClustersFromSolverComputations(Study& study);
+    void removeAllRenewableClustersFromSolverComputations(Study& study);
     void disableAllFilters(Study& study);
 
 }; // struct StudyRuntimeInfos

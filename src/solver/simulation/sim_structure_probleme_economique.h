@@ -29,6 +29,8 @@
 #define __SOLVER_SIMULATION_ECO_STRUCTS_H__
 
 #include "../optimisation/opt_structure_probleme_a_resoudre.h"
+#include "../utils/optimization_statistics.h"
+#include "../../libs/antares/study/fwd.h"
 
 #define GROSSES_VARIABLES NON_ANTARES
 #define COEFF_GROSSES_VARIABLES 100
@@ -165,6 +167,7 @@ typedef struct
     int* PaysDuPalierDispatch;
     int* NumeroDuPalierDispatch;
     int* OffsetTemporelSurLePalierDispatch;
+    const char* NomDeLaContrainteCouplante;
 } CONTRAINTES_COUPLANTES;
 
 typedef struct
@@ -575,6 +578,7 @@ struct PROBLEME_HEBDO
     double* previousYearFinalLevels;
     ALL_MUST_RUN_GENERATION** AllMustRunGeneration;
 
+    optimizationStatistics optimizationStatistics_object;
     /* Hydro management */
     double* CoefficientEcretementPMaxHydraulique;
     bool hydroHotStart;
@@ -667,7 +671,7 @@ struct PROBLEME_HEBDO
     int* FlexDownDemandPoolOfNode;
 
 #endif
-    public:
+public:
     /* Unknown status */
     int* NbGrpCourbeGuide; // ?
     int* NbGrpOpt;         // ?
