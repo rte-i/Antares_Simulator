@@ -1,5 +1,6 @@
 project(antares)
 cmake_minimum_required(VERSION 3.0)
+set(CMAKE_CXX_STANDARD 17)
 
 # Version
 set(ANTARES_VERSION_HI	      8)

@@ -49,29 +49,62 @@ Rules::~Rules()
     delete[] thermal;
 }
 
-void Rules::saveToINIFile(const Study& study, Yuni::IO::File::Stream& file) const
+
+
+class ScenarioBuilderContentSimple {
+  const char* prefix;
+  const char* area_name;
+  uint year;
+};
+
+class ScenarioBuilderContentCluster {
+  const char* prefix;
+  const char* area_name;
+  const char* cluster_name;
+  uint year;
+};
+
+class ScenarioBuilderContentLink {
+private:
+  const char* prefix;
+  const char* area_from_name;
+  const char* area_to_name;
+  uint year;
+public:
+  void write(Yuni::IO::File::Stream& file);
+};
+
+class RulesOutputData  
 {
-    file << "[" << pName << "]\n";
+  using ListType = std::vector<std::variant<ScenarioBuilderContentSimple,
+                                            ScenarioBuilderContentCluster,
+                                            ScenarioBuilderContentLink>>;
+
+};
+
+RulesOutputData Rules::getContent(const Study& study) const
+{
+    RulesOutputData data(pName);
     if (pAreaCount)
     {
+
+      //load.getContent(data);
         // load
-        load.saveToINIFile(study, file);
+        data.set(load);
         // solar
-        solar.saveToINIFile(study, file);
+  
         // hydro
-        hydro.saveToINIFile(study, file);
+  
         // wind
-        wind.saveToINIFile(study, file);
+  
         // Thermal, each area
         for (uint i = 0; i != pAreaCount; ++i)
         {
-            thermal[i].saveToINIFile(study, file);
-            renewable[i].saveToINIFile(study, file);
+          data.set(thermal[i]);
         }
         // hydro levels
-        hydroLevels.saveToINIFile(study, file);
+        data.set(hydroLevels);
     }
-    file << '\n';
 }
 
 bool Rules::reset(const Study& study)

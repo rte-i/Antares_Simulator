@@ -149,6 +149,8 @@ bool Sets::internalSaveToIniFile(const AnyString& filename) const
     if (pMap.empty())
         return true;
 
+    std::map<YString, RulesOutputData> rules;
+
     const Rules::Map::const_iterator end = pMap.end();
     for (Rules::Map::const_iterator i = pMap.begin(); i != end; ++i)
     {
@@ -156,8 +158,9 @@ bool Sets::internalSaveToIniFile(const AnyString& filename) const
         // Export the informations of the current ruleset
         const Rules::Ptr& ruleset = i->second;
         if (!(!ruleset))
-            ruleset->saveToINIFile(*pStudy, file);
+            rules[i->first] = ruleset->getContent(*pStudy);
     }
+    
     return true;
 }
 
