@@ -104,6 +104,8 @@ typedef struct
 
     int* NumeroDeContrainteDesNiveauxPays;
 
+    int* IndexOfDummyDENSConstraint;
+
 } CORRESPONDANCES_DES_CONTRAINTES;
 
 typedef struct

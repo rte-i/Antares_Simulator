@@ -305,6 +305,9 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
           ->NumeroDeLaDeuxiemeContrainteDesContraintesDesGroupesQuiTombentEnPanne
           = (int*)MemAlloc(study.runtime->thermalPlantTotalCount * sizeof(int));
 
+        problem.CorrespondanceCntNativesCntOptim[k]->IndexOfDummyDENSConstraint
+          = (int*)MemAlloc(nbPays * sizeof(int));
+
         problem.VariablesDualesDesContraintesDeNTC[k]->VariableDualeParInterconnexion
           = (double*)MemAlloc(linkCount * sizeof(double));
     }
@@ -707,6 +710,7 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
                   ->NumeroDeContrainteDesContraintesDeDureeMinDArret);
         MemFree(problem.CorrespondanceCntNativesCntOptim[k]
                   ->NumeroDeLaDeuxiemeContrainteDesContraintesDesGroupesQuiTombentEnPanne);
+        MemFree(problem.CorrespondanceCntNativesCntOptim[k]->IndexOfDummyDENSConstraint);
         MemFree(problem.CorrespondanceCntNativesCntOptim[k]);
         MemFree(problem.VariablesDualesDesContraintesDeNTC[k]->VariableDualeParInterconnexion);
         MemFree(problem.VariablesDualesDesContraintesDeNTC[k]);
