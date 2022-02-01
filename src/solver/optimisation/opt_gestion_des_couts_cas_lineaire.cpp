@@ -249,6 +249,12 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
             {
                 ProblemeAResoudre->CoutLineaire[Var]
                   = ProblemeHebdo->CoutDeDefaillancePositive[Pays];
+            
+            Var = CorrespondanceVarNativesVarOptim->IndexOfVariableDomesticEnergyNotServed[Pays];
+            if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
+            {
+                ProblemeAResoudre->CoutLineaire[Var]
+                  = 1.0;
 
 #if GROSSES_VARIABLES == OUI_ANTARES
                 ProblemeAResoudre->CoutLineaire[Var] /= COEFF_GROSSES_VARIABLES;
