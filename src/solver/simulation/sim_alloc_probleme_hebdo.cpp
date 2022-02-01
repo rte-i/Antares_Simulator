@@ -248,6 +248,9 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
         problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeGrosseVariableDefaillanceEnReserve
           = (int*)MemAlloc(nbPays * sizeof(int));
 
+        problem.CorrespondanceVarNativesVarOptim[k]->IndexOfVariableDomesticEnergyNotServed
+        = (int*)MemAlloc(nbPays * sizeof(int));
+
         problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeVariablesVariationHydALaBaisse
           = (int*)MemAlloc(nbPays * sizeof(int));
         problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeVariablesVariationHydALaBaisseUp
@@ -476,6 +479,8 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
           = (double*)MemAlloc(NombreDePasDeTemps * sizeof(double));
         problem.ResultatsHoraires[k]->ValeursHorairesDeDefaillanceEnReserve
           = (double*)MemAlloc(NombreDePasDeTemps * sizeof(double));
+        problem.ResultatsHoraires[k]->HourlyValuesDomesticEnergyNotServed
+          = (double*)MemAlloc(NombreDePasDeTemps * sizeof(double));
         problem.ResultatsHoraires[k]->TurbinageHoraire
           = (double*)MemAlloc(NombreDePasDeTemps * sizeof(double));
         problem.ResultatsHoraires[k]->PompageHoraire
@@ -659,6 +664,8 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
         MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeVariableDefaillanceEnReserve);
         MemFree(
           problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeGrosseVariableDefaillanceEnReserve);
+        MemFree(
+          problem.CorrespondanceVarNativesVarOptim[k]->IndexOfVariableDomesticEnergyNotServed);
         MemFree(
           problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeVariablesVariationHydALaBaisse);
         MemFree(
@@ -853,6 +860,7 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
         MemFree(problem.ResultatsHoraires[k]->ValeursHorairesDeDefaillanceNegativeDown);
         MemFree(problem.ResultatsHoraires[k]->ValeursHorairesDeDefaillanceNegativeAny);
         MemFree(problem.ResultatsHoraires[k]->ValeursHorairesDeDefaillanceEnReserve);
+        MemFree(problem.ResultatsHoraires[k]->HourlyValuesDomesticEnergyNotServed);
         MemFree(problem.ResultatsHoraires[k]->TurbinageHoraire);
         MemFree(problem.ResultatsHoraires[k]->PompageHoraire);
         MemFree(problem.ResultatsHoraires[k]->TurbinageHoraireUp);

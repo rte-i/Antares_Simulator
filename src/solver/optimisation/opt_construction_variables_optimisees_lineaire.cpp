@@ -123,6 +123,12 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBD
             }
             else
                 CorrespondanceVarNativesVarOptim->NumeroDeVariableDefaillanceEnReserve[Pays] = -1;
+            
+            CorrespondanceVarNativesVarOptim->IndexOfVariableDomesticEnergyNotServed[Pays]
+              = NombreDeVariables;
+
+            ProblemeAResoudre->TypeDeVariable[NombreDeVariables] = VARIABLE_BORNEE_INFERIEUREMENT;
+            NombreDeVariables++;
         }
 
         for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)

@@ -70,6 +70,8 @@ typedef struct
     int* NumeroDeVariableDefaillanceEnReserve;
     int* NumeroDeGrosseVariableDefaillanceEnReserve;
 
+    int* IndexOfVariableDomesticEnergyNotServed;
+
     int* NumeroDeVariablesVariationHydALaBaisse;
     int* NumeroDeVariablesVariationHydALaBaisseUp;
     int* NumeroDeVariablesVariationHydALaBaisseDown;
@@ -433,6 +435,9 @@ typedef struct
     double* ValeursHorairesDeDefaillanceNegativeAny;
 
     double* ValeursHorairesDeDefaillanceEnReserve;
+
+    double* HourlyValuesDomesticEnergyNotServed;
+
     double* PompageHoraire;
     double* TurbinageHoraire;
     double* TurbinageHoraireUp;
