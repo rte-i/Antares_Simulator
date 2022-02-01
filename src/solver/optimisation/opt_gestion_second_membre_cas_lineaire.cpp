@@ -196,6 +196,10 @@ void OPT_InitialiserLeSecondMembreDuProblemeLineaire(PROBLEME_HEBDO* ProblemeHeb
             }
 
             AdresseOuPlacerLaValeurDesCoutsMarginaux[Cnt] = NULL;
+
+            Cnt = CorrespondanceCntNativesCntOptim->IndexOfDummyDENSConstraint[Pays];
+            SecondMembre[Cnt] = 100.0;
+            AdresseOuPlacerLaValeurDesCoutsMarginaux[Cnt] = NULL;
         }
 
         for (Interco = 0; Interco < ProblemeHebdo->NombreDInterconnexions; Interco++)

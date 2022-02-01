@@ -327,6 +327,21 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
 
             OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
               ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '<', NomDeLaContrainte);
+            
+            /* For each area, adding a dummy constraint, DENS >=100 */
+            NombreDeTermes = 0;
+            Var = CorrespondanceVarNativesVarOptim->IndexOfVariableDomesticEnergyNotServed[Pays];
+            Pi[NombreDeTermes] = 1.0;
+            Colonne[NombreDeTermes] = Var;
+            NombreDeTermes++;
+
+            CorrespondanceCntNativesCntOptim->IndexOfDummyDENSConstraint[Pays]
+                    = ProblemeAResoudre->NombreDeContraintes;
+
+            OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
+                ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '>');
+
+            
         }
 
         for (Interco = 0; Interco < ProblemeHebdo->NombreDInterconnexions; Interco++)
