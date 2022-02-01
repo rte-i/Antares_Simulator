@@ -90,6 +90,8 @@ void OPT_DecompteDesVariablesEtDesContraintesDuProblemeAOptimiser(PROBLEME_HEBDO
         {
             ProblemeAResoudre->NombreDeVariables += 1;
         }
+        
+        ProblemeAResoudre->NombreDeVariables ++; /*added DENS variable*/
     }
     ProblemeAResoudre->NombreDeVariables *= NombreDePasDeTempsPourUneOptimisation;
 
@@ -107,6 +109,8 @@ void OPT_DecompteDesVariablesEtDesContraintesDuProblemeAOptimiser(PROBLEME_HEBDO
     ProblemeAResoudre->NombreDeContraintes += ProblemeHebdo->NombreDePays;
 
     ProblemeAResoudre->NombreDeContraintes += ProblemeHebdo->NombreDInterconnexions;
+
+    ProblemeAResoudre->NombreDeContraintes += ProblemeHebdo->NombreDePays; /* Added a dummy DENS>100 constraint */
 
     if (ContrainteDeReserveJMoins1ParZone == OUI_ANTARES)
     {
