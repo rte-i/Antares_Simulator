@@ -122,7 +122,7 @@ double OPT_SommeDesPminThermiques(PROBLEME_HEBDO* ProblemeHebdo, int Pays, int P
 void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* ProblemeHebdo,
                                                             const int PremierPdtDeLIntervalle,
                                                             const int DernierPdtDeLIntervalle,
-                                                            const int NumeroDeLIntervalle)
+                                                            const int NumeroDeLIntervalle, double* densValues)
 {
     int PdtHebdo;
     int PdtJour;
@@ -394,12 +394,20 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                 if (AllMustRunGeneration->AllMustRunGenerationOfArea[Pays] > 0.)
                     MaxAllMustRunGenerationOfArea
                       = AllMustRunGeneration->AllMustRunGenerationOfArea[Pays];
-
+                
                 C = C + MaxAllMustRunGenerationOfArea;
                 if (C >= 0.)
                     Xmax[Var] = C + 1e-5;
                 else
                     Xmax[Var] = 0.;
+
+                if(ProblemeHebdo->UseAdequacyPatch == true && ProblemeHebdo->AdequacyFirstStep == false) // a hack
+                {
+                    if(ProblemeHebdo->ResultatsHoraires[Pays]->ValeursHorairesDENS[PdtHebdo] >= 0.)
+                    {
+                        Xmax[Var] = densValues[Pays * ProblemeHebdo->NombreDePasDeTemps + PdtHebdo] + 1e-5;
+                    }
+                }
 
                 ProblemeHebdo->ResultatsHoraires[Pays]
                   ->ValeursHorairesDeDefaillancePositive[PdtHebdo]
@@ -489,3 +497,5 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
 
     return;
 }
+
+

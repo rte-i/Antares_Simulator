@@ -147,9 +147,10 @@ bool Economy::year(Progression::Task& progression,
         try
         {
             
-            if (pProblemesHebdo[numSpace]->AdequacyFirstStep)
+            if (pProblemesHebdo[numSpace]->UseAdequacyPatch)
             {
                 logs.debug() << "### AdequcyFirstStep";
+                pProblemesHebdo[numSpace]->AdequacyFirstStep = true;
                 OPT_OptimisationHebdomadaire(pProblemesHebdo[numSpace], numSpace);
                 pProblemesHebdo[numSpace]->AdequacyFirstStep = false;
             
@@ -170,7 +171,7 @@ bool Economy::year(Progression::Task& progression,
                 // Todo: need to update pProblemesHebdo[numSpace] with densValues before 2nd run.
                 // OPT_UpdateDENS(pProblemesHebdo[numSpace], numSpace, densValues); //Todo
 
-                OPT_OptimisationHebdomadaire(pProblemesHebdo[numSpace], numSpace);
+                OPT_OptimisationHebdomadaire(pProblemesHebdo[numSpace], numSpace, densValues);
 
                 for(int pays = 0; pays < numberOfAreas; ++pays)
                 {

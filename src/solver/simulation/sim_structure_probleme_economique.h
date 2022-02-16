@@ -574,6 +574,7 @@ struct PROBLEME_HEBDO
     ALL_MUST_RUN_GENERATION** AllMustRunGeneration;
 
     /* Adequacy Patch */
+    bool UseAdequacyPatch;
     bool AdequacyFirstStep;
 
     optimizationStatistics optimizationStatistics_object;
