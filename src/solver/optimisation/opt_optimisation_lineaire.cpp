@@ -40,7 +40,7 @@
 using namespace Antares;
 using namespace Yuni;
 
-bool OPT_OptimisationLineaire(PROBLEME_HEBDO* ProblemeHebdo, uint numSpace, double* densValues)
+bool OPT_OptimisationLineaire(PROBLEME_HEBDO* ProblemeHebdo, uint numSpace)
 {
     int PdtHebdo;
     int PremierPdtDeLIntervalle;
@@ -84,7 +84,7 @@ OptimisationHebdo:
         DernierPdtDeLIntervalle = PdtHebdo + NombreDePasDeTempsPourUneOptimisation;
 
         OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(
-          ProblemeHebdo, PremierPdtDeLIntervalle, DernierPdtDeLIntervalle, NumeroDeLIntervalle, densValues);
+          ProblemeHebdo, PremierPdtDeLIntervalle, DernierPdtDeLIntervalle, NumeroDeLIntervalle);
 
         OPT_InitialiserLeSecondMembreDuProblemeLineaire(
           ProblemeHebdo, PremierPdtDeLIntervalle, DernierPdtDeLIntervalle, NumeroDeLIntervalle);

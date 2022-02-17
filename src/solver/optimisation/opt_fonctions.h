@@ -31,7 +31,7 @@
 #include "opt_structure_probleme_a_resoudre.h"
 #include "../simulation/sim_structure_donnees.h"
 
-void OPT_OptimisationHebdomadaire(PROBLEME_HEBDO*, uint, double* densValues = NULL);
+void OPT_OptimisationHebdomadaire(PROBLEME_HEBDO*, uint);
 void OPT_NumeroDeJourDuPasDeTemps(PROBLEME_HEBDO*);
 void OPT_NumeroDIntervalleOptimiseDuPasDeTemps(PROBLEME_HEBDO*);
 void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBDO*);
@@ -44,7 +44,7 @@ void OPT_MaxDesPmaxHydrauliques(PROBLEME_HEBDO*);
 void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO*,
                                                             const int,
                                                             const int,
-                                                            const int, double*);
+                                                            const int);
 void OPT_InitialiserLesBornesDesVariablesDuProblemeQuadratique(PROBLEME_HEBDO*, int);
 void OPT_InitialiserLeSecondMembreDuProblemeLineaire(PROBLEME_HEBDO*, int, int, int);
 void OPT_InitialiserLeSecondMembreDuProblemeQuadratique(PROBLEME_HEBDO*, int);
@@ -54,7 +54,7 @@ void OPT_ControleDesPminPmaxThermiques(PROBLEME_HEBDO*);
 
 bool OPT_AppelDuSolveurQuadratique(PROBLEME_ANTARES_A_RESOUDRE*, const int);
 
-bool OPT_PilotageOptimisationLineaire(PROBLEME_HEBDO*, uint, double*);
+bool OPT_PilotageOptimisationLineaire(PROBLEME_HEBDO*, uint);
 void OPT_VerifierPresenceReserveJmoins1(PROBLEME_HEBDO*);
 bool OPT_PilotageOptimisationQuadratique(PROBLEME_HEBDO*);
 
@@ -65,7 +65,7 @@ bool OPT_PilotageOptimisationQuadratique(PROBLEME_HEBDO*);
 */
 bool OPT_AppelDuSimplexe(PROBLEME_HEBDO*, uint, int);
 void OPT_LiberationProblemesSimplexe(PROBLEME_HEBDO*);
-bool OPT_OptimisationLineaire(PROBLEME_HEBDO*, uint, double*);
+bool OPT_OptimisationLineaire(PROBLEME_HEBDO*, uint);
 void OPT_SauvegarderLesPmaxThermiques(PROBLEME_HEBDO*);
 void OPT_RestaurerLesDonnees(PROBLEME_HEBDO*);
 /*------------------------------*/

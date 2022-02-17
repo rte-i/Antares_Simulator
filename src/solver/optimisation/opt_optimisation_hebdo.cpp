@@ -45,11 +45,11 @@ extern "C"
 using namespace Antares;
 using namespace Antares::Data;
 
-void OPT_OptimisationHebdomadaire(PROBLEME_HEBDO* pProblemeHebdo, uint numSpace, double* densValues)
+void OPT_OptimisationHebdomadaire(PROBLEME_HEBDO* pProblemeHebdo, uint numSpace)
 {
     if (pProblemeHebdo->TypeDOptimisation == OPTIMISATION_LINEAIRE)
     {
-        if (!OPT_PilotageOptimisationLineaire(pProblemeHebdo, numSpace, densValues))
+        if (!OPT_PilotageOptimisationLineaire(pProblemeHebdo, numSpace))
         {
             logs.error() << "Linear optimization failed";
             throw UnfeasibleProblemError("Linear optimization failed");

@@ -122,7 +122,7 @@ double OPT_SommeDesPminThermiques(PROBLEME_HEBDO* ProblemeHebdo, int Pays, int P
 void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* ProblemeHebdo,
                                                             const int PremierPdtDeLIntervalle,
                                                             const int DernierPdtDeLIntervalle,
-                                                            const int NumeroDeLIntervalle, double* densValues)
+                                                            const int NumeroDeLIntervalle)
 {
     int PdtHebdo;
     int PdtJour;
@@ -401,21 +401,28 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                 else
                     Xmax[Var] = 0.;
 
-                if(ProblemeHebdo->UseAdequacyPatch == true && ProblemeHebdo->AdequacyFirstStep == false) // a hack
+                //adq patch: update ENS <= DENS
+                if(ProblemeHebdo->UseAdequacyPatch == true)
                 {
-                    if(ProblemeHebdo->ResultatsHoraires[Pays]->ValeursHorairesDENS[PdtHebdo] >= 0.)
+                    if(ProblemeHebdo->AdequacyFirstStep == true)
                     {
-                        Xmax[Var] = densValues[Pays * ProblemeHebdo->NombreDePasDeTemps + PdtHebdo] + 1e-5;
+                        ProblemeHebdo->ResultatsHoraires[Pays]->ValeursHorairesDENS[PdtHebdo] = 0.0; //adq patch init if 1st run
+                    }
+                    else if(ProblemeHebdo->AdequacyFirstStep == false) //2nd run update upper bound with DENS
+                    {
+                        if(ProblemeHebdo->ResultatsHoraires[Pays]->ValeursHorairesDENS[PdtHebdo] >= 0.)
+                        {
+                            Xmax[Var] = ProblemeHebdo->ResultatsHoraires[Pays]->ValeursHorairesDENS[PdtHebdo] + 1e-5;
+                            // logs.debug() << "opt_gestion_bornes:" << Pays << ":" << PdtHebdo << ":Xmax[Var] = " << Xmax[Var];
+                        }
+                        else
+                            Xmax[Var] = 0.;
                     }
                 }
 
                 ProblemeHebdo->ResultatsHoraires[Pays]
                   ->ValeursHorairesDeDefaillancePositive[PdtHebdo]
                   = 0.0;
-
-                ProblemeHebdo->ResultatsHoraires[Pays]
-                  ->ValeursHorairesDENS[PdtHebdo]
-                  = 0.0; //adq patch init
 
                 AdresseDuResultat = &(ProblemeHebdo->ResultatsHoraires[Pays]
                                         ->ValeursHorairesDeDefaillancePositive[PdtHebdo]);
