@@ -306,6 +306,8 @@ void Parameters::reset()
 
     include.exportMPS = false;
     include.adequacyPatch = false;
+    setToZero12LinksForAdequacyPatch = true;
+    setToZero11LinksForAdequacyPatch = true;
     include.exportStructure = false;
 
     include.unfeasibleProblemBehavior = UnfeasibleProblemBehavior::ERROR_MPS;
@@ -552,6 +554,10 @@ static bool SGDIntLoadFamily_Optimization(Parameters& d,
         return value.to<bool>(d.include.exportMPS);
     if (key == "include-adequacypatch")
         return value.to<bool>(d.include.adequacyPatch);
+    if (key == "set-12-ntc-to-null-for-adq-patch")
+        return value.to<bool>(d.setToZero12LinksForAdequacyPatch);
+    if (key == "set-11-ntc-to-null-for-adq-patch")
+        return value.to<bool>(d.setToZero11LinksForAdequacyPatch);
     if (key == "include-exportstructure")
         return value.to<bool>(d.include.exportStructure);
     if (key == "include-unfeasible-problem-behavior")
@@ -1708,6 +1714,8 @@ void Parameters::saveToINI(IniFile& ini) const
 
         section->add("include-exportmps", include.exportMPS);
         section->add("include-adequacypatch", include.adequacyPatch);
+        section->add("set-12-ntc-to-null-for-adq-patch", setToZero12LinksForAdequacyPatch);
+        section->add("set-11-ntc-to-null-for-adq-patch", setToZero11LinksForAdequacyPatch);
         section->add("include-exportstructure", include.exportStructure);
 
         // Unfeasible problem behavior

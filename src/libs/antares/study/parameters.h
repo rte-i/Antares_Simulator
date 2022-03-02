@@ -505,6 +505,13 @@ public:
     SimplexOptimization simplexOptimizationRange;
     //@}
 
+    //! Transmission capacities options for links between area type 1 and area type 2, for adequacy
+    //! patch local matching rule
+    bool setToZero12LinksForAdequacyPatch;
+    //! Transmission capacities options for links between area type 1 and area type 1, for adequacy
+    //! patch local matching rule
+    bool setToZero11LinksForAdequacyPatch;
+
     //! \name Scenariio Builder - Rules
     //@{
     //! The current active rules for building scenarios (useful if building mode == custom)
