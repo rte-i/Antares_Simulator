@@ -572,6 +572,10 @@ struct PROBLEME_HEBDO
     double* previousYearFinalLevels;
     ALL_MUST_RUN_GENERATION** AllMustRunGeneration;
 
+    /* Adequacy Patch */
+    bool Ntc12;
+    bool Ntc11; // add below existing adq.bool-s
+
     optimizationStatistics optimizationStatistics_object;
     /* Hydro management */
     double* CoefficientEcretementPMaxHydraulique;
