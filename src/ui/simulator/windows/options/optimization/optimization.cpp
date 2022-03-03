@@ -337,10 +337,11 @@ Optimization::Optimization(wxWindow* parent) :
         s->Add(button, 0, wxLEFT | wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
         pBtnAdequacyPatch = button;
     }
-    // Transmission capacities between area type 1 and area type 2 for adequacy patch local matching
-    // rule
+    // Transmission capacities (NTC) from physical areas outside adequacy patch (area type 1) to
+    // physical areas inside adequacy patch (area type 2). Used in the first step of adequacy patch
+    // local matching rule.
     {
-        label = Component::CreateLabel(this, wxT("Adequacy patch NTC 1->2"));
+        label = Component::CreateLabel(this, wxT("NTC from physical areas outside to physical areas inside adequacy patch"));
         button = new Component::Button(this, wxT("Day"), "images/16x16/light_green.png");
         button->SetBackgroundColour(bgColor);
         button->menu(true);
@@ -352,10 +353,10 @@ Optimization::Optimization(wxWindow* parent) :
         s->Add(button, 0, wxLEFT | wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
         pBtnAdequacyPatchNTC12 = button;
     }
-    // Transmission capacities between area type 1 and area type 1 for adequacy patch local matching
-    // rule
+    // Transmission capacities (NTC) between physical areas outside adequacy patch (area type 1).
+    // Used in the first step of adequacy patch local matching rule.
     {
-        label = Component::CreateLabel(this, wxT("Adequacy patch NTC 1<->1"));
+        label = Component::CreateLabel(this, wxT("NTC between physical areas outside adequacy patch"));
         button = new Component::Button(this, wxT("Day"), "images/16x16/light_green.png");
         button->SetBackgroundColour(bgColor);
         button->menu(true);
@@ -539,10 +540,12 @@ void Optimization::refresh()
     ResetButtonSpecify(pBtnExportMPS, study.parameters.include.exportMPS);
     // Adequacy patch
     ResetButtonSpecify(pBtnAdequacyPatch, study.parameters.include.adequacyPatch);
-    // NTC between area type 1 and area type 2 for adequacy patch local matching rule
+    // NTC from physical areas outside adequacy patch (area type 1) to physical areas inside
+    // adequacy patch (area type 2). Used in the first step of adequacy patch local matching rule.
     ResetButtonAdequacyPatch(pBtnAdequacyPatchNTC12,
                              study.parameters.setToZero12LinksForAdequacyPatch);
-    // NTC between area type 1 and area type 1 for adequacy local matching rule
+    // NTC between physical areas outside adequacy patch (area type 1). Used in the first step of
+    // adequacy patch local matching rule.
     ResetButtonAdequacyPatch(pBtnAdequacyPatchNTC11,
                              study.parameters.setToZero11LinksForAdequacyPatch);
 
