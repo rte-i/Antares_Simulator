@@ -59,9 +59,12 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
         problem.BruitSurCoutHydraulique[p] = (double*)MemAlloc(8784 * sizeof(double));
 
     problem.NomsDesPays = (const char**)MemAlloc(nbPays * sizeof(char*));
+    problem.AreaAdequacyPatchMode = (int*)MemAlloc(nbPays * sizeof(int));
 
     problem.PaysExtremiteDeLInterconnexion = (int*)MemAlloc(linkCount * sizeof(int));
     problem.PaysOrigineDeLInterconnexion = (int*)MemAlloc(linkCount * sizeof(int));
+    problem.StartAreaAdequacyPatchType = (int*)MemAlloc(linkCount * sizeof(int));
+    problem.EndAreaAdequacyPatchType = (int*)MemAlloc(linkCount * sizeof(int));
     problem.CoutDeTransport = (COUTS_DE_TRANSPORT**)MemAlloc(linkCount * sizeof(void*));
     problem.IndexDebutIntercoOrigine = (int*)MemAlloc(nbPays * sizeof(int));
     problem.IndexDebutIntercoExtremite = (int*)MemAlloc(nbPays * sizeof(int));
@@ -460,6 +463,8 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
           = (double*)MemAlloc(NombreDePasDeTemps * sizeof(double));
         problem.ResultatsHoraires[k]->ValeursHorairesDeDefaillancePositive
           = (double*)MemAlloc(NombreDePasDeTemps * sizeof(double));
+        problem.ResultatsHoraires[k]->ValeursHorairesDENS
+          = (double*)MemAlloc(NombreDePasDeTemps * sizeof(double)); // adq patch
         problem.ResultatsHoraires[k]->ValeursHorairesDeDefaillancePositiveUp
           = (double*)MemAlloc(NombreDePasDeTemps * sizeof(double));
         problem.ResultatsHoraires[k]->ValeursHorairesDeDefaillancePositiveDown
@@ -588,9 +593,12 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
     uint nbPays = study.areas.size();
 
     MemFree(problem.NomsDesPays);
+    MemFree(problem.AreaAdequacyPatchMode);
 
     MemFree(problem.PaysExtremiteDeLInterconnexion);
     MemFree(problem.PaysOrigineDeLInterconnexion);
+    MemFree(problem.StartAreaAdequacyPatchType);
+    MemFree(problem.EndAreaAdequacyPatchType);
     MemFree(problem.IndexDebutIntercoOrigine);
     MemFree(problem.IndexDebutIntercoExtremite);
     MemFree(problem.IndexSuivantIntercoOrigine);
@@ -845,6 +853,7 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
         MemFree(problem.PaliersThermiquesDuPays[k]->PuissanceDisponibleEtCout);
         MemFree(problem.PaliersThermiquesDuPays[k]);
         MemFree(problem.ResultatsHoraires[k]->ValeursHorairesDeDefaillancePositive);
+        MemFree(problem.ResultatsHoraires[k]->ValeursHorairesDENS);
         MemFree(problem.ResultatsHoraires[k]->ValeursHorairesDeDefaillancePositiveUp);
         MemFree(problem.ResultatsHoraires[k]->ValeursHorairesDeDefaillancePositiveDown);
         MemFree(problem.ResultatsHoraires[k]->ValeursHorairesDeDefaillancePositiveAny);

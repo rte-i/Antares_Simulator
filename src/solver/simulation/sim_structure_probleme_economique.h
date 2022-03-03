@@ -423,6 +423,7 @@ typedef struct
 typedef struct
 {
     double* ValeursHorairesDeDefaillancePositive;
+    double* ValeursHorairesDENS; // adq patch DENS
     double* ValeursHorairesDeDefaillancePositiveUp;
     double* ValeursHorairesDeDefaillancePositiveDown;
     double* ValeursHorairesDeDefaillancePositiveAny;
@@ -478,11 +479,14 @@ struct PROBLEME_HEBDO
     char OptimisationAvecCoutsDeDemarrage;
     int NombreDePays;
     const char** NomsDesPays;
+    int* AreaAdequacyPatchMode;
     int NombreDePaliersThermiques;
 
     int NombreDInterconnexions;
     int* PaysOrigineDeLInterconnexion;
     int* PaysExtremiteDeLInterconnexion;
+    int* StartAreaAdequacyPatchType;
+    int* EndAreaAdequacyPatchType;
     COUTS_DE_TRANSPORT** CoutDeTransport;
 
     VALEURS_DE_NTC_ET_RESISTANCES** ValeursDeNTC;
@@ -573,8 +577,10 @@ struct PROBLEME_HEBDO
     ALL_MUST_RUN_GENERATION** AllMustRunGeneration;
 
     /* Adequacy Patch */
+    bool UseAdequacyPatch;
+    bool AdequacyFirstStep;
     bool Ntc12;
-    bool Ntc11; // add below existing adq.bool-s
+    bool Ntc11;
 
     optimizationStatistics optimizationStatistics_object;
     /* Hydro management */
@@ -591,7 +597,6 @@ struct PROBLEME_HEBDO
     double* coutOptimalSolution2;
 
     COUTS_MARGINAUX_ZONES_DE_RESERVE** CoutsMarginauxDesContraintesDeReserveParZone;
-
     /* Unused for now, will be used in future revisions */
 #if 0
     char SecondeOptimisationRelaxee;
