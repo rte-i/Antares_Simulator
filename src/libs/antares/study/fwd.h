@@ -587,10 +587,10 @@ enum NTC
     leaveLocalValues = 0,
     //! Set NTC to zero
     setToZero,
-    //! set only start->end NTC to zero
-    setStartEndToZero,
-    //! set only end->start NTC to zero
-    setEndStartToZero
+    //! set only origine->extremity NTC to zero
+    setOrigineExtremityToZero,
+    //! set only extremity->origine NTC to zero
+    setExtremityOrigineToZero
 
 }; // enum NTC
 
