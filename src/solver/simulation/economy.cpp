@@ -155,7 +155,7 @@ bool Economy::year(Progression::Task& progression,
                 for (int pays = 0; pays < pProblemesHebdo[numSpace]->NombreDePays; ++pays)
                 {
                     if (pProblemesHebdo[numSpace]->AreaAdequacyPatchMode[pays]
-                        == Data::adqmPhysicalAreaInsideAdqPatch)
+                        == Data::AdequacyPatch::adqmPhysicalAreaInsideAdqPatch)
                         memcpy(
                           pProblemesHebdo[numSpace]->ResultatsHoraires[pays]->ValeursHorairesDENS,
                           pProblemesHebdo[numSpace]
