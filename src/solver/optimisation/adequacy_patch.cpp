@@ -49,7 +49,7 @@ uint SetNTCForAdequacyFirstStep(bool AdequacyFirstStep,
             if (SetToZero12LinksForAdequacyPatch)
                 return setToZero;
             else
-                return setEndStartToZero;
+                return setExtremityOrigineToZero;
         }
         else if (StartNodeAdequacyPatchType == adqmPhysicalAreaInsideAdqPatch
                  && EndNodeAdequacyPatchType == adqmPhysicalAreaOutsideAdqPatch)
@@ -57,7 +57,7 @@ uint SetNTCForAdequacyFirstStep(bool AdequacyFirstStep,
             if (SetToZero12LinksForAdequacyPatch)
                 return setToZero;
             else
-                return setStartEndToZero;
+                return setOrigineExtremityToZero;
         }
         else if (StartNodeAdequacyPatchType == adqmPhysicalAreaOutsideAdqPatch
                  && EndNodeAdequacyPatchType == adqmPhysicalAreaOutsideAdqPatch)

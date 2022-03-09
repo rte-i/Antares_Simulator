@@ -194,12 +194,12 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                 Xmax[Var] = 0.;
                 Xmin[Var] = 0.;
             }
-            else if (SetToZeroLinkNTCForAdequacyPatchFirstStep == Data::AdequacyPatch::setStartEndToZero)
+            else if (SetToZeroLinkNTCForAdequacyPatchFirstStep == Data::AdequacyPatch::setOrigineExtremityToZero)
             {
                 Xmax[Var] = 0.;
                 Xmin[Var] = -(ValeursDeNTC->ValeurDeNTCExtremiteVersOrigine[Interco]);
             }
-            else if (SetToZeroLinkNTCForAdequacyPatchFirstStep == Data::AdequacyPatch::setEndStartToZero)
+            else if (SetToZeroLinkNTCForAdequacyPatchFirstStep == Data::AdequacyPatch::setExtremityOrigineToZero)
             {
                 Xmax[Var] = ValeursDeNTC->ValeurDeNTCOrigineVersExtremite[Interco];
                 Xmin[Var] = 0.;
