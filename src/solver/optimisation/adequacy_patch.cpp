@@ -31,7 +31,7 @@
 using namespace Antares;
 using namespace Antares::Data;
 using namespace Antares::Data::AdequacyPatch;
-
+//This comment is a test comment that needs to be deleted (and not merged)
 NTC SetNTCForAdequacyFirstStep(bool AdequacyFirstStep,
                                AdequacyPatchMode StartNodeAdequacyPatchType,
                                AdequacyPatchMode EndNodeAdequacyPatchType,
