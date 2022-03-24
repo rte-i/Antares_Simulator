@@ -93,6 +93,22 @@ void checkAdqPatchStudyModeEconomyOnly(const bool adqPatchOn,
         throw Error::IncompatibleStudyModeForAdqPatch();
     }
 }
+// When Adequacy Patch is on at least one area must be inside Adequacy patch mode.
+void checkAdqPatchContainsAdqPatchArea(const Antares::Data::AreaList& areas)
+{
+    bool containsAdqArea = false;
+    for (uint i = 0; i < areas.size(); ++i)
+    {
+        const auto& area = *(areas.byIndex[i]);
+        if (area.adequacyPatchMode == Antares::Data::AdequacyPatch::adqmPhysicalAreaInsideAdqPatch)
+        {
+            containsAdqArea = true;
+            break;
+        }
+    }
+    if (!containsAdqArea)
+        throw Error::NoAreaInsideAdqPatchMode();
+}
 
 void checkMinStablePower(bool tsGenThermal, const Antares::Data::AreaList& areas)
 {
@@ -250,6 +266,7 @@ void Application::prepare(int argc, char* argv[])
     checkSimplexRangeHydroHeuristic(pParameters->simplexOptimizationRange, pStudy->areas);
 
     checkAdqPatchStudyModeEconomyOnly(pParameters->include.adequacyPatch, pParameters->mode);
+    checkAdqPatchContainsAdqPatchArea(pStudy->areas);
 
     bool tsGenThermal = (0
                          != (pStudy->parameters.timeSeriesToGenerate
