@@ -178,20 +178,8 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
             Var = CorrespondanceVarNativesVarOptim->NumeroDeVariableDeLInterconnexion[Interco];
             CoutDeTransport = ProblemeHebdo->CoutDeTransport[Interco];
 
-<<<<<<< HEAD
-            if (ProblemeHebdo->adqPatch)
-            {
-                SetToZeroLinkNTCForAdequacyPatchFirstStep
-                  = SetNTCForAdequacyFirstStep(ProblemeHebdo->adqPatch->AdequacyFirstStep,
-                                               ProblemeHebdo->adequacyPatchRuntimeData.originAreaType[Interco],
-                                               ProblemeHebdo->adequacyPatchRuntimeData.extremityAreaType[Interco],
-                                               ProblemeHebdo->adqPatch->Ntc12,
-                                               ProblemeHebdo->adqPatch->Ntc11);
-            }
-=======
             if (ProblemeHebdo->adqPatch && ProblemeHebdo->adqPatch->AdequacyFirstStep)
                 setBoundsAdqPatch(Xmax[Var], Xmin[Var], ValeursDeNTC, Interco, ProblemeHebdo);
->>>>>>> feature/adq-patch
             else
                 setBoundsNoAdqPatch(Xmax[Var], Xmin[Var], ValeursDeNTC, Interco);
 
