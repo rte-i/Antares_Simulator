@@ -52,11 +52,11 @@ LinkCapacityForAdequacyPatchFirstStep SetNTCForAdequacyFirstStep(
  * Generates map containing all possible relations of start&end area adq patch mode taking into
  * consideration user interface input options.
  *
- * @param SetToZero12LinksForAdequacyPatch bool: Switch to cut links from nodes of adq type 1
- * towards nodes of adq type 2
+ * @param SetToZero12LinksForAdequacyPatch bool: Switch to cut links from nodes outside adq patch
+ * (type 1) towards nodes inside adq patch (type 2).
  *
- * @param SetToZero11LinksForAdequacyPatch bool: Switch to cut links from nodes of adq type 1
- * towards nodes of adq type 1
+ * @param SetToZero11LinksForAdequacyPatch bool: Switch to cut links between nodes outside adq patch
+ * (type 1).
  *
  * @return std::map: map defining link capacity restrictions is constructed according to the
  * start&end area adequacy patch mode and user interface input options (first two function
