@@ -478,7 +478,7 @@ struct AdequacyPatchParameters
     bool AdequacyFirstStep;
     bool LinkCapacityForAdqPatchFirstStepFromAreaOutsideToAreaInsideAdq;
     bool LinkCapacityForAdqPatchFirstStepBetweenAreaOutsideAdq;
- };
+};
 
 struct PROBLEME_HEBDO
 {
