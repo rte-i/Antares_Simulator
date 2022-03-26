@@ -109,8 +109,8 @@ void setBoundsAdqPatch(double& Xmax,
     LinkCapacityForAdequacyPatchFirstStep SetToZeroLinkNTCForAdequacyPatchFirstStep;
 
     SetToZeroLinkNTCForAdequacyPatchFirstStep = SetNTCForAdequacyFirstStep(
-      ProblemeHebdo->StartAreaAdequacyPatchType[Interco], // ProblemeHebdo->adequacyPatchRuntimeData.originAreaType[Interco]
-      ProblemeHebdo->EndAreaAdequacyPatchType[Interco], // ProblemeHebdo->adequacyPatchRuntimeData.extremityAreaType[Interco]
+      ProblemeHebdo->adequacyPatchRuntimeData.originAreaType[Interco]
+      ProblemeHebdo->adequacyPatchRuntimeData.extremityAreaType[Interco]
       ProblemeHebdo->adqPatch->LinkCapacityForAdqPatchFirstStepFromAreaOutsideToAreaInsideAdq,
       ProblemeHebdo->adqPatch->LinkCapacityForAdqPatchFirstStepBetweenAreaOutsideAdq);
 
