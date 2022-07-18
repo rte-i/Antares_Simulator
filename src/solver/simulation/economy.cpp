@@ -99,6 +99,7 @@ void AdequacyPatchOptimization::solve(Variable::State& state, int hourInTheYear,
     for (int hourInWeek : hoursRequiringCurtailmentSharing)
     {
         HOURLY_CSR_PROBLEM hourlyCsrProblem(hourInWeek, problemeHebdo);
+
         logs.debug() << "========= [CSR]: Starting hourly optim for " << hourInWeek;
         hourlyCsrProblem.initializeWeekAndYear(w, state.year); // change this stupid implementation to init for each csr hour. just pass it as function parameter
         hourlyCsrProblem.run();
