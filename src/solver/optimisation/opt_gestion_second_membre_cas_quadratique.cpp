@@ -64,7 +64,7 @@ void setRHSvalueOnENS(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hourlyC
             std::map<int, int>::iterator it = hourlyCsrProblem.numberOfConstraintCsrEns.find(Area);
             if (it != hourlyCsrProblem.numberOfConstraintCsrEns.end())
                 Cnt = it->second;
-            ProblemeAResoudre->SecondMembre[Cnt] = hourlyCsrProblem.densNewValues[Area];
+            ProblemeAResoudre->SecondMembre[Cnt] = hourlyCsrProblem.densNewValues[Area] + 1e-3;
             logs.debug() << Cnt << ": ENS < DENS_new: RHS[" << Cnt
                          << "] = " << ProblemeAResoudre->SecondMembre[Cnt];
         }
@@ -173,9 +173,9 @@ void setRHSbindingConstraintsValue(PROBLEME_HEBDO* ProblemeHebdo,
             // 1. The original RHS of bingding constraint
             SecondMembre[Cnt]
               = MatriceDesContraintesCouplantes->SecondMembreDeLaContrainteCouplante[hour];
-            logs.debug() << Cnt << ": Hourly bc: Existing-RHS[" << Cnt
-                         << "] = " << SecondMembre[Cnt] << " (CntCouplante = " << CntCouplante
-                         << ")";
+            // logs.debug() << Cnt << ": Hourly bc: Existing-RHS[" << Cnt
+            //              << "] = " << SecondMembre[Cnt] << " (CntCouplante = " << CntCouplante
+            //              << ")";
 
             // 2. RHS part 2: flow other than 2<->2
             NbInterco
@@ -192,17 +192,17 @@ void setRHSbindingConstraintsValue(PROBLEME_HEBDO* ProblemeHebdo,
                 {
                     ValueOfFlow = ProblemeHebdo->ValeursDeNTC[hour]->ValeurDuFlux[Interco];
                     SecondMembre[Cnt] -= ValueOfFlow * Poids;
-                    logs.debug()
-                      << Cnt << ": Hourly bc: IntercoFlow-RHS[" << Cnt
-                      << "] = " << SecondMembre[Cnt] << " (CntCouplante = " << CntCouplante << ")"
-                      << ". Interco;" + std::to_string(Interco) << ". Between:["
-                      << ProblemeHebdo
-                           ->NomsDesPays[ProblemeHebdo->PaysOrigineDeLInterconnexion[Interco]]
-                      << "]-["
-                      << ProblemeHebdo
-                           ->NomsDesPays[ProblemeHebdo->PaysExtremiteDeLInterconnexion[Interco]]
-                      << "]"
-                      << ". ValueOfFlow: " << ValueOfFlow << ". Poids: " << Poids;
+                    // logs.debug()
+                    //   << Cnt << ": Hourly bc: IntercoFlow-RHS[" << Cnt
+                    //   << "] = " << SecondMembre[Cnt] << " (CntCouplante = " << CntCouplante << ")"
+                    //   << ". Interco;" + std::to_string(Interco) << ". Between:["
+                    //   << ProblemeHebdo
+                    //        ->NomsDesPays[ProblemeHebdo->PaysOrigineDeLInterconnexion[Interco]]
+                    //   << "]-["
+                    //   << ProblemeHebdo
+                    //        ->NomsDesPays[ProblemeHebdo->PaysExtremiteDeLInterconnexion[Interco]]
+                    //   << "]"
+                    //   << ". ValueOfFlow: " << ValueOfFlow << ". Poids: " << Poids;
                 }
             }
 
@@ -232,12 +232,19 @@ void setRHSbindingConstraintsValue(PROBLEME_HEBDO* ProblemeHebdo,
                                ->ProductionThermiqueDuPalier[IndexNumeroDuPalierDispatch];
 
                 SecondMembre[Cnt] -= ValueOfVar * Poids;
-                logs.debug() << Cnt << ": Hourly bc: ThermalCluster-RHS[" << Cnt
-                             << "] = " << SecondMembre[Cnt] << " (CntCouplante = " << CntCouplante
-                             << ")"
-                             << ". Area:" << Area << ", Palier:" << Palier << ", Poids" << Poids
-                             << ", ValueOfVar:" << ValueOfVar;
+                // logs.debug() << Cnt << ": Hourly bc: ThermalCluster-RHS[" << Cnt
+                //              << "] = " << SecondMembre[Cnt] << " (CntCouplante = " << CntCouplante
+                //              << ")"
+                //              << ". Area:" << Area << ", Palier:" << Palier << ", Poids" << Poids
+                //              << ", ValueOfVar:" << ValueOfVar;
             }
+
+            if (ProblemeHebdo->MatriceDesContraintesCouplantes[CntCouplante]->SensDeLaContrainteCouplante == '<')
+            {SecondMembre[Cnt] = SecondMembre[Cnt] + 1e+3;}
+            else if (ProblemeHebdo->MatriceDesContraintesCouplantes[CntCouplante]->SensDeLaContrainteCouplante == '>')
+            {SecondMembre[Cnt] = SecondMembre[Cnt] - 1e-3;}
+            
+            logs.debug() << Cnt << ": Hourly bc: -RHS[" << Cnt << "] = " << SecondMembre[Cnt]; 
         }
     }
 }
@@ -247,7 +254,7 @@ void OPT_InitialiserLeSecondMembreDuProblemeQuadratique_CSR(PROBLEME_HEBDO* Prob
 {
     logs.debug() << "[CSR] RHS: ";
 
-    setRHSvalueOnENS(ProblemeHebdo, hourlyCsrProblem);
+    //setRHSvalueOnENS(ProblemeHebdo, hourlyCsrProblem);
     setRHSvalueOnFlows(ProblemeHebdo, hourlyCsrProblem);
     setRHSnodeBalanceValue(ProblemeHebdo, hourlyCsrProblem);
     setRHSbindingConstraintsValue(ProblemeHebdo, hourlyCsrProblem);

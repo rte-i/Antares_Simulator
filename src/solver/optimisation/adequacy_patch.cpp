@@ -166,7 +166,7 @@ void checkLocalMatchingRuleViolations(PROBLEME_HEBDO* ProblemeHebdo, uint weekNb
             }
         }
     }
-    logs.debug() << "Week:" << weekNb + 1 << ". Total LMR violation:" << totalLmrViolation;
+    logs.info() << "Week:" << weekNb + 1 << ". Total LMR violation:" << totalLmrViolation;
     return;
 }
 
@@ -297,6 +297,12 @@ void HOURLY_CSR_PROBLEM::setProblemCost()
 void HOURLY_CSR_PROBLEM::solveProblem()
 {
     OPT_AppelDuSolveurQuadratique_CSR(pWeeklyProblemBelongedTo->ProblemeAResoudre, *this);
+}
+
+void HOURLY_CSR_PROBLEM::initializeWeekAndYear(uint week, int year)
+{
+    weekNb = week;
+    mcYear = year;
 }
 
 void HOURLY_CSR_PROBLEM::run()

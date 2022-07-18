@@ -260,15 +260,17 @@ void handleInteriorPointError(PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre,
 {
     int Var;
     double* pt;
-    logs.warning() << "CSR Quadratic Optimization: No solution, hour in week: "
-                   << hourlyCsrProblem.hourInWeekTriggeredCsr; // todo refactoring
+    logs.warning()
+      << "No further optimization for CSR is possible, optimum solution is set as LMR . year: "
+      << hourlyCsrProblem.mcYear + 1 << ". week: " << hourlyCsrProblem.weekNb + 1
+      << ". hour: " << hourlyCsrProblem.hourInWeekTriggeredCsr; // todo refactoring
 
-    for (Var = 0; Var < ProblemeAResoudre->NombreDeVariables; Var++)
-    {
-        pt = ProblemeAResoudre->AdresseOuPlacerLaValeurDesVariablesOptimisees[Var];
-        if (pt)
-            *pt = std::numeric_limits<double>::quiet_NaN();
-    }
+    // for (Var = 0; Var < ProblemeAResoudre->NombreDeVariables; Var++)
+    // {
+    //     pt = ProblemeAResoudre->AdresseOuPlacerLaValeurDesVariablesOptimisees[Var];
+    //     if (pt)
+    //         *pt = std::numeric_limits<double>::quiet_NaN();
+    // }
 
 #ifndef NDEBUG
 

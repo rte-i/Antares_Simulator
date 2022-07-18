@@ -362,14 +362,14 @@ void setBindingConstraints(PROBLEME_HEBDO* ProblemeHebdo,
                         Colonne[NombreDeTermes] = Var;
                         NombreDeTermes++;
 
-                        logs.debug()
-                          << "Interco:" + std::to_string(Interco) << ". Between:["
-                          << ProblemeHebdo
-                               ->NomsDesPays[ProblemeHebdo->PaysOrigineDeLInterconnexion[Interco]]
-                          << "]-["
-                          << ProblemeHebdo
-                               ->NomsDesPays[ProblemeHebdo->PaysExtremiteDeLInterconnexion[Interco]]
-                          << "], with Poids(coeff):" + std::to_string(Poids) + " inserted to LHS!";
+                        // logs.debug()
+                        //   << "Interco:" + std::to_string(Interco) << ". Between:["
+                        //   << ProblemeHebdo
+                        //        ->NomsDesPays[ProblemeHebdo->PaysOrigineDeLInterconnexion[Interco]]
+                        //   << "]-["
+                        //   << ProblemeHebdo
+                        //        ->NomsDesPays[ProblemeHebdo->PaysExtremiteDeLInterconnexion[Interco]]
+                        //   << "], with Poids(coeff):" + std::to_string(Poids) + " inserted to LHS!";
                     }
                 }
             }
@@ -413,7 +413,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeQuadratique_CSR(
     ProblemeAResoudre->NombreDeContraintes = 0;
     ProblemeAResoudre->NombreDeTermesDansLaMatriceDesContraintes = 0;
 
-    setConstraintsOnENS(ProblemeHebdo, hourlyCsrProblem, Pi, Colonne);
+    //setConstraintsOnENS(ProblemeHebdo, hourlyCsrProblem, Pi, Colonne);
     setConstraintsOnFlows(ProblemeHebdo, hourlyCsrProblem, Pi, Colonne);
     setNodeBalanceConstraints(ProblemeHebdo, hourlyCsrProblem, Pi, Colonne);
     setBindingConstraints(ProblemeHebdo, hourlyCsrProblem, Pi, Colonne);

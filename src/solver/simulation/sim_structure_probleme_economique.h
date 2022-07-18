@@ -729,9 +729,12 @@ private:
     void setProblemCost();
     void solveProblem();
 public:
+    void initializeWeekAndYear(uint week, int year);
     void run();
 public:
     int hourInWeekTriggeredCsr;
+    uint weekNb;
+    int mcYear;
     PROBLEME_HEBDO* pWeeklyProblemBelongedTo;
     HOURLY_CSR_PROBLEM(int hourInWeek, PROBLEME_HEBDO* pProblemeHebdo)
     {
