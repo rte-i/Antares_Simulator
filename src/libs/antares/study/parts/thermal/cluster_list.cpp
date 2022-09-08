@@ -398,6 +398,8 @@ static bool ThermalClusterLoadFromProperty(ThermalCluster& cluster, const IniFil
         return p->value.to<double>(cluster.efficiency);
     if (p->key == "fixed-cost")
         return p->value.to<double>(cluster.fixedCost);
+    if (p->key == "costgeneration")
+        return p->value.to(cluster.costgeneration);
     if (p->key == "flexibility")
     {
         // The flexibility is now ignored since v3.5
@@ -739,6 +741,8 @@ bool ThermalClusterList::saveToFolder(const AnyString& folder) const
                 s->add("law.planned", c.plannedLaw);
 
             // costs
+            if (c.costgeneration != setManually)
+                s->add("costgeneration", c.costgeneration);            
             if (not Math::Zero(c.marginalCost))
                 s->add("marginal-cost", Math::Round(c.marginalCost, 3));
             if (not Math::Zero(c.spreadCost))
