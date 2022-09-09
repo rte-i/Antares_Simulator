@@ -134,6 +134,11 @@ Panel::Panel(Component::Notebook* parent) :
             subbook, new Component::Datagrid::Renderer::TimeSeriesThermalCluster(subbook, tag)),
           wxT("Availability [MW]"));
 
+        pageThermalTimeSeriesCO2Cost = subbook->add(
+          new Component::Datagrid::Component(
+            subbook, new Component::Datagrid::Renderer::TimeSeriesThermalClusterCO2Cost(subbook, tag)),
+          wxT("CO2 Cost"));
+
         // Split the view
         pSplitter->SetMinimumPaneSize(70);
         pSplitter->SplitHorizontally(tag, subbook);

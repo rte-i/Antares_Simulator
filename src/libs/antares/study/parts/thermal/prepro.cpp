@@ -305,7 +305,8 @@ void PreproThermal::estimateMemoryUsage(StudyMemoryUsage& u) const
         fuelcost.estimateMemoryUsage(u, true, fuelcost.width, HOURS_PER_YEAR);
         u.requiredMemoryForInput += sizeof(PreproThermal);
         co2cost.estimateMemoryUsage(u, true, co2cost.width, HOURS_PER_YEAR);
-        u.requiredMemoryForInput += sizeof(PreproThermal);        
+
+        u.requiredMemoryForInput += sizeof(PreproThermal);
     }
 }
 
