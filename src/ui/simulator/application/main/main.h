@@ -753,12 +753,13 @@ private:
     Component::Notebook::Page* pScenarioBuilderMainPage;
     Component::Notebook::Page* pageScBuilderLoad;
     Component::Notebook::Page* pageScBuilderThermal;
-    Component::Notebook::Page* pageScBuilderHydro;
     Component::Notebook::Page* pageScBuilderWind;
     Component::Notebook::Page* pageScBuilderSolar;
     Component::Notebook::Page* pageScBuilderNTC;
     Component::Notebook::Page* pageScBuilderRenewable;
+    Component::Notebook::Page* pageScBuilderHydro;    
     Component::Notebook::Page* pageScBuilderHydroLevels;
+    Component::Notebook::Page* pageScBuilderHydroMingen;
 
     //! The current grid operator to use on selected cells
     Component::Datagrid::Selection::IOperator* pGridSelectionOperator;
