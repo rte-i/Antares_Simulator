@@ -109,6 +109,8 @@ public:
     solarTSNumberData solar;
     //! Hydro
     hydroTSNumberData hydro;
+    //! Hydro Mingen
+    hydroMingenTSNumberData hydromingen;    
     //! Wind
     windTSNumberData wind;
 

@@ -176,6 +176,24 @@ inline CString<512, false> hydroTSNumberData::get_prefix() const
 }
 
 // =====================
+// Hydro Mingen
+// =====================
+
+class hydroMingenTSNumberData : public TSNumberData
+{
+public:
+    bool apply(Study& study) override;
+    CString<512, false> get_prefix() const override;
+    uint get_tsGenCount(const Study& study) const override;
+};
+
+inline CString<512, false> hydroMingenTSNumberData::get_prefix() const
+{
+    return "hmin,";
+}
+
+
+// =====================
 // Thermal ...
 // =====================
 
