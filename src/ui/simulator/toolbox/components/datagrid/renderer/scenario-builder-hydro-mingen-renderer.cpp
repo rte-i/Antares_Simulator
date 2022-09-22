@@ -45,12 +45,9 @@ bool hydroMingenScBuilderRenderer::cellValue(int x, int y, const Yuni::String& v
         if ((uint)y < study->areas.size())
         {
             assert((uint)y < pRules->hydromingen.width());
-            assert((uint)x < pRules->hydromingen.height());
-            // assert((uint)y < pRules->hydro.width());
-            // assert((uint)x < pRules->hydro.height());            
+            assert((uint)x < pRules->hydromingen.height());           
             uint val = fromStringToTSnumber(value);
             pRules->hydromingen.set_value(x, y, val);
-            // pRules->hydro.set_value(x, y, val);
             return true;
         }
     }
@@ -66,9 +63,6 @@ double hydroMingenScBuilderRenderer::cellNumericValue(int x, int y) const
             assert((uint)y < pRules->hydromingen.width());
             assert((uint)x < pRules->hydromingen.height());
             return pRules->hydromingen.get_value(x, y);
-            // assert((uint)y < pRules->hydro.width());
-            // assert((uint)x < pRules->hydro.height());
-            // return pRules->hydro.get_value(x, y);
         }
     }
     return 0.;
