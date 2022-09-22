@@ -323,8 +323,10 @@ uint hydroMingenTSNumberData::get_tsGenCount(const Study& study) const
     // General data
     auto& parameters = study.parameters;
 
-    const bool tsGenHydroMingen = (0 != (parameters.timeSeriesToGenerate & timeSeriesHydro));
-    return tsGenHydroMingen ? parameters.nbTimeSeriesHydro : 0u;
+    // const bool tsGenHydroMingen = (0 != (parameters.timeSeriesToGenerate & timeSeriesHydroMingen));
+    // return tsGenHydroMingen ? parameters.nbTimeSeriesHydroMingen : 0u;
+    const bool tsGenHydro = (0 != (parameters.timeSeriesToGenerate & timeSeriesHydro));
+    return tsGenHydro ? parameters.nbTimeSeriesHydro : 0u;    
 }
 
 bool hydroMingenTSNumberData::apply(Study& study)
@@ -337,7 +339,7 @@ bool hydroMingenTSNumberData::apply(Study& study)
     // The total number of areas;
     const uint areaCount = study.areas.size();
 
-    const uint tsGenCountHydro = get_tsGenCount(study);
+    const uint tsGenCountHydroMingen = get_tsGenCount(study);
 
     for (uint areaIndex = 0; areaIndex != areaCount; ++areaIndex)
     {
@@ -347,8 +349,10 @@ bool hydroMingenTSNumberData::apply(Study& study)
         assert(areaIndex < pTSNumberRules.width);
         const MatrixType::ColumnType& col = pTSNumberRules[areaIndex];
 
+        // logprefix.clear() << "HydroMingen: Area '" << area.name << "': ";
+        // ret = ApplyToMatrix(errors, logprefix, *area.hydro.series, col, tsGenCountHydroMingen) && ret;
         logprefix.clear() << "Hydro: Area '" << area.name << "': ";
-        ret = ApplyToMatrix(errors, logprefix, *area.hydro.series, col, tsGenCountHydro) && ret;
+        ret = ApplyToMatrix(errors, logprefix, *area.hydro.series, col, tsGenCountHydroMingen) && ret;        
     }
     return ret;
 }

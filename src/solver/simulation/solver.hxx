@@ -151,6 +151,7 @@ private:
             yearRandomNumbers& randomForCurrentYear = randomForParallelYears.pYears[indexYear];
             double** thermalNoisesByArea = randomForCurrentYear.pThermalNoisesByArea;
             double* randomReservoirLevel = nullptr;
+            // double* randomMingen = nullptr; //CR22 todo            
             if (not study.parameters.adequacyDraft())
             {
                 if (hydroHotStart && firstSetParallelWithAPerformedYearWasRun)
@@ -170,7 +171,7 @@ private:
             if (not study.parameters.adequacyDraft())
             {
                 Benchmarking::Timer timer;
-                simulationObj->pHydroManagement(randomReservoirLevel, state[numSpace], y, numSpace);
+                simulationObj->pHydroManagement(randomReservoirLevel, state[numSpace], y, numSpace);//CR22 todo    mingen
                 timer.stop();
                 pDurationCollector->addDuration("hydro_ventilation", timer.get_duration());
             }
@@ -1310,6 +1311,8 @@ void ISimulation<Impl>::computeRandomNumbers(randomNumbers& randomForYears,
 
             double randomLevel = pHydroManagement.randomReservoirLevel(
               min[firstDayOfMonth], avg[firstDayOfMonth], max[firstDayOfMonth]);
+            double randomMingen = pHydroManagement.randomMingen(
+              min[firstDayOfMonth], avg[firstDayOfMonth], max[firstDayOfMonth]);              
 
             // Possibly update the intial level from scenario builder
             if (study.parameters.useCustomScenario)
@@ -1317,6 +1320,9 @@ void ISimulation<Impl>::computeRandomNumbers(randomNumbers& randomForYears,
                 double levelFromScenarioBuilder = study.scenarioHydroLevels[areaIndex][y];
                 if (levelFromScenarioBuilder >= 0.)
                     randomLevel = levelFromScenarioBuilder;
+                double mingenFromScenarioBuilder = study.scenarioHydromingen[areaIndex][y];
+                if (mingenFromScenarioBuilder >= 0.)
+                    randomMingen = mingenFromScenarioBuilder;                    
             }
 
             if (pHydroHotStart)

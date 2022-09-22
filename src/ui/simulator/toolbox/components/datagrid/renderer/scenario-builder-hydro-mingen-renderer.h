@@ -41,9 +41,11 @@ class hydroMingenScBuilderRenderer : public ScBuilderRendererAreasAsRows
 {
 public:
     hydroMingenScBuilderRenderer() = default;
-
+    
+    wxString cellValue(int x, int y) const;
     bool cellValue(int x, int y, const Yuni::String& value);
     double cellNumericValue(int x, int y) const;
+    IRenderer::CellStyle cellStyle(int x, int y) const;    
 }; // class hydroMingenScBuilderRenderer
 
 } // namespace Renderer

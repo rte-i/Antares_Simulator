@@ -65,6 +65,7 @@ void Rules::saveToINIFile(Yuni::IO::File::Stream& file) const
         }
         // hydro levels
         hydroLevels.saveToINIFile(study_, file);
+        hydromingentmp.saveToINIFile(study_, file);        
     }
     file << '\n';
 }
@@ -100,7 +101,7 @@ bool Rules::reset()
     }
 
     hydroLevels.reset(study_);
-
+    hydromingentmp.reset(study_);
     // links NTC
     linksNTC.clear();
     linksNTC.resize(pAreaCount);
@@ -266,6 +267,20 @@ bool Rules::readHydroLevels(const AreaName::Vector& splitKey, String value, bool
     return true;
 }
 
+bool Rules::readHydroMingen(const AreaName::Vector& splitKey, String value, bool updaterMode)
+{
+    const uint year = splitKey[2].to<uint>();
+    const AreaName& areaname = splitKey[1];
+
+    const Data::Area* area = getArea(areaname, updaterMode);
+    if (!area)
+        return false;
+
+    double val = fromStringToTSnumber(value);
+    hydromingentmp.set(area->index, year, val);
+    return true;
+}
+
 Data::AreaLink* Rules::getLink(const AreaName& fromAreaName,
                                const AreaName& toAreaName,
                                bool updaterMode)
@@ -327,6 +342,8 @@ bool Rules::readLine(const AreaName::Vector& splitKey, String value, bool update
         return readSolar(splitKey, value, updaterMode);
     else if (kind_of_scenario == "hl")
         return readHydroLevels(splitKey, value, updaterMode);
+    else if (kind_of_scenario == "m")
+        return readHydroMingen(splitKey, value, updaterMode);        
     else if (kind_of_scenario == "ntc")
         return readLink(splitKey, value, updaterMode);
     return false;
@@ -348,6 +365,7 @@ bool Rules::apply()
             returned_status = linksNTC[i].apply(study_) && returned_status;
         }
         returned_status = hydroLevels.apply(study_) && returned_status;
+        returned_status = hydromingentmp.apply(study_) && returned_status;        
     }
     else
         returned_status = false;

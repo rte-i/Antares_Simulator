@@ -698,6 +698,8 @@ public:
 
     Matrix<double> scenarioHydroLevels;
 
+    Matrix<double> scenarioHydromingen;
+
     /*!
     ** \brief Runtime informations
     **

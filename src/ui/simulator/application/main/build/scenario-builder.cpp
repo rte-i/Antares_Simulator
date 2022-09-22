@@ -221,7 +221,7 @@ class hydroLevelsScBuilderPageMaker final : public simpleScBuilderPageMaker
     }
 };
 
-// Hydro levels ...
+// Hydro mingen ...
 class hydroMingenScBuilderPageMaker final : public simpleScBuilderPageMaker
 {
     using simpleScBuilderPageMaker::simpleScBuilderPageMaker;

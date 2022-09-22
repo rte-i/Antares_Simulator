@@ -189,7 +189,7 @@ public:
 
 inline CString<512, false> hydroMingenTSNumberData::get_prefix() const
 {
-    return "hmin,";
+    return "m,";
 }
 
 

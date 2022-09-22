@@ -56,7 +56,7 @@ public:
 
     //! Get an initial reservoir level
     double randomReservoirLevel(double min, double avg, double max);
-
+    double randomMingen(double min, double avg, double max);
     //! Perform the hydro ventilation
     void operator()(double* randomReservoirLevel,
                     Solver::Variable::State& state,

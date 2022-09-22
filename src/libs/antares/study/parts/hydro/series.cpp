@@ -214,10 +214,15 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
     if (ror.width > count)
         count = ror.width;
 
-    if (study.header.version >= 831)
+    if (study.header.version >= 830)
     {
         buffer.clear() << folder << SEP << areaID << SEP << "mingen." << study.inputExtension;
         ret = mingen.loadFromCSVFile(buffer, 1, HOURS_PER_YEAR, &study.dataBuffer) && ret;
+    }
+    else
+    {
+        mingen.reset(0, HOURS_PER_YEAR);
+        mingen.markAsModified();
     }
 
     if (study.usedByTheSolver)
@@ -228,7 +233,7 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
                          << "`: empty matrix detected. Fixing it with default values";
             ror.reset(1, HOURS_PER_YEAR);
             storage.reset(1, DAYS_PER_YEAR);
-            mingen.reset(1, HOURS_PER_YEAR);
+            mingen.reset(0, HOURS_PER_YEAR);
         }
         else
         {

@@ -1,0 +1,94 @@
+/*
+** Copyright 2007-2018 RTE
+** Authors: Antares_Simulator Team
+**
+** This file is part of Antares_Simulator.
+**
+** Antares_Simulator is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** There are special exceptions to the terms and conditions of the
+** license as they are applied to this software. View the full text of
+** the exceptions in file COPYING.txt in the directory of this software
+** distribution
+**
+** Antares_Simulator is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with Antares_Simulator. If not, see <http://www.gnu.org/licenses/>.
+**
+** SPDX-License-Identifier: licenceRef-GPL3_WITH_RTE-Exceptions
+*/
+
+#include <sstream>
+#include <iomanip>
+#include "hydroMingenData.h"
+#include "scBuilderUtils.h"
+
+namespace Antares
+{
+namespace Data
+{
+namespace ScenarioBuilder
+{
+bool hydroMingenData::reset(const Study& study)
+{
+    const uint nbYears = study.parameters.nbYears;
+
+    pHydromingenRules.reset(study.areas.size(), nbYears);
+    pHydromingenRules.fill(std::nan(""));
+
+    return true;
+}
+
+void hydroMingenData::saveToINIFile(const Study& study, Yuni::IO::File::Stream& file) const
+{
+    // Prefix
+    CString<512, false> prefix;
+    prefix += "m,";
+
+    // Turning values into strings (precision 4)
+    std::ostringstream value_into_string;
+    value_into_string << std::setprecision(4);
+
+    // Foreach year
+    assert(pHydromingenRules.width == study.areas.size());
+    for (uint index = 0; index != pHydromingenRules.width; ++index)
+    {
+        // alias to the current column
+        const MatrixType::ColumnType& col = pHydromingenRules[index];
+        // Foreach area...
+        for (uint y = 0; y != pHydromingenRules.height; ++y)
+        {
+            const MatrixType::Type value = col[y];
+            // Equals to zero means 'auto', which is the default mode
+            if (std::isnan(value))
+                continue;
+            assert(index < study.areas.size());
+            value_into_string << value;
+            file << prefix << study.areas.byIndex[index]->id << ',' << y << " = "
+                 << value_into_string.str() << '\n';
+            value_into_string.str(string()); // Clearing converter
+        }
+    }
+}
+
+void hydroMingenData::set_value(uint x, uint y, double value)
+{
+    pHydromingenRules.entry[y][x] = value;
+}
+
+bool hydroMingenData::apply(Study& study)
+{
+    study.scenarioHydromingen.copyFrom(pHydromingenRules);
+    return true;
+}
+
+} // namespace ScenarioBuilder
+} // namespace Data
+} // namespace Antares

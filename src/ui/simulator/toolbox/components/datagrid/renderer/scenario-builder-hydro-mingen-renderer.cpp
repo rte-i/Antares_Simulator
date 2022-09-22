@@ -38,21 +38,50 @@ namespace Datagrid
 {
 namespace Renderer
 {
+
+wxString hydroMingenScBuilderRenderer::cellValue(int x, int y) const
+{
+    const double d = cellNumericValue(x, y);
+    return (Math::Zero(d)) ? wxString() << wxT("rand") : wxString() << (uint)d;
+}
+
 bool hydroMingenScBuilderRenderer::cellValue(int x, int y, const Yuni::String& value)
 {
     if (!(!study) && !(!pRules) && (uint)x < study->parameters.nbYears)
     {
         if ((uint)y < study->areas.size())
         {
-            assert((uint)y < pRules->hydromingen.width());
-            assert((uint)x < pRules->hydromingen.height());           
+            // assert((uint)y < pRules->hydromingen.width());
+            // assert((uint)x < pRules->hydromingen.height());
+            assert((uint)y < pRules->hydromingentmp.width());
+            assert((uint)x < pRules->hydromingentmp.height());            
+            // double val = fromStringToHydroLevel(value, 100.) / 100.;
+            // pRules->hydroLevels.set_value(x, y, val);
             uint val = fromStringToTSnumber(value);
-            pRules->hydromingen.set_value(x, y, val);
+            // pRules->hydromingen.set_value(x, y, val);  
+            pRules->hydromingentmp.set_value(x, y, val);            
             return true;
         }
     }
     return false;
 }
+// bool hydroMingenScBuilderRenderer::cellValue(int x, int y, const Yuni::String& value)
+// {
+//     if (!(!study) && !(!pRules) && (uint)x < study->parameters.nbYears)
+//     {
+//         if ((uint)y < study->areas.size())
+//         {
+//             assert((uint)y < pRules->hydromingen.width());
+//             assert((uint)x < pRules->hydromingen.height());           
+//             uint val = fromStringToTSnumber(value);
+//             pRules->hydromingen.set_value(x, y, val);
+//             return true;
+//         }
+//     }
+//     return false;
+// }
+
+
 
 double hydroMingenScBuilderRenderer::cellNumericValue(int x, int y) const
 {
@@ -60,13 +89,24 @@ double hydroMingenScBuilderRenderer::cellNumericValue(int x, int y) const
     {
         if ((uint)y < study->areas.size())
         {
-            assert((uint)y < pRules->hydromingen.width());
-            assert((uint)x < pRules->hydromingen.height());
-            return pRules->hydromingen.get_value(x, y);
+            // assert((uint)y < pRules->hydromingen.width());
+            // assert((uint)x < pRules->hydromingen.height());
+            // return pRules->hydromingen.get_value(x, y);
+            assert((uint)y < pRules->hydromingentmp.width());
+            assert((uint)x < pRules->hydromingentmp.height());
+            return pRules->hydromingentmp.get_value(x, y);            
         }
     }
     return 0.;
 }
+
+
+IRenderer::CellStyle hydroMingenScBuilderRenderer::cellStyle(int x, int y) const
+{
+    bool valid = (!(!study) && !(!pRules) && std::isnan(cellNumericValue(x, y)));
+    return (valid) ? cellStyleDefaultCenterDisabled : cellStyleDefaultCenter;
+}
+
 
 } // namespace Renderer
 } // namespace Datagrid

@@ -281,6 +281,32 @@ double HydroManagement::randomReservoirLevel(double min, double avg, double max)
     return x * max + (1. - x) * min;
 }
 
+double HydroManagement::randomMingen(double min, double avg, double max)
+{
+    if (Math::Equals(min, max))
+        return avg;
+    if (Math::Equals(avg, min) || Math::Equals(avg, max))
+        return avg;
+
+    double e = (avg - min) / (max - min);
+    double re = 1. - e;
+
+    assert(Math::Abs(1. + e) > 1e-12);
+    assert(Math::Abs(2. - e) > 1e-12);
+
+    double v1 = (e * e) * re / (1. + e);
+    double v2 = e * re * re / (2. - e);
+    double v = Math::Min(v1, v2) * .5;
+
+    assert(Math::Abs(v) > 1e-12);
+
+    double a = e * (e * re / v - 1.);
+    double b = re * (e * re / v - 1.);
+
+    double x = BetaVariable(a, b);
+    return x * max + (1. - x) * min;
+}
+
 void HydroManagement::operator()(double* randomReservoirLevel,
                                  Solver::Variable::State& state,
                                  uint y,
