@@ -55,7 +55,7 @@ Series::Series(wxWindow* parent, Toolbox::InputSelector::Area* notifier) :
 
     com = new Component::Datagrid::Component(notebook);
     com->renderer(new Component::Datagrid::Renderer::TimeSeriesHydroMinGen(com, notifier));
-    notebook->add(com, wxT("Minimum Generation"));
+    notebook->add(com, wxT("Minimum Generation"));  
 
     // Connection to the notifier
     if (pNotifier)
