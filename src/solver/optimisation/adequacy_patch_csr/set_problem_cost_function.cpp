@@ -33,33 +33,14 @@
 
 #include "../solver/optimisation/opt_fonctions.h"
 
-double calculateQuadraticCost(PROBLEME_HEBDO* ProblemeHebdo, int hour, int area)
-{
-    double priceTakingOrders = 0.0; // PTO
-    if (ProblemeHebdo->adqPatchParams->PriceTakingOrder == Data::AdequacyPatch::AdqPatchPTO::isLoad)
-    {
-        priceTakingOrders
-          = ProblemeHebdo->ConsommationsAbattues[hour]->ConsommationAbattueDuPays[area]
-            + ProblemeHebdo->AllMustRunGeneration[hour]->AllMustRunGenerationOfArea[area];
-    }
-    else if (ProblemeHebdo->adqPatchParams->PriceTakingOrder
-             == Data::AdequacyPatch::AdqPatchPTO::isDens)
-    {
-        priceTakingOrders = ProblemeHebdo->ResultatsHoraires[area]->ValeursHorairesDENS[hour];
-    }
-
-    if (priceTakingOrders <= 0.0)
-        return 0.0;
-    else
-        return (1 / (priceTakingOrders * priceTakingOrders));
-}
-
-void setQuadraticCost(PROBLEME_HEBDO* ProblemeHebdo, const HOURLY_CSR_PROBLEM& hourlyCsrProblem)
+void setQuadraticCost(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hourlyCsrProblem)
 {
     int Var;
     int hour = hourlyCsrProblem.hourInWeekTriggeredCsr;
+    double priceTakingOrders = 0.0; // PTO
+    double quadraticCost;
     PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre = ProblemeHebdo->ProblemeAResoudre;
-    const CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
+    CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
     CorrespondanceVarNativesVarOptim = ProblemeHebdo->CorrespondanceVarNativesVarOptim[hour];
 
     // variables: ENS for each area inside adq patch
@@ -77,21 +58,47 @@ void setQuadraticCost(PROBLEME_HEBDO* ProblemeHebdo, const HOURLY_CSR_PROBLEM& h
             Var = CorrespondanceVarNativesVarOptim->NumeroDeVariableDefaillancePositive[area];
             if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
             {
-                ProblemeAResoudre->CoutQuadratique[Var]
-                  = calculateQuadraticCost(ProblemeHebdo, hour, area);
+                if (ProblemeHebdo->adqPatchParams->PriceTakingOrder
+                    == Data::AdequacyPatch::AdqPatchPTO::isLoad)
+                {
+                    priceTakingOrders
+                      = ProblemeHebdo->ConsommationsAbattues[hour]->ConsommationAbattueDuPays[area]
+                        + ProblemeHebdo->AllMustRunGeneration[hour]
+                            ->AllMustRunGenerationOfArea[area];
+                }
+                else if (ProblemeHebdo->adqPatchParams->PriceTakingOrder
+                         == Data::AdequacyPatch::AdqPatchPTO::isDens)
+                {
+                    priceTakingOrders
+                      = ProblemeHebdo->ResultatsHoraires[area]->ValeursHorairesDENS[hour];
+                }
+
+                if (priceTakingOrders <= 0.0)
+                {
+                    // CSR todo a warning that DENS is negative and it is considered for CSR, there
+                    // was a check for positive threshold
+                    quadraticCost = 0.0;
+                }
+                else
+                {
+                    quadraticCost = 1 / (priceTakingOrders * priceTakingOrders);
+                }
+
+                ProblemeAResoudre->CoutQuadratique[Var] = quadraticCost;
                 logs.debug() << Var << ". Quad C = " << ProblemeAResoudre->CoutQuadratique[Var];
             }
         }
     }
 }
 
-void setLinearCost(PROBLEME_HEBDO* ProblemeHebdo, const HOURLY_CSR_PROBLEM& hourlyCsrProblem)
+void setLinearCost(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hourlyCsrProblem)
 {
     int Var;
     int hour = hourlyCsrProblem.hourInWeekTriggeredCsr;
-    const COUTS_DE_TRANSPORT* TransportCost;
+    int Interco;
+    COUTS_DE_TRANSPORT* TransportCost;
     PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre = ProblemeHebdo->ProblemeAResoudre;
-    const CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
+    CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
     CorrespondanceVarNativesVarOptim = ProblemeHebdo->CorrespondanceVarNativesVarOptim[hour];
 
     // variables: transmission cost for links between nodes of type 2 (area inside adequacy patch)
@@ -102,7 +109,7 @@ void setLinearCost(PROBLEME_HEBDO* ProblemeHebdo, const HOURLY_CSR_PROBLEM& hour
     // these members of objective functions are considered only if IntercoGereeAvecDesCouts =
     // OUI_ANTARES (use hurdle cost option is true). otherwise these members are zero.
 
-    for (int Interco = 0; Interco < ProblemeHebdo->NombreDInterconnexions; Interco++)
+    for (Interco = 0; Interco < ProblemeHebdo->NombreDInterconnexions; Interco++)
     {
         if (ProblemeHebdo->adequacyPatchRuntimeData.originAreaMode[Interco]
               == Antares::Data::AdequacyPatch::physicalAreaInsideAdqPatch

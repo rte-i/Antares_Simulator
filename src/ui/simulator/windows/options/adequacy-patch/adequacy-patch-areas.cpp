@@ -17,7 +17,11 @@
 
 using namespace Yuni;
 
-namespace Antares::Window::Options
+namespace Antares
+{
+namespace Window
+{
+namespace Options
 {
 BEGIN_EVENT_TABLE(AdequacyPatchAreas, wxDialog)
 EVT_MOTION(AdequacyPatchAreas::mouseMoved)
@@ -98,9 +102,11 @@ AdequacyPatchAreas::AdequacyPatchAreas(wxFrame* parent) :
     grid->forceRefresh();
 }
 
-AdequacyPatchAreas::~AdequacyPatchAreas() = default;
+AdequacyPatchAreas::~AdequacyPatchAreas()
+{
+}
 
-void AdequacyPatchAreas::onClose(const void*)
+void AdequacyPatchAreas::onClose(void*)
 {
     Dispatcher::GUI::Close(this);
 }
@@ -111,4 +117,6 @@ void AdequacyPatchAreas::mouseMoved(wxMouseEvent&)
     Antares::Component::Panel::OnMouseMoveFromExternalComponent();
 }
 
-}
+} // namespace Options
+} // namespace Window
+} // namespace Antares

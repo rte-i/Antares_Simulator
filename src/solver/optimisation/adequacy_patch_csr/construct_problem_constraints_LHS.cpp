@@ -42,7 +42,8 @@ void setConstraintsOnFlows(PROBLEME_HEBDO* ProblemeHebdo,
     int hour = hourlyCsrProblem.hourInWeekTriggeredCsr;
     int Var;
     int NombreDeTermes;
-    const CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
+    int Interco;
+    CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
     PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre;
     std::string NomDeLaContrainte;
 
@@ -51,7 +52,7 @@ void setConstraintsOnFlows(PROBLEME_HEBDO* ProblemeHebdo,
 
     // constraint: Flow = Flow_direct - Flow_indirect (+ loop flow) for links between nodes of
     // type 2.
-    for (int Interco = 0; Interco < ProblemeHebdo->NombreDInterconnexions; Interco++)
+    for (Interco = 0; Interco < ProblemeHebdo->NombreDInterconnexions; Interco++)
     {
         if (ProblemeHebdo->adequacyPatchRuntimeData.originAreaMode[Interco]
               == Antares::Data::AdequacyPatch::physicalAreaInsideAdqPatch
@@ -102,10 +103,11 @@ void setNodeBalanceConstraints(PROBLEME_HEBDO* ProblemeHebdo,
                                int* Colonne)
 {
     int hour = hourlyCsrProblem.hourInWeekTriggeredCsr;
+    int Area;
     int Var;
     int NombreDeTermes;
     int Interco;
-    const CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
+    CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
     PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre;
     std::string NomDeLaContrainte;
 
@@ -119,7 +121,7 @@ void setNodeBalanceConstraints(PROBLEME_HEBDO* ProblemeHebdo,
     // ENS_init(node A) + net_position_init(node A) – spillage_init(node A)
     // for all areas inside adequacy patch
 
-    for (int Area = 0; Area < ProblemeHebdo->NombreDePays; ++Area)
+    for (Area = 0; Area < ProblemeHebdo->NombreDePays; ++Area)
     {
         if (ProblemeHebdo->adequacyPatchRuntimeData.areaMode[Area]
             == Data::AdequacyPatch::physicalAreaInsideAdqPatch)
@@ -197,7 +199,7 @@ void setNodeBalanceConstraints(PROBLEME_HEBDO* ProblemeHebdo,
 
             NomDeLaContrainte = "Area Balance, Area:" + std::to_string(Area) + "; "
                                 + ProblemeHebdo->NomsDesPays[Area];
-            
+            ;
             logs.debug() << "C: " << ProblemeAResoudre->NombreDeContraintes << ": "
                          << NomDeLaContrainte;
 
@@ -218,11 +220,13 @@ void setBindingConstraints(PROBLEME_HEBDO* ProblemeHebdo,
     int Interco;
     int NbInterco;
     double Poids;
+    CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
     PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre;
-    const CONTRAINTES_COUPLANTES* MatriceDesContraintesCouplantes;
+    CONTRAINTES_COUPLANTES* MatriceDesContraintesCouplantes;
     std::string NomDeLaContrainte;
 
     ProblemeAResoudre = ProblemeHebdo->ProblemeAResoudre;
+    CorrespondanceVarNativesVarOptim = ProblemeHebdo->CorrespondanceVarNativesVarOptim[hour];
 
     // Special case of the binding constraints
     for (int CntCouplante = 0; CntCouplante < ProblemeHebdo->NombreDeContraintesCouplantes;

@@ -6,8 +6,13 @@
 #include <wx/dialog.h>
 #include <wx/checkbox.h>
 
-namespace Antares::Window::Options
+namespace Antares
 {
+namespace Window
+{
+namespace Options
+{
+
 class AdequacyPatchAreas final : public wxDialog
 {
 public:
@@ -18,21 +23,26 @@ public:
     **
     ** \param parent The parent window
     */
-    explicit AdequacyPatchAreas(wxFrame* parent);
+    AdequacyPatchAreas(wxFrame* parent);
     //! Destructor
-    ~AdequacyPatchAreas() override;
+    virtual ~AdequacyPatchAreas();
     //@}
 
-private:
+protected:
     void mouseMoved(wxMouseEvent& evt);
-    void onClose(const void*);
 
+protected:
+    void onClose(void*);
+
+private:
     Component::Datagrid::Component* pGrid;
     wxWindow* pPanel;
     DECLARE_EVENT_TABLE()
 
 }; // class AdequacyPatchAreas
 
-}
+} // namespace Options
+} // namespace Window
+} // namespace Antares
 
 #endif // __ANTARES_APPLICATION_WINDOWS_ADEQUACY_PATCH_AREAS_H__

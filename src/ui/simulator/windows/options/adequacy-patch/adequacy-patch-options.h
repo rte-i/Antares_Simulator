@@ -33,7 +33,11 @@
 
 #include <antares/study/UnfeasibleProblemBehavior.hpp>
 
-namespace Antares::Window::Options
+namespace Antares
+{
+namespace Window
+{
+namespace Options
 {
 /*!
 ** \brief Startup Wizard User Interface
@@ -48,9 +52,9 @@ public:
     **
     ** \param parent The parent window
     */
-    explicit AdequacyPatchOptions(wxWindow* parent);
+    AdequacyPatchOptions(wxWindow* parent);
     //! Destructor
-    ~AdequacyPatchOptions() override;
+    virtual ~AdequacyPatchOptions();
     //@}
 
 private:
@@ -64,8 +68,9 @@ private:
         const wxChar* const text;
     };
 
+private:
     void refresh();
-    void onClose(const void*);
+    void onClose(void*);
     void onResetToDefault(void*);
     wxTextCtrl* insertEdit(wxWindow* parent,
                            wxSizer* sizer,
@@ -84,7 +89,7 @@ private:
 
     void onInternalMotion(wxMouseEvent&);  
     void onEditThresholds(wxCommandEvent&);
-
+private:
     Component::Button* pBtnAdequacyPatch;
     Component::Button* pBtnNTCfromOutToInAdqPatch;
     Component::Button* pBtnNTCfromOutToOutAdqPatch;
@@ -96,6 +101,8 @@ private:
 
 }; // class AdequacyPatchOptions
 
-}
+} // namespace Options
+} // namespace Window
+} // namespace Antares
 
 #endif // __ANTARES_APPLICATION_WINDOWS_OPTIONS_ADEQUACY_PATCH_H__

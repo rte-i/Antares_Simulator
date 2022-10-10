@@ -114,11 +114,12 @@ void setToZeroIfBelowThreshold(double* pt, int Var, HOURLY_CSR_PROBLEM& hourlyCs
         *pt = 0.0;
 }
 
-void storeInteriorPointResults(const PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre,
+void storeInteriorPointResults(PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre,
                                HOURLY_CSR_PROBLEM& hourlyCsrProblem)
 {
+    int Var;
     double* pt;
-    for (int Var = 0; Var < ProblemeAResoudre->NombreDeVariables; Var++)
+    for (Var = 0; Var < ProblemeAResoudre->NombreDeVariables; Var++)
     {
         pt = ProblemeAResoudre->AdresseOuPlacerLaValeurDesVariablesOptimisees[Var];
         if (pt)
@@ -130,7 +131,7 @@ void storeInteriorPointResults(const PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResou
     }
 }
 
-void CSR_DEBUG_HANDLE(const PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre)
+void CSR_DEBUG_HANDLE(PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre)
 {
     int Var;
 
@@ -167,8 +168,8 @@ void CSR_DEBUG_HANDLE(const PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre)
     }
 }
 
-void handleInteriorPointError(const PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre,
-                              const HOURLY_CSR_PROBLEM& hourlyCsrProblem,
+void handleInteriorPointError(PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre,
+                              HOURLY_CSR_PROBLEM& hourlyCsrProblem,
                               uint weekNb,
                               int yearNb)
 {
