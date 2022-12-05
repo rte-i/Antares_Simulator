@@ -179,5 +179,11 @@ public:
     NoAreaInsideAdqPatchMode();
 };
 
+class IncompatibleFuelOrCo2CostColumns : public LoadingError
+{
+public:
+    IncompatibleFuelOrCo2CostColumns();
+};
+
 } // namespace Error
 } // namespace Antares
