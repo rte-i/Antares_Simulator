@@ -31,13 +31,15 @@
 #include <yuni/core/fwd.h>
 #include <string>
 
+using namespace std;
+
 namespace Antares
 {
 namespace Data
 {
 namespace ScenarioBuilder
 {
-std::string fromHydroLevelToString(double d);
+string fromHydroLevelToString(double d);
 double fromStringToHydroLevel(const Yuni::String& value, const double maxLevel);
 
 uint fromStringToTSnumber(const Yuni::String& value);

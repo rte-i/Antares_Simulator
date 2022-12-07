@@ -41,8 +41,6 @@ set(SRC_SIMULATION
 		simulation/adequacy.cpp
 		simulation/economy.h
 		simulation/economy.cpp
-        simulation/opt_time_writer.h
-        simulation/opt_time_writer.cpp
 )
 source_group("simulation" FILES ${SRC_SIMULATION})
 

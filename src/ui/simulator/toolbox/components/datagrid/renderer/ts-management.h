@@ -32,6 +32,8 @@
 #include "column.h"
 #include "../../../../application/study.h"
 
+using namespace std;
+
 namespace Antares
 {
 namespace Component
@@ -89,7 +91,7 @@ private:
 
 protected:
     const int MAX_NB_OF_LINES = 13;
-    std::vector<Column*> columns_;
+    vector<Column*> columns_;
     wxWindow* pControl;
 
 }; // class TSmanagement

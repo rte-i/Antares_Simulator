@@ -55,8 +55,8 @@ void printSolvers()
 void checkSimplexRangeHydroPricing(Antares::Data::SimplexOptimization optRange,
                                    Antares::Data::HydroPricingMode hpMode)
 {
-    using namespace Antares::Data;
-    if (optRange == SimplexOptimization::sorDay && hpMode == HydroPricingMode::hpMILP)
+    if (optRange == Antares::Data::SimplexOptimization::sorDay
+        && hpMode == Antares::Data::HydroPricingMode::hpMILP)
     {
         throw Error::IncompatibleOptRangeHydroPricing();
     }

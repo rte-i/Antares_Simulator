@@ -29,7 +29,6 @@
 #include <yuni/io/file.h>
 #include <yuni/core/math.h>
 #include <cassert>
-#include <cmath>
 #include "../../study.h"
 #include "../../memory-usage.h"
 #include "cluster.h"
@@ -262,9 +261,9 @@ double RenewableCluster::valueAtTimeStep(uint timeSeriesIndex, uint timeStepInde
     switch (tsMode)
     {
     case powerGeneration:
-        return std::round(tsValue);
+        return tsValue;
     case productionFactor:
-        return std::round(unitCount * nominalCapacity * tsValue);
+        return unitCount * nominalCapacity * tsValue;
     }
     return 0.;
 }

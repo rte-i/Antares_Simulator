@@ -53,8 +53,7 @@ void Study::importLogsToOutputFolder() const
         logs.closeLogfile();
     }
 
-    if (resultWriter)
-        resultWriter->addEntryFromFile(logPath, from.c_str());
+    resultWriter->addEntryFromFile(logPath, from.c_str());
 
     if (System::windows)
     {

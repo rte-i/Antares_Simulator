@@ -199,8 +199,7 @@ void PrepareDataFromClustersInMustrunMode(Data::Study& study, uint numSpace)
 
 bool ShouldUseQuadraticOptimisation(const Data::Study& study)
 {
-    const bool flowQuadEnabled
-      = study.parameters.variablesPrintInfo.searchIncrementally_getPrintStatus("FLOW QUAD.");
+    const bool flowQuadEnabled = study.parameters.variablesPrintInfo.searchIncrementally_getPrintStatus("FLOW QUAD.");
     if (!flowQuadEnabled)
         return false;
 
@@ -402,18 +401,6 @@ int retrieveAverageNTC(const Data::Study& study,
         avg[h] /= yearsWeightSum;
     }
     return 0;
-}
-
-void finalizeOptimizationStatistics(PROBLEME_HEBDO& problem,
-                                    Antares::Solver::Variable::State& state)
-{
-    auto& firstOptStat = problem.optimizationStatistics[0];
-    state.averageOptimizationTime1 = firstOptStat.getAverageSolveTime();
-    firstOptStat.reset();
-
-    auto& secondOptStat = problem.optimizationStatistics[1];
-    state.averageOptimizationTime2 = secondOptStat.getAverageSolveTime();
-    secondOptStat.reset();
 }
 
 } // namespace Simulation
