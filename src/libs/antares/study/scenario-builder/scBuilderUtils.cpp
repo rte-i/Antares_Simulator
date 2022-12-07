@@ -37,7 +37,7 @@ namespace Data
 {
 namespace ScenarioBuilder
 {
-std::string fromHydroLevelToString(double d)
+string fromHydroLevelToString(double d)
 {
     std::ostringstream stream;
     stream << std::setprecision(4);

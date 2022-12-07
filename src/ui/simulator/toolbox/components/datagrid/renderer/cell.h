@@ -16,6 +16,7 @@ namespace Datagrid
 namespace Renderer
 {
 using namespace Antares::Data;
+using namespace std;
 
 class Cell : public Yuni::IEventObserver<Cell>
 {
@@ -97,7 +98,7 @@ private:
     void onStudyLoaded();
 
 private:
-    std::map<TimeSeries, uint*> tsToNumberTs_;
+    map<TimeSeries, uint*> tsToNumberTs_;
 };
 
 class NumberTsCellThermal : public NumberTsCell
@@ -139,7 +140,7 @@ private:
     void onStudyLoaded();
 
 private:
-    std::map<TimeSeries, uint*> tsToRefreshSpan_;
+    map<TimeSeries, uint*> tsToRefreshSpan_;
 };
 
 class RefreshSpanCellThermal : public RefreshSpanCell
@@ -163,7 +164,7 @@ private:
     void onStudyLoaded();
 
 private:
-    std::map<TimeSeries, Correlation*> tsToCorrelation_;
+    map<TimeSeries, Correlation*> tsToCorrelation_;
 };
 
 class SeasonalCorrelationCellThermal : public SeasonalCorrelationCell

@@ -64,7 +64,7 @@ namespace Antares
 {
 namespace Component
 {
-template<class T, class StringT, class UserDataT>
+template<class T, class StringT, class UserDataT = void*>
 wxButton* CreateButton(wxWindow* parent,
                        const StringT& caption,
                        T* object,

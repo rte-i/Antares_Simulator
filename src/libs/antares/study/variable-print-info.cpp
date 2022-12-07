@@ -50,9 +50,9 @@ VariablePrintInfo::VariablePrintInfo(AnyString vname, uint maxNbCols, uint dataL
     varname = vname;
 }
 
-std::string VariablePrintInfo::name()
+string VariablePrintInfo::name()
 {
-    return varname.to<std::string>();
+    return varname.to<string>();
 }
 void VariablePrintInfo::enablePrint(bool b)
 {
@@ -108,7 +108,8 @@ void AllVariablesPrintInfo::clear()
     // Destroying objects in lists
     // ---------------------------
     // Deleting variable' print info objects pointed in the list
-    for (auto it = allVarsPrintInfo.begin(); it != allVarsPrintInfo.end(); ++it)
+    vector<VariablePrintInfo*>::iterator it = allVarsPrintInfo.begin();
+    for (it = allVarsPrintInfo.begin(); it != allVarsPrintInfo.end(); ++it)
         delete *it;
 
     // After destroying objects in list, clearing lists
@@ -138,7 +139,7 @@ void AllVariablesPrintInfo::resetInfoIterator() const
     it_info = allVarsPrintInfo.begin();
 }
 
-bool AllVariablesPrintInfo::setPrintStatus(std::string varname, bool printStatus)
+bool AllVariablesPrintInfo::setPrintStatus(string varname, bool printStatus)
 {
     /*
         From the position of the iterator on the print info collection, shifting right until
@@ -150,7 +151,7 @@ bool AllVariablesPrintInfo::setPrintStatus(std::string varname, bool printStatus
 
     for (it_info = allVarsPrintInfo.begin(); it_info != allVarsPrintInfo.end(); it_info++)
     {
-        std::string current_var_name = (*it_info)->name();
+        string current_var_name = (*it_info)->name();
         std::transform(
           current_var_name.begin(), current_var_name.end(), current_var_name.begin(), ::toupper);
         if (varname == current_var_name)
@@ -186,7 +187,7 @@ void AllVariablesPrintInfo::prepareForSimulation(bool userSelection,
     countSelectedLinkVars();
 }
 
-bool AllVariablesPrintInfo::searchIncrementally_getPrintStatus(std::string var_name) const
+bool AllVariablesPrintInfo::searchIncrementally_getPrintStatus(string var_name) const
 {
     // Finds out if an output variable is selected for print or not.
     // The search for the variable in the print info list is incremental :
@@ -210,7 +211,7 @@ bool AllVariablesPrintInfo::searchIncrementally_getPrintStatus(std::string var_n
     return true;
 }
 
-bool AllVariablesPrintInfo::isPrinted(std::string var_name) const
+bool AllVariablesPrintInfo::isPrinted(string var_name) const
 {
     // Finds out if an output variable selected for print or not.
     // The search for a variable starts from the beginning of the variable print info list.
@@ -256,7 +257,8 @@ void AllVariablesPrintInfo::computeMaxColumnsCountInReports()
     {
         uint currentColumnsCount = 0;
 
-        for (auto it = allVarsPrintInfo.begin(); it != allVarsPrintInfo.end(); it++)
+        vector<VariablePrintInfo*>::iterator it = allVarsPrintInfo.begin();
+        for (; it != allVarsPrintInfo.end(); it++)
         {
             if ((*it)->isPrinted() && (*it)->getFileLevel() & CFileLevel
                 && (*it)->getDataLevel() & CDataLevel)

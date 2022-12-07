@@ -5,7 +5,7 @@
 #include <cmath>
 #include <atomic>
 
-class OptimizationStatistics
+class optimizationStatistics
 {
 private:
     std::atomic<long long> totalSolveTime;
@@ -23,12 +23,12 @@ public:
         nbUpdate = 0;
     }
 
-    OptimizationStatistics()
+    optimizationStatistics()
     {
         this->reset();
     }
 
-    void add(const OptimizationStatistics& other)
+    void add(const optimizationStatistics& other)
     {
         totalSolveTime += other.totalSolveTime;
         totalUpdateTime += other.totalUpdateTime;
@@ -51,6 +51,11 @@ public:
     unsigned int getNbUpdate() const
     {
         return nbUpdate;
+    }
+
+    unsigned int getNbSolve() const
+    {
+        return nbSolve;
     }
 
     long long getTotalSolveTime() const
