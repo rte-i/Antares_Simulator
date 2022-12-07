@@ -603,11 +603,12 @@ struct PROBLEME_HEBDO
     double* previousYearFinalLevels;
     ALL_MUST_RUN_GENERATION** AllMustRunGeneration;
 
+    OptimizationStatistics optimizationStatistics[2];
+
     /* Adequacy Patch */
     std::unique_ptr<AdequacyPatchParameters> adqPatchParams = nullptr;
     AdequacyPatchRuntimeData adequacyPatchRuntimeData;
 
-    optimizationStatistics optimizationStatistics_object;
     /* Hydro management */
     double* CoefficientEcretementPMaxHydraulique;
     bool hydroHotStart;
@@ -620,6 +621,9 @@ struct PROBLEME_HEBDO
 
     double* coutOptimalSolution1;
     double* coutOptimalSolution2;
+
+    double* tempsResolution1;
+    double* tempsResolution2;
 
     COUTS_MARGINAUX_ZONES_DE_RESERVE** CoutsMarginauxDesContraintesDeReserveParZone;
     /* Unused for now, will be used in future revisions */
@@ -707,6 +711,47 @@ public:
     PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre;
 
     double maxPminThermiqueByDay[366];
+
+    /* Debug */
+    char debugFolder[1024];
+};
+
+namespace Antares::Solver::Variable { class State; } // foward declaration
+// hourly CSR problem structure
+class HOURLY_CSR_PROBLEM
+{
+private:
+    void calculateCsrParameters();
+    void resetProblem();
+    void buildProblemVariables();
+    void setVariableBounds();
+    void buildProblemConstraintsLHS();
+    void buildProblemConstraintsRHS();
+    void setProblemCost();
+    void solveProblem(uint week, int year);
+public:
+    void run(uint week, const Antares::Solver::Variable::State& state);
+    
+    int hourInWeekTriggeredCsr;
+    double belowThisThresholdSetToZero;
+    PROBLEME_HEBDO* pWeeklyProblemBelongedTo;
+    HOURLY_CSR_PROBLEM(int hourInWeek, PROBLEME_HEBDO* pProblemeHebdo)
+    {
+        hourInWeekTriggeredCsr = hourInWeek;
+        pWeeklyProblemBelongedTo = pProblemeHebdo;
+        belowThisThresholdSetToZero
+          = pProblemeHebdo->adqPatchParams->ThresholdCSRVarBoundsRelaxation;
+    };
+    std::map<int, int> numberOfConstraintCsrEns;
+    std::map<int, int> numberOfConstraintCsrAreaBalance;
+    std::map<int, int> numberOfConstraintCsrFlowDissociation;
+    std::map<int, int> numberOfConstraintCsrHourlyBinding; // length is number of binding constraint
+                                                           // contains interco 2-2
+
+    std::map<int, double> rhsAreaBalanceValues;
+    std::set<int> varToBeSetToZeroIfBelowThreshold; // place inside only ENS and Spillage variable
+    std::set<int> ensSet; // place inside only ENS inside adq-patch
+    std::set<int> linkSet; // place inside only links between to zones inside adq-patch
 };
 
 namespace Antares::Solver::Variable { class State; } // foward declaration

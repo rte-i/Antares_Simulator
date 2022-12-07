@@ -38,6 +38,7 @@
 #include <set>
 #include "../optimisation/adequacy_patch.h"
 
+
 using namespace Yuni;
 
 namespace Antares
@@ -266,6 +267,8 @@ bool Economy::year(Progression::Task& progression,
         pProblemesHebdo[numSpace]->firstWeekOfSimulation = true;
     bool reinitOptim = true;
 
+    OptimizationStatisticsWriter optWriter(study.resultWriter, state.year);
+
     for (uint w = 0; w != pNbWeeks; ++w)
     {
         state.hourInTheYear = hourInTheYear;
@@ -328,6 +331,9 @@ bool Economy::year(Progression::Task& progression,
                 state.optimalSolutionCost1 += pProblemesHebdo[numSpace]->coutOptimalSolution1[opt];
                 state.optimalSolutionCost2 += pProblemesHebdo[numSpace]->coutOptimalSolution2[opt];
             }
+            optWriter.addTime(w,
+                              pProblemesHebdo[numSpace]->tempsResolution1[0],
+                              pProblemesHebdo[numSpace]->tempsResolution2[0]);
         }
         catch (Data::AssertionError& ex)
         {
@@ -365,10 +371,9 @@ bool Economy::year(Progression::Task& progression,
 
     updatingAnnualFinalHydroLevel(study, *pProblemesHebdo[numSpace]);
 
-    logs.info() << pProblemesHebdo[numSpace]->optimizationStatistics_object.toString();
-    auto& optStat = pProblemesHebdo[numSpace]->optimizationStatistics_object;
-    state.averageOptimizationTime = optStat.getAverageSolveTime();
-    optStat.reset();
+    optWriter.finalize();
+    finalizeOptimizationStatistics(*pProblemesHebdo[numSpace], state);
+
     return true;
 }
 
