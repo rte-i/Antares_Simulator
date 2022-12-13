@@ -196,7 +196,11 @@ void State::initFromThermalClusterIndex(const uint clusterAreaWideIndex, uint nu
             // calculating the operating cost for the current hour
             // O(h) = MA * P(h) * Modulation
             assert(thermalCluster->productionCost != NULL && "invalid production cost");
-            thermalClusterOperatingCost = (p * thermalCluster->productionCost[hourInTheYear]);
+            if (thermalCluster->productionCostTs.empty())
+                thermalClusterOperatingCost = (p * thermalCluster->productionCost[hourInTheYear]);
+            else
+                thermalClusterOperatingCost
+                  = (p * thermalCluster->productionCostTs[serieIndex][hourInTheYear]);
 
             // Startup cost
             if (newUnitCount > previousUnitCount && hourInTheSimulation != 0u)
@@ -328,9 +332,13 @@ void State::yearEndBuildFromThermalClusterIndex(const uint clusterAreaWideIndex,
 
             if (thermalClusterProduction > 0.)
             {
-                thermalClusterOperatingCostForYear[h]
-                  = (thermalClusterProduction * currentCluster->productionCost[h]);
-
+                if (thermalCluster->productionCostTs.empty())
+                    thermalClusterOperatingCostForYear[h]
+                      = (thermalClusterProduction * currentCluster->productionCost[h]);
+                else
+                    thermalClusterOperatingCostForYear[h]
+                      = (thermalClusterProduction * currentCluster->productionCostTs[serieIndex][h]);
+                // productionCost!! 
                 switch (unitCommitmentMode)
                 {
                 case Antares::Data::UnitCommitmentMode::ucHeuristic:
