@@ -181,10 +181,24 @@ void State::initFromThermalClusterIndex(const uint clusterAreaWideIndex, uint nu
             }
             else
                 newUnitCount = thermalCluster->unitCount;
-
-            if (newUnitCount > previousUnitCount)
-                newUnitCount = previousUnitCount;
         }
+            // calculating the operating cost for the current hour
+            // O(h) = MA * P(h) * Modulation
+            assert(thermalCluster->productionCost != NULL && "invalid production cost");
+            if (thermalCluster->productionCostTs.empty())
+                thermalClusterOperatingCost = (p * thermalCluster->productionCost[hourInTheYear]);
+            else
+                thermalClusterOperatingCost
+                  = (p * thermalCluster->productionCostTs[serieIndex][hourInTheYear]);
+
+            // Startup cost
+            if (newUnitCount > previousUnitCount && hourInTheSimulation != 0u)
+            {
+                thermalClusterOperatingCost
+                  += thermalCluster->startupCost * (newUnitCount - previousUnitCount);
+                thermalClusterNonProportionalCost
+                  = thermalCluster->startupCost * (newUnitCount - previousUnitCount);
+            }
 
         // calculating the operating cost for the current hour
         // O(h) = MA * P(h) * Modulation
@@ -319,12 +333,18 @@ void State::yearEndBuildFromThermalClusterIndex(const uint clusterAreaWideIndex,
         if (thermalClusterProduction <= 0.)
             continue;
 
-        thermalClusterOperatingCostForYear[h]
-            = (thermalClusterProduction * currentCluster->productionCost[h]);
-
-        switch (unitCommitmentMode)
-        {
-            case Antares::Data::UnitCommitmentMode::ucHeuristic:
+            if (thermalClusterProduction > 0.)
+            {
+                if (thermalCluster->productionCostTs.empty())
+                    thermalClusterOperatingCostForYear[h]
+                      = (thermalClusterProduction * currentCluster->productionCost[h]);
+                else
+                    thermalClusterOperatingCostForYear[h]
+                      = (thermalClusterProduction * currentCluster->productionCostTs[serieIndex][h]);
+                // productionCost!! 
+                switch (unitCommitmentMode)
+                {
+                case Antares::Data::UnitCommitmentMode::ucHeuristic:
                 {
                     /*if (thermalClusterPMinOfAGroup > 0.) // code 5.0.2
                       {
