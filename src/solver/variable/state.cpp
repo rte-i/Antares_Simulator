@@ -196,11 +196,13 @@ void State::initFromThermalClusterIndex(const uint clusterAreaWideIndex, uint nu
             // calculating the operating cost for the current hour
             // O(h) = MA * P(h) * Modulation
             assert(thermalCluster->productionCost != NULL && "invalid production cost");
-            if (thermalCluster->productionCostTs.empty())
+            if (thermalCluster->costgeneration == Data::setManually)
                 thermalClusterOperatingCost = (p * thermalCluster->productionCost[hourInTheYear]);
             else
                 thermalClusterOperatingCost
-                  = (p * thermalCluster->productionCostTs[serieIndex][hourInTheYear]);
+                  = (p
+                     * thermalCluster->productionCostTs[Math::Min(
+                       serieIndex, thermalCluster->productionCostTs.size() - 1)][hourInTheYear]);
 
             // Startup cost
             if (newUnitCount > previousUnitCount && hourInTheSimulation != 0u)
@@ -332,13 +334,15 @@ void State::yearEndBuildFromThermalClusterIndex(const uint clusterAreaWideIndex,
 
             if (thermalClusterProduction > 0.)
             {
-                if (thermalCluster->productionCostTs.empty())
+                if (currentCluster->costgeneration == Data::setManually)
                     thermalClusterOperatingCostForYear[h]
                       = (thermalClusterProduction * currentCluster->productionCost[h]);
                 else
                     thermalClusterOperatingCostForYear[h]
-                      = (thermalClusterProduction * currentCluster->productionCostTs[serieIndex][h]);
-                // productionCost!! 
+                      = (thermalClusterProduction
+                         * currentCluster->productionCostTs[Math::Min(
+                           serieIndex, currentCluster->productionCostTs.size() - 1)][h]);
+                // productionCost!!
                 switch (unitCommitmentMode)
                 {
                 case Antares::Data::UnitCommitmentMode::ucHeuristic:
