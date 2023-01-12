@@ -390,7 +390,7 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
                         logs.error()
                           << "Year : " << y + 1 << " - hydro: " << area.name
                           << " [hourly] minimum generation of " << srcmingen[day * 24 + h]
-                          << " MW in timestep " << day * 24 + h + 1 << " of TS-" << numSpace
+                          << " MW in timestep " << day * 24 + h + 1 << " of TS-" << tsIndex + 1
                           << " is incompatible with the maximum generation of " << maxP[day]
                           << " MW.";
                     }
