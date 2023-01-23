@@ -97,6 +97,27 @@ void checkSimplexRangeHydroHeuristic(Antares::Data::SimplexOptimization optRange
     }
 }
 
+// Daily simplex optimisation and any area's any cluster's use heurictic target turned to "No" are
+// not compatible.
+void checkSimplexRangeHydroClusterHeuristic(Antares::Data::SimplexOptimization optRange,
+                                            const Antares::Data::AreaList& areas)
+{
+    if (optRange == Antares::Data::SimplexOptimization::sorDay)
+    {
+        for (uint i = 0; i < areas.size(); ++i)
+        {
+            const auto& area = *(areas.byIndex[i]);
+            area.hydrocluster.list.each(
+              [&](const HydroclusterCluster& cluster)
+              {
+                  if (!cluster.useHeuristicTarget)
+                      throw Error::IncompatibleDailyOptHeuristicForCluster(area.name,
+                                                                           cluster.name());
+              });
+        }
+    }
+}
+
 // Adequacy Patch can only be used with Economy Study/Simulation Mode.
 void checkAdqPatchStudyModeEconomyOnly(const bool adqPatchOn,
                                        const Antares::Data::StudyMode studyMode)
@@ -285,6 +306,7 @@ void Application::prepare(int argc, char* argv[])
                                         pParameters->unitCommitment.ucMode);
 
     checkSimplexRangeHydroHeuristic(pParameters->simplexOptimizationRange, pStudy->areas);
+    checkSimplexRangeHydroClusterHeuristic(pParameters->simplexOptimizationRange, pStudy->areas);
 
     checkAdqPatchStudyModeEconomyOnly(pParameters->adqPatch.enabled, pParameters->mode);
     checkAdqPatchContainsAdqPatchArea(pParameters->adqPatch.enabled, pStudy->areas);

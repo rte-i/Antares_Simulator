@@ -90,6 +90,15 @@ IncompatibleDailyOptHeuristicForArea::IncompatibleDailyOptHeuristicForArea(
 {
 }
 
+IncompatibleDailyOptHeuristicForCluster::IncompatibleDailyOptHeuristicForCluster(
+  const Antares::Data::AreaName& name,
+  const Antares::Data::AreaName& clusterName) :
+ LoadingError(std::string("Area: ") + name.c_str() + std::string(" .Cluster: ")
+              + clusterName.c_str()
+              + " : simplex daily optimization and use heuristic target == no are not compatible")
+{
+}
+
 WritingProgressFile::WritingProgressFile(const Yuni::String& file) :
  LoadingError(std::string("I/O error: impossible to write ") + file.c_str())
 {

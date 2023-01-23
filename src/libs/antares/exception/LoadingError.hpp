@@ -146,6 +146,13 @@ public:
     explicit IncompatibleDailyOptHeuristicForArea(const Antares::Data::AreaName& name);
 };
 
+class IncompatibleDailyOptHeuristicForCluster : public LoadingError
+{
+public:
+    explicit IncompatibleDailyOptHeuristicForCluster(const Antares::Data::AreaName& name,
+                                                     const Antares::Data::AreaName& clusterName);
+};
+
 class WritingProgressFile : public LoadingError
 {
 public:
