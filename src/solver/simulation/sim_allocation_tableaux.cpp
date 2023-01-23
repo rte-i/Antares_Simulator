@@ -143,6 +143,8 @@ void SIM_AllocationTableaux()
               = (int*)MemAlloc(area.thermal.clusterCount() * sizeof(int));
             NumeroChroniquesTireesParPays[numSpace][i]->RenouvelableParPalier
               = (int*)MemAlloc(area.renewable.clusterCount() * sizeof(int));
+            NumeroChroniquesTireesParPays[numSpace][i]->HydroclusterParPalier
+              = (int*)MemAlloc(area.hydrocluster.clusterCount() * sizeof(int));
             ValeursGenereesParPays[numSpace][i]->HydrauliqueModulableQuotidien
               = (double*)MemAlloc(study.runtime->nbDaysPerYear * sizeof(double));
             ValeursGenereesParPays[numSpace][i]->AleaCoutDeProductionParPalier
@@ -190,6 +192,7 @@ void SIM_DesallocationTableaux()
 
                 MemFree(NumeroChroniquesTireesParPays[numSpace][i]->ThermiqueParPalier);
                 MemFree(NumeroChroniquesTireesParPays[numSpace][i]->RenouvelableParPalier);
+                MemFree(NumeroChroniquesTireesParPays[numSpace][i]->HydroclusterParPalier);
                 MemFree(NumeroChroniquesTireesParPays[numSpace][i]);
                 MemFree(ValeursGenereesParPays[numSpace][i]->HydrauliqueModulableQuotidien);
 

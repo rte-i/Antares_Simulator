@@ -79,14 +79,35 @@ static void InitializeTimeSeriesNumbers_And_ThermalClusterProductionCost(
         }
         // Hydro
         {
-            const Data::DataSeriesHydro& data = *area.hydro.series; //### todo for hydrocluster
+            const Data::DataSeriesHydro& data = *area.hydro.series;
             assert(year < data.timeseriesNumbers.height);
             ptchro.Hydraulique
               = (data.count != 1) ? (long)data.timeseriesNumbers[0][year] : 0; // zero-based
             // Hydro - mod
             memset(ptvalgen.HydrauliqueModulableQuotidien, 0, nbDaysPerYearDouble);
         }
-        //### todo for hydrocluster as in Renewable, avec ptchro.HydroclusterParPalier
+
+        // Hydro Cluster
+        {
+            auto end = area.hydrocluster.list.cluster.end();
+            for (auto it = area.hydrocluster.list.cluster.begin(); it != end; ++it)
+            {
+                HydroclusterClusterList::SharedPtr cluster = it->second;
+                if (!cluster->enabled)
+                {
+                    continue;
+                }
+
+                const auto& data = *cluster->series;
+                assert(year < data.timeseriesNumbers.height);
+                unsigned int index = cluster->areaWideIndex;
+
+                ptchro.HydroclusterParPalier[index] = (data.series.width != 1)
+                                                        ? (long)data.timeseriesNumbers[0][year]
+                                                        : 0; // zero-based
+            }
+        }
+
         // Wind
         {
             const Data::DataSeriesWind& data = *area.wind.series;
