@@ -315,6 +315,11 @@ typedef struct
                                       constraint on final level*/
 } ENERGIES_ET_PUISSANCES_HYDRAULIQUES;
 
+typedef struct
+{
+    std::map<int, ENERGIES_ET_PUISSANCES_HYDRAULIQUES> hydroClusterMap;
+} PALIERS_HYDROCLUSTERS;
+
 class AdequacyPatchRuntimeData
 {
 private:
@@ -545,6 +550,7 @@ struct PROBLEME_HEBDO
 
     PALIERS_THERMIQUES** PaliersThermiquesDuPays;
     ENERGIES_ET_PUISSANCES_HYDRAULIQUES** CaracteristiquesHydrauliques;
+    PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays;
     /* Optimization problem */
     int NbTermesContraintesPourLesCoutsDeDemarrage;
     char* DefaillanceNegativeUtiliserPMinThermique;

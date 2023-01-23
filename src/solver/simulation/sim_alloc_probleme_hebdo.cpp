@@ -112,6 +112,8 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
     problem.PaliersThermiquesDuPays = (PALIERS_THERMIQUES**)MemAlloc(nbPays * sizeof(void*));
     problem.CaracteristiquesHydrauliques
       = (ENERGIES_ET_PUISSANCES_HYDRAULIQUES**)MemAlloc(nbPays * sizeof(void*));
+    problem.PaliersHydroclusterDuPays
+      = (PALIERS_HYDROCLUSTERS*)MemAlloc(nbPays * sizeof(PALIERS_HYDROCLUSTERS));
     problem.previousSimulationFinalLevel = (double*)MemAlloc(nbPays * sizeof(double));
 
     problem.previousYearFinalLevels = nullptr;
