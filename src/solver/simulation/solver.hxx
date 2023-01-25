@@ -479,6 +479,7 @@ void ISimulation<Impl>::estimateMemoryUsage(Antares::Data::StudyMemoryUsage& u)
         auto& area = *areas.byIndex[i];
         tmpAmountMemory += sizeof(NUMERO_CHRONIQUES_TIREES_PAR_PAYS);
         tmpAmountMemory += sizeof(VALEURS_GENEREES_PAR_PAYS);
+        tmpAmountMemory += sizeof(VALEURS_GENEREES_PAR_PAYS_PER_CLUSTER);
         tmpAmountMemory += area.thermal.clusterCount() * sizeof(int);
         tmpAmountMemory += 366 * sizeof(double);
         tmpAmountMemory += area.thermal.clusterCount() * sizeof(double);

@@ -120,6 +120,8 @@ void SIM_AllocationTableaux()
 
     ValeursGenereesParPays
       = (VALEURS_GENEREES_PAR_PAYS***)MemAlloc(study.maxNbYearsInParallel * sizeof(void*));
+    ValeursGenereesParPaysPerCluster
+      = (VALEURS_GENEREES_PAR_PAYS_PER_CLUSTER***)MemAlloc(study.maxNbYearsInParallel * sizeof(void*));
     NumeroChroniquesTireesParPays
       = (NUMERO_CHRONIQUES_TIREES_PAR_PAYS***)MemAlloc(study.maxNbYearsInParallel * sizeof(void*));
 
@@ -127,6 +129,8 @@ void SIM_AllocationTableaux()
     {
         ValeursGenereesParPays[numSpace]
           = (VALEURS_GENEREES_PAR_PAYS**)MemAlloc(study.areas.size() * sizeof(void*));
+        ValeursGenereesParPaysPerCluster[numSpace]
+          = (VALEURS_GENEREES_PAR_PAYS_PER_CLUSTER**)MemAlloc(study.areas.size() * sizeof(void*));
         NumeroChroniquesTireesParPays[numSpace]
           = (NUMERO_CHRONIQUES_TIREES_PAR_PAYS**)MemAlloc(study.areas.size() * sizeof(void*));
         for (i = 0; i < study.areas.size(); ++i)
@@ -138,6 +142,8 @@ void SIM_AllocationTableaux()
                 sizeof(NUMERO_CHRONIQUES_TIREES_PAR_PAYS));
             ValeursGenereesParPays[numSpace][i]
               = (VALEURS_GENEREES_PAR_PAYS*)MemAlloc(sizeof(VALEURS_GENEREES_PAR_PAYS));
+            ValeursGenereesParPaysPerCluster[numSpace][i]
+              = (VALEURS_GENEREES_PAR_PAYS_PER_CLUSTER*)MemAlloc(sizeof(VALEURS_GENEREES_PAR_PAYS_PER_CLUSTER));
 
             NumeroChroniquesTireesParPays[numSpace][i]->ThermiqueParPalier
               = (int*)MemAlloc(area.thermal.clusterCount() * sizeof(int));
@@ -203,8 +209,10 @@ void SIM_DesallocationTableaux()
                 }
 
                 MemFree(ValeursGenereesParPays[numSpace][i]);
+                MemFree(ValeursGenereesParPaysPerCluster[numSpace][i]);
             }
             MemFree(ValeursGenereesParPays[numSpace]);
+            MemFree(ValeursGenereesParPaysPerCluster[numSpace]);
             MemFree(NumeroChroniquesTireesParPays[numSpace]);
         }
         for (uint numSpace = 0; numSpace < study.maxNbYearsInParallel; numSpace++)
@@ -214,9 +222,11 @@ void SIM_DesallocationTableaux()
     }
     MemFree(NumeroChroniquesTireesParPays);
     MemFree(ValeursGenereesParPays);
+    MemFree(ValeursGenereesParPaysPerCluster);
     MemFree(NumeroChroniquesTireesParInterconnexion);
     NumeroChroniquesTireesParPays = NULL;
     ValeursGenereesParPays = NULL;
+    ValeursGenereesParPaysPerCluster = NULL;
     NumeroChroniquesTireesParInterconnexion = nullptr;
 
     MemFree(DonneesParPays);

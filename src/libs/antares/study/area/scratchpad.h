@@ -100,6 +100,8 @@ public:
 
     //! Optimal max power (OPP) - Hydro management
     double optimalMaxPower[DAYS_PER_YEAR];
+    //! Optimal max power (OPP) - Hydro management for Clusters
+    std::vector<std::array<double, DAYS_PER_YEAR>> optimalMaxPowerPerCluster;
 
     //!
     double pumpingMaxPower[DAYS_PER_YEAR];

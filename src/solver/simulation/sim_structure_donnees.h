@@ -27,6 +27,8 @@
 #ifndef __SOLVER_SIMULATION_DATA_STRUCTS_H__
 #define __SOLVER_SIMULATION_DATA_STRUCTS_H__
 
+#include <map>
+
 typedef struct
 {
     /* donnees communes adequation et economie */
@@ -63,6 +65,11 @@ typedef struct
     double* NiveauxReservoirsFinJours; // Niveaux (quotidiens) du reservoir de fin de jour (en cas
                                        // de gestion des reservoirs).
 } VALEURS_GENEREES_PAR_PAYS;
+
+typedef struct
+{
+    std::map<int, VALEURS_GENEREES_PAR_PAYS> GenValuesPerAreaPerCluster; 
+} VALEURS_GENEREES_PAR_PAYS_PER_CLUSTER;
 
 typedef struct
 {

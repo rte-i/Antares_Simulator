@@ -60,6 +60,7 @@ static void InitializeTimeSeriesNumbers_And_ThermalClusterProductionCost(
     {
         // Variables - the current area
         NUMERO_CHRONIQUES_TIREES_PAR_PAYS& ptchro = *NumeroChroniquesTireesParPays[numSpace][i];
+        VALEURS_GENEREES_PAR_PAYS_PER_CLUSTER& ptvalgenTmp = *(ValeursGenereesParPaysPerCluster[numSpace][i]);
         auto& area = *(study.areas.byIndex[i]);
         VALEURS_GENEREES_PAR_PAYS& ptvalgen = *(ValeursGenereesParPays[numSpace][i]);
 
@@ -105,6 +106,12 @@ static void InitializeTimeSeriesNumbers_And_ThermalClusterProductionCost(
                 ptchro.HydroclusterParPalier[index] = (data.series.width != 1)
                                                         ? (long)data.timeseriesNumbers[0][year]
                                                         : 0; // zero-based
+            }
+            for (uint j = 0; j != area.hydrocluster.clusterCount(); ++j)
+            {
+                // set values to zero
+                VALEURS_GENEREES_PAR_PAYS ptvalgen = ptvalgenTmp.GenValuesPerAreaPerCluster.at(j);
+                memset(ptvalgen.HydrauliqueModulableQuotidien, 0, nbDaysPerYearDouble);
             }
         }
 

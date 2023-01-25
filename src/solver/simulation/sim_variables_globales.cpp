@@ -38,6 +38,7 @@ char* LigneLue;
 char AppelEnModeSimulateur;
 
 VALEURS_GENEREES_PAR_PAYS*** ValeursGenereesParPays;
+VALEURS_GENEREES_PAR_PAYS_PER_CLUSTER*** ValeursGenereesParPaysPerCluster;
 NUMERO_CHRONIQUES_TIREES_PAR_PAYS*** NumeroChroniquesTireesParPays;
 NUMERO_CHRONIQUES_TIREES_PAR_INTERCONNEXION** NumeroChroniquesTireesParInterconnexion;
 

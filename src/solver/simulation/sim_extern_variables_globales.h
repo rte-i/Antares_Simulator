@@ -37,8 +37,9 @@ extern DONNEES_PAR_PAYS** DonneesParPays;
 /* Donnees simples lues a partir du fichier donnees_generales.txt */
 extern char AppelEnModeSimulateur;
 
-/* Valeurs generees de maniere aleatoire */
+/* Valeurs generees de maniere aleatoire */ // Randomly generated values
 extern VALEURS_GENEREES_PAR_PAYS*** ValeursGenereesParPays;
+extern VALEURS_GENEREES_PAR_PAYS_PER_CLUSTER*** ValeursGenereesParPaysPerCluster;
 extern NUMERO_CHRONIQUES_TIREES_PAR_PAYS*** NumeroChroniquesTireesParPays;
 extern NUMERO_CHRONIQUES_TIREES_PAR_INTERCONNEXION** NumeroChroniquesTireesParInterconnexion;
 
