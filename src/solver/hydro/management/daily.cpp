@@ -560,12 +560,378 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
     }
 }
 
+inline void HydroManagement::prepareDailyOptimalGenerationsCluster(Solver::Variable::State& state,
+                                                                   Data::Area& area,
+                                                                   uint y,
+                                                                   uint numSpace,
+                                                                   uint clusterIndex)
+{
+    uint z = area.index;
+    assert(z < study.areas.size());
+
+    auto& ptchro = *NumeroChroniquesTireesParPays[numSpace][z]; // dodato unutar same strukture NumeroChroniquesTireesParPays za clustere!! 
+
+    auto& inflowsmatrix = area.hydrocluster.clusters.at(clusterIndex)->series->storage; // TODO Milos: make a loop!!!+++!!???
+    auto& mingenmatrix = area.hydrocluster.clusters.at(clusterIndex)->series->mingen; //CR22
+
+    auto tsIndex = (uint)ptchro.HydroclusterParPalier[clusterIndex]; // loop here also!!
+    auto const& srcinflows = inflowsmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
+    auto const& srcmingen = mingenmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
+
+    auto& data = pAreasCluster[numSpace][z][clusterIndex]; // TODO: loop!! // samo se koristi - treba naci gde se unose podaci u pAreas/+Cluster 
+    auto& scratchpad = *(area.scratchpad[numSpace]); // da li treba po clusteru ceo scratchpad ili samo optimalMaxPower!!
+
+    int initReservoirLvlMonth = area.hydrocluster.clusters.at(clusterIndex)->initializeReservoirLevelDate;
+
+    double reservoirCapacity = area.hydrocluster.clusters.at(clusterIndex)->reservoirCapacity;
+
+    auto& lowLevel = area.hydrocluster.clusters.at(clusterIndex)->reservoirLevel[Data::PartHydro::minimum];
+
+    double dtg[12 * maxDTG];
+
+    uint dayYear = 0;
+
+    auto const& maxPower = area.hydrocluster.clusters.at(clusterIndex)->maxPower;
+
+    auto const& maxP = maxPower[Data::PartHydro::genMaxP];
+    auto const& maxE = maxPower[Data::PartHydro::genMaxE];
+
+    auto const& valgenTmp = *ValeursGenereesParPaysPerCluster[numSpace][z]; // TODO Milos: see if this is unique per area or needs to be per cluster //Most probably neds to be PER CLUSTER!!
+    auto const& valgen = valgenTmp.GenValuesPerAreaPerCluster.at(clusterIndex);
+    // unutar valgen structure se nalazi HydrauliqueModulableQuotidien gde se stavljaju rezultati --> problem.Turbine[dayMonth];
+
+    std::shared_ptr<DebugData> debugData(nullptr);
+
+    if (study.parameters.hydroDebug)
+        debugData = std::make_shared<DebugData>(
+          data, valgen, srcinflows, maxP, maxE, dtg, lowLevel, reservoirCapacity);
+    for (uint month = 0; month != 12; ++month)
+    {
+        auto daysPerMonth = study.calendar.months[month].days;
+        assert(daysPerMonth <= maxOPP);
+        assert(daysPerMonth <= maxDTG);
+        assert(daysPerMonth + dayYear - 1 < maxPower.height);
+
+        for (uint day = 0; day != daysPerMonth; ++day)
+        {
+            auto dYear = day + dayYear;
+            assert(day < 32);
+            assert(dYear < 366);
+            scratchpad.optimalMaxPowerPerCluster[clusterIndex][dYear] = maxP[dYear]; // mozda se ovde upisuje podaci po area koji se kasnije koriste!!
+            // a ja cu pregaziti sa podacima clustera - sve do poslednjeg clustera
+            // tako da proveriti posle da li je potrebno praviti novu strukturu da imas scratchpad po clusteru ili mozda samo
+            // optimalMaxPower po clusteru  
+            // koristi se u src/solver/simulation/sim_calcul_economique.cpp u redu 688 !!!
+
+            if (debugData)
+                debugData->OPP[dYear] = maxP[dYear] * maxE[dYear];
+        }
+
+        dayYear += daysPerMonth;
+    }
+
+    if (not area.hydrocluster.clusters.at(clusterIndex)->useHeuristicTarget)
+    {
+        dayYear = 0;
+        for (uint month = 0; month != 12; ++month)
+        {
+            auto daysPerMonth = study.calendar.months[month].days;
+            for (uint day = 0; day != daysPerMonth; ++day)
+            {
+                dtg[dayYear + day] = srcinflows[dayYear + day];
+            }
+
+            dayYear += daysPerMonth;
+        }
+    }
+
+    else
+    {
+        dayYear = 0;
+        for (uint month = 0; month != 12; ++month)
+        {
+            uint realmonth = study.calendar.months[month].realmonth;
+            auto daysPerMonth = study.calendar.months[month].days;
+
+            if (area.hydrocluster.clusters.at(clusterIndex)->followLoadModulations)
+            {
+                auto demandMax = -std::numeric_limits<double>::infinity();
+                for (uint day = 0; day != daysPerMonth; ++day)
+                {
+                    auto dYear = day + dayYear;
+                    if (data.DLE[dYear] > demandMax)
+                        demandMax = data.DLE[dYear];
+                }
+
+                if (not Math::Zero(demandMax))
+                {
+                    assert(Math::Abs(demandMax) > 1e-12);
+                    double coeff = 0.;
+
+                    for (uint day = 0; day != daysPerMonth; ++day)
+                    {
+                        auto dYear = day + dayYear;
+                        coeff += Math::Power(data.DLE[dYear] / demandMax,
+                                             area.hydrocluster.clusters.at(clusterIndex)->interDailyBreakdown);
+                    }
+                    coeff = data.MOG[realmonth] / coeff;
+
+                    for (uint day = 0; day != daysPerMonth; ++day)
+                    {
+                        auto dYear = day + dayYear;
+                        dtg[dYear] = coeff
+                                     * Math::Power(data.DLE[dYear] / demandMax,
+                                                   area.hydrocluster.clusters.at(clusterIndex)->interDailyBreakdown);
+                    }
+                }
+                else
+                {
+                    assert(daysPerMonth > 0);
+                    double coeff = data.MOG[realmonth] / daysPerMonth;
+
+                    for (uint day = 0; day != daysPerMonth; ++day)
+                        dtg[day + dayYear] = coeff;
+                }
+            }
+            else
+            {
+                for (uint day = 0; day != daysPerMonth; ++day)
+                    dtg[day + dayYear] = srcinflows[dayYear + day]; 
+            }
+
+            if (debugData)
+            {
+                for (uint day = 0; day != daysPerMonth; ++day)
+                {
+                    auto dYear = day + dayYear;
+                    debugData->DTG[dYear] = dtg[dYear];
+                }
+            }
+
+            dayYear += daysPerMonth;
+        }
+    }
+
+    if (not area.hydrocluster.clusters.at(clusterIndex)->reservoirManagement)
+    {
+        for (uint month = 0; month != 12; ++month)
+        {
+            uint realmonth = (initReservoirLvlMonth + month) % 12;
+            uint simulationMonth = study.calendar.mapping.months[realmonth];
+
+            auto daysPerMonth = study.calendar.months[simulationMonth].days;
+
+            uint firstDay = study.calendar.months[simulationMonth].daysYear.first;
+            uint endDay = firstDay + daysPerMonth;
+
+            DONNEES_MENSUELLES& problem = *H2O_J_Instanciation();
+            H2O_J_AjouterBruitAuCout(&problem);
+            problem.NombreDeJoursDuMois = (int)daysPerMonth;
+            problem.TurbineDuMois = data.MOG[realmonth];
+
+            uint dayMonth = 0;
+            for (uint day = firstDay; day != endDay; ++day)
+            {
+                problem.TurbineMax[dayMonth] = maxP[day] * maxE[day];
+                double dailyMingen = 0.0;
+                for (uint h = 0; h < 24; ++h)
+                {
+                    dailyMingen += srcmingen[day*24 + h];
+                }          
+                problem.TurbineMin[dayMonth] = dailyMingen;
+
+                if(problem.TurbineMin[dayMonth] > problem.TurbineMax[dayMonth])
+                {
+                    logs.error() << "Year : " << y + 1 << " - hydro: " << area.name
+                             << " [daily] minimum generation of " 
+                             << problem.TurbineMin[dayMonth] << " MW in month " << month + 1 
+                             << " day " << dayMonth + 1
+                             << " is incompatible with the maximum generation of "
+                             << problem.TurbineMax[dayMonth]
+                             << " MW.";
+                }
+
+                problem.TurbineCible[dayMonth] = dtg[day];
+                dayMonth++;
+            }
+
+            H2O_J_OptimiserUnMois(&problem);
+            switch (problem.ResultatsValides)
+            {
+            case OUI:
+                dayMonth = 0;
+                for (uint day = firstDay; day != endDay; ++day)
+                {
+                    // double* Turbine;    /* Resultat a recuperer par l'appelant */ - Result to be retrieved by the caller */!!!
+                    valgen.HydrauliqueModulableQuotidien[day] = problem.Turbine[dayMonth]; // this is now filling the results 
+                    dayMonth++;
+                }
+                break;
+            case NON:
+                logs.fatal() << "Year : " << y + 1 << " - hydro: " << area.name
+                             << " [daily] no solution found";
+                AntaresSolverEmergencyShutdown();
+                break;
+            case EMERGENCY_SHUT_DOWN:
+                AntaresSolverEmergencyShutdown();
+                break;
+            }
+
+            H2O_J_Free(&problem);
+
+#ifndef NDEBUG
+            for (uint day = firstDay; day != endDay; ++day)
+            {
+                assert(!Math::NaN(valgen.HydrauliqueModulableQuotidien[day])); // this is now filling the results
+                assert(!Math::Infinite(valgen.HydrauliqueModulableQuotidien[day])); // this is now filling the results
+            }
+#endif
+        }
+
+        if (debugData)
+        {
+            String filename;
+            filename << "daily." << area.name << ".txt";
+            debugData->writeTurb(study.folderOutput, filename, y);
+        }
+    }
+
+    else
+    {
+        double monthInitialLevel = data.MOL[initReservoirLvlMonth];
+        double wasteFromPreviousMonth = 0.;
+
+        Hydro_problem_costs h2o2_optim_costs(study);
+
+        for (uint month = 0; month != 12; ++month)
+        {
+            uint realmonth = (initReservoirLvlMonth + month) % 12;
+            uint simulationMonth = study.calendar.mapping.months[realmonth];
+
+            auto daysPerMonth = study.calendar.months[simulationMonth].days;
+
+            uint firstDay = study.calendar.months[simulationMonth].daysYear.first;
+            uint endDay = firstDay + daysPerMonth;
+
+            DONNEES_MENSUELLES_ETENDUES& problem = *H2O2_J_Instanciation();
+            H2O2_J_apply_costs(h2o2_optim_costs, problem);
+
+            if (debugData)
+                debugData->previousMonthWaste[realmonth]
+                  = wasteFromPreviousMonth / reservoirCapacity;
+
+            problem.NombreDeJoursDuMois = (int)daysPerMonth;
+
+            problem.TurbineDuMois
+              = (data.MOG[realmonth] + wasteFromPreviousMonth) / reservoirCapacity;
+            problem.NiveauInitialDuMois = monthInitialLevel;
+            problem.reservoirCapacity = reservoirCapacity;
+
+            uint dayMonth = 0;
+            for (uint day = firstDay; day != endDay; ++day)
+            {
+                problem.TurbineMax[dayMonth] = maxP[day] * maxE[day] / reservoirCapacity;
+                double dailyMingen = 0.0;
+                for (uint h = 0; h < 24; ++h)
+                {
+                    dailyMingen += srcmingen[day*24 + h];
+                }          
+                problem.TurbineMin[dayMonth] = dailyMingen / reservoirCapacity; //C22
+
+                problem.TurbineCible[dayMonth]
+                  = (dtg[day] + wasteFromPreviousMonth / daysPerMonth) / reservoirCapacity;
+
+                problem.niveauBas[dayMonth] = lowLevel[(day + 1) % 365];
+                problem.apports[dayMonth] = srcinflows[day] / reservoirCapacity;
+
+                dayMonth++;
+            }
+
+            H2O2_J_OptimiserUnMois(&problem);
+
+            switch (problem.ResultatsValides)
+            {
+            case OUI:
+
+                if (debugData) // rezultati za debug data!!
+                {
+                    debugData->deviationMax[realmonth] = problem.deviationMax;
+                    debugData->violationMax[realmonth] = problem.violationMax;
+                    debugData->WASTE[realmonth] = problem.waste;
+                    debugData->CoutTotal[realmonth] = problem.CoutSolution;
+                }
+
+                dayMonth = 0;
+                for (uint day = firstDay; day != endDay; ++day)
+                {
+                    valgen.HydrauliqueModulableQuotidien[day]
+                      = problem.Turbine[dayMonth] * reservoirCapacity; // this is now filling the results 
+
+                    valgen.NiveauxReservoirsFinJours[day] = problem.niveauxFinJours[dayMonth]; // this is now filling the results 
+
+                    if (debugData) // rezultati za debug data
+                    {
+                        debugData->OVF[day] = problem.overflows[dayMonth];
+                        debugData->DEV[day] = problem.deviations[dayMonth];
+                        debugData->VIO[day] = problem.violations[dayMonth];
+                    }
+
+                    dayMonth++;
+                }
+
+                valgen.NiveauxReservoirsDebutJours[firstDay] = monthInitialLevel; // this is now filling the results
+                for (uint day = firstDay + 1; day != endDay; ++day)
+                    valgen.NiveauxReservoirsDebutJours[day]
+                      = valgen.NiveauxReservoirsFinJours[day - 1]; // this is now filling the results
+
+                monthInitialLevel = problem.niveauxFinJours[dayMonth - 1];
+
+                wasteFromPreviousMonth = problem.waste * reservoirCapacity;
+
+                break;
+            case NON:
+                logs.fatal() << "Year : " << y + 1 << " - hydro: " << area.name
+                             << " [daily] no solution found";
+                AntaresSolverEmergencyShutdown();
+                break;
+            case EMERGENCY_SHUT_DOWN:
+                AntaresSolverEmergencyShutdown();
+                break;
+            }
+
+            H2O2_J_Free(&problem);
+        }
+
+        uint firstDaySimu = study.parameters.simulationDays.first;
+        state.problemeHebdo->previousSimulationFinalLevel[z]
+          = valgen.NiveauxReservoirsDebutJours[firstDaySimu] * reservoirCapacity; // this is now filling the results
+
+        if (debugData)
+        {
+            debugData->writeDailyDebugData(
+              study.folderOutput, study.calendar, initReservoirLvlMonth, y, area.name);
+        }
+    }
+}
+
 void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::State& state,
                                                      uint y,
                                                      uint numSpace)
 {
     study.areas.each(
       [&](Data::Area& area) { prepareDailyOptimalGenerations(state, area, y, numSpace); });
+}
+
+void HydroManagement::prepareDailyOptimalGenerationsCluster(Solver::Variable::State& state,
+                                                            uint y,
+                                                            uint numSpace)
+{
+    study.areas.each(
+      [&](Data::Area& area)
+      {
+          for (uint cls = 0; cls != area.hydrocluster.clusterCount(); ++cls)
+              prepareDailyOptimalGenerationsCluster(state, area, y, numSpace, cls);
+      });
 }
 
 } // namespace Antares
