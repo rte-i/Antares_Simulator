@@ -83,6 +83,17 @@ HydroManagement::HydroManagement(Data::Study& study) : study(study), parameters(
     for (uint numSpace = 0; numSpace < study.maxNbYearsInParallel; numSpace++)
         pAreas[numSpace] = new PerArea[study.areas.size()];
 
+    pAreasCluster = new PerArea**[study.maxNbYearsInParallel];
+    for (uint numSpace = 0; numSpace < study.maxNbYearsInParallel; numSpace++)
+    {
+        pAreasCluster[numSpace] = new PerArea*[study.areas.size()];
+        for (uint areaIndex = 0; areaIndex < study.areas.size(); areaIndex++)
+        {
+            const auto& area = *(study.areas.byIndex[areaIndex]);
+            pAreasCluster[numSpace][areaIndex] = new PerArea[area.hydrocluster.clusterCount()];
+        }
+    }
+
     random.reset(study.parameters.seed[Data::seedHydroManagement]);
 }
 
@@ -91,6 +102,16 @@ HydroManagement::~HydroManagement()
     for (uint numSpace = 0; numSpace < study.maxNbYearsInParallel; numSpace++)
         delete[] pAreas[numSpace];
     delete[] pAreas;
+
+    for (uint numSpace = 0; numSpace < study.maxNbYearsInParallel; numSpace++)
+    {
+        for (uint areaIndex = 0; areaIndex < study.areas.size(); areaIndex++)
+        {
+            delete[] pAreasCluster[numSpace][areaIndex];
+        }
+        delete[] pAreasCluster[numSpace];
+    }
+    delete[] pAreasCluster;
 }
 
 void HydroManagement::prepareInflowsScaling(uint numSpace)
