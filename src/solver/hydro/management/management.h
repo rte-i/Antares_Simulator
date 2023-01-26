@@ -83,6 +83,14 @@ private:
     //! Monthly Optimal generations
     void prepareMonthlyOptimalGenerations(double* random_reservoir_level, uint y, uint numSpace);
 
+    //! Prepare inflows scaling for each cluster
+    void prepareInflowsScalingForCluster(uint numSpace, uint clusterIndex);
+    //! Prepare the net demand for each cluster
+    template<enum Data::StudyMode ModeT>
+    void prepareNetDemandForCluster(uint numSpace, uint clusterIndex);
+    //! Prepare the effective demand for each cluster
+    void prepareEffectiveDemandForCluster(uint numSpace, uint clusterIndex);
+
     //! Monthly target generations
     // note: inflows may have two different types, if in swap mode or not
     // \return The total inflow for the whole year
