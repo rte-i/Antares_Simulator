@@ -924,8 +924,9 @@ void HydroManagement::prepareDailyOptimalGenerationsForCluster(Solver::Variable:
     study.areas.each(
       [&](Data::Area& area)
       {
-          for (uint cls = 0; cls != area.hydrocluster.clusterCount(); ++cls)
-              prepareDailyOptimalGenerationsForCluster(state, area, y, numSpace, cls);
+          area.hydrocluster.list.each(
+            [&](const Data::HydroclusterCluster& cluster)
+            { prepareDailyOptimalGenerationsForCluster(state, area, y, numSpace, cluster.index); });
       });
 }
 
