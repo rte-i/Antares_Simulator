@@ -84,12 +84,12 @@ private:
     void prepareMonthlyOptimalGenerations(double* random_reservoir_level, uint y, uint numSpace);
 
     //! Prepare inflows scaling for each cluster
-    void prepareInflowsScalingForCluster(uint numSpace, uint clusterIndex);
+    void prepareInflowsScalingForCluster(uint numSpace);
     //! Prepare the net demand for each cluster
     template<enum Data::StudyMode ModeT>
-    void prepareNetDemandForCluster(uint numSpace, uint clusterIndex);
+    void prepareNetDemandForCluster(uint numSpace);
     //! Prepare the effective demand for each cluster
-    void prepareEffectiveDemandForCluster(uint numSpace, uint clusterIndex);
+    void prepareEffectiveDemandForCluster(uint numSpace);
     //! Monthly Optimal generations for Clusters
     void prepareMonthlyOptimalGenerationsForCluster(double* random_reservoir_level,
                                                     uint y,
