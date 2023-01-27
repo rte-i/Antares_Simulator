@@ -560,7 +560,15 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
     }
 }
 
-inline void HydroManagement::prepareDailyOptimalGenerationsCluster(Solver::Variable::State& state,
+void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::State& state,
+                                                     uint y,
+                                                     uint numSpace)
+{
+    study.areas.each(
+      [&](Data::Area& area) { prepareDailyOptimalGenerations(state, area, y, numSpace); });
+}
+
+inline void HydroManagement::prepareDailyOptimalGenerationsForCluster(Solver::Variable::State& state,
                                                                    Data::Area& area,
                                                                    uint y,
                                                                    uint numSpace,
@@ -569,17 +577,17 @@ inline void HydroManagement::prepareDailyOptimalGenerationsCluster(Solver::Varia
     uint z = area.index;
     assert(z < study.areas.size());
 
-    auto& ptchro = *NumeroChroniquesTireesParPays[numSpace][z]; // dodato unutar same strukture NumeroChroniquesTireesParPays za clustere!! 
+    auto& ptchro = *NumeroChroniquesTireesParPays[numSpace][z];
 
-    auto& inflowsmatrix = area.hydrocluster.clusters.at(clusterIndex)->series->storage; // TODO Milos: make a loop!!!+++!!???
-    auto& mingenmatrix = area.hydrocluster.clusters.at(clusterIndex)->series->mingen; //CR22
+    auto& inflowsmatrix = area.hydrocluster.clusters.at(clusterIndex)->series->storage;
+    auto& mingenmatrix = area.hydrocluster.clusters.at(clusterIndex)->series->mingen;
 
-    auto tsIndex = (uint)ptchro.HydroclusterParPalier[clusterIndex]; // loop here also!!
+    auto tsIndex = (uint)ptchro.HydroclusterParPalier[clusterIndex];
     auto const& srcinflows = inflowsmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
     auto const& srcmingen = mingenmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
 
-    auto& data = pAreasCluster[numSpace][z][clusterIndex]; // TODO: loop!! // samo se koristi - treba naci gde se unose podaci u pAreas/+Cluster 
-    auto& scratchpad = *(area.scratchpad[numSpace]); // da li treba po clusteru ceo scratchpad ili samo optimalMaxPower!!
+    auto& data = pAreasCluster[numSpace][z][clusterIndex]; 
+    auto& scratchpad = *(area.scratchpad[numSpace]);
 
     int initReservoirLvlMonth = area.hydrocluster.clusters.at(clusterIndex)->initializeReservoirLevelDate;
 
@@ -596,9 +604,8 @@ inline void HydroManagement::prepareDailyOptimalGenerationsCluster(Solver::Varia
     auto const& maxP = maxPower[Data::PartHydro::genMaxP];
     auto const& maxE = maxPower[Data::PartHydro::genMaxE];
 
-    auto const& valgenTmp = *ValeursGenereesParPaysPerCluster[numSpace][z]; // TODO Milos: see if this is unique per area or needs to be per cluster //Most probably neds to be PER CLUSTER!!
+    auto const& valgenTmp = *ValeursGenereesParPaysPerCluster[numSpace][z];
     auto const& valgen = valgenTmp.GenValuesPerAreaPerCluster.at(clusterIndex);
-    // unutar valgen structure se nalazi HydrauliqueModulableQuotidien gde se stavljaju rezultati --> problem.Turbine[dayMonth];
 
     std::shared_ptr<DebugData> debugData(nullptr);
 
@@ -617,11 +624,7 @@ inline void HydroManagement::prepareDailyOptimalGenerationsCluster(Solver::Varia
             auto dYear = day + dayYear;
             assert(day < 32);
             assert(dYear < 366);
-            scratchpad.optimalMaxPowerPerCluster[clusterIndex][dYear] = maxP[dYear]; // mozda se ovde upisuje podaci po area koji se kasnije koriste!!
-            // a ja cu pregaziti sa podacima clustera - sve do poslednjeg clustera
-            // tako da proveriti posle da li je potrebno praviti novu strukturu da imas scratchpad po clusteru ili mozda samo
-            // optimalMaxPower po clusteru  
-            // koristi se u src/solver/simulation/sim_calcul_economique.cpp u redu 688 !!!
+            scratchpad.optimalMaxPowerPerCluster[clusterIndex][dYear] = maxP[dYear];
 
             if (debugData)
                 debugData->OPP[dYear] = maxP[dYear] * maxE[dYear];
@@ -853,7 +856,7 @@ inline void HydroManagement::prepareDailyOptimalGenerationsCluster(Solver::Varia
             {
             case OUI:
 
-                if (debugData) // rezultati za debug data!!
+                if (debugData)
                 {
                     debugData->deviationMax[realmonth] = problem.deviationMax;
                     debugData->violationMax[realmonth] = problem.violationMax;
@@ -869,7 +872,7 @@ inline void HydroManagement::prepareDailyOptimalGenerationsCluster(Solver::Varia
 
                     valgen.NiveauxReservoirsFinJours[day] = problem.niveauxFinJours[dayMonth]; // this is now filling the results 
 
-                    if (debugData) // rezultati za debug data
+                    if (debugData)
                     {
                         debugData->OVF[day] = problem.overflows[dayMonth];
                         debugData->DEV[day] = problem.deviations[dayMonth];
@@ -914,15 +917,7 @@ inline void HydroManagement::prepareDailyOptimalGenerationsCluster(Solver::Varia
     }
 }
 
-void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::State& state,
-                                                     uint y,
-                                                     uint numSpace)
-{
-    study.areas.each(
-      [&](Data::Area& area) { prepareDailyOptimalGenerations(state, area, y, numSpace); });
-}
-
-void HydroManagement::prepareDailyOptimalGenerationsCluster(Solver::Variable::State& state,
+void HydroManagement::prepareDailyOptimalGenerationsForCluster(Solver::Variable::State& state,
                                                             uint y,
                                                             uint numSpace)
 {
@@ -930,7 +925,7 @@ void HydroManagement::prepareDailyOptimalGenerationsCluster(Solver::Variable::St
       [&](Data::Area& area)
       {
           for (uint cls = 0; cls != area.hydrocluster.clusterCount(); ++cls)
-              prepareDailyOptimalGenerationsCluster(state, area, y, numSpace, cls);
+              prepareDailyOptimalGenerationsForCluster(state, area, y, numSpace, cls);
       });
 }
 

@@ -97,16 +97,19 @@ private:
     double prepareMonthlyTargetGenerations(Data::Area& area, PerArea& data);
 
     void prepareDailyOptimalGenerations(Solver::Variable::State& state, uint y, uint numSpace);
-    void prepareDailyOptimalGenerationsCluster(Solver::Variable::State& state, uint y, uint numSpace);
-    void prepareDailyOptimalGenerationsCluster(Solver::Variable::State& state,
-                                               Data::Area& area,
-                                               uint y,
-                                               uint numSpace,
-                                               uint clusterIndex);
     void prepareDailyOptimalGenerations(Solver::Variable::State& state,
                                         Data::Area& area,
                                         uint y,
                                         uint numSpace);
+
+    void prepareDailyOptimalGenerationsForCluster(Solver::Variable::State& state,
+                                                  uint y,
+                                                  uint numSpace);
+    void prepareDailyOptimalGenerationsForCluster(Solver::Variable::State& state,
+                                                  Data::Area& area,
+                                                  uint y,
+                                                  uint numSpace,
+                                                  uint clusterIndex);
     //@}
 
     //! \name Utilities
