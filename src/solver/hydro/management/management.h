@@ -90,6 +90,16 @@ private:
     void prepareNetDemandForCluster(uint numSpace, uint clusterIndex);
     //! Prepare the effective demand for each cluster
     void prepareEffectiveDemandForCluster(uint numSpace, uint clusterIndex);
+    //! Monthly Optimal generations for Clusters
+    void prepareMonthlyOptimalGenerationsForCluster(double* random_reservoir_level,
+                                                    uint y,
+                                                    uint numSpace);
+    //! Monthly target generations for clusters
+    // note: inflows may have two different types, if in swap mode or not
+    // \return The total inflow for the whole year
+    double prepareMonthlyTargetGenerationsForCluster(Data::Area& area,
+                                                     PerArea& data,
+                                                     uint clusterIndex);
 
     //! Monthly target generations
     // note: inflows may have two different types, if in swap mode or not
