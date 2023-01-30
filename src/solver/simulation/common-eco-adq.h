@@ -177,6 +177,36 @@ int retrieveAverageNTC(const Data::Study& study,
                        const Matrix<Yuni::uint32>& tsNumbers,
                        std::vector<double>& avg);
 
+/*
+** \brief method "computingHydroLevel" upgraded to work with multiple hydro clusters per area 
+*/
+void computingHydroLevelsForCluster(const Data::Study& study,
+                                    PROBLEME_HEBDO& problem,
+                                    uint nbHoursInAWeek,
+                                    bool remixWasRun,
+                                    bool computeAnyway = false);
+
+/*
+** \brief method "interpolateWaterValue" upgraded to work with multiple hydro clusters per area
+*/
+void interpolateWaterValueForCluster(const Data::Study& study,
+                                     PROBLEME_HEBDO& problem,
+                                     Antares::Solver::Variable::State& state,
+                                     int hourInTheYear,
+                                     uint nbHoursInAWeek);
+
+/*
+** \brief method "updatingWeeklyFinalHydroLevel" upgraded to work with multiple hydro clusters per area
+*/
+void updatingWeeklyFinalHydroLevelForCluster(const Data::Study& study,
+                                             PROBLEME_HEBDO& problem,
+                                             uint nbHoursInAWeek);
+
+/*
+** \brief method "updatingAnnualFinalHydroLevel" upgraded to work with multiple hydro clusters per area
+*/
+void updatingAnnualFinalHydroLevelForCluster(const Data::Study& study, PROBLEME_HEBDO& problem);
+
 } // namespace Simulation
 } // namespace Solver
 } // namespace Antares

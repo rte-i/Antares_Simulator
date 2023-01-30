@@ -184,6 +184,185 @@ void updatingAnnualFinalHydroLevel(const Data::Study& study, PROBLEME_HEBDO& pro
     });
 }
 
+void computingHydroLevelsForCluster(const Data::Study& study,
+                                    PROBLEME_HEBDO& problem,
+                                    uint nbHoursInAWeek,
+                                    bool remixWasRun,
+                                    bool computeAnyway)
+{
+    assert(study.parameters.mode != Data::stdmAdequacyDraft);
+
+    study.areas.each(
+      [&](const Data::Area& area)
+      {
+          area.hydrocluster.list.each(
+            [&](const Data::HydroclusterCluster& cluster)
+            {
+                if (!cluster.reservoirManagement)
+                    return;
+
+                if (not computeAnyway)
+                {
+                    if (cluster.useHeuristicTarget != remixWasRun)
+                        return;
+                }
+
+                uint index = area.index;
+
+                double reservoirCapacity = cluster.reservoirCapacity;
+
+                double* inflows = problem.PaliersHydroclusterDuPays[index]
+                                    .hydroClusterMap.at(cluster.index)
+                                    .ApportNaturelHoraire;
+
+                // hourly results are per area and per hour - no need to make them per cluster !!
+                // just watch the implementation math!!
+                RESULTATS_HORAIRES* weeklyResults = problem.ResultatsHoraires[index];
+
+                double* turb = weeklyResults->TurbinageHoraire;
+
+                double* pump = weeklyResults->PompageHoraire;
+                double pumpingRatio = cluster.pumpingEfficiency;
+
+                double nivInit = problem.PaliersHydroclusterDuPays[index]
+                                   .hydroClusterMap.at(cluster.index)
+                                   .NiveauInitialReservoir;
+                double* niv = weeklyResults->niveauxHoraires;
+
+                double* ovf = weeklyResults->debordementsHoraires;
+
+                auto& computeLvlObj = problem.computeLvl_object;
+
+                computeLvlObj.setParameters(
+                  nivInit, inflows, ovf, turb, pumpingRatio, pump, reservoirCapacity);
+
+                for (uint h = 0; h < nbHoursInAWeek - 1; h++)
+                {
+                    computeLvlObj.run();
+                    niv[h] = computeLvlObj.getLevel() * 100 / reservoirCapacity;
+                    computeLvlObj.prepareNextStep();
+                }
+
+                computeLvlObj.run();
+                niv[nbHoursInAWeek - 1] = computeLvlObj.getLevel() * 100 / reservoirCapacity;
+            });
+      });
+}
+
+void interpolateWaterValueForCluster(const Data::Study& study,
+                                     PROBLEME_HEBDO& problem,
+                                     Antares::Solver::Variable::State& state,
+                                     int firstHourOfTheWeek,
+                                     uint nbHoursInAWeek)
+{
+    uint daysOfWeek[7] = {0, 0, 0, 0, 0, 0, 0};
+
+    const uint weekFirstDay = study.calendar.hours[firstHourOfTheWeek].dayYear;
+
+    daysOfWeek[0] = weekFirstDay;
+    for (int d = 1; d < 7; d++)
+        daysOfWeek[d] = weekFirstDay + d;
+
+    study.areas.each(
+      [&](const Data::Area& area)
+      {
+          area.hydrocluster.list.each(
+            [&](const Data::HydroclusterCluster& cluster)
+            {
+                uint index = area.index;
+                // hourly results are per area and per hour - no need to make them per cluster !!
+                // just watch the implementation math!!
+                RESULTATS_HORAIRES* weeklyResults = problem.ResultatsHoraires[index];
+
+                double* waterVal = weeklyResults->valeurH2oHoraire;
+
+                for (uint h = 0; h < nbHoursInAWeek; h++)
+                    waterVal[h] = 0.;
+
+                if (!cluster.reservoirManagement || !cluster.useWaterValue)
+                    return;
+
+                if (!cluster.useWaterValue)
+                    return;
+
+                double reservoirCapacity = cluster.reservoirCapacity;
+
+                double* niv = weeklyResults->niveauxHoraires;
+
+                Antares::Data::getWaterValue(
+                  problem.PaliersHydroclusterDuPays[index].previousSimulationFinalLevel.at(
+                    cluster.index)
+                    * 100 / reservoirCapacity,
+                  cluster.waterValues,
+                  weekFirstDay,
+                  state.h2oValueWorkVars,
+                  waterVal[0]);
+                for (uint h = 1; h < nbHoursInAWeek; h++)
+                    Antares::Data::getWaterValue(niv[h - 1],
+                                                 cluster.waterValues,
+                                                 daysOfWeek[h / 24],
+                                                 state.h2oValueWorkVars,
+                                                 waterVal[h]);
+            });
+      });
+}
+
+void updatingWeeklyFinalHydroLevelForCluster(const Data::Study& study,
+                                             PROBLEME_HEBDO& problem,
+                                             uint nbHoursInAWeek)
+{
+    study.areas.each(
+      [&](const Data::Area& area)
+      {
+          area.hydrocluster.list.each(
+            [&](const Data::HydroclusterCluster& cluster)
+            {
+                if (!cluster.reservoirManagement)
+                    return;
+
+                uint index = area.index;
+
+                double reservoirCapacity = cluster.reservoirCapacity;
+
+                // hourly results are per area and per hour - no need to make them per cluster !!
+                // just watch the implementation math!!
+                RESULTATS_HORAIRES* weeklyResults = problem.ResultatsHoraires[index];
+
+                double* niv = weeklyResults->niveauxHoraires;
+
+                problem.PaliersHydroclusterDuPays[index].previousSimulationFinalLevel.at(
+                  cluster.index)
+                  = niv[nbHoursInAWeek - 1] * reservoirCapacity / 100;
+            });
+      });
+}
+
+void updatingAnnualFinalHydroLevelForCluster(const Data::Study& study, PROBLEME_HEBDO& problem)
+{
+    if (!problem.hydroHotStart)
+        return;
+
+    study.areas.each(
+      [&](const Data::Area& area)
+      {
+          area.hydrocluster.list.each(
+            [&](const Data::HydroclusterCluster& cluster)
+            {
+                if (!cluster.reservoirManagement)
+                    return;
+
+                uint index = area.index;
+
+                double reservoirCapacity = cluster.reservoirCapacity;
+
+                problem.PaliersHydroclusterDuPays[index].previousYearFinalLevels.at(cluster.index)
+                  = problem.PaliersHydroclusterDuPays[index].previousSimulationFinalLevel.at(
+                      cluster.index)
+                    / reservoirCapacity;
+            });
+      });
+}
+
 } // namespace Simulation
 } // namespace Solver
 } // namespace Antares
