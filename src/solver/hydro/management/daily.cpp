@@ -228,7 +228,7 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
 
     auto tsIndex = (uint)ptchro.Hydraulique;
     auto const& srcinflows = inflowsmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
-    auto const& srcmingen = mingenmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
+    auto const& srcmingen = mingenmatrix[tsIndex < mingenmatrix.width ? tsIndex : 0];
 
     auto& data = pAreas[numSpace][z];
 
@@ -383,21 +383,19 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
                 double dailyMingen = 0.0;
                 for (uint h = 0; h < 24; ++h)
                 {
-                    dailyMingen += srcmingen[day*24 + h];
-                }          
-                problem.TurbineMin[dayMonth] = dailyMingen;
+                    dailyMingen += srcmingen[day * 24 + h];
 
-                if(problem.TurbineMin[dayMonth] > problem.TurbineMax[dayMonth])
-                {
-                    logs.error() << "Year : " << y + 1 << " - hydro: " << area.name
-                             << " [daily] minimum generation of " 
-                             << problem.TurbineMin[dayMonth] << " MW in month " << month + 1 
-                             << " day " << dayMonth + 1
-                             << " is incompatible with the maximum generation of "
-                             << problem.TurbineMax[dayMonth]
-                             << " MW.";
+                    if (srcmingen[day * 24 + h] > maxP[day])
+                    {
+                        logs.error()
+                          << "Year : " << y + 1 << " - hydro: " << area.name
+                          << " [hourly] minimum generation of " << srcmingen[day * 24 + h]
+                          << " MW in timestep " << day * 24 + h + 1 << " of TS-" << tsIndex + 1
+                          << " is incompatible with the maximum generation of " << maxP[day]
+                          << " MW.";
+                    }
                 }
-
+                problem.TurbineMin[dayMonth] = dailyMingen;
                 problem.TurbineCible[dayMonth] = dtg[day];
                 dayMonth++;
             }
