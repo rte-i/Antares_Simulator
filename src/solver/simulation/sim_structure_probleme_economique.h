@@ -318,6 +318,8 @@ typedef struct
 typedef struct
 {
     std::map<int, ENERGIES_ET_PUISSANCES_HYDRAULIQUES> hydroClusterMap;
+    std::map<int, double> previousSimulationFinalLevel;
+    std::map<int, double> previousYearFinalLevels;
 } PALIERS_HYDROCLUSTERS;
 
 class AdequacyPatchRuntimeData

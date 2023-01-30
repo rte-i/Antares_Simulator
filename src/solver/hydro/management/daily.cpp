@@ -906,7 +906,7 @@ inline void HydroManagement::prepareDailyOptimalGenerationsForCluster(Solver::Va
         }
 
         uint firstDaySimu = study.parameters.simulationDays.first;
-        state.problemeHebdo->previousSimulationFinalLevel[z]
+        state.problemeHebdo->PaliersHydroclusterDuPays[z].previousSimulationFinalLevel.at(clusterIndex)
           = valgen.NiveauxReservoirsDebutJours[firstDaySimu] * reservoirCapacity; // this is now filling the results
 
         if (debugData)
