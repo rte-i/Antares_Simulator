@@ -201,6 +201,109 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
 
         assert(area.hydro.intraDailyModulation >= 1. && "Intra-daily modulation must be >= 1.0");
         problem.CoefficientEcretementPMaxHydraulique[i] = area.hydro.intraDailyModulation;
+
+        // TODO Milos: IF HYDROCLUSTERS
+        for (uint clusterIndex = 0; clusterIndex != area.hydrocluster.clusterCount();
+             clusterIndex++)
+        {
+            auto& cluster = *(area.hydrocluster.clusters.at(clusterIndex));
+
+            problem.PaliersHydroclusterDuPays[i]
+              .hydroClusterMap.at(clusterIndex)
+              .PresenceDHydrauliqueModulable
+              = (area.scratchpad[numSpace]->hydroHasModPerCluster[clusterIndex] ? OUI_ANTARES
+                                                                                : NON_ANTARES);
+
+            problem.PaliersHydroclusterDuPays[i]
+              .hydroClusterMap.at(clusterIndex)
+              .PresenceDePompageModulable
+              = ((cluster.reservoirManagement
+                  && area.scratchpad[numSpace]->pumpHasModPerCluster[clusterIndex]
+                  && cluster.pumpingEfficiency > 0.
+                  && problem.PaliersHydroclusterDuPays[i]
+                       .hydroClusterMap.at(clusterIndex)
+                       .PresenceDHydrauliqueModulable)
+                   ? OUI_ANTARES
+                   : NON_ANTARES);
+
+            problem.PaliersHydroclusterDuPays[i].hydroClusterMap.at(clusterIndex).PumpingRatio
+              = cluster.pumpingEfficiency;
+
+            problem.PaliersHydroclusterDuPays[i]
+              .hydroClusterMap.at(clusterIndex)
+              .TurbinageEntreBornes
+              = ((cluster.reservoirManagement && (!cluster.useHeuristicTarget || cluster.useLeeway))
+                   ? OUI_ANTARES
+                   : NON_ANTARES);
+
+            problem.PaliersHydroclusterDuPays[i].hydroClusterMap.at(clusterIndex).SuiviNiveauHoraire
+              = ((cluster.reservoirManagement && !cluster.useHeuristicTarget) ? OUI_ANTARES
+                                                                              : NON_ANTARES);
+
+            problem.PaliersHydroclusterDuPays[i].hydroClusterMap.at(clusterIndex).AccurateWaterValue
+              = NON_ANTARES;
+            if (problem.WaterValueAccurate == OUI_ANTARES
+                && problem.PaliersHydroclusterDuPays[i]
+                       .hydroClusterMap.at(clusterIndex)
+                       .TurbinageEntreBornes
+                     == OUI_ANTARES)
+                problem.PaliersHydroclusterDuPays[i]
+                  .hydroClusterMap.at(clusterIndex)
+                  .AccurateWaterValue
+                  = OUI_ANTARES;
+
+            problem.PaliersHydroclusterDuPays[i].hydroClusterMap.at(clusterIndex).DirectLevelAccess
+              = NON_ANTARES;
+            if (problem.WaterValueAccurate == OUI_ANTARES
+                && problem.PaliersHydroclusterDuPays[i]
+                       .hydroClusterMap.at(clusterIndex)
+                       .SuiviNiveauHoraire
+                     == OUI_ANTARES)
+                problem.PaliersHydroclusterDuPays[i]
+                  .hydroClusterMap.at(clusterIndex)
+                  .DirectLevelAccess
+                  = OUI_ANTARES;
+
+            problem.PaliersHydroclusterDuPays[i].hydroClusterMap.at(clusterIndex).TailleReservoir
+              = cluster.reservoirCapacity;
+
+            for (int pdt = 0; pdt < NombreDePasDeTemps; pdt++)
+            {
+                problem.PaliersHydroclusterDuPays[i]
+                  .hydroClusterMap.at(clusterIndex)
+                  .NiveauHoraireInf[pdt]
+                  = 0;
+                problem.PaliersHydroclusterDuPays[i]
+                  .hydroClusterMap.at(clusterIndex)
+                  .NiveauHoraireSup[pdt]
+                  = problem.PaliersHydroclusterDuPays[i]
+                      .hydroClusterMap.at(clusterIndex)
+                      .TailleReservoir;
+            }
+
+            problem.PaliersHydroclusterDuPays[i].previousSimulationFinalLevel.at(clusterIndex)
+              = -1.;
+
+            if (problem.previousYearFinalLevels)
+                problem.previousYearFinalLevels[i] = -1.;
+
+            problem.PaliersHydroclusterDuPays[i]
+              .hydroClusterMap.at(clusterIndex)
+              .WeeklyWaterValueStateRegular
+              = 0.;
+
+            problem.PaliersHydroclusterDuPays[i]
+              .hydroClusterMap.at(clusterIndex)
+              .WeeklyGeneratingModulation
+              = 1.;
+            problem.PaliersHydroclusterDuPays[i]
+              .hydroClusterMap.at(clusterIndex)
+              .WeeklyPumpingModulation
+              = 1.;
+
+            assert(cluster.intraDailyModulation >= 1. && "Intra-daily modulation must be >= 1.0");
+            problem.CoefficientEcretementPMaxHydraulique[i] = cluster.intraDailyModulation;
+        }
     }
 
     for (uint i = 0; i < study.runtime->interconnectionsCount; ++i)
@@ -442,7 +545,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
     double levelInterpolEnd;
     double delta;
 
-    for (uint k = 0; k < nbPays; ++k)
+    for (uint k = 0; k < nbPays; ++k) // k is index for area
     {
         auto& area = *study.areas.byIndex[k];
 
@@ -543,6 +646,112 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                 }
             }
         }
+
+        // TODO Milos: IF HYDROCLUSTERS
+        for (uint clusterIndex = 0; clusterIndex < area.hydrocluster.clusterCount(); ++clusterIndex)
+        {
+            auto& cluster = *(area.hydrocluster.clusters.at(clusterIndex));
+            auto& clusterMap
+              = problem.PaliersHydroclusterDuPays[k].hydroClusterMap.at(clusterIndex);
+            auto& previousSimulationFinalLevel
+              = problem.PaliersHydroclusterDuPays[k].previousSimulationFinalLevel.at(clusterIndex);
+
+            if (cluster.reservoirManagement)
+            {
+                clusterMap.NiveauInitialReservoir
+                  = previousSimulationFinalLevel;
+
+                clusterMap.LevelForTimeInterval
+                  = clusterMap.NiveauInitialReservoir; /*for first 24-hour optim*/
+                double nivInit = clusterMap.NiveauInitialReservoir;
+                if (nivInit < 0.)
+                {
+                    logs.fatal() << "Area " << area.name << ", week " << state.weekInTheYear + 1
+                                 << " : initial level < 0";
+                    AntaresSolverEmergencyShutdown();
+                }
+
+                if (nivInit > cluster.reservoirCapacity)
+                {
+                    logs.fatal() << "Area " << area.name << ", week " << state.weekInTheYear + 1
+                                 << " : initial level over capacity";
+                    AntaresSolverEmergencyShutdown();
+                }
+
+                if (cluster.powerToLevel)
+                {
+                    clusterMap.WeeklyGeneratingModulation
+                      = Antares::Data::getWeeklyModulation(previousSimulationFinalLevel
+                                                             * 100 / cluster.reservoirCapacity,
+                                                           cluster.creditModulation,
+                                                           Data::PartHydro::genMod);
+
+                    clusterMap.WeeklyPumpingModulation
+                      = Antares::Data::getWeeklyModulation(previousSimulationFinalLevel
+                                                             * 100 / cluster.reservoirCapacity,
+                                                           cluster.creditModulation,
+                                                           Data::PartHydro::pumpMod);
+                }
+
+                if (cluster.useWaterValue)
+                {
+                    Antares::Data::getWaterValue(
+                      previousSimulationFinalLevel * 100 / cluster.reservoirCapacity,
+                      cluster.waterValues,
+                      weekFirstDay,
+                      state.h2oValueWorkVars,
+                      clusterMap.WeeklyWaterValueStateRegular);
+                }
+
+                if (clusterMap.PresenceDHydrauliqueModulable > 0)
+                {
+                    if (cluster.hardBoundsOnRuleCurves
+                        && clusterMap.SuiviNiveauHoraire
+                             == OUI_ANTARES)
+                    {
+                        auto& minLvl = cluster.reservoirLevel[Data::PartHydro::minimum];
+                        auto& maxLvl = cluster.reservoirLevel[Data::PartHydro::maximum];
+
+                        for (int day = 0; day < 7; day++)
+                        {
+                            levelInterpolBeg
+                              = minLvl[weekDayIndex[day]]
+                                * clusterMap.TailleReservoir;
+                            levelInterpolEnd
+                              = minLvl[weekDayIndex[day + 1]]
+                                * clusterMap.TailleReservoir;
+                            delta = (levelInterpolEnd - levelInterpolBeg) / 24.;
+
+                            for (int hour = 0; hour < 24; hour++)
+                                clusterMap.NiveauHoraireInf[24 * day + hour]
+                                  = levelInterpolBeg + hour * delta;
+
+                            levelInterpolBeg
+                              = maxLvl[weekDayIndex[day]]
+                                * clusterMap.TailleReservoir;
+                            levelInterpolEnd
+                              = maxLvl[weekDayIndex[day + 1]]
+                                * clusterMap.TailleReservoir;
+                            delta = (levelInterpolEnd - levelInterpolBeg) / 24.;
+
+                            for (int hour = 0; hour < 24; hour++)
+                                clusterMap.NiveauHoraireSup[24 * day + hour]
+                                  = levelInterpolBeg + hour * delta;
+                        }
+                    }
+                }
+                if (clusterMap.AccurateWaterValue == OUI_ANTARES)
+                {
+                    for (uint layerindex = 0; layerindex < 100; layerindex++)
+                    {
+                        clusterMap.WaterLayerValues[layerindex]
+                          = 0.5
+                            * (cluster.waterValues[layerindex][weekFirstDay + 7]
+                               + cluster.waterValues[layerindex + 1][weekFirstDay + 7]);
+                    }
+                }
+            }
+        }
     }
 
     for (int j = 0; j < problem.NombreDePasDeTemps; ++j, ++indx)
@@ -600,12 +809,23 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
 
         const uint dayInTheYear = study.calendar.hours[indx].dayYear;
 
-        for (uint k = 0; k < nbPays; ++k)
+        for (uint k = 0; k < nbPays; ++k) // k is index for area
         {
             auto& tsIndex = *NumeroChroniquesTireesParPays[numSpace][k];
             auto& area = *(study.areas.byIndex[k]);
             auto& scratchpad = *(area.scratchpad[numSpace]);
-            auto& ror = area.hydro.series->ror; //CR22
+            auto& ror = area.hydro.series->ror;
+
+            double totalRor = 0.0;
+            area.hydrocluster.list.each(
+              [&](const Data::HydroclusterCluster& cluster)
+              {
+                  auto& ror = cluster.series->ror;
+                  uint tsFatalIndex = (uint)tsIndex.HydroclusterParPalier[cluster.index] < ror.width
+                                        ? tsIndex.HydroclusterParPalier[cluster.index]
+                                        : 0;
+                  totalRor += ror[tsFatalIndex][indx];
+              });
 
             assert(&scratchpad);
             assert((uint)indx < scratchpad.ts.load.height);
@@ -624,14 +844,14 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
             {
                 mustRunGen = scratchpad.ts.wind[tsIndex.Eolien][indx]
                              + scratchpad.ts.solar[tsIndex.Solar][indx]
-                             + scratchpad.miscGenSum[indx] + ror[tsFatalIndex][indx]
+                             + scratchpad.miscGenSum[indx] + ror[tsFatalIndex][indx] + totalRor
                              + scratchpad.mustrunSum[indx];
             }
 
             // Renewable
             if (parameters.renewableGeneration.isClusters())
             {
-                mustRunGen = scratchpad.miscGenSum[indx] + ror[tsFatalIndex][indx]
+                mustRunGen = scratchpad.miscGenSum[indx] + ror[tsFatalIndex][indx] + totalRor
                              + scratchpad.mustrunSum[indx];
 
                 area.renewable.list.each([&](const RenewableCluster& cluster) {
@@ -699,7 +919,29 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
 
             problem.ReserveJMoins1[k]->ReserveHoraireJMoins1[j]
               = area.reserves[fhrDayBefore][PasDeTempsDebut + j];
-        }
+
+            // TODO Milos: IF HYDROCLUSTERS
+            for (uint clusterIndex = 0; clusterIndex < area.hydrocluster.clusterCount();
+                 ++clusterIndex)
+            {
+                auto& cluster = *(area.hydrocluster.clusters.at(clusterIndex));
+                auto& clusterMap
+                  = problem.PaliersHydroclusterDuPays[k].hydroClusterMap.at(clusterIndex);
+
+                if (clusterMap.PresenceDHydrauliqueModulable > 0)
+                {
+                    clusterMap.ContrainteDePmaxHydrauliqueHoraire[j]
+                      = scratchpad.optimalMaxPowerPerCluster[clusterIndex][dayInTheYear]
+                        * clusterMap.WeeklyGeneratingModulation;
+                }
+
+                if (clusterMap.PresenceDePompageModulable)
+                {
+                    clusterMap.ContrainteDePmaxPompageHoraire[j]
+                      = scratchpad.pumpingMaxPowerPerCluster[clusterIndex][dayInTheYear]
+                        * clusterMap.WeeklyPumpingModulation;
+                }
+            }
     }
 
     {
@@ -724,7 +966,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
             }
         }
 #else
-        for (uint k = 0; k < nbPays; ++k)
+        for (uint k = 0; k < nbPays; ++k) // k is index for area
         {
             if (problem.CaracteristiquesHydrauliques[k]->PresenceDHydrauliqueModulable > 0)
             {
@@ -987,11 +1229,286 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                     }
                 }
             }
+
+            // TODO Milos: IF HYDROCLUSTERS
+            auto& area = *study.areas.byIndex[k];
+            for (uint clusterIndex = 0; clusterIndex < area.hydrocluster.clusterCount();
+                 ++clusterIndex)
+            {
+                auto& cluster = *(area.hydrocluster.clusters.at(clusterIndex));
+                auto& clusterMap
+                  = problem.PaliersHydroclusterDuPays[k].hydroClusterMap.at(clusterIndex);
+
+                if (clusterMap.PresenceDHydrauliqueModulable > 0)
+                {
+                    uint tsIndex = (*NumeroChroniquesTireesParPays[numSpace][k]).HydroclusterParPalier[clusterIndex];
+                    auto& inflowsmatrix = cluster.series->storage;
+                    auto const& srcinflows
+                      = inflowsmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
+
+                    auto& mingenmatrix = cluster.series->mingen; // CR22
+                    auto const& srcmingen
+                      = mingenmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
+                    for (uint j = 0; j < problem.NombreDePasDeTemps; ++j)
+                    {
+                        clusterMap.MingenHoraire[j]
+                          = srcmingen[PasDeTempsDebut + j]; // CR22
+                    }
+
+                    if (cluster.reservoirManagement)
+                    {
+                        if (not cluster.useHeuristicTarget)
+                        {
+                            for (uint j = 0; j < 7; ++j)
+                            {
+                                uint day = study.calendar.hours[PasDeTempsDebut + j * 24].dayYear;
+
+                                clusterMap.MinEnergieHydrauParIntervalleOptimise[j]
+                                  = 0.;
+                                clusterMap.MaxEnergieHydrauParIntervalleOptimise[j]
+                                  = cluster.maxPower[cluster.genMaxP][day]
+                                    * cluster.maxPower[cluster.genMaxE][day]
+                                    * clusterMap.WeeklyGeneratingModulation;
+                            }
+                        }
+
+                        if (cluster.useHeuristicTarget && cluster.useLeeway)
+                        {
+                            double* DGU = clusterMap.MaxEnergieHydrauParIntervalleOptimise;
+
+                            double* DGL = clusterMap.MinEnergieHydrauParIntervalleOptimise;
+
+                            double* DNT = ValeursGenereesParPaysPerCluster[numSpace][k]
+                                            ->GenValuesPerAreaPerCluster[clusterIndex]
+                                            .HydrauliqueModulableQuotidien;
+
+                            double WSL
+                              = clusterMap.NiveauInitialReservoir;
+
+                            double LUB = cluster.leewayUpperBound;
+
+                            double LLB = cluster.leewayLowerBound;
+
+                            double DGM
+                              = clusterMap.WeeklyGeneratingModulation;
+
+                            double rc = cluster.reservoirCapacity;
+
+                            double WNI = 0.;
+                            for (uint j = 0; j < 7; ++j)
+                            {
+                                uint day = study.calendar.hours[PasDeTempsDebut + j * 24].dayYear;
+                                WNI += srcinflows[day];
+                            }
+
+                            std::vector<double> DGU_tmp(7, -1.);
+                            std::vector<double> DGL_tmp(7, -1.);
+
+                            double WGU = 0.;
+
+                            for (uint j = 0; j < 7; ++j)
+                            {
+                                uint day = study.calendar.hours[PasDeTempsDebut + j * 24].dayYear;
+
+                                double DGC = cluster.maxPower[cluster.genMaxP][day]
+                                             * cluster.maxPower[cluster.genMaxE][day];
+
+                                DGU_tmp[j] = DNT[day] * LUB;
+                                DGL_tmp[j] = DNT[day] * LLB;
+                                double DGCxDGM = DGC * DGM;
+
+                                if (DGCxDGM < DGL_tmp[j])
+                                {
+                                    DGU_tmp[j] = DGCxDGM;
+                                    DGL_tmp[j] = DGCxDGM;
+                                }
+
+                                if (DGCxDGM > DGL_tmp[j] && DGCxDGM < DGU_tmp[j])
+                                    DGU_tmp[j] = DGCxDGM;
+
+                                WGU += DGU_tmp[j];
+                            }
+
+                            for (uint j = 0; j < 7; ++j)
+                            {
+                                if (not cluster.hardBoundsOnRuleCurves)
+                                {
+                                    if (Math::Zero(WGU))
+                                        DGU[j] = 0.;
+                                    else
+                                        DGU[j] = DGU_tmp[j] * Math::Min(WGU, WSL + WNI) / WGU;
+                                }
+
+                                else
+                                {
+                                    const uint nextWeekFirstDay
+                                      = study.calendar.hours[PasDeTempsDebut + 7 * 24].dayYear;
+                                    auto& minLvl
+                                      = cluster.reservoirLevel[Data::PartHydro::minimum];
+                                    double V
+                                      = Math::Max(0., WSL - minLvl[nextWeekFirstDay] * rc + WNI);
+
+                                    if (Math::Zero(WGU))
+                                        DGU[j] = 0.;
+                                    else
+                                        DGU[j] = DGU_tmp[j] * Math::Min(WGU, V) / WGU;
+                                }
+
+                                DGL[j] = Math::Min(DGU[j], DGL_tmp[j]);
+                            }
+                        }
+                    }
+
+                    double weekGenerationTarget = 1.;
+                    double marginGen = 1.;
+
+                    if (cluster.reservoirManagement && cluster.useHeuristicTarget
+                        && not cluster.useLeeway)
+                    {
+                        double weekTarget_tmp = 0.;
+                        for (uint j = 0; j < 7; ++j)
+                        {
+                            uint day = study.calendar.hours[PasDeTempsDebut + j * 24].dayYear;
+                            weekTarget_tmp += ValeursGenereesParPaysPerCluster[numSpace][k]
+                                                ->GenValuesPerAreaPerCluster[clusterIndex]
+                                                .HydrauliqueModulableQuotidien[day];
+                        }
+
+                        if (weekTarget_tmp != 0.)
+                            weekGenerationTarget = weekTarget_tmp;
+
+                        marginGen = weekGenerationTarget;
+
+                        if (clusterMap.NiveauInitialReservoir
+                            < weekTarget_tmp)
+                            marginGen
+                              = clusterMap.NiveauInitialReservoir;
+                    }
+
+                    if (not clusterMap.TurbinageEntreBornes)
+                    {
+                        for (uint j = 0; j < 7; ++j)
+                        {
+                            uint day = study.calendar.hours[PasDeTempsDebut + j * 24].dayYear;
+                            clusterMap.CntEnergieH2OParIntervalleOptimise[j]
+                              = ValeursGenereesParPaysPerCluster[numSpace][k]
+                                  ->GenValuesPerAreaPerCluster[clusterIndex]
+                                  .HydrauliqueModulableQuotidien[day]
+                                * clusterMap.WeeklyGeneratingModulation * marginGen
+                                / weekGenerationTarget;
+                        }
+                    }
+
+                    for (uint j = 0; j < 7; ++j)
+                    {
+                        uint day = study.calendar.hours[PasDeTempsDebut + j * 24].dayYear;
+                        clusterMap.InflowForTimeInterval[j]
+                          = srcinflows[day];
+                        for (int h = 0; h < 24; h++)
+                        {
+                            clusterMap.ApportNaturelHoraire[j * 24 + h]
+                              = srcinflows[day] / 24;
+                        }
+                    }
+
+                    if (clusterMap.PresenceDePompageModulable
+                        == OUI_ANTARES)
+                    {
+                        if (cluster.reservoirManagement) /* No need to include the condition "use
+                                                               water value" */
+                        {
+                            if (not cluster.useHeuristicTarget)
+                            {
+                                for (uint j = 0; j < 7; ++j)
+                                {
+                                    uint day
+                                      = study.calendar.hours[PasDeTempsDebut + j * 24].dayYear;
+
+                                    clusterMap.MaxEnergiePompageParIntervalleOptimise[j]
+                                      = cluster.maxPower[cluster.pumpMaxP][day]
+                                        * cluster.maxPower[cluster.pumpMaxE][day]
+                                        * clusterMap.WeeklyPumpingModulation;
+                                }
+                            }
+
+                            if (cluster.useHeuristicTarget)
+                            {
+                                double WNI = 0.;
+                                for (uint j = 0; j < 7; ++j)
+                                {
+                                    uint day
+                                      = study.calendar.hours[PasDeTempsDebut + j * 24].dayYear;
+                                    WNI += srcinflows[day];
+                                }
+
+                                double* DPU = clusterMap.MaxEnergiePompageParIntervalleOptimise;
+
+                                double WSL
+                                  = clusterMap.NiveauInitialReservoir;
+
+                                double DPM = clusterMap.WeeklyPumpingModulation;
+
+                                double pumping_ratio = cluster.pumpingEfficiency;
+
+                                double WPU = 0.;
+
+                                for (uint j = 0; j < 7; ++j)
+                                {
+                                    uint day
+                                      = study.calendar.hours[PasDeTempsDebut + j * 24].dayYear;
+
+                                    double DPC = cluster.maxPower[cluster.pumpMaxP][day]
+                                                 * cluster.maxPower[cluster.pumpMaxE][day];
+
+                                    WPU += DPC;
+                                }
+
+                                double U = WPU * DPM * pumping_ratio;
+
+                                for (uint j = 0; j < 7; ++j)
+                                {
+                                    uint day
+                                      = study.calendar.hours[PasDeTempsDebut + j * 24].dayYear;
+                                    double DPC = cluster.maxPower[cluster.pumpMaxP][day]
+                                                 * cluster.maxPower[cluster.pumpMaxE][day];
+                                    double rc = cluster.reservoirCapacity;
+
+                                    if (not cluster.hardBoundsOnRuleCurves)
+                                    {
+                                        double V = Math::Max(0., rc - (WNI + WSL));
+
+                                        if (Math::Zero(U))
+                                            DPU[j] = 0.;
+                                        else
+                                            DPU[j] = DPC * DPM * Math::Min(U, V) / U;
+                                    }
+
+                                    else
+                                    {
+                                        const uint nextWeekFirstDay
+                                          = study.calendar.hours[PasDeTempsDebut + 7 * 24].dayYear;
+                                        auto& maxLvl
+                                          = cluster.reservoirLevel[Data::PartHydro::maximum];
+
+                                        double V = Math::Max(
+                                          0., maxLvl[nextWeekFirstDay] * rc - (WNI + WSL));
+
+                                        if (Math::Zero(U))
+                                            DPU[j] = 0.;
+                                        else
+                                            DPU[j] = DPC * DPM * Math::Min(U, V) / U;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 #endif
     }
 
-    for (uint k = 0; k < nbPays; ++k)
+    for (uint k = 0; k < nbPays; ++k) // k is index for area 
     {
         auto& area = *study.areas.byIndex[k];
 
@@ -1012,7 +1529,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                      ->CoutHoraireDeProductionDuPalierThermique,
                    pasDeTempsSizeDouble);
         }
-
+        // copy zero to memory locations !!!
         memcpy(
           (char*)problem.CaracteristiquesHydrauliques[k]->CntEnergieH2OParIntervalleOptimiseRef,
           (char*)problem.CaracteristiquesHydrauliques[k]->CntEnergieH2OParIntervalleOptimise,
@@ -1037,4 +1554,5 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
 
     Antares::memory.flushAll();
 #endif
+    }
 }
