@@ -68,7 +68,7 @@ typedef struct
 
 typedef struct
 {
-    std::map<int, VALEURS_GENEREES_PAR_PAYS> GenValuesPerAreaPerCluster; 
+    std::map<int, VALEURS_GENEREES_PAR_PAYS> GenValuesPerAreaPerCluster; // needs to allocate memory for each pointer inside structure VALEURS_GENEREES_PAR_PAYS for each cluster 
 } VALEURS_GENEREES_PAR_PAYS_PER_CLUSTER;
 
 typedef struct
