@@ -330,9 +330,8 @@ void updatingWeeklyFinalHydroLevelForCluster(const Data::Study& study,
 
                 double* niv = weeklyResults->niveauxHoraires;
 
-                problem.PaliersHydroclusterDuPays[index].previousSimulationFinalLevel.at(
-                  cluster.index)
-                  = niv[nbHoursInAWeek - 1] * reservoirCapacity / 100;
+                problem.PaliersHydroclusterDuPays[index].previousSimulationFinalLevel.insert(
+                  {cluster.index, niv[nbHoursInAWeek - 1] * reservoirCapacity / 100});
             });
       });
 }
@@ -355,10 +354,11 @@ void updatingAnnualFinalHydroLevelForCluster(const Data::Study& study, PROBLEME_
 
                 double reservoirCapacity = cluster.reservoirCapacity;
 
-                problem.PaliersHydroclusterDuPays[index].previousYearFinalLevels.at(cluster.index)
-                  = problem.PaliersHydroclusterDuPays[index].previousSimulationFinalLevel.at(
-                      cluster.index)
-                    / reservoirCapacity;
+                problem.PaliersHydroclusterDuPays[index].previousYearFinalLevels.insert(
+                  {cluster.index,
+                   problem.PaliersHydroclusterDuPays[index].previousSimulationFinalLevel.at(
+                     cluster.index)
+                     / reservoirCapacity});
             });
       });
 }
