@@ -162,6 +162,26 @@ void SIM_AllocationTableaux()
                 ValeursGenereesParPays[numSpace][i]->NiveauxReservoirsFinJours
                   = (double*)MemAlloc(study.runtime->nbDaysPerYear * sizeof(double));
             }
+
+            for (uint clusterIndex = 0; clusterIndex < area.hydrocluster.clusterCount();
+                 ++clusterIndex)
+            {
+                ValeursGenereesParPaysPerCluster[numSpace][i]
+                  ->GenValuesPerAreaPerCluster.at(clusterIndex) // TODO Milos: this at is maybe wrong since we need to insert element first. double-check 
+                  .HydrauliqueModulableQuotidien
+                  = (double*)MemAlloc(study.runtime->nbDaysPerYear * sizeof(double));
+                if (area.hydrocluster.clusters.at(clusterIndex)->reservoirManagement)
+                {
+                    ValeursGenereesParPaysPerCluster[numSpace][i]
+                      ->GenValuesPerAreaPerCluster.at(clusterIndex)
+                      .NiveauxReservoirsDebutJours
+                      = (double*)MemAlloc(study.runtime->nbDaysPerYear * sizeof(double));
+                    ValeursGenereesParPaysPerCluster[numSpace][i]
+                      ->GenValuesPerAreaPerCluster.at(clusterIndex)
+                      .NiveauxReservoirsFinJours
+                      = (double*)MemAlloc(study.runtime->nbDaysPerYear * sizeof(double));
+                }
+            }
         }
     }
     NumeroChroniquesTireesParInterconnexion
@@ -206,6 +226,24 @@ void SIM_DesallocationTableaux()
                 {
                     MemFree(ValeursGenereesParPays[numSpace][i]->NiveauxReservoirsDebutJours);
                     MemFree(ValeursGenereesParPays[numSpace][i]->NiveauxReservoirsFinJours);
+                }
+
+                for (uint clusterIndex = 0; clusterIndex < area.hydrocluster.clusterCount();
+                     ++clusterIndex)
+                {
+                    MemFree(ValeursGenereesParPaysPerCluster[numSpace][i]
+                              ->GenValuesPerAreaPerCluster.at(clusterIndex)
+                              .HydrauliqueModulableQuotidien);
+
+                    if (area.hydrocluster.clusters.at(clusterIndex)->reservoirManagement)
+                    {
+                        MemFree(ValeursGenereesParPaysPerCluster[numSpace][i]
+                                  ->GenValuesPerAreaPerCluster.at(clusterIndex)
+                                  .NiveauxReservoirsDebutJours);
+                        MemFree(ValeursGenereesParPaysPerCluster[numSpace][i]
+                                  ->GenValuesPerAreaPerCluster.at(clusterIndex)
+                                  .NiveauxReservoirsFinJours);
+                    }
                 }
 
                 MemFree(ValeursGenereesParPays[numSpace][i]);
