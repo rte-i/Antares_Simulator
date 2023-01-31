@@ -222,7 +222,9 @@ void SIM_InitialisationProblemeHoraireAdequation()
     SIM_InitialisationChainagePourAdequation();
 }
 
-void SIM_RenseignementValeursPourTouteLAnnee(const Antares::Data::Study& study, uint numSpace)
+// TODO Milos: is this function only used in draft simulation mode ? If YES, maybe skip this !!
+// make another function that loops per area + per clusters with the same code 
+void SIM_RenseignementValeursPourTouteLAnnee(const Antares::Data::Study& study, uint numSpace) // SIM_InformationValuesForAnyYear
 {
     uint startTime = study.calendar.days[study.parameters.simulationDays.first].hours.first;
     uint finalHour = study.calendar.days[study.parameters.simulationDays.end - 1].hours.end - 1;
@@ -235,14 +237,14 @@ void SIM_RenseignementValeursPourTouteLAnnee(const Antares::Data::Study& study, 
         auto& scratchpad = *(area.scratchpad[numSpace]);
         auto& primaryReserve = area.reserves[fhrPrimaryReserve];
         auto& strategicReserve = area.reserves[fhrStrategicReserve];
-        auto& ror = area.hydro.series->ror; //CR22
+        auto& ror = area.hydro.series->ror; //CR22 // to add per cluster if neccessary
         auto& calendar = study.calendar;
 
         memset(Pt.Consommation, 0, study.runtime->nbHoursPerYear * sizeof(double));
         memset(Pt.PuissanceThermiqueCumulee, 0, study.runtime->nbHoursPerYear * sizeof(double));
         memset(Pt.Reserve, 0, study.runtime->nbHoursPerYear * sizeof(double));
 
-        auto& avgMaxPower = area.hydro.maxPower.entry[0];
+        auto& avgMaxPower = area.hydro.maxPower.entry[0]; //CR22 // to add per cluster if neccessary
         for (uint h = startTime; h < finalHour; ++h)
         {
             assert((uint)tsIndex.Consommation < scratchpad.ts.load.width);
