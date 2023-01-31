@@ -712,6 +712,7 @@ void HydroManagement::prepareEffectiveDemandForCluster(uint numSpace)
 // TODO Milos: in the prevoius two methods what to do with NET DEMAND.
 // It used to be one NET DEMAND per Area and one Hydro per Area 
 // Now it is still one NET DEMAND per Area but we have multiple Hydro clusters per Area
-// Is the math still correct !?
+// Is the math still correct !? NetDemand ... - Sum(ROR for all clusters) ??
+// Do we need pAreasCluster at all ?! Or we try to sum up all hydro clusters into pAreas structure ?!
 
 } // namespace Antares
