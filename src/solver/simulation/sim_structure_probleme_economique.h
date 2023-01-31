@@ -317,7 +317,9 @@ typedef struct
 
 typedef struct
 {
-    std::map<int, ENERGIES_ET_PUISSANCES_HYDRAULIQUES> hydroClusterMap; // needs to allocate memory for each pointer inside structure ENERGIES_ET_PUISSANCES_HYDRAULIQUES for each cluster 
+    std::map<int, ENERGIES_ET_PUISSANCES_HYDRAULIQUES> hydroClusterMap; 
+    // TODO Milos: needs to allocate memory for each pointer inside structure ENERGIES_ET_PUISSANCES_HYDRAULIQUES for each cluster
+    // do it once working with CaracteristiquesHydrauliques
     std::map<int, double> previousSimulationFinalLevel;
     std::map<int, double> previousYearFinalLevels;
 } PALIERS_HYDROCLUSTERS;
