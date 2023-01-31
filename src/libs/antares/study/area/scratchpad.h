@@ -81,10 +81,12 @@ public:
     TimeseriesData ts;
 
     bool hydroHasMod;
+    std::vector<bool> hydroHasModPerCluster;
 
     //! if sum(365)[pumpMaxP * pumpMaxE] > 0. then pumpHasMod = true
     //	else pumpHasMod = false
     bool pumpHasMod;
+    std::vector<bool> pumpHasModPerCluster;
 
     //! Spinning reserve
     // This variable is initialized once at the begining of the simulation
@@ -105,6 +107,7 @@ public:
 
     //!
     double pumpingMaxPower[DAYS_PER_YEAR];
+    std::vector<std::array<double, DAYS_PER_YEAR>> pumpingMaxPowerPerCluster;
 
     /*!
     ** \brief Dispatchable Generation Margin

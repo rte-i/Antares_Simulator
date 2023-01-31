@@ -169,6 +169,101 @@ AreaScratchpad::AreaScratchpad(const StudyRuntimeInfos& rinfos, Area& area) : ts
     // Spinning reserves
     memcpy(
       spinningReserve, area.reserves[fhrPrimaryReserve], sizeof(double) * rinfos.nbHoursPerYear);
+
+    // ===============
+    // hydroHasMod-Hydro Clusters
+    // ===============
+
+    area.hydrocluster.list.each(
+      [&](const Data::HydroclusterCluster& cluster)
+      {
+          if (mode != stdmAdequacyDraft)
+          {
+              // ------------------------------
+              // Hydro generation permission
+              // ------------------------------
+              // Useful whether we use a heuristic target or not
+
+              bool hydroGenerationPermission = false;
+
+              // ... Getting hydro max power
+              auto const& maxPower = cluster.maxPower;
+
+              // ... Hydro max generating power and energy
+              auto const& maxGenP = maxPower[Data::PartHydro::genMaxP];
+              auto const& maxGenE = maxPower[Data::PartHydro::genMaxE];
+
+              double value = 0.;
+              for (uint d = 0; d < DAYS_PER_YEAR; ++d)
+                  value += maxGenP[d] * maxGenE[d];
+
+              // If generating energy is nil over the whole year, hydroGenerationPermission is
+              // false, true otherwise.
+              hydroGenerationPermission = (value > 0.);
+
+              // ---------------------
+              // Hydro has inflows
+              // ---------------------
+              bool hydroHasInflows = false;
+              if (!cluster.prepro) // not in prepro mode
+              {
+                  assert(cluster.series);
+                  hydroHasInflows
+                    = MatrixTestForAtLeastOnePositiveValue(cluster.series->storage); // CR22
+              }
+              else
+              {
+                  auto& m = cluster.prepro->data;
+                  double value = 0.;
+                  auto& colPowerOverWater = m[PreproHydro::powerOverWater];
+                  auto& colMaxEnergy = m[PreproHydro::maximumEnergy];
+
+                  for (uint m = 0; m < rinfos.nbMonthsPerYear; ++m)
+                      value += colMaxEnergy[m] * (1. - colPowerOverWater[m]);
+
+                  hydroHasInflows = (value > 0.);
+              }
+
+              // --------------------------
+              // hydroHasMod definition
+              // --------------------------
+              hydroHasModPerCluster[cluster.index] = hydroHasInflows || hydroGenerationPermission;
+          }
+          else
+          {
+              // No modulation in adequacy
+              hydroHasModPerCluster[cluster.index] = false;
+          }
+      });
+
+    // ===============
+    // Pumping Hydro Clusters
+    // ===============
+    // ... Hydro max power
+    area.hydrocluster.list.each(
+      [&](const Data::HydroclusterCluster& cluster)
+      {
+          auto const& maxPower = cluster.maxPower;
+
+          // ... Hydro max pumping power and energy
+          auto const& maxPumpingP = maxPower[Data::PartHydro::pumpMaxP];
+          auto const& maxPumpingE = maxPower[Data::PartHydro::pumpMaxE];
+
+          // ... Pumping max power
+          for (uint d = 0; d != DAYS_PER_YEAR; ++d)
+              pumpingMaxPowerPerCluster[cluster.index][d] = maxPumpingP[d];
+
+          // ... Computing 'pumpHasMod' parameter
+          if (mode != stdmAdequacyDraft)
+          {
+              double value = 0.;
+              for (uint d = 0; d < DAYS_PER_YEAR; ++d)
+                  value += maxPumpingP[d] * maxPumpingE[d];
+
+              // If pumping energy is nil over the whole year, pumpHasMod is false, true otherwise.
+              pumpHasModPerCluster[cluster.index] = (value > 0.);
+          }
+      });
 }
 
 } // namespace Data
