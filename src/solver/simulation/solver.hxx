@@ -150,7 +150,7 @@ private:
             // Getting random tables for this year
             yearRandomNumbers& randomForCurrentYear = randomForParallelYears.pYears[indexYear];
             double** thermalNoisesByArea = randomForCurrentYear.pThermalNoisesByArea;
-            double* randomReservoirLevel = nullptr;
+            double* randomReservoirLevel = nullptr; // TODO Milos: randomReservoirLevel for all clusters 
             if (not study.parameters.adequacyDraft())
             {
                 if (hydroHotStart && firstSetParallelWithAPerformedYearWasRun)
@@ -790,6 +790,18 @@ void ISimulation<Impl>::estimateMemoryForOptimizationPb(Antares::Data::StudyMemo
             NombreDeVariables++; // overflow
         }
 
+        area.hydrocluster.list.each(
+          [&](const Data::HydroclusterCluster& cluster)
+          {
+              if (cluster.hydroModulable)
+              {
+                  NombreDeVariables++; /* La variable de production hydraulique */
+                  NombreDeVariables++; // pumping
+                  NombreDeVariables++; // levels
+                  NombreDeVariables++; // overflow
+              }
+          });
+
         NombreDeVariables += 2; /* Les groupes de defaillance positive et negative */
     }
 
@@ -839,6 +851,18 @@ void ISimulation<Impl>::estimateMemoryForOptimizationPb(Antares::Data::StudyMemo
             NombreDeContraintes++; // max energy pump
             NombreDeContraintes += NombreDePasDeTempsPourUneOptimisation; // levels
         }
+
+        area.hydrocluster.list.each(
+          [&](const Data::HydroclusterCluster& cluster)
+          {
+              if (cluster.hydroModulable)
+              {
+                  NombreDeContraintes++; /* Contraintes de turbine min */
+                  NombreDeContraintes++; /* Contraintes de turbine max */
+                  NombreDeContraintes++; // max energy pump
+                  NombreDeContraintes += NombreDePasDeTempsPourUneOptimisation; // levels
+              }
+          });
     }
 
     if (parameters.power.fluctuations == Data::lssMinimizeRamping)
@@ -1344,6 +1368,67 @@ void ISimulation<Impl>::computeRandomNumbers(randomNumbers& randomForYears,
                 if (isPerformed)
                     randomForYears.pYears[indexYear].pReservoirLevels[areaIndex] = randomLevel;
             }
+
+            area.hydrocluster.list.each(
+              [&](const Data::HydroclusterCluster& cluster)
+              {
+                  // looking for the initial reservoir level (begining of the year)
+                  auto& min = cluster.reservoirLevel[Data::PartHydro::minimum];
+                  auto& avg = cluster.reservoirLevel[Data::PartHydro::average];
+                  auto& max = cluster.reservoirLevel[Data::PartHydro::maximum];
+
+                  // Month the reservoir level is initialized according to.
+                  // This month number is given in the civil calendar, from january to december (0
+                  // is january).
+                  int initResLevelOnMonth = cluster.initializeReservoirLevelDate;
+
+                  // Conversion of the previous month into simulation calendar
+                  int initResLevelOnSimMonth = study.calendar.mapping.months[initResLevelOnMonth];
+
+                  // Previous month's first day in the year
+                  int firstDayOfMonth
+                    = study.calendar.months[initResLevelOnSimMonth].daysYear.first;
+
+                  double randomLevel = pHydroManagement.randomReservoirLevel(
+                    min[firstDayOfMonth], avg[firstDayOfMonth], max[firstDayOfMonth]);
+
+                  // Possibly update the intial level from scenario builder
+                //   if (study.parameters.useCustomScenario)
+                //   {
+                //       double levelFromScenarioBuilder = study.scenarioHydroLevels[areaIndex][y];
+                //       if (levelFromScenarioBuilder >= 0.)
+                //           randomLevel = levelFromScenarioBuilder;
+                //   }
+
+                  if (pHydroHotStart)
+                  {
+                      if (!isPerformed || !cluster.reservoirManagement)
+                      {
+                          // This initial level should be unused, so -1, as impossible value, is
+                          // suitable.
+                          randomForYears.pYears[indexYear].pClusterReservoirLevels[areaIndex][cluster.index] = -1.;
+                          areaIndex++;
+                          return; // Skipping the current area
+                      }
+
+                      if (!pFirstSetParallelWithAPerformedYearWasRun)
+                          randomForYears.pYears[indexYear].pClusterReservoirLevels[areaIndex][cluster.index]
+                            = randomLevel;
+                      // Else : means the start levels (multiple areas are affected) of a year are
+                      // retrieved from a previous year and
+                      //		  these levels are updated inside the year job (see year
+                      //job).
+                  }
+                  else
+                  {
+                      // Current area's hydro starting (or initial) level computation
+                      // (no matter if the year is performed or not, we always draw a random initial
+                      // reservoir level to ensure the same results)
+                      if (isPerformed)
+                          randomForYears.pYears[indexYear].pClusterReservoirLevels[areaIndex][cluster.index]
+                            = randomLevel;
+                  }
+              });
 
             areaIndex++;
         }); // each area
