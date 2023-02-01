@@ -150,7 +150,8 @@ private:
             // Getting random tables for this year
             yearRandomNumbers& randomForCurrentYear = randomForParallelYears.pYears[indexYear];
             double** thermalNoisesByArea = randomForCurrentYear.pThermalNoisesByArea;
-            double* randomReservoirLevel = nullptr; // TODO Milos: randomReservoirLevel for all clusters 
+            double* randomReservoirLevel = nullptr; // TODO Milos: randomReservoirLevel & pHydroCosts_rampingOrExcursion for all clusters ?!
+            std::vector<std::vector<double> randomClusterReservoirLevel;  
             if (not study.parameters.adequacyDraft())
             {
                 if (hydroHotStart && firstSetParallelWithAPerformedYearWasRun)
@@ -1480,7 +1481,7 @@ void ISimulation<Impl>::computeRandomNumbers(randomNumbers& randomForYears,
             {
                 for (auto i = study.areas.begin(); i != end; ++i)
                 {
-                    double* noise
+                    double* noise // TODO Milos: pHydroCostsByArea_freeMod make it for cluster ?!
                       = randomForYears.pYears[indexYear].pHydroCostsByArea_freeMod[areaIndex];
                     std::set<hydroCostNoise, compareHydroCostsNoises> setHydroCostsNoises;
                     for (uint j = 0; j != 8784; ++j)
