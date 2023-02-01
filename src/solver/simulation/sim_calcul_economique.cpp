@@ -1529,7 +1529,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                      ->CoutHoraireDeProductionDuPalierThermique,
                    pasDeTempsSizeDouble);
         }
-        // copy zero to memory locations !!!
+
         memcpy(
           (char*)problem.CaracteristiquesHydrauliques[k]->CntEnergieH2OParIntervalleOptimiseRef,
           (char*)problem.CaracteristiquesHydrauliques[k]->CntEnergieH2OParIntervalleOptimise,
@@ -1538,6 +1538,27 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
           (char*)problem.CaracteristiquesHydrauliques[k]->ContrainteDePmaxHydrauliqueHoraireRef,
           (char*)problem.CaracteristiquesHydrauliques[k]->ContrainteDePmaxHydrauliqueHoraire,
           pasDeTempsSizeDouble);
+
+        // hydro clusters
+        area.hydrocluster.list.each(
+          [&](const Data::HydroclusterCluster& cluster)
+          {
+              memcpy((char*)problem.PaliersHydroclusterDuPays[k]
+                       .hydroClusterMap[cluster.index]
+                       .CntEnergieH2OParIntervalleOptimiseRef,
+                     (char*)problem.PaliersHydroclusterDuPays[k]
+                       .hydroClusterMap[cluster.index]
+                       .CntEnergieH2OParIntervalleOptimise,
+                     7 * sizeof(double));
+
+              memcpy((char*)problem.PaliersHydroclusterDuPays[k]
+                       .hydroClusterMap[cluster.index]
+                       .ContrainteDePmaxHydrauliqueHoraireRef,
+                     (char*)problem.PaliersHydroclusterDuPays[k]
+                       .hydroClusterMap[cluster.index]
+                       .ContrainteDePmaxHydrauliqueHoraire,
+                     pasDeTempsSizeDouble);
+          });
 
         memcpy((char*)problem.ReserveJMoins1[k]->ReserveHoraireJMoins1Ref,
                (char*)problem.ReserveJMoins1[k]->ReserveHoraireJMoins1,
