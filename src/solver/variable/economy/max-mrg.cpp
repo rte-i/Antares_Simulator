@@ -137,6 +137,7 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
     auto& calendar = state.study.calendar;
     // Pmax
     auto& P = area.hydro.maxPower[Data::PartHydro::genMaxP];
+    // TODO Milos: implement hydro-clusters here ?!
     // auto& P = problem.CaracteristiquesHydrauliques[index]->ContrainteDePmaxHydrauliqueHoraire;
 
     do
