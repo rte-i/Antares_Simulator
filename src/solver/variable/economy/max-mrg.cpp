@@ -152,7 +152,7 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
             if (niveau > OI[i])
             {
                 uint dayYear = calendar.hours[i + state.hourInTheYear].dayYear;
-                opmrg[i] = Math::Min(niveau, OI[i] + P[dayYear] - H[i]);
+                opmrg[i] = Math::Min(niveau, OI[i] + P[dayYear] - H[i]); // sum P for all the clusters and add here ?!
                 SM += opmrg[i] - OI[i];
             }
             else
