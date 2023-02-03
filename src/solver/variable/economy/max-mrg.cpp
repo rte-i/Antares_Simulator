@@ -137,7 +137,6 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
     auto& calendar = state.study.calendar;
     // Pmax
     auto& P = area.hydro.maxPower[Data::PartHydro::genMaxP];
-    // TODO Milos: implement hydro-clusters here ?!
     // auto& P = problem.CaracteristiquesHydrauliques[index]->ContrainteDePmaxHydrauliqueHoraire;
 
     do
@@ -152,7 +151,12 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
             if (niveau > OI[i])
             {
                 uint dayYear = calendar.hours[i + state.hourInTheYear].dayYear;
-                opmrg[i] = Math::Min(niveau, OI[i] + P[dayYear] - H[i]); // sum P for all the clusters and add here ?!
+                double sum = 0.0;
+                area.hydrocluster.list.each(
+                  [&](const Data::HydroclusterCluster& cluster)
+                  { sum += cluster.maxPower[Data::PartHydro::genMaxP][dayYear]; });
+
+                opmrg[i] = Math::Min(niveau, OI[i] + P[dayYear] + sum - H[i]);
                 SM += opmrg[i] - OI[i];
             }
             else
