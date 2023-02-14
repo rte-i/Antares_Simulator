@@ -33,6 +33,7 @@
 #include <yuni/core/math.h>
 #include <limits>
 #include <antares/study/parts/hydro/container.h>
+#include <cmath>
 
 using namespace Yuni;
 
@@ -221,6 +222,58 @@ void HydroManagement::prepareInflowsScaling(uint numSpace)
                 }                
             }
         }
+
+        /* TODO CR25: This pre-checks do not belong here in prepareInflowsScaling.
+           Consider moving them to -> src/solver/application.cpp
+           it's also easier to break the simulation at that point */
+        // CR25 - Final Reservoir Level pre-checks
+        double initialReservoirLevel = study.scenarioHydroLevels[z][tsIndex];
+        double finalReservoirLevel = study.scenarioFinalHydroLevels[z][tsIndex];
+        if (study.parameters.useCustomScenario && area.hydro.reservoirManagement
+            && !area.hydro.useWaterValue && !isnan(finalReservoirLevel))
+        {
+            // collect data for pre-checks
+            uint initReservoirLvlMonth = area.hydro.initializeReservoirLevelDate; // month [0-11]
+            uint initReservoirLvlDay = calendar.months[initReservoirLvlMonth].daysYear.first;
+            double reservoirCapacity = area.hydro.reservoirCapacity;
+            double lowLevelLastDay
+              = area.hydro.reservoirLevel[Data::PartHydro::minimum][DAYS_PER_YEAR - 1];
+            double highLevelLastDay
+              = area.hydro.reservoirLevel[Data::PartHydro::maximum][DAYS_PER_YEAR - 1];
+            double totalYearInflows = 0.0;
+            // check if initial reservoir level is left as "rand" and skip
+            if (isnan(initialReservoirLevel))
+            {
+                logs.error() << "Year: " << tsIndex + 1 << ". Area: " << area.name
+                             << ". Initial reservoir level cannot be rand if final reservoir "
+                                "level is specified.";
+                goto skipPreChecks;
+            }
+
+            // calculate yearly (or partially yearly) inflows
+            for (uint day = initReservoirLvlDay; day < DAYS_PER_YEAR; ++day)
+            {
+                totalYearInflows += srcinflows[day];
+            }
+            // pre-check 1 -> reservoir_levelDay_365 – reservoir_levelDay_1 ≤ yearly_inflows
+            if ((finalReservoirLevel - initialReservoirLevel) * reservoirCapacity
+                > totalYearInflows * 24)
+                logs.error() << "Year: " << tsIndex + 1 << ". Area: " << area.name
+                             << ". Incompatible total inflows: " << totalYearInflows
+                             << " with initial: " << initialReservoirLevel
+                             << " and final: " << finalReservoirLevel << " reservoir levels.";
+            // pre-check 2 -> final reservoir level set by the user is within the rule curves for
+            // the final day
+            if (finalReservoirLevel < lowLevelLastDay || finalReservoirLevel > highLevelLastDay)
+                logs.error() << "Year: " << tsIndex + 1 << ". Area: " << area.name
+                             << ". Specifed final reservoir level: " << finalReservoirLevel
+                             << " is incompatible with reservoir level rule curve ["
+                             << lowLevelLastDay << " , " << highLevelLastDay << "]";
+
+        skipPreChecks:
+            bool doNothing = true;
+        }
+        // end CR25 pre-checks
     });
 }
 
