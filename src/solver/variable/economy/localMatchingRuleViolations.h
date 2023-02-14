@@ -225,7 +225,7 @@ public:
 
     void hourForEachArea(State& state, unsigned int numSpace)
     {
-        // Total DomesticUnsuppliedEnergy emissions
+        // Total LocalMatchingRule Violations
         pValuesForTheCurrentYear[numSpace][state.hourInTheYear]
           = state.hourlyResults->ValeursHorairesLmrViolations[state.hourInTheWeek];
 
