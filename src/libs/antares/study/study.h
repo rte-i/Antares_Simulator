@@ -697,7 +697,8 @@ public:
     //@}
 
     Matrix<double> scenarioHydroLevels;
-
+    // Hydro Final Levels
+    Matrix<double> scenarioFinalHydroLevels;
     /*!
     ** \brief Runtime informations
     **
