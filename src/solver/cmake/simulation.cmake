@@ -22,6 +22,8 @@ set(SRC_SIMULATION
 		simulation/timeseries-numbers.cpp
 		simulation/apply-scenario.h
 		simulation/apply-scenario.cpp
+		simulation/hydro-final-reservoir-level-pre-checks.h
+		simulation/hydro-final-reservoir-level-pre-checks.cpp
 		
 
 		# Solver
