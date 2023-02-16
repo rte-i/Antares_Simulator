@@ -73,8 +73,6 @@ public:
 private:
     //! \name Steps
     //@{
-    //! Pre-checks for final reservoir management
-    void finalReservoirLevelPreChecks(uint numSpace);
     //! Prepare inflows scaling for each area
     void prepareInflowsScaling(uint numSpace);
     //! Prepare the net demand for each area

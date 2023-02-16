@@ -34,7 +34,6 @@
 #include <limits>
 #include <antares/study/parts/hydro/container.h>
 #include <cmath>
-#include <antares/emergency.h>
 
 using namespace Yuni;
 
@@ -92,77 +91,6 @@ HydroManagement::~HydroManagement()
     for (uint numSpace = 0; numSpace < study.maxNbYearsInParallel; numSpace++)
         delete[] pAreas[numSpace];
     delete[] pAreas;
-}
-
-void HydroManagement::finalReservoirLevelPreChecks(uint numSpace)
-{
-    if (!study.parameters.useCustomScenario)
-        return;
-    bool preChecksPasses = true;
-    study.areas.each(
-      [&](Data::Area& area)
-      {
-          auto& ptchro = *NumeroChroniquesTireesParPays[numSpace][area.index];
-          auto& inflowsmatrix = area.hydro.series->storage;
-          auto tsIndex = (uint)ptchro.Hydraulique;
-          assert(inflowsmatrix.width && inflowsmatrix.height);
-          auto const& srcinflows = inflowsmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
-
-          /* TODO CR25:
-             Consider moving pre-checks to -> src/solver/application.cpp -
-             NOT POSSIBLE -> scenarioHydroLevels not initialized at that point yet!?
-             Issue with pre-checks at this point: pre-checks done year by year, so simulation can
-             crash after couple of years and the time is waisted for the user!
-              */
-
-          double initialReservoirLevel = study.scenarioHydroLevels[area.index][tsIndex];
-          double finalReservoirLevel = study.scenarioFinalHydroLevels[area.index][tsIndex];
-
-          if (area.hydro.reservoirManagement && !area.hydro.useWaterValue
-              && !isnan(finalReservoirLevel) && !isnan(initialReservoirLevel))
-          {
-              // collect data for pre-checks
-              // uint initReservoirLvlMonth = area.hydro.initializeReservoirLevelDate;
-              // uint initReservoirLvlDay = calendar.months[initReservoirLvlMonth].daysYear.first;
-              double reservoirCapacity = area.hydro.reservoirCapacity;
-              double lowLevelLastDay
-                = area.hydro.reservoirLevel[Data::PartHydro::minimum][DAYS_PER_YEAR - 1];
-              double highLevelLastDay
-                = area.hydro.reservoirLevel[Data::PartHydro::maximum][DAYS_PER_YEAR - 1];
-              double totalYearInflows = 0.0;
-              // calculate yearly inflows
-              // for (uint day = initReservoirLvlDay; day < DAYS_PER_YEAR; ++day)
-              for (uint day = 0; day < DAYS_PER_YEAR; ++day)
-              {
-                  totalYearInflows += srcinflows[day];
-              }
-              // pre-check 1 -> reservoir_levelDay_365 – reservoir_levelDay_1 ≤ yearly_inflows
-              if ((finalReservoirLevel - initialReservoirLevel) * reservoirCapacity
-                  > totalYearInflows * 24)
-              {
-                  logs.error() << "Year: " << tsIndex + 1 << ". Area: " << area.name
-                               << ". Incompatible total inflows: " << totalYearInflows
-                               << " with initial: " << initialReservoirLevel
-                               << " and final: " << finalReservoirLevel << " reservoir levels.";
-                  preChecksPasses = false;
-              }
-              // pre-check 2 -> final reservoir level set by the user is within the rule curves for
-              // the final day
-              if (finalReservoirLevel < lowLevelLastDay || finalReservoirLevel > highLevelLastDay)
-              {
-                  logs.error() << "Year: " << tsIndex + 1 << ". Area: " << area.name
-                               << ". Specifed final reservoir level: " << finalReservoirLevel
-                               << " is incompatible with reservoir level rule curve ["
-                               << lowLevelLastDay << " , " << highLevelLastDay << "]";
-                  preChecksPasses = false;
-              }
-          }
-      });
-    if (!preChecksPasses)
-    {
-        logs.fatal() << "At least one year has failed final reservoir level pre-checks.";
-        AntaresSolverEmergencyShutdown();
-    }
 }
 
 void HydroManagement::prepareInflowsScaling(uint numSpace)
@@ -446,7 +374,6 @@ void HydroManagement::operator()(double* randomReservoirLevel,
 {
     memset(pAreas[numSpace], 0, sizeof(PerArea) * study.areas.size());
 
-    finalReservoirLevelPreChecks(numSpace);
     prepareInflowsScaling(numSpace);
 
     if (parameters.adequacy())
