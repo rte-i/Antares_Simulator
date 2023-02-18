@@ -59,7 +59,11 @@ void H2O_M_InitialiserLeSecondMembre(DONNEES_ANNUELLES* DonneesAnnuelles)
         Cnt++;
     }
 
-    SecondMembre[Cnt] = DonneesAnnuelles->Volume[0] - DonneesAnnuelles->Apport[NbPdt - 1];
+    SecondMembre[Cnt] = DonneesAnnuelles->Volume[0] - DonneesAnnuelles->Apport[NbPdt - 1] - 0.01; 
+    // Implement delta directly in the solver/RHS ?!
+    // Tested -> works for a simple exapmle same as the preposition-1
+    // However this preposition-2 seems smother since the solver can decide how to spread energy excess/deficit through the whole year
+    // while in preposition-1 the energy excess/deficit is spread linearly through the year (same for all monthly inflows)! 
     Cnt++;
 
     for (Pdt = 1; Pdt < NbPdt; Pdt++)
