@@ -87,28 +87,12 @@ static void CheckHydroAllocationProblem(Data::Area& area,
 }
 
 
-double HydroManagement::prepareMonthlyTargetGenerations(Data::Area& area, PerArea& data) // CR25 needs to be implemented here !?
+double HydroManagement::prepareMonthlyTargetGenerations(Data::Area& area, PerArea& data)
 {
-    double total = 0; 
-    // change Total (total is in % of the reservoir capacity!!) ???!!!
-    // if only value total is changed nothing will happen ->
-    // since total is only forwarded as max generation per each month problem.TurbineMax[month] = totalInflowsYear 
-    double delta = +0.01/12; // to be added to each monthly inflow as extra/minus inflows
+    double total = 0;
+
     for (uint realmonth = 0; realmonth != 12; ++realmonth)
-    {
-        data.inflows[realmonth] += delta; 
-        // do not push monthly inflow into negative value ?!-> 
-        // actually inflow value per month can be negative
-        // the issue is when the totalYearlyInflow is negative - then the simulation is broken !!
-        // this should not happen because of the pre-check-1 -> reservoir_levelDay_365 – reservoir_levelDay_1 ≤ yearly_inflows
-
-        // The implementation will not reach final level if delta is positive and all the consumption is already supplied. ->
-        // nowhere to spend the energy from water -> will not go into overflow just to reach the final reservoir level!
-        // as discussed with RTE (JM)
-
-        total += data.inflows[realmonth]; 
-        // inflows sum of TS values (total is in % of the reservoir capacity!!)!!
-    }
+        total += data.inflows[realmonth];
 
     if (not area.hydro.followLoadModulations)
     {
@@ -201,7 +185,7 @@ void HydroManagement::prepareMonthlyOptimalGenerations(double* random_reservoir_
                 uint firstDay = study.calendar.months[simulationMonth].daysYear.first;
 
                 problem.TurbineMax[month] = totalInflowsYear;
-                problem.TurbineMin[month] = data.mingens[realmonth];
+                problem.TurbineMin[month] = data.mingens[realmonth]; //CR22 montly mingen
                 problem.TurbineCible[month] = data.MTG[realmonth];
                 problem.Apport[month] = data.inflows[realmonth];
                 problem.VolumeMin[month] = minLvl[firstDay];
@@ -214,14 +198,13 @@ void HydroManagement::prepareMonthlyOptimalGenerations(double* random_reservoir_
             case OUI:
             {
                 if (Logs::Verbosity::Debug::enabled)
-                    CheckHydroAllocationProblem(area, problem, initReservoirLvlMonth, lvi); //skip this if final reservoir level is used 
+                    CheckHydroAllocationProblem(area, problem, initReservoirLvlMonth, lvi);
 
                 for (uint month = 0; month != 12; ++month)
                 {
                     uint realmonth = (initReservoirLvlMonth + month) % 12;
 
-                    data.MOG[realmonth] = problem.Turbine[month] * area.hydro.reservoirCapacity; 
-                    // MOG (optimal generation is output) while target generation MTG is input!
+                    data.MOG[realmonth] = problem.Turbine[month] * area.hydro.reservoirCapacity;
                     data.MOL[realmonth] = problem.Volume[month];
                 }
                 data.MOL[initReservoirLvlMonth] = lvi;
