@@ -93,6 +93,19 @@ HydroManagement::~HydroManagement()
     delete[] pAreas;
 }
 
+void HydroManagement::finalReservoirLevelInflowCorrection(const Data::Area& area,
+                                                          PerArea& data,
+                                                          uint tsIndex)
+{
+    if (area.hydro.finalReservoirLevelCorrection.empty())
+        return;
+    double delta = area.hydro.finalReservoirLevelCorrection[tsIndex];
+    if (delta > 0)
+        data.inflows[0] += delta;
+    else if (delta < 0)
+        data.inflows[11] += delta;
+}
+
 void HydroManagement::prepareInflowsScaling(uint numSpace)
 {
     auto& calendar = study.calendar;
@@ -175,6 +188,9 @@ void HydroManagement::prepareInflowsScaling(uint numSpace)
                 }
             }
         }
+
+        // CR25 - Final Reservoir Level - Inflow Correction
+        finalReservoirLevelInflowCorrection(area, data, tsIndex);
 
         if (area.hydro.followLoadModulations and area.hydro.reservoirManagement)
         {

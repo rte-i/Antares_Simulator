@@ -87,6 +87,8 @@ private:
     // note: inflows may have two different types, if in swap mode or not
     // \return The total inflow for the whole year
     double prepareMonthlyTargetGenerations(Data::Area& area, PerArea& data);
+    // corrects monthly inflows accordingly in order to reach final reservoir level
+    void finalReservoirLevelInflowCorrection(const Data::Area& area, PerArea& data, uint tsIndex);
 
     void prepareDailyOptimalGenerations(Solver::Variable::State& state, uint y, uint numSpace);
     void prepareDailyOptimalGenerations(Solver::Variable::State& state,
