@@ -97,9 +97,9 @@ void HydroManagement::finalReservoirLevelInflowCorrection(const Data::Area& area
                                                           PerArea& data,
                                                           uint tsIndex)
 {
-    if (area.hydro.finalReservoirLevelCorrection.empty())
+    if (area.hydro.finalReservoirLevelRuntimeData.deltaLevel.empty())
         return;
-    double delta = area.hydro.finalReservoirLevelCorrection[tsIndex];
+    double delta = area.hydro.finalReservoirLevelRuntimeData.deltaLevel[tsIndex];
     if (delta > 0)
         data.inflows[0] += delta;
     else if (delta < 0)
