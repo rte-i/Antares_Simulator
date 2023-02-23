@@ -176,6 +176,7 @@ void HydroManagement::prepareMonthlyOptimalGenerations(double* random_reservoir_
             problem.CoutDepassementVolume = 1e2;
             problem.CoutViolMaxDuVolumeMin = 1e5;
             problem.VolumeInitial = lvi;
+            logs.debug() << "VolumeInitial: " << lvi;
 
             for (unsigned month = 0; month != 12; ++month)
             {
@@ -190,6 +191,24 @@ void HydroManagement::prepareMonthlyOptimalGenerations(double* random_reservoir_
                 problem.Apport[month] = data.inflows[realmonth];
                 problem.VolumeMin[month] = minLvl[firstDay];
                 problem.VolumeMax[month] = maxLvl[firstDay];
+
+                // fix reservoir level for specified month if final reservoir level is used
+                if (data.finalReservoirLevel != -1.0)
+                    problem.VolumeMin[data.finalReservoirLevelMonth]
+                      = problem.VolumeMax[data.finalReservoirLevelMonth] = data.finalReservoirLevel;
+
+                logs.debug() << "======H20 INPUT============";
+                logs.debug() << "Month: " << month;
+                logs.debug() << "realMonth: " << realmonth;
+                logs.debug() << "simulationMonth: " << simulationMonth;
+                logs.debug() << "firstDay: " << firstDay;
+
+                logs.debug() << "month->realMonth: " << month<<"->"<<realmonth << " .problem.TurbineMax[month]: " << totalInflowsYear;
+                logs.debug() << "month->realMonth: " << month<<"->"<<realmonth << " .problem.TurbineMin[month]: " << data.mingens[realmonth];
+                logs.debug() << "month->realMonth: " << month<<"->"<<realmonth << " .problem.TurbineCible[month]: " << problem.TurbineCible[month];
+                logs.debug() << "month->realMonth: " << month<<"->"<<realmonth << " .problem.Apport[month]: " << problem.Apport[month];
+                logs.debug() << "month->realMonth: " << month<<"->"<<realmonth << " .problem.VolumeMin[month]: " << problem.VolumeMin[month];
+                logs.debug() << "month->realMonth: " << month<<"->"<<realmonth << " .problem.VolumeMax[month]: " << problem.VolumeMax[month];
             }
 
             H2O_M_OptimiserUneAnnee(&problem, 0);
@@ -206,6 +225,13 @@ void HydroManagement::prepareMonthlyOptimalGenerations(double* random_reservoir_
 
                     data.MOG[realmonth] = problem.Turbine[month] * area.hydro.reservoirCapacity;
                     data.MOL[realmonth] = problem.Volume[month];
+
+                    logs.debug() << "======H20 OUTPUT============";
+                    logs.debug() << "Month: " << month;
+                    logs.debug() << "realMonth: " << realmonth;
+
+                    logs.debug() << "realMonth->month: " << realmonth<<"->"<<month << " .data.MOG[realmonth]: " << data.MOG[realmonth];
+                    logs.debug() << "realMonth->month: " << realmonth<<"->"<<month << " .data.MOL[realmonth]: " << data.MOL[realmonth];
                 }
                 data.MOL[initReservoirLvlMonth] = lvi;
                 solutionCost = problem.ProblemeHydraulique->CoutDeLaSolution;
