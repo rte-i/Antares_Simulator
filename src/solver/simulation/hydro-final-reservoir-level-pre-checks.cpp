@@ -55,6 +55,7 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
               double initialReservoirLevel = study.scenarioHydroLevels[area.index][tsIndex];
               double finalReservoirLevel = study.scenarioFinalHydroLevels[area.index][tsIndex];
               double deltaReservoirLevel = 0.0;
+              int simEndRealMonth = 0;
               // FinalReservoirLevelRuntimeData
               auto& finLevData = area.hydro.finalReservoirLevelRuntimeData;
               finLevData.includeFinalReservoirLevel.push_back(false);
@@ -62,7 +63,7 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                 Antares::Data::FinalReservoirLevelMode::completeYear);
               finLevData.deltaLevel.push_back(deltaReservoirLevel);
               finLevData.endLevel.push_back(deltaReservoirLevel);
-              finLevData.endMonthIndex.push_back(0);
+              finLevData.endMonthIndex.push_back(simEndRealMonth);
 
               if (area.hydro.reservoirManagement && !area.hydro.useWaterValue
                   && !isnan(finalReservoirLevel) && !isnan(initialReservoirLevel))
@@ -70,9 +71,9 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                   // deltaReservoirLevel
                   deltaReservoirLevel = initialReservoirLevel - finalReservoirLevel;
                   // collect data for pre-checks
-                  uint initReservoirLvlMonth
+                  int initReservoirLvlMonth
                     = area.hydro.initializeReservoirLevelDate; // month [0-11]
-                  uint initReservoirLvlDay
+                  int initReservoirLvlDay
                     = study.calendar.months[initReservoirLvlMonth].daysYear.first;
                   double reservoirCapacity = area.hydro.reservoirCapacity;
                   double lowLevelLastDay
@@ -91,7 +92,7 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                   }
                   else if (initReservoirLvlDay != 0 && simEndDay == DAYS_PER_YEAR)
                   {
-                      finLevData.endMonthIndex.at(tsIndex) = 0;
+                      simEndRealMonth = 0;
                       finLevData.finResLevelMode.at(tsIndex)
                         = Antares::Data::FinalReservoirLevelMode::incompleteYear;
                   }
@@ -101,39 +102,46 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                       uint simEnd_MonthFirstDay = study.calendar.months[simEndMonth].daysYear.first;
                       uint simEnd_MonthLastDay = study.calendar.months[simEndMonth].daysYear.end;
 
-                      finLevData.endMonthIndex.at(tsIndex)
+                      simEndRealMonth
                         = (simEndDay - simEnd_MonthFirstDay) <= (simEnd_MonthLastDay - simEndDay)
                             ? simEndMonth
                             : simEndMonth + 1;
                       finLevData.finResLevelMode.at(tsIndex)
                         = Antares::Data::FinalReservoirLevelMode::incompleteYear;
 
-                      if (finLevData.endMonthIndex.at(tsIndex) == 12 && initReservoirLvlDay == 0)
+                      if (simEndRealMonth == 12 && initReservoirLvlDay == 0)
                       {
-                          finLevData.endMonthIndex.at(tsIndex) = 0;
+                          simEndRealMonth = 0;
                           finLevData.finResLevelMode.at(tsIndex)
                             = Antares::Data::FinalReservoirLevelMode::completeYear;
                       }
                       // E.g. End Date = 21.Dec && InitReservoirLevelDate = 1.Jan ->
                       // - > go back to first case
-                      else if (finLevData.endMonthIndex.at(tsIndex) == 12
-                               && initReservoirLvlDay != 0)
-                          finLevData.endMonthIndex.at(tsIndex) = 0;
+                      else if (simEndRealMonth == 12 && initReservoirLvlDay != 0)
+                          simEndRealMonth = 0;
                       // End Date = 21.Dec && InitReservoirLevelDate = 1.Mar
                       // Reach FinalReservoirLevel at 1.Jan
-                      else if (finLevData.endMonthIndex.at(tsIndex) == initReservoirLvlMonth)
-                          finLevData.endMonthIndex.at(tsIndex)
-                            = (finLevData.endMonthIndex.at(tsIndex) + 1) % 12;
+                      else if (simEndRealMonth == initReservoirLvlMonth)
+                          simEndRealMonth = (simEndRealMonth + 1) % 12;
                       // E.g. End Date = 10.Jan && InitReservoirLevelDate = 1.Jan ->
                       // we need to move FinalReservoirLevel to 1.Feb.
                       // Cannot do both init and final on the same day
                   }
-                //   logs.debug() << "tsIndex: " << tsIndex;
-                //   logs.debug() << "includeFinalReservoirLevel: " << to_string(finLevData.includeFinalReservoirLevel.at(tsIndex));
-                //   logs.debug() << "finResLevelMode: " << to_string(finLevData.finResLevelMode.at(tsIndex));
-                //   logs.debug() << "deltaLevel: " << finLevData.deltaLevel.at(tsIndex);
-                //   logs.debug() << "endLevel: " << finLevData.endLevel.at(tsIndex);
-                //   logs.debug() << "endMonthIndex: " << finLevData.endMonthIndex.at(tsIndex);
+                  // Now convert to month if initialization is not done in January
+                  int h20_solver_sim_end_month = (simEndRealMonth - initReservoirLvlMonth) >= 0
+                                                   ? simEndRealMonth - initReservoirLvlMonth
+                                                   : simEndRealMonth - initReservoirLvlMonth + 12;
+                  finLevData.endMonthIndex.at(tsIndex) = h20_solver_sim_end_month;
+
+                  logs.debug() << "tsIndex: " << tsIndex;
+                  logs.debug() << "includeFinalReservoirLevel: "
+                               << to_string(finLevData.includeFinalReservoirLevel.at(tsIndex));
+                  logs.debug() << "finResLevelMode: "
+                               << to_string(finLevData.finResLevelMode.at(tsIndex));
+                  logs.debug() << "deltaLevel: " << finLevData.deltaLevel.at(tsIndex);
+                  logs.debug() << "endLevel: " << finLevData.endLevel.at(tsIndex);
+                  logs.debug() << "realMonth-SimEnd: " << simEndRealMonth;
+                  logs.debug() << "endMonthIndex: " << finLevData.endMonthIndex.at(tsIndex);
 
                   // calculate yearly inflows
                   for (uint day = initReservoirLvlDay; day < simEndDay; ++day)

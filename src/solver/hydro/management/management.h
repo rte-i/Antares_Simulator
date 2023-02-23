@@ -88,7 +88,7 @@ private:
     // \return The total inflow for the whole year
     double prepareMonthlyTargetGenerations(Data::Area& area, PerArea& data);
     // corrects monthly inflows accordingly in order to reach final reservoir level
-    void finalReservoirLevelInflowCorrection(const Data::Area& area, PerArea& data, uint tsIndex);
+    void finalReservoirLevelCalculation(const Data::Area& area, PerArea& data, uint tsIndex);
 
     void prepareDailyOptimalGenerations(Solver::Variable::State& state, uint y, uint numSpace);
     void prepareDailyOptimalGenerations(Solver::Variable::State& state,
@@ -132,6 +132,11 @@ public:
         //! inflows
         double inflows[12];
         double mingens[12]; //CR22 mingen
+        
+        //! Final reservoir level
+        double finalReservoirLevel;
+        //! Month to reach final reservoir level (h20_solver month, not real month);
+        uint finalReservoirLevelMonth;
 
         //! Net demand, for each day of the year, for each area
         double DLN[dayYearCount];
