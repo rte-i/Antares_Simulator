@@ -36,6 +36,7 @@ namespace Solver
 void FinalReservoirLevelPreChecks(Data::Study& study)
 {
     bool preChecksPasses = true;
+    uint simEndDay = study.parameters.simulationDays.end;
     for (uint tsIndex = 0; tsIndex != study.scenarioFinalHydroLevels.height; ++tsIndex)
     {
         study.areas.each(
@@ -69,14 +70,23 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                     = study.calendar.months[initReservoirLvlMonth].daysYear.first;
                   double reservoirCapacity = area.hydro.reservoirCapacity;
                   double lowLevelLastDay
-                    = area.hydro.reservoirLevel[Data::PartHydro::minimum][DAYS_PER_YEAR - 1];
+                    = area.hydro.reservoirLevel[Data::PartHydro::minimum][simEndDay - 1];
                   double highLevelLastDay
-                    = area.hydro.reservoirLevel[Data::PartHydro::maximum][DAYS_PER_YEAR - 1];
+                    = area.hydro.reservoirLevel[Data::PartHydro::maximum][simEndDay - 1];
                   double totalYearInflows = 0.0;
                   // calculate yearly inflows
-                  for (uint day = initReservoirLvlDay; day < DAYS_PER_YEAR; ++day)
+                  for (uint day = initReservoirLvlDay; day < simEndDay; ++day)
                   {
                       totalYearInflows += srcinflows[day];
+                  }
+                  // pre-check 0 -> initialization date of the reservoir level is less than
+                  // simulation end date
+                  if (simEndDay <= initReservoirLvlDay)
+                  {
+                      logs.error() << "Year: " << tsIndex + 1 << ". Area: " << area.name
+                                   << ". Initial reservoir level initialization day incompatible "
+                                      "with simulation end day";
+                      preChecksPasses = false;
                   }
                   // pre-check 1 -> reservoir_levelDay_365 – reservoir_levelDay_1 ≤
                   // yearly_inflows
@@ -101,7 +111,7 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                       preChecksPasses = false;
                   }
               }
-              area.hydro.finalReservoirLevelCorrection.push_back(deltaReservoirLevel);
+              area.hydro.finalReservoirLevelRuntimeData.deltaLevel.push_back(deltaReservoirLevel);
           });
     }
     if (!preChecksPasses)
