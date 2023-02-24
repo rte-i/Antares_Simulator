@@ -68,6 +68,8 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
               if (area.hydro.reservoirManagement && !area.hydro.useWaterValue
                   && !isnan(finalReservoirLevel) && !isnan(initialReservoirLevel))
               {
+                  // simEndDayReal
+                  uint simEndDayReal = simEndDay;
                   // deltaReservoirLevel
                   deltaReservoirLevel = initialReservoirLevel - finalReservoirLevel;
                   // collect data for pre-checks
@@ -76,10 +78,6 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                   int initReservoirLvlDay
                     = study.calendar.months[initReservoirLvlMonth].daysYear.first;
                   double reservoirCapacity = area.hydro.reservoirCapacity;
-                  double lowLevelLastDay
-                    = area.hydro.reservoirLevel[Data::PartHydro::minimum][simEndDay - 1];
-                  double highLevelLastDay
-                    = area.hydro.reservoirLevel[Data::PartHydro::maximum][simEndDay - 1];
                   double totalYearInflows = 0.0;
                   // FinalReservoirLevelRuntimeData
                   finLevData.includeFinalReservoirLevel.at(tsIndex) = true;
@@ -121,11 +119,27 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                           simEndRealMonth = 0;
                       // End Date = 21.Dec && InitReservoirLevelDate = 1.Mar
                       // Reach FinalReservoirLevel at 1.Jan
-                      else if (simEndRealMonth == initReservoirLvlMonth)
+                      else if (simEndRealMonth == initReservoirLvlMonth
+                               && simEndDay >= initReservoirLvlDay)
                           simEndRealMonth = (simEndRealMonth + 1) % 12;
                       // E.g. End Date = 10.Jan && InitReservoirLevelDate = 1.Jan ->
                       // we need to move FinalReservoirLevel to 1.Feb.
                       // Cannot do both init and final on the same day
+                      else if (simEndRealMonth == initReservoirLvlMonth
+                               && simEndDay < initReservoirLvlDay)
+                          simEndRealMonth = (simEndRealMonth - 1) % 12;
+                      // E.g. End Date = 25.Nov && InitReservoirLevelDate = 1.Dec ->
+                      // we need to move FinalReservoirLevel to 1.Nov.
+                      // Cannot do both init and final on the same day
+
+                      // log out that the final reservoir level will be reached on some other day
+                      if (simEndDay != study.calendar.months[simEndRealMonth].daysYear.first)
+                      {
+                          simEndDayReal = study.calendar.months[simEndRealMonth].daysYear.first;
+                          logs.info()
+                            << "Year: " << tsIndex + 1 << ". Area: " << area.name
+                            << ". Final reservoir level will be reached on day: " << simEndDayReal;
+                      }
                   }
                   // Now convert to month if initialization is not done in January
                   int h20_solver_sim_end_month = (simEndRealMonth - initReservoirLvlMonth) >= 0
@@ -141,21 +155,27 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                   logs.debug() << "deltaLevel: " << finLevData.deltaLevel.at(tsIndex);
                   logs.debug() << "endLevel: " << finLevData.endLevel.at(tsIndex);
                   logs.debug() << "realMonth-SimEnd: " << simEndRealMonth;
-                  logs.debug() << "endMonthIndex: " << finLevData.endMonthIndex.at(tsIndex);
+                  logs.debug() << "endMonthIndex_h20_solver: " << finLevData.endMonthIndex.at(tsIndex);
+                  logs.debug() << "simEndDayReal: " << simEndDayReal;
+                  logs.debug() << "initReservoirLvlDay: " << initReservoirLvlDay;
 
-                  // calculate yearly inflows
-                  for (uint day = initReservoirLvlDay; day < simEndDay; ++day)
+                  // rule curve values for simEndDayReal
+                  double lowLevelLastDay
+                    = area.hydro.reservoirLevel[Data::PartHydro::minimum][simEndDayReal - 1];
+                  double highLevelLastDay
+                    = area.hydro.reservoirLevel[Data::PartHydro::maximum][simEndDayReal - 1];
+                  // calculate (partial)yearly inflows
+                  if (initReservoirLvlDay <= simEndDayReal)
                   {
-                      totalYearInflows += srcinflows[day];
+                      for (uint day = initReservoirLvlDay; day < simEndDayReal; ++day)
+                          totalYearInflows += srcinflows[day];
                   }
-                  // pre-check 0 -> initialization date of the reservoir level is less than
-                  // simulation end date
-                  if (simEndDay <= initReservoirLvlDay)
+                  else
                   {
-                      logs.error() << "Year: " << tsIndex + 1 << ". Area: " << area.name
-                                   << ". Initial reservoir level initialization day incompatible "
-                                      "with simulation end day";
-                      preChecksPasses = false;
+                      for (uint day = initReservoirLvlDay; day < DAYS_PER_YEAR; ++day)
+                          totalYearInflows += srcinflows[day];
+                      for (uint day = 0; day < simEndDayReal; ++day)
+                          totalYearInflows += srcinflows[day];
                   }
                   // pre-check 1 -> reservoir_levelDay_365 – reservoir_levelDay_1 ≤
                   // yearly_inflows
