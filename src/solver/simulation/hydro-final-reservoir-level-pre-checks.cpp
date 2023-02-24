@@ -36,6 +36,7 @@ namespace Solver
 void FinalReservoirLevelPreChecks(Data::Study& study)
 {
     bool preChecksPasses = true;
+    // Last Day of the simulation
     uint simEndDay = study.parameters.simulationDays.end;
     for (uint tsIndex = 0; tsIndex != study.scenarioFinalHydroLevels.height; ++tsIndex)
     {
@@ -50,6 +51,7 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
               scenario-builder) this can lead to error reporting for MC years that are not used (not
               the case when pre-checks done im management.cpp)
               */
+              // general data
               auto& inflowsmatrix = area.hydro.series->storage;
               auto const& srcinflows = inflowsmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
               double initialReservoirLevel = study.scenarioHydroLevels[area.index][tsIndex];
@@ -83,23 +85,27 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                   finLevData.includeFinalReservoirLevel.at(tsIndex) = true;
                   finLevData.endLevel.at(tsIndex) = finalReservoirLevel;
                   finLevData.deltaLevel.at(tsIndex) = deltaReservoirLevel;
+                  // select finResLevelMode
+                  // Mode-1 
                   if (initReservoirLvlDay == 0 && simEndDay == DAYS_PER_YEAR)
                   {
                       finLevData.finResLevelMode.at(tsIndex)
                         = Antares::Data::FinalReservoirLevelMode::completeYear;
                   }
+                  // Mode-2
                   else if (initReservoirLvlDay != 0 && simEndDay == DAYS_PER_YEAR)
                   {
                       simEndRealMonth = 0;
                       finLevData.finResLevelMode.at(tsIndex)
                         = Antares::Data::FinalReservoirLevelMode::incompleteYear;
                   }
+                  // Mode-3/4
                   else
                   {
                       uint simEndMonth = study.calendar.days[simEndDay].month;
                       uint simEnd_MonthFirstDay = study.calendar.months[simEndMonth].daysYear.first;
                       uint simEnd_MonthLastDay = study.calendar.months[simEndMonth].daysYear.end;
-
+                      // select month in which to reach final reservoir level (1st day of the selected month)
                       simEndRealMonth
                         = (simEndDay - simEnd_MonthFirstDay) <= (simEnd_MonthLastDay - simEndDay)
                             ? simEndMonth
@@ -147,6 +153,7 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                                                    : simEndRealMonth - initReservoirLvlMonth + 12;
                   finLevData.endMonthIndex.at(tsIndex) = h20_solver_sim_end_month;
 
+                  // logs for debugging
                   logs.debug() << "tsIndex: " << tsIndex;
                   logs.debug() << "includeFinalReservoirLevel: "
                                << to_string(finLevData.includeFinalReservoirLevel.at(tsIndex));
@@ -158,6 +165,7 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                   logs.debug() << "endMonthIndex_h20_solver: " << finLevData.endMonthIndex.at(tsIndex);
                   logs.debug() << "simEndDayReal: " << simEndDayReal;
                   logs.debug() << "initReservoirLvlDay: " << initReservoirLvlDay;
+                  // end of logs for debugging
 
                   // rule curve values for simEndDayReal
                   double lowLevelLastDay
