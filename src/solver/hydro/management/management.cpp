@@ -93,34 +93,37 @@ HydroManagement::~HydroManagement()
     delete[] pAreas;
 }
 
-void HydroManagement::finalReservoirLevelCalculation(const Data::Area& area,
-                                                     PerArea& data,
-                                                     uint tsIndex)
+void HydroManagement::prepareFinalReservoirLevelData(uint numSpace, uint year)
 {
-    data.finalReservoirLevel = -1.0;
-    if (area.hydro.finalReservoirLevelRuntimeData.deltaLevel.empty())
-        return;
+    study.areas.each(
+      [&](Data::Area& area)
+      {
+          auto& data = pAreas[numSpace][area.index];
+          data.finalReservoirLevel = -1.0;
+          if (area.hydro.finalReservoirLevelRuntimeData.deltaLevel.empty())
+              return;
 
-    if (!area.hydro.finalReservoirLevelRuntimeData.includeFinalReservoirLevel[tsIndex])
-        return;
+          if (!area.hydro.finalReservoirLevelRuntimeData.includeFinalReservoirLevel[year])
+              return;
 
-    if (area.hydro.finalReservoirLevelRuntimeData.finResLevelMode[tsIndex]
-        == Data::FinalReservoirLevelMode::completeYear)
-    {
-        double delta = area.hydro.finalReservoirLevelRuntimeData.deltaLevel[tsIndex];
-        // must be done before prepareMonthlyTargetGenerations
-        if (delta > 0)
-            data.inflows[0] += delta;
-        else if (delta < 0)
-            data.inflows[11] += delta;
-    }
-    else if (area.hydro.finalReservoirLevelRuntimeData.finResLevelMode[tsIndex]
-             == Data::FinalReservoirLevelMode::incompleteYear)
-    {
-        data.finalReservoirLevel = area.hydro.finalReservoirLevelRuntimeData.endLevel[tsIndex];
-        data.finalReservoirLevelMonth
-          = area.hydro.finalReservoirLevelRuntimeData.endMonthIndex[tsIndex];
-    }
+          if (area.hydro.finalReservoirLevelRuntimeData.finResLevelMode[year]
+              == Data::FinalReservoirLevelMode::completeYear)
+          {
+              double delta = area.hydro.finalReservoirLevelRuntimeData.deltaLevel[year];
+              // must be done before prepareMonthlyTargetGenerations
+              if (delta > 0)
+                  data.inflows[0] += delta;
+              else if (delta < 0)
+                  data.inflows[11] += delta;
+          }
+          else if (area.hydro.finalReservoirLevelRuntimeData.finResLevelMode[year]
+                   == Data::FinalReservoirLevelMode::incompleteYear)
+          {
+              data.finalReservoirLevel = area.hydro.finalReservoirLevelRuntimeData.endLevel[year];
+              data.finalReservoirLevelMonth
+                = area.hydro.finalReservoirLevelRuntimeData.endMonthIndex[year];
+          }
+      });
 }
 
 void HydroManagement::prepareInflowsScaling(uint numSpace)
@@ -205,9 +208,6 @@ void HydroManagement::prepareInflowsScaling(uint numSpace)
                 }
             }
         }
-
-        // CR25 - Final Reservoir Level
-        finalReservoirLevelCalculation(area, data, tsIndex);
 
         if (area.hydro.followLoadModulations and area.hydro.reservoirManagement)
         {
@@ -406,8 +406,8 @@ void HydroManagement::operator()(double* randomReservoirLevel,
                                  uint numSpace)
 {
     memset(pAreas[numSpace], 0, sizeof(PerArea) * study.areas.size());
-
     prepareInflowsScaling(numSpace);
+    prepareFinalReservoirLevelData(numSpace, y);
 
     if (parameters.adequacy())
         prepareNetDemand<Data::stdmAdequacy>(numSpace);

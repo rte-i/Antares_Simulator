@@ -147,7 +147,7 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                   finLevData.endMonthIndex.at(yearIndex) = h20_solver_sim_end_month;
 
                   // logs for debugging
-                  logs.debug() << "yearIndex=TSNumber: " << yearIndex;
+                  logs.debug() << "yearIndex: " << yearIndex;
                   logs.debug() << "includeFinalReservoirLevel: "
                                << to_string(finLevData.includeFinalReservoirLevel.at(yearIndex));
                   logs.debug() << "finResLevelMode: "
