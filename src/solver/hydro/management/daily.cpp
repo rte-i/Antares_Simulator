@@ -488,6 +488,15 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
                 problem.niveauBas[dayMonth] = lowLevel[(day + 1) % 365];
                 problem.apports[dayMonth] = srcinflows[day] / reservoirCapacity;
 
+                // logs.debug() << "----------H20 INPUT DAILY--------------";
+                // logs.debug() << "day: " << day;
+                // logs.debug() << "dayMonth: " << dayMonth;
+                // logs.debug() << "problem.TurbineMax[dayMonth]: " << problem.TurbineMax[dayMonth];
+                // logs.debug() << "problem.TurbineMin[dayMonth]: " << problem.TurbineMin[dayMonth];
+                // logs.debug() << "problem.TurbineCible[dayMonth]-Target: " << problem.TurbineCible[dayMonth];
+                // logs.debug() << "problem.niveauBas[dayMonth]: " << problem.niveauBas[dayMonth];
+                // logs.debug() << "problem.apports[dayMonth]: " << problem.apports[dayMonth];
+
                 dayMonth++;
             }
 
@@ -520,10 +529,18 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
                         debugData->VIO[day] = problem.violations[dayMonth];
                     }
 
+                // logs.debug() << "----------H20 OUTPUT DAILY--------------";
+                // logs.debug() << "day: " << day;
+                // logs.debug() << "dayMonth: " << dayMonth;
+                // logs.debug() << "problem.Turbine[dayMonth] * reservoirCapacity: " << valgen.HydrauliqueModulableQuotidien[day];
+                // logs.debug() << "problem.niveauxFinJours[dayMonth]:-Levela at dayMonth End: " << problem.niveauxFinJours[dayMonth];
+
                     dayMonth++;
                 }
 
                 valgen.NiveauxReservoirsDebutJours[firstDay] = monthInitialLevel;
+                logs.debug() <<"====================H20 OUTPUT DAILY SUM UP PER MONTH====================";
+                logs.debug() << "monthInitialLevel-LevelsReservoirsBeginningDays: " << monthInitialLevel;
                 for (uint day = firstDay + 1; day != endDay; ++day)
                     valgen.NiveauxReservoirsDebutJours[day]
                       = valgen.NiveauxReservoirsFinJours[day - 1];
@@ -531,6 +548,9 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
                 monthInitialLevel = problem.niveauxFinJours[dayMonth - 1];
 
                 wasteFromPreviousMonth = problem.waste * reservoirCapacity;
+
+                logs.debug() << "monthInitialLevel-levelsEndDays: " << monthInitialLevel;
+                logs.debug() << "wasteFromPreviousMonth: " << wasteFromPreviousMonth;
 
                 break;
             case NON:
@@ -549,6 +569,9 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
         uint firstDaySimu = study.parameters.simulationDays.first;
         state.problemeHebdo->previousSimulationFinalLevel[z]
           = valgen.NiveauxReservoirsDebutJours[firstDaySimu] * reservoirCapacity;
+
+        // logs.debug() << "firstDaySimu: " << firstDaySimu;
+        // logs.debug() << "previousSimulationFinalLevel[z]: " << state.problemeHebdo->previousSimulationFinalLevel[z];
 
         if (debugData)
         {
