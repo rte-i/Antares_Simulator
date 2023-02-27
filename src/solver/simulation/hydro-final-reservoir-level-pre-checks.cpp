@@ -27,7 +27,6 @@
 
 #include "hydro-final-reservoir-level-pre-checks.h"
 #include <antares/emergency.h>
-// #include "../solver/simulation/sim_extern_variables_globales.h"
 
 namespace Antares
 {
@@ -38,24 +37,18 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
     bool preChecksPasses = true;
     // Last Day of the simulation
     uint simEndDay = study.parameters.simulationDays.end;
-    for (uint tsIndex = 0; tsIndex != study.scenarioFinalHydroLevels.height; ++tsIndex)
+    for (uint yearIndex = 0; yearIndex != study.scenarioFinalHydroLevels.height; ++yearIndex)
     {
         study.areas.each(
           [&](Data::Area& area)
           {
-              // TODO CR25:
-              /*at this point the pre-checks are done for all MC before running the simulation
-              and the simulation is ended immediately not waisting user time!
-              However, at this point "tsIndex = (uint)ptchro.Hydraulique" is not assigned yet
-              so the pre-checks are done for all MC years (whether they are used or not in hydro
-              scenario-builder) this can lead to error reporting for MC years that are not used (not
-              the case when pre-checks done im management.cpp)
-              */
               // general data
+              const Data::DataSeriesHydro& data = *area.hydro.series;
+              int tsIndex = data.timeseriesNumbers[0][yearIndex];
               auto& inflowsmatrix = area.hydro.series->storage;
               auto const& srcinflows = inflowsmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
-              double initialReservoirLevel = study.scenarioHydroLevels[area.index][tsIndex];
-              double finalReservoirLevel = study.scenarioFinalHydroLevels[area.index][tsIndex];
+              double initialReservoirLevel = study.scenarioHydroLevels[area.index][yearIndex];
+              double finalReservoirLevel = study.scenarioFinalHydroLevels[area.index][yearIndex];
               double deltaReservoirLevel = 0.0;
               int simEndRealMonth = 0;
               // FinalReservoirLevelRuntimeData
@@ -82,21 +75,21 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                   double reservoirCapacity = area.hydro.reservoirCapacity;
                   double totalYearInflows = 0.0;
                   // FinalReservoirLevelRuntimeData
-                  finLevData.includeFinalReservoirLevel.at(tsIndex) = true;
-                  finLevData.endLevel.at(tsIndex) = finalReservoirLevel;
-                  finLevData.deltaLevel.at(tsIndex) = deltaReservoirLevel;
+                  finLevData.includeFinalReservoirLevel.at(yearIndex) = true;
+                  finLevData.endLevel.at(yearIndex) = finalReservoirLevel;
+                  finLevData.deltaLevel.at(yearIndex) = deltaReservoirLevel;
                   // select finResLevelMode
                   // Mode-1 
                   if (initReservoirLvlDay == 0 && simEndDay == DAYS_PER_YEAR)
                   {
-                      finLevData.finResLevelMode.at(tsIndex)
+                      finLevData.finResLevelMode.at(yearIndex)
                         = Antares::Data::FinalReservoirLevelMode::completeYear;
                   }
                   // Mode-2
                   else if (initReservoirLvlDay != 0 && simEndDay == DAYS_PER_YEAR)
                   {
                       simEndRealMonth = 0;
-                      finLevData.finResLevelMode.at(tsIndex)
+                      finLevData.finResLevelMode.at(yearIndex)
                         = Antares::Data::FinalReservoirLevelMode::incompleteYear;
                   }
                   // Mode-3/4
@@ -110,13 +103,13 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                         = (simEndDay - simEnd_MonthFirstDay) <= (simEnd_MonthLastDay - simEndDay)
                             ? simEndMonth
                             : simEndMonth + 1;
-                      finLevData.finResLevelMode.at(tsIndex)
+                      finLevData.finResLevelMode.at(yearIndex)
                         = Antares::Data::FinalReservoirLevelMode::incompleteYear;
 
                       if (simEndRealMonth == 12 && initReservoirLvlDay == 0)
                       {
                           simEndRealMonth = 0;
-                          finLevData.finResLevelMode.at(tsIndex)
+                          finLevData.finResLevelMode.at(yearIndex)
                             = Antares::Data::FinalReservoirLevelMode::completeYear;
                       }
                       // E.g. End Date = 21.Dec && InitReservoirLevelDate = 1.Jan ->
@@ -143,7 +136,7 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                       {
                           simEndDayReal = study.calendar.months[simEndRealMonth].daysYear.first;
                           logs.info()
-                            << "Year: " << tsIndex + 1 << ". Area: " << area.name
+                            << "Year: " << yearIndex + 1 << ". Area: " << area.name
                             << ". Final reservoir level will be reached on day: " << simEndDayReal;
                       }
                   }
@@ -151,18 +144,18 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                   int h20_solver_sim_end_month = (simEndRealMonth - initReservoirLvlMonth) >= 0
                                                    ? simEndRealMonth - initReservoirLvlMonth
                                                    : simEndRealMonth - initReservoirLvlMonth + 12;
-                  finLevData.endMonthIndex.at(tsIndex) = h20_solver_sim_end_month;
+                  finLevData.endMonthIndex.at(yearIndex) = h20_solver_sim_end_month;
 
                   // logs for debugging
-                  logs.debug() << "tsIndex: " << tsIndex;
+                  logs.debug() << "yearIndex=TSNumber: " << yearIndex;
                   logs.debug() << "includeFinalReservoirLevel: "
-                               << to_string(finLevData.includeFinalReservoirLevel.at(tsIndex));
+                               << to_string(finLevData.includeFinalReservoirLevel.at(yearIndex));
                   logs.debug() << "finResLevelMode: "
-                               << to_string(finLevData.finResLevelMode.at(tsIndex));
-                  logs.debug() << "deltaLevel: " << finLevData.deltaLevel.at(tsIndex);
-                  logs.debug() << "endLevel: " << finLevData.endLevel.at(tsIndex);
+                               << to_string(finLevData.finResLevelMode.at(yearIndex));
+                  logs.debug() << "deltaLevel: " << finLevData.deltaLevel.at(yearIndex);
+                  logs.debug() << "endLevel: " << finLevData.endLevel.at(yearIndex);
                   logs.debug() << "realMonth-SimEnd: " << simEndRealMonth;
-                  logs.debug() << "endMonthIndex_h20_solver: " << finLevData.endMonthIndex.at(tsIndex);
+                  logs.debug() << "endMonthIndex_h20_solver: " << finLevData.endMonthIndex.at(yearIndex);
                   logs.debug() << "simEndDayReal: " << simEndDayReal;
                   logs.debug() << "initReservoirLvlDay: " << initReservoirLvlDay;
                   // end of logs for debugging
@@ -191,7 +184,7 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                       > totalYearInflows) // ROR time-series in MW (power), SP time-series in MWh
                                           // (energy)
                   {
-                      logs.error() << "Year: " << tsIndex + 1 << ". Area: " << area.name
+                      logs.error() << "Year: " << yearIndex + 1 << ". Area: " << area.name
                                    << ". Incompatible total inflows: " << totalYearInflows
                                    << " with initial: " << initialReservoirLevel
                                    << " and final: " << finalReservoirLevel << " reservoir levels.";
@@ -202,7 +195,7 @@ void FinalReservoirLevelPreChecks(Data::Study& study)
                   if (finalReservoirLevel < lowLevelLastDay
                       || finalReservoirLevel > highLevelLastDay)
                   {
-                      logs.error() << "Year: " << tsIndex + 1 << ". Area: " << area.name
+                      logs.error() << "Year: " << yearIndex + 1 << ". Area: " << area.name
                                    << ". Specifed final reservoir level: " << finalReservoirLevel
                                    << " is incompatible with reservoir level rule curve ["
                                    << lowLevelLastDay << " , " << highLevelLastDay << "]";
