@@ -192,11 +192,6 @@ void HydroManagement::prepareMonthlyOptimalGenerations(double* random_reservoir_
                 problem.VolumeMin[month] = minLvl[firstDay];
                 problem.VolumeMax[month] = maxLvl[firstDay];
 
-                // fix reservoir level for specified month if final reservoir level is used
-                if (data.finalReservoirLevel != -1.0)
-                    problem.VolumeMin[data.finalReservoirLevelMonth]
-                      = problem.VolumeMax[data.finalReservoirLevelMonth] = data.finalReservoirLevel;
-
                 logs.debug() << "======H20 INPUT============";
                 logs.debug() << "Month: " << month;
                 logs.debug() << "realMonth: " << realmonth;
@@ -210,6 +205,10 @@ void HydroManagement::prepareMonthlyOptimalGenerations(double* random_reservoir_
                 logs.debug() << "month->realMonth: " << month<<"->"<<realmonth << " .problem.VolumeMin[month]: " << problem.VolumeMin[month];
                 logs.debug() << "month->realMonth: " << month<<"->"<<realmonth << " .problem.VolumeMax[month]: " << problem.VolumeMax[month];
             }
+            // fix reservoir level for specified month if final reservoir level is used
+            if (data.finalReservoirLevel != -1.0)
+                problem.VolumeMin[data.finalReservoirLevelMonth]
+                  = problem.VolumeMax[data.finalReservoirLevelMonth] = data.finalReservoirLevel;
 
             H2O_M_OptimiserUneAnnee(&problem, 0);
             switch (problem.ResultatsValides)
