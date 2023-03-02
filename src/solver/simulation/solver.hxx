@@ -36,7 +36,6 @@
 #include "../aleatoire/alea_fonctions.h"
 #include "timeseries-numbers.h"
 #include "apply-scenario.h"
-#include "hydro-final-reservoir-level-functions.h"
 #include <antares/emergency.h>
 #include "../ts-generator/generator.h"
 #include <antares/memory/memory.h>
@@ -361,10 +360,7 @@ void ISimulation<Impl>::run()
         }
 
         if (parameters.useCustomScenario)
-        {
             ApplyCustomScenario(study);
-            FinalReservoirLevelPreChecks(study);
-        }
 
         // Launching the simulation for all years
         logs.info() << "MC-Years : [" << (study.runtime->rangeLimits.year[Data::rangeBegin] + 1)
