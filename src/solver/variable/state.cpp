@@ -185,13 +185,7 @@ void State::initFromThermalClusterIndex(const uint clusterAreaWideIndex, uint nu
             // calculating the operating cost for the current hour
             // O(h) = MA * P(h) * Modulation
             assert(thermalCluster->productionCost != NULL && "invalid production cost");
-            if (thermalCluster->costgeneration == Data::setManually)
-                thermalClusterOperatingCost = (p * thermalCluster->productionCost[hourInTheYear]);
-            else
-                thermalClusterOperatingCost
-                  = (p
-                     * thermalCluster->productionCostTs[Math::Min(
-                       serieIndex, thermalCluster->productionCostTs.size() - 1)][hourInTheYear]);
+            thermalClusterOperatingCost = p * thermalCluster->getOperatingCost(serieIndex, hourInTheYear);
 
             // Startup cost
             if (newUnitCount > previousUnitCount && hourInTheSimulation != 0u)
@@ -337,14 +331,7 @@ void State::yearEndBuildFromThermalClusterIndex(const uint clusterAreaWideIndex,
 
             if (thermalClusterProduction > 0.)
             {
-                if (currentCluster->costgeneration == Data::setManually)
-                    thermalClusterOperatingCostForYear[h]
-                      = (thermalClusterProduction * currentCluster->productionCost[h]);
-                else
-                    thermalClusterOperatingCostForYear[h]
-                      = (thermalClusterProduction
-                         * currentCluster->productionCostTs[Math::Min(
-                           serieIndex, currentCluster->productionCostTs.size() - 1)][h]);
+                thermalClusterOperatingCostForYear[h] = thermalClusterProduction * currentCluster->getOperatingCost(serieIndex, h);
                 // productionCost!!
                 switch (unitCommitmentMode)
                 {
