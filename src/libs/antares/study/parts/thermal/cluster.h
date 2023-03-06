@@ -276,7 +276,7 @@ public:
     double co2;
 
     //! Efficiency (%)
-    double efficiency;
+    double fuelEfficiency;
 
     //! Forced Volatility
     double forcedVolatility;

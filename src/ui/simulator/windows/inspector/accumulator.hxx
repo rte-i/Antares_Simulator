@@ -879,7 +879,7 @@ struct PClusterEfficiency
     using Type = double;
     static Type Value(const Data::ThermalCluster* cluster)
     {
-        return cluster->efficiency;
+        return cluster->fuelEfficiency;
     }
     static wxString ConvertToString(const Type v)
     {
