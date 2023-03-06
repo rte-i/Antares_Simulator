@@ -132,7 +132,7 @@ Data::ThermalCluster::ThermalCluster(Area* parent, uint nbParallelYears) :
  minDownTime(1),
  spinning(0.),
  co2(0.),
- efficiency(100.0),
+ fuelEfficiency(100.0),
  forcedVolatility(0.),
  plannedVolatility(0.),
  forcedLaw(thermalLawUniform),
@@ -182,7 +182,7 @@ Data::ThermalCluster::ThermalCluster(Area* parent) :
  minDownTime(1),
  spinning(0.),
  co2(0.),
- efficiency(100.0),
+ fuelEfficiency(100.0),
  forcedVolatility(0.),
  plannedVolatility(0.),
  forcedLaw(thermalLawUniform),
@@ -276,7 +276,7 @@ void Data::ThermalCluster::copyFrom(const ThermalCluster& cluster)
     // co2
     co2 = cluster.co2;
     // efficiency
-    efficiency = cluster.efficiency;
+    fuelEfficiency = cluster.fuelEfficiency;
 
     // volatility
     forcedVolatility = cluster.forcedVolatility;
@@ -468,7 +468,7 @@ void Data::ThermalCluster::calculationOfSpinning()
 
 void Data::ThermalCluster::calculationOfMarketBidPerHourAndMarginalCostPerHour()
 {
-    if (costgeneration == Data::setManually || !prepro || efficiency <= 0.0)
+    if (costgeneration == Data::setManually || !prepro || fuelEfficiency <= 0.0)
     {
         std::fill(
           marketBidCostPerHourTs[0].begin(), marketBidCostPerHourTs[0].end(), marketBidCost);
@@ -479,7 +479,7 @@ void Data::ThermalCluster::calculationOfMarketBidPerHourAndMarginalCostPerHour()
     {
         for (uint hour = 0; hour < HOURS_PER_YEAR; ++hour)
         {
-            marketBidCostPerHourTs[0][hour] = prepro->fuelcost[0][hour] * 360.0 / efficiency
+            marketBidCostPerHourTs[0][hour] = prepro->fuelcost[0][hour] * 360.0 / fuelEfficiency
                                               + co2 * prepro->co2cost[0][hour] + variableomcost;
             marginalCostPerHourTs[0][hour] = marketBidCostPerHourTs[0][hour];
             if (modulation.width > 0) // we should update production cost when modulation is ready
@@ -517,7 +517,7 @@ void Data::ThermalCluster::calculationOfMarketBidPerHourAndMarginalCostPerHour()
             for (uint hour = 0; hour < HOURS_PER_YEAR; ++hour)
             {
                 marketBidCostPerHourTs[tsIndex - 1][hour]
-                  = prepro->fuelcost[tsIndexFuel - 1][hour] * 360.0 / efficiency
+                  = prepro->fuelcost[tsIndexFuel - 1][hour] * 360.0 / fuelEfficiency
                     + co2 * prepro->co2cost[tsIndexCo2 - 1][hour] + variableomcost;
                 marginalCostPerHourTs[tsIndex - 1][hour]
                   = marketBidCostPerHourTs[tsIndex - 1][hour];
@@ -583,7 +583,7 @@ void Data::ThermalCluster::reset()
     // co2
     co2 = 0.;
     // efficiency
-    efficiency = 100.0;
+    fuelEfficiency = 100.0;
 
     //pollutant emissions array
     emissions.factors.fill(0);
@@ -703,11 +703,11 @@ bool Data::ThermalCluster::integrityCheck()
         }
 
     }
-    if (efficiency <= 0. or efficiency > 100.)
+    if (fuelEfficiency <= 0. or fuelEfficiency > 100.)
     {
-        efficiency = 100.;
+        fuelEfficiency = 100.;
         logs.error() << "Thermal cluster: " << parentArea->name << '/' << pName
-                     << ": The efficiency must be within the range (0,+100] (rounded to " << efficiency
+                     << ": The efficiency must be within the range (0,+100] (rounded to " << fuelEfficiency
                      << ')';
         ret = false;
     }
