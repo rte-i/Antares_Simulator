@@ -30,6 +30,7 @@
 #include "../variable.h"
 #include "../area.h"
 #include "../setofareas.h"
+#include "../bindConstraints.h"
 
 #include "co2.h"
 #include "price.h"
@@ -61,6 +62,8 @@
 #include "unsupliedEnergy.h"
 #include "domesticUnsuppliedEnergy.h"
 #include "localMatchingRuleViolations.h"
+#include "spilledEnergyAfterCSR.h"
+#include "dtgMarginAfterCsr.h"
 #include "spilledEnergy.h"
 
 #include "lold.h"
@@ -79,6 +82,7 @@
 // By RES plant
 #include "productionByRenewablePlant.h"
 
+// Output variables associated to links
 #include "links/flowLinear.h"
 #include "links/flowLinearAbs.h"
 #include "links/loopFlow.h"
@@ -88,6 +92,9 @@
 #include "links/congestionFeeAbs.h"
 #include "links/marginalCost.h"
 #include "links/congestionProbability.h"
+
+// Output variables associated to binding constraints
+#include "bindingConstraints/bindingConstraintsMarginalCost.h"
 
 namespace Antares
 {
@@ -148,19 +155,24 @@ typedef          // Prices
                        <HydroCost        // Hydro costs
                         <UnsupliedEnergy // Unsuplied Energy
                          <DomesticUnsuppliedEnergy // Domestic Unsupplied Energy
-                         <LMRViolations // LMR Violations
-                          <SpilledEnergy           // Spilled Energy
-                           <LOLD                   // LOLD
-                            <LOLP                  // LOLP
-                             <AvailableDispatchGen<DispatchableGenMargin<Marge<NonProportionalCost<
-                               NonProportionalCostByDispatchablePlant // Startup cost + Fixed cost
-                                                                      // per thermal plant detail
-                               <NbOfDispatchedUnits                   // Number of Units Dispatched
-                                <NbOfDispatchedUnitsByPlant // Number of Units Dispatched by plant
-                                 <ProfitByPlant
-                                  // Links
-                                  <Variable::Economy::Links // All links
-                                   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                          <LMRViolations           // LMR Violations
+                           <SpilledEnergy          // Spilled Energy
+                            <SpilledEnergyAfterCSR // SpilledEnergyAfterCSR
+                             <LOLD                 // LOLD
+                              <LOLP                // LOLP
+                               <AvailableDispatchGen<DispatchableGenMargin<
+                                 DtgMarginCsr // DTG MRG CSR
+                                 <Marge<NonProportionalCost<
+                                   NonProportionalCostByDispatchablePlant // Startup cost + Fixed
+                                                                          // cost per thermal
+                                                                          // plant detail
+                                   <NbOfDispatchedUnits         // Number of Units Dispatched
+                                    <NbOfDispatchedUnitsByPlant // Number of Units Dispatched by
+                                                                // plant
+                                     <ProfitByPlant
+                                      // Links
+                                      <Variable::Economy::Links // All links
+                                       >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     VariablesPerArea;
 
 /*!
@@ -222,38 +234,56 @@ typedef // Prices
                                                   LMRViolations,
                                                   Common::SpatialAggregate<
                                                     SpilledEnergy,
-                                                    // LOLD
                                                     Common::SpatialAggregate<
-                                                      LOLD,
+                                                      SpilledEnergyAfterCSR,
+                                                      // LOLD
                                                       Common::SpatialAggregate<
-                                                        LOLP,
-
+                                                        LOLD,
                                                         Common::SpatialAggregate<
-                                                          AvailableDispatchGen,
+                                                          LOLP,
                                                           Common::SpatialAggregate<
-                                                            DispatchableGenMargin,
+                                                            AvailableDispatchGen,
                                                             Common::SpatialAggregate<
-                                                              Marge,
-
-                                                              // Detail Prices
+                                                              DispatchableGenMargin,
                                                               Common::SpatialAggregate<
-                                                                NonProportionalCost, // MBO
-                                                                                     // 13/05/2014
-                                                                                     // - refs: #21
-
-                                                                // Number Of Dispatched Units
+                                                                DtgMarginCsr,
                                                                 Common::SpatialAggregate<
-                                                                  NbOfDispatchedUnits // MBO
-                                                                                      // 25/02/2016
-                                                                                      // - refs: #55
-                                                                  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                                                                  Marge,
+
+                                                                  // Detail Prices
+                                                                  Common::SpatialAggregate<
+                                                                    NonProportionalCost, // MBO
+                                                                                         // 13/05/2014
+                                                                                         // -
+                                                                                         // refs:
+                                                                                         // #21
+
+                                                                    // Number Of Dispatched Units
+                                                                    Common::SpatialAggregate<
+                                                                      NbOfDispatchedUnits // MBO
+                                                                                          // 25/02/2016
+                                                                                          // -
+                                                                                          // refs:
+                                                                                          // #55
+                                                                      >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     VariablesPerSetOfAreas;
+
+    
+
+typedef          
+    BindingConstMarginCost<   // Marginal cost for a binding constraint
+        Container::EndOfList    // End of variable list
+    >
+  
+    VariablesPerBindingConstraints;
 
 typedef Variable::Join<
   // Variables for each area / links attached to the areas
   Variable::Areas<VariablesPerArea>,
   // Variables for each set of areas
-  Variable::SetsOfAreas<VariablesPerSetOfAreas>>
+  Variable::SetsOfAreas<VariablesPerSetOfAreas>,
+  // Variables for each binding constraint
+  Variable::BindingConstraints<VariablesPerBindingConstraints>>
   ItemList;
 
 /*!

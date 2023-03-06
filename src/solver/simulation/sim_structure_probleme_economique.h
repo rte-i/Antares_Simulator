@@ -45,36 +45,22 @@ typedef struct
     int* NumeroDeVariableCoutExtremiteVersOrigineDeLInterconnexion;
 
     int* NumeroDeVariableDuPalierThermique;
-    int* NumeroDeVariableDuPalierThermiqueUp;
-    int* NumeroDeVariableDuPalierThermiqueDown;
 
     int* NumeroDeVariablesDeLaProdHyd;
-    int* NumeroDeVariablesDeLaProdHydUp;
-    int* NumeroDeVariablesDeLaProdHydDown;
 
     int* NumeroDeVariablesDePompage;
     int* NumeroDeVariablesDeNiveau;
     int* NumeroDeVariablesDeDebordement;
 
     int* NumeroDeVariableDefaillancePositive;
-    int* NumeroDeVariableDefaillancePositiveUp;
-    int* NumeroDeVariableDefaillancePositiveDown;
-    int* NumeroDeVariableDefaillancePositiveAny;
 
     int* NumeroDeVariableDefaillanceNegative;
-    int* NumeroDeVariableDefaillanceNegativeUp;
-    int* NumeroDeVariableDefaillanceNegativeDown;
-    int* NumeroDeVariableDefaillanceNegativeAny;
 
     int* NumeroDeVariableDefaillanceEnReserve;
 
     int* NumeroDeVariablesVariationHydALaBaisse;
-    int* NumeroDeVariablesVariationHydALaBaisseUp;
-    int* NumeroDeVariablesVariationHydALaBaisseDown;
 
     int* NumeroDeVariablesVariationHydALaHausse;
-    int* NumeroDeVariablesVariationHydALaHausseUp;
-    int* NumeroDeVariablesVariationHydALaHausseDown;
 
     int* NumeroDeVariableDuNombreDeGroupesEnMarcheDuPalierThermique;
     int* NumeroDeVariableDuNombreDeGroupesQuiDemarrentDuPalierThermique;
@@ -167,6 +153,11 @@ typedef struct
     int* OffsetTemporelSurLePalierDispatch;
     const char* NomDeLaContrainteCouplante;
 } CONTRAINTES_COUPLANTES;
+
+typedef struct
+{
+    double* variablesDuales;
+} RESULTATS_CONTRAINTES_COUPLANTES;
 
 typedef struct
 {
@@ -447,6 +438,8 @@ typedef struct
     double* ValeursHorairesDeDefaillancePositive;
     double* ValeursHorairesDENS; // adq patch domestic unsupplied energy
     int* ValeursHorairesLmrViolations; // adq patch lmr violations
+    double* ValeursHorairesSpilledEnergyAfterCSR; // adq patch spillage after CSR
+    double* ValeursHorairesDtgMrgCsr; // adq patch DTG MRG after CSR
     double* ValeursHorairesDeDefaillancePositiveUp;
     double* ValeursHorairesDeDefaillancePositiveDown;
     double* ValeursHorairesDeDefaillancePositiveAny;
@@ -499,9 +492,11 @@ struct AdequacyPatchParameters
     bool SetNTCOutsideToInsideToZero;
     bool SetNTCOutsideToOutsideToZero;
     bool IncludeHurdleCostCsr;
+    bool CheckCsrCostFunctionValue;
     AdqPatchPTO PriceTakingOrder;
     double ThresholdInitiateCurtailmentSharingRule;
     double ThresholdDisplayLocalMatchingRuleViolations;
+    double ThresholdCSRVarBoundsRelaxation;
 };
 
 struct PROBLEME_HEBDO
@@ -556,13 +551,13 @@ struct PROBLEME_HEBDO
 
     int NombreDeContraintesCouplantes;
     CONTRAINTES_COUPLANTES** MatriceDesContraintesCouplantes;
+    RESULTATS_CONTRAINTES_COUPLANTES* ResultatsContraintesCouplantes;
 
     SOLDE_MOYEN_DES_ECHANGES** SoldeMoyenHoraire; // Used for quadratic opt
     /* Implementation details : I/O, error management, etc. */
     char ReinitOptimisation;
 
-    char ExportMPS;
-    bool SplitExportedMPS;
+    Data::mpsExportStatus ExportMPS;
     bool exportMPSOnError;
     bool ExportStructure;
 
@@ -714,6 +709,7 @@ public:
     double maxPminThermiqueByDay[366];
 };
 
+namespace Antares::Solver::Variable { class State; } // foward declaration
 // hourly CSR problem structure
 class HOURLY_CSR_PROBLEM
 {
@@ -727,15 +723,17 @@ private:
     void setProblemCost();
     void solveProblem(uint week, int year);
 public:
-    void run(uint week, int year);
-public:
+    void run(uint week, const Antares::Solver::Variable::State& state);
+    
     int hourInWeekTriggeredCsr;
-    const double belowThisThresholdSetToZero = 1e-3;
+    double belowThisThresholdSetToZero;
     PROBLEME_HEBDO* pWeeklyProblemBelongedTo;
     HOURLY_CSR_PROBLEM(int hourInWeek, PROBLEME_HEBDO* pProblemeHebdo)
     {
         hourInWeekTriggeredCsr = hourInWeek;
         pWeeklyProblemBelongedTo = pProblemeHebdo;
+        belowThisThresholdSetToZero
+          = pProblemeHebdo->adqPatchParams->ThresholdCSRVarBoundsRelaxation;
     };
     std::map<int, int> numberOfConstraintCsrEns;
     std::map<int, int> numberOfConstraintCsrAreaBalance;
@@ -743,10 +741,10 @@ public:
     std::map<int, int> numberOfConstraintCsrHourlyBinding; // length is number of binding constraint
                                                            // contains interco 2-2
 
-    std::map<int, double> densNewValues;
     std::map<int, double> rhsAreaBalanceValues;
-    
     std::set<int> varToBeSetToZeroIfBelowThreshold; // place inside only ENS and Spillage variable
+    std::set<int> ensSet; // place inside only ENS inside adq-patch
+    std::set<int> linkSet; // place inside only links between to zones inside adq-patch
 };
 
 #endif

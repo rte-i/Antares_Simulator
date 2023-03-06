@@ -41,11 +41,7 @@
 using namespace Yuni;
 using namespace Data::AdequacyPatch;
 
-namespace Antares
-{
-namespace Window
-{
-namespace Options
+namespace Antares::Window::Options
 {
 static void addLabelAdqPatch(wxWindow* parent, wxSizer* sizer, const wxChar* text)
 {
@@ -60,9 +56,17 @@ static void addLabelAdqPatch(wxWindow* parent, wxSizer* sizer, const wxChar* tex
     sizer->AddSpacer(5);
 }
 
-static void updateButton(Component::Button* button, bool value, std::string buttonType)
+static void updateButton(Component::Button* button, bool value, std::string_view buttonType)
 {
-    char type = (buttonType == "ntc") ? 'N' : ((buttonType == "pto") ? 'P' : 'S');
+    char type;
+    if (buttonType == "ntc")
+    {
+        type = 'N';
+    }
+    else
+    {
+        type = (buttonType == "pto") ? 'P' : 'S';
+    }
 
     assert(button != NULL);
     if (value)
@@ -217,11 +221,28 @@ AdequacyPatchOptions::AdequacyPatchOptions(wxWindow* parent) :
         s->Add(button, 0, wxLEFT | wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
         pBtnAdequacyPatchIncludeHurdleCostCsr = button;
     }
+    // Select whether the CSR cost function will be compared prior and after CSR optimization and
+    // results provided accordingly
+    {
+        label = Component::CreateLabel(this, wxT("Check CSR cost function value prior and after CSR"));
+        button = new Component::Button(this, wxT("true"), "images/16x16/light_green.png");
+        button->SetBackgroundColour(bgColor);
+        button->menu(true);
+        onPopup.bind(
+          this,
+          &AdequacyPatchOptions::onPopupMenuSpecify,
+          PopupInfo(study.parameters.adqPatch.curtailmentSharing.checkCsrCostFunction, wxT("true")));
+        button->onPopupMenu(onPopup);
+        s->Add(label, 0, wxRIGHT | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+        s->Add(button, 0, wxLEFT | wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+        pBtnAdequacyPatchCheckCsrCostFunctionValue = button;
+    }
     addLabelAdqPatch(this, s, wxT("Thresholds"));
     // Threshold values
     {
         pThresholdCSRStart = nullptr;
         pThresholdLMRviolations = nullptr;
+        pThresholdCSRVarBoundsRelaxation = nullptr;
         pThresholdCSRStart
           = insertEdit(this,
                        s,
@@ -231,6 +252,11 @@ AdequacyPatchOptions::AdequacyPatchOptions(wxWindow* parent) :
           = insertEdit(this,
                        s,
                        wxStringFromUTF8("Display local matching rule violations"),
+                       wxCommandEventHandler(AdequacyPatchOptions::onEditThresholds));
+        pThresholdCSRVarBoundsRelaxation
+          = insertEdit(this,
+                       s,
+                       wxStringFromUTF8("Relax CSR variable boundaries (10^-)"),
                        wxCommandEventHandler(AdequacyPatchOptions::onEditThresholds));
     }
 
@@ -242,10 +268,10 @@ AdequacyPatchOptions::AdequacyPatchOptions(wxWindow* parent) :
     sizer->AddSpacer(10);
 
     // Buttons
-    Component::Panel* panel = new Component::Panel(this);
+    auto panel = new Component::Panel(this);
     panel->SetBackgroundColour(defaultBgColor);
-    wxBoxSizer* pnlSizerBtns = new wxBoxSizer(wxHORIZONTAL);
-    wxBoxSizer* pnlSizerBtnsV = new wxBoxSizer(wxVERTICAL);
+    auto pnlSizerBtns = new wxBoxSizer(wxHORIZONTAL);
+    auto pnlSizerBtnsV = new wxBoxSizer(wxVERTICAL);
     panel->SetSizer(pnlSizerBtnsV);
     pnlSizerBtnsV->AddSpacer(8);
     pnlSizerBtnsV->Add(pnlSizerBtns, 1, wxALL | wxEXPAND);
@@ -270,7 +296,7 @@ AdequacyPatchOptions::AdequacyPatchOptions(wxWindow* parent) :
     sizer->Add(panel, 0, wxALL | wxEXPAND);
 
     // refresh
-    Connect(GetId(), wxEVT_MOTION, wxMouseEventHandler(AdequacyPatchOptions::onInternalMotion), NULL, this);
+    Connect(GetId(), wxEVT_MOTION, wxMouseEventHandler(AdequacyPatchOptions::onInternalMotion), nullptr, this);
 
     refresh();
     SetSizer(sizer);
@@ -281,11 +307,9 @@ AdequacyPatchOptions::AdequacyPatchOptions(wxWindow* parent) :
     Centre(wxBOTH);
 }
 
-AdequacyPatchOptions::~AdequacyPatchOptions()
-{
-}
+AdequacyPatchOptions::~AdequacyPatchOptions() = default;
 
-void AdequacyPatchOptions::onClose(void*)
+void AdequacyPatchOptions::onClose(const void*)
 {
     Dispatcher::GUI::Close(this);
 }
@@ -324,7 +348,7 @@ void AdequacyPatchOptions::refresh()
     if (!studyptr)
         return;
     // The current study
-    auto& study = *studyptr;
+    const auto& study = *studyptr;
 
     // Adequacy patch
     std::string buttonType = "specify";
@@ -333,6 +357,10 @@ void AdequacyPatchOptions::refresh()
     // Include hurdle cost for CSR
     updateButton(pBtnAdequacyPatchIncludeHurdleCostCsr,
                  study.parameters.adqPatch.curtailmentSharing.includeHurdleCost,
+                 buttonType);
+    // Check CSR cost function value prior and after CSR optimization
+    updateButton(pBtnAdequacyPatchCheckCsrCostFunctionValue,
+                 study.parameters.adqPatch.curtailmentSharing.checkCsrCostFunction,
                  buttonType);
     // NTC from physical areas outside adequacy patch (area type 1) to physical areas inside
     // adequacy patch (area type 2). Used in the first step of adequacy patch local matching rule.
@@ -358,7 +386,12 @@ void AdequacyPatchOptions::refresh()
               wxString() << study.parameters.adqPatch.curtailmentSharing.thresholdInitiate);
         if (pThresholdLMRviolations)
             pThresholdLMRviolations->SetValue(
-              wxString() << study.parameters.adqPatch.curtailmentSharing.thresholdDisplayViolations);
+              wxString()
+              << study.parameters.adqPatch.curtailmentSharing.thresholdDisplayViolations);
+        if (pThresholdCSRVarBoundsRelaxation)
+            pThresholdCSRVarBoundsRelaxation->SetValue(
+              wxString()
+              << study.parameters.adqPatch.curtailmentSharing.thresholdVarBoundsRelaxation);
     }
 }
 
@@ -462,7 +495,7 @@ void AdequacyPatchOptions::onPopupMenuSpecify(Component::Button&,
 
 void AdequacyPatchOptions::onSelectModeInclude(wxCommandEvent&)
 {
-    if (pTargetRef and !*pTargetRef)
+    if (pTargetRef && !*pTargetRef)
     {
         *pTargetRef = true;
         MarkTheStudyAsModified();
@@ -473,7 +506,7 @@ void AdequacyPatchOptions::onSelectModeInclude(wxCommandEvent&)
 
 void AdequacyPatchOptions::onSelectModeIgnore(wxCommandEvent&)
 {
-    if (pTargetRef and *pTargetRef)
+    if (pTargetRef && *pTargetRef)
     {
         *pTargetRef = false;
         MarkTheStudyAsModified();
@@ -485,28 +518,24 @@ void AdequacyPatchOptions::onSelectModeIgnore(wxCommandEvent&)
 void AdequacyPatchOptions::onSelectPtoIsDens(wxCommandEvent&)
 {
     auto study = Data::Study::Current::Get();
-    if (!(!study))
+    if ((!(!study))
+        && (study->parameters.adqPatch.curtailmentSharing.priceTakingOrder != AdqPatchPTO::isDens))
     {
-        if (study->parameters.adqPatch.curtailmentSharing.priceTakingOrder != AdqPatchPTO::isDens)
-        {
-            study->parameters.adqPatch.curtailmentSharing.priceTakingOrder = AdqPatchPTO::isDens;
-            refresh();
-            MarkTheStudyAsModified();
-        }
+        study->parameters.adqPatch.curtailmentSharing.priceTakingOrder = AdqPatchPTO::isDens;
+        refresh();
+        MarkTheStudyAsModified();
     }
 }
 
 void AdequacyPatchOptions::onSelectPtoIsLoad(wxCommandEvent&)
 {
     auto study = Data::Study::Current::Get();
-    if (!(!study))
+    if ((!(!study))
+        && (study->parameters.adqPatch.curtailmentSharing.priceTakingOrder != AdqPatchPTO::isLoad))
     {
-        if (study->parameters.adqPatch.curtailmentSharing.priceTakingOrder != AdqPatchPTO::isLoad)
-        {
-            study->parameters.adqPatch.curtailmentSharing.priceTakingOrder = AdqPatchPTO::isLoad;
-            refresh();
-            MarkTheStudyAsModified();
-        }
+        study->parameters.adqPatch.curtailmentSharing.priceTakingOrder = AdqPatchPTO::isLoad;
+        refresh();
+        MarkTheStudyAsModified();
     }
 }
 
@@ -527,7 +556,7 @@ wxTextCtrl* AdequacyPatchOptions::insertEdit(wxWindow* parent,
 
 void AdequacyPatchOptions::onEditThresholds(wxCommandEvent& evt)
 {
-    if (not Data::Study::Current::Valid())
+    if (!Data::Study::Current::Valid())
         return;
     auto& study = *Data::Study::Current::Get();
 
@@ -539,7 +568,7 @@ void AdequacyPatchOptions::onEditThresholds(wxCommandEvent& evt)
         wxStringToString(pThresholdCSRStart->GetValue(), text);
 
         float newthreshold;
-        if (not text.to(newthreshold))
+        if (!text.to(newthreshold))
         {
             logs.error() << "impossible to update the seed for '"
                          << "Initiate curtailment sharing rule"
@@ -562,7 +591,7 @@ void AdequacyPatchOptions::onEditThresholds(wxCommandEvent& evt)
         wxStringToString(pThresholdLMRviolations->GetValue(), text);
 
         float newthreshold;
-        if (not text.to(newthreshold))
+        if (!text.to(newthreshold))
         {
             logs.error() << "impossible to update the seed for '"
                          << "Display local matching rule violations"
@@ -579,8 +608,30 @@ void AdequacyPatchOptions::onEditThresholds(wxCommandEvent& evt)
         }
         return;
     }
-}
 
-} // namespace Options
-} // namespace Window
-} // namespace Antares
+    if (pThresholdCSRVarBoundsRelaxation && id == pThresholdCSRVarBoundsRelaxation->GetId())
+    {
+        String text;
+        wxStringToString(pThresholdCSRVarBoundsRelaxation->GetValue(), text);
+
+        int newthreshold;
+        if (!text.to(newthreshold))
+        {
+            logs.error() << "impossible to update the seed for '"
+                         << "Relax CSR variable boundaries (10^-)"
+                         << "'";
+        }
+        else
+        {
+            if (newthreshold
+                != study.parameters.adqPatch.curtailmentSharing.thresholdVarBoundsRelaxation)
+            {
+                study.parameters.adqPatch.curtailmentSharing.thresholdVarBoundsRelaxation
+                  = newthreshold;
+                MarkTheStudyAsModified();
+            }
+        }
+        return;
+    }
+}
+} // namespace Antares::Window::Options

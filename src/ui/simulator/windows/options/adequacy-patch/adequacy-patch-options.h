@@ -33,11 +33,7 @@
 
 #include <antares/study/UnfeasibleProblemBehavior.hpp>
 
-namespace Antares
-{
-namespace Window
-{
-namespace Options
+namespace Antares::Window::Options
 {
 /*!
 ** \brief Startup Wizard User Interface
@@ -52,9 +48,9 @@ public:
     **
     ** \param parent The parent window
     */
-    AdequacyPatchOptions(wxWindow* parent);
+    explicit AdequacyPatchOptions(wxWindow* parent);
     //! Destructor
-    virtual ~AdequacyPatchOptions();
+    ~AdequacyPatchOptions() override;
     //@}
 
 private:
@@ -68,9 +64,8 @@ private:
         const wxChar* const text;
     };
 
-private:
     void refresh();
-    void onClose(void*);
+    void onClose(const void*);
     void onResetToDefault(void*);
     wxTextCtrl* insertEdit(wxWindow* parent,
                            wxSizer* sizer,
@@ -89,20 +84,20 @@ private:
 
     void onInternalMotion(wxMouseEvent&);  
     void onEditThresholds(wxCommandEvent&);
-private:
+
     Component::Button* pBtnAdequacyPatch;
     Component::Button* pBtnNTCfromOutToInAdqPatch;
     Component::Button* pBtnNTCfromOutToOutAdqPatch;
     Component::Button* pBtnAdequacyPatchPTO;
     Component::Button* pBtnAdequacyPatchIncludeHurdleCostCsr;
+    Component::Button* pBtnAdequacyPatchCheckCsrCostFunctionValue;
     wxTextCtrl* pThresholdCSRStart;
     wxTextCtrl* pThresholdLMRviolations;
+    wxTextCtrl* pThresholdCSRVarBoundsRelaxation;
     bool* pTargetRef;
 
 }; // class AdequacyPatchOptions
 
-} // namespace Options
-} // namespace Window
-} // namespace Antares
+}
 
 #endif // __ANTARES_APPLICATION_WINDOWS_OPTIONS_ADEQUACY_PATCH_H__

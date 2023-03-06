@@ -116,7 +116,6 @@ bool PreproThermal::loadFromFolder(Study& study, const AnyString& folder)
     if (study.header.version < 350)
     {
         ret = LoadPreproThermal350(study, data, folder) and ret;
-        data.flush();
     }
     else
     {
@@ -149,7 +148,6 @@ bool PreproThermal::loadFromFolder(Study& study, const AnyString& folder)
                 ret = false;
             // the structure must be marked as modified
             data.markAsModified();
-            data.flush();
         }
         else
         {
@@ -188,7 +186,7 @@ bool PreproThermal::loadFromFolder(Study& study, const AnyString& folder)
 
     if (study.header.version < 390)
     {
-        data.invalidate(true);
+        data.forceReload(true);
         auto& colFoDuration = data[foDuration];
         auto& colPoDuration = data[poDuration];
         for (uint i = 0; i != DAYS_PER_YEAR; ++i)
@@ -273,21 +271,14 @@ bool PreproThermal::loadFromFolder(Study& study, const AnyString& folder)
                 break;
             }
         }
-
-        // memory swapping
-        data.flush();
     }
 
     return ret;
 }
 
-bool PreproThermal::invalidate(bool reload) const
+bool PreproThermal::forceReload(bool reload) const
 {
-    bool ret = true;
-    ret = data.invalidate(reload) && ret;
-    ret = fuelcost.invalidate(reload) && ret;
-    ret = co2cost.invalidate(reload) && ret;
-    return ret;
+    return data.forceReload(reload);
 }
 
 void PreproThermal::markAsModified() const
@@ -370,9 +361,7 @@ bool PreproThermal::normalizeAndCheckNPO()
         logs.info() << "  NPO max for the thermal cluster '" << parentArea->id
                     << "' has been normalized";
 
-    // modified and flushed
     data.markAsModified();
-    data.flush();
     return (0 == errors);
 }
 

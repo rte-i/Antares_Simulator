@@ -57,6 +57,7 @@ void constructVariableENS(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hou
               = NumberOfVariables;
             ProblemeAResoudre->TypeDeVariable[NumberOfVariables] = VARIABLE_BORNEE_DES_DEUX_COTES;
             hourlyCsrProblem.varToBeSetToZeroIfBelowThreshold.insert(NumberOfVariables);
+            hourlyCsrProblem.ensSet.insert(NumberOfVariables);
             logs.debug() << NumberOfVariables << " ENS[" << area << "].-["
                          << ProblemeHebdo->NomsDesPays[area] << "].";
 
@@ -76,7 +77,6 @@ void constructVariableSpilledEnergy(PROBLEME_HEBDO* ProblemeHebdo,
     int& NumberOfVariables = ProblemeAResoudre->NombreDeVariables;
 
     // variables: Spilled Energy  of each area inside adq patch
-    // todo after debugging transfer this into same area loop as ENS
     logs.debug() << " Spilled Energy  of each area inside adq patch: ";
     for (int area = 0; area < ProblemeHebdo->NombreDePays; ++area)
     {
@@ -120,6 +120,7 @@ void constructVariableFlows(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& h
             CorrespondanceVarNativesVarOptim->NumeroDeVariableDeLInterconnexion[Interco]
               = NumberOfVariables;
             ProblemeAResoudre->TypeDeVariable[NumberOfVariables] = VARIABLE_BORNEE_DES_DEUX_COTES;
+            hourlyCsrProblem.linkSet.insert(NumberOfVariables);
             logs.debug()
               << NumberOfVariables << " flow[" << Interco << "]. ["
               << ProblemeHebdo->NomsDesPays[ProblemeHebdo->PaysExtremiteDeLInterconnexion[Interco]]
@@ -151,7 +152,7 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeQuadratique_CSR(
 {
     logs.debug() << "[CSR] variable list:";
 
-    PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre;
+    const PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre;
     ProblemeAResoudre = ProblemeHebdo->ProblemeAResoudre;
     assert(ProblemeAResoudre != NULL);
 

@@ -38,7 +38,6 @@
 #include <math.h>
 #include <yuni/core/math.h>
 
-const double csrSolverRelaxation = 1e-3;
 using namespace Yuni;
 
 void setBoundsOnENS(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hourlyCsrProblem)
@@ -49,8 +48,9 @@ void setBoundsOnENS(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hourlyCsr
     hour = hourlyCsrProblem.hourInWeekTriggeredCsr;
     PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre;
     ProblemeAResoudre = ProblemeHebdo->ProblemeAResoudre;
-    CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
+    const CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
     CorrespondanceVarNativesVarOptim = ProblemeHebdo->CorrespondanceVarNativesVarOptim[hour];
+    double csrSolverRelaxation = ProblemeHebdo->adqPatchParams->ThresholdCSRVarBoundsRelaxation;
 
     // variables: ENS for each area inside adq patch
     for (int area = 0; area < ProblemeHebdo->NombreDePays; ++area)
@@ -61,7 +61,9 @@ void setBoundsOnENS(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hourlyCsr
             Var = CorrespondanceVarNativesVarOptim->NumeroDeVariableDefaillancePositive[area];
 
             ProblemeAResoudre->Xmin[Var] = -csrSolverRelaxation;
-            ProblemeAResoudre->Xmax[Var] = hourlyCsrProblem.densNewValues[area] + csrSolverRelaxation;
+            ProblemeAResoudre->Xmax[Var]
+              = ProblemeHebdo->ResultatsHoraires[area]->ValeursHorairesDENS[hour]
+                + csrSolverRelaxation;
 
             ProblemeAResoudre->X[Var]
               = ProblemeHebdo->ResultatsHoraires[area]->ValeursHorairesDeDefaillancePositive[hour];
@@ -72,17 +74,14 @@ void setBoundsOnENS(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hourlyCsr
             ProblemeAResoudre->AdresseOuPlacerLaValeurDesVariablesOptimisees[Var]
               = AdresseDuResultat;
 
-            // update DENS values with densNew values
-            ProblemeHebdo->ResultatsHoraires[area]->ValeursHorairesDENS[hour]
-              = hourlyCsrProblem.densNewValues[area];
-
             logs.debug() << Var << ": " << ProblemeAResoudre->Xmin[Var] << ", "
                          << ProblemeAResoudre->Xmax[Var];
         }
     }
 }
 
-void setBoundsOnSpilledEnergy(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hourlyCsrProblem)
+void setBoundsOnSpilledEnergy(PROBLEME_HEBDO* ProblemeHebdo,
+                              const HOURLY_CSR_PROBLEM& hourlyCsrProblem)
 {
     int Var;
     double* AdresseDuResultat;
@@ -90,11 +89,11 @@ void setBoundsOnSpilledEnergy(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM&
     hour = hourlyCsrProblem.hourInWeekTriggeredCsr;
     PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre;
     ProblemeAResoudre = ProblemeHebdo->ProblemeAResoudre;
-    CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
+    const CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
     CorrespondanceVarNativesVarOptim = ProblemeHebdo->CorrespondanceVarNativesVarOptim[hour];
+    double csrSolverRelaxation = ProblemeHebdo->adqPatchParams->ThresholdCSRVarBoundsRelaxation;
 
-    // variables: Spilled Energy for each area inside adq patch 
-    // todo after debugging transfer this into same area loop as ENS
+    // variables: Spilled Energy for each area inside adq patch
     for (int area = 0; area < ProblemeHebdo->NombreDePays; ++area)
     {
         if (ProblemeHebdo->adequacyPatchRuntimeData.areaMode[area]
@@ -109,7 +108,7 @@ void setBoundsOnSpilledEnergy(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM&
               = ProblemeHebdo->ResultatsHoraires[area]->ValeursHorairesDeDefaillanceNegative[hour];
 
             AdresseDuResultat = &(
-              ProblemeHebdo->ResultatsHoraires[area]->ValeursHorairesDeDefaillanceNegative[hour]);
+              ProblemeHebdo->ResultatsHoraires[area]->ValeursHorairesSpilledEnergyAfterCSR[hour]);
 
             ProblemeAResoudre->AdresseOuPlacerLaValeurDesVariablesOptimisees[Var]
               = AdresseDuResultat;
@@ -120,17 +119,17 @@ void setBoundsOnSpilledEnergy(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM&
     }
 }
 
-void setBoundsOnFlows(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hourlyCsrProblem)
+void setBoundsOnFlows(PROBLEME_HEBDO* ProblemeHebdo, const HOURLY_CSR_PROBLEM& hourlyCsrProblem)
 {
     int Var;
     double* AdresseDuResultat;
     int hour;
     hour = hourlyCsrProblem.hourInWeekTriggeredCsr;
+    double csrSolverRelaxation = ProblemeHebdo->adqPatchParams->ThresholdCSRVarBoundsRelaxation;
     PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre;
     ProblemeAResoudre = ProblemeHebdo->ProblemeAResoudre;
-    CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
+    const CORRESPONDANCES_DES_VARIABLES* CorrespondanceVarNativesVarOptim;
     CorrespondanceVarNativesVarOptim = ProblemeHebdo->CorrespondanceVarNativesVarOptim[hour];
-    int* TypeDeVariable;
     double* Xmin;
     double* Xmax;
     Xmin = ProblemeAResoudre->Xmin;
@@ -151,8 +150,10 @@ void setBoundsOnFlows(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hourlyC
         {
             // flow
             Var = CorrespondanceVarNativesVarOptim->NumeroDeVariableDeLInterconnexion[Interco];
-            Xmax[Var] = ValeursDeNTC->ValeurDeNTCOrigineVersExtremite[Interco] + csrSolverRelaxation;
-            Xmin[Var] = -(ValeursDeNTC->ValeurDeNTCExtremiteVersOrigine[Interco]) - csrSolverRelaxation;
+            Xmax[Var]
+              = ValeursDeNTC->ValeurDeNTCOrigineVersExtremite[Interco] + csrSolverRelaxation;
+            Xmin[Var]
+              = -(ValeursDeNTC->ValeurDeNTCExtremiteVersOrigine[Interco]) - csrSolverRelaxation;
             ProblemeAResoudre->X[Var] = ValeursDeNTC->ValeurDuFlux[Interco];
 
             if (Math::Infinite(Xmax[Var]) == 1)
@@ -180,15 +181,10 @@ void setBoundsOnFlows(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hourlyC
             // direct / indirect flow
             Var = CorrespondanceVarNativesVarOptim
                     ->NumeroDeVariableCoutOrigineVersExtremiteDeLInterconnexion[Interco];
-            // CSR Todo?
-            // if (TransportCost->IntercoGereeAvecLoopFlow == OUI_ANTARES)
-            //     Xmax[Var] = ValeursDeNTC->ValeurDeNTCOrigineVersExtremite[Interco]
-            //                 - ValeursDeNTC->ValeurDeLoopFlowOrigineVersExtremite[Interco];
-            // else
-            //     Xmax[Var] = ValeursDeNTC->ValeurDeNTCOrigineVersExtremite[Interco];
 
             Xmin[Var] = -csrSolverRelaxation;
-            Xmax[Var] = ValeursDeNTC->ValeurDeNTCOrigineVersExtremite[Interco] + csrSolverRelaxation;
+            Xmax[Var]
+              = ValeursDeNTC->ValeurDeNTCOrigineVersExtremite[Interco] + csrSolverRelaxation;
             ProblemeAResoudre->TypeDeVariable[Var] = VARIABLE_BORNEE_DES_DEUX_COTES;
             if (Math::Infinite(Xmax[Var]) == 1)
             {
@@ -200,15 +196,10 @@ void setBoundsOnFlows(PROBLEME_HEBDO* ProblemeHebdo, HOURLY_CSR_PROBLEM& hourlyC
 
             Var = CorrespondanceVarNativesVarOptim
                     ->NumeroDeVariableCoutExtremiteVersOrigineDeLInterconnexion[Interco];
-            // CSR Todo?
-            // if (TransportCost->IntercoGereeAvecLoopFlow == OUI_ANTARES)
-            //     Xmax[Var] = ValeursDeNTC->ValeurDeNTCExtremiteVersOrigine[Interco]
-            //                 + ValeursDeNTC->ValeurDeLoopFlowOrigineVersExtremite[Interco];
-            // else
-            //     Xmax[Var] = ValeursDeNTC->ValeurDeNTCExtremiteVersOrigine[Interco];
 
             Xmin[Var] = -csrSolverRelaxation;
-            Xmax[Var] = ValeursDeNTC->ValeurDeNTCExtremiteVersOrigine[Interco] + csrSolverRelaxation;
+            Xmax[Var]
+              = ValeursDeNTC->ValeurDeNTCExtremiteVersOrigine[Interco] + csrSolverRelaxation;
             ProblemeAResoudre->TypeDeVariable[Var] = VARIABLE_BORNEE_DES_DEUX_COTES;
             if (Math::Infinite(Xmax[Var]) == 1)
             {
@@ -227,12 +218,11 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeQuadratique_CSR(
 {
     logs.debug() << "[CSR] bounds";
 
-    int Var;
     PROBLEME_ANTARES_A_RESOUDRE* ProblemeAResoudre;
     ProblemeAResoudre = ProblemeHebdo->ProblemeAResoudre;
 
-    for (Var = 0; Var < ProblemeAResoudre->NombreDeVariables; Var++)
-        ProblemeAResoudre->AdresseOuPlacerLaValeurDesVariablesOptimisees[Var] = NULL;
+    for (int Var = 0; Var < ProblemeAResoudre->NombreDeVariables; Var++)
+        ProblemeAResoudre->AdresseOuPlacerLaValeurDesVariablesOptimisees[Var] = nullptr;
 
     setBoundsOnENS(ProblemeHebdo, hourlyCsrProblem);
     setBoundsOnSpilledEnergy(ProblemeHebdo, hourlyCsrProblem);
