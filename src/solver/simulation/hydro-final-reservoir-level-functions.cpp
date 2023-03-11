@@ -25,6 +25,7 @@
 ** SPDX-License-Identifier: licenceRef-GPL3_WITH_RTE-Exceptions
 */
 
+
 #include "hydro-final-reservoir-level-functions.h"
 #include <antares/emergency.h>
 
