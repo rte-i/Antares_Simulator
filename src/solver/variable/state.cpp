@@ -181,25 +181,15 @@ void State::initFromThermalClusterIndex(const uint clusterAreaWideIndex, uint nu
             }
             else
                 newUnitCount = thermalCluster->unitCount;
-        }
-            // calculating the operating cost for the current hour
-            // O(h) = MA * P(h) * Modulation
-            assert(thermalCluster->productionCost != NULL && "invalid production cost");
-            thermalClusterOperatingCost = p * thermalCluster->getOperatingCost(serieIndex, hourInTheYear);
 
-            // Startup cost
-            if (newUnitCount > previousUnitCount && hourInTheSimulation != 0u)
-            {
-                thermalClusterOperatingCost
-                  += thermalCluster->startupCost * (newUnitCount - previousUnitCount);
-                thermalClusterNonProportionalCost
-                  = thermalCluster->startupCost * (newUnitCount - previousUnitCount);
-            }
+            if (newUnitCount > previousUnitCount)
+                newUnitCount = previousUnitCount;
+        }
 
         // calculating the operating cost for the current hour
         // O(h) = MA * P(h) * Modulation
         assert(thermalCluster->productionCost != NULL && "invalid production cost");
-        thermalClusterOperatingCost = (p * thermalCluster->productionCost[hourInTheYear]);
+        thermalClusterOperatingCost = p * thermalCluster->getOperatingCost(serieIndex, hourInTheYear);
 
         // Startup cost
         if (newUnitCount > previousUnitCount && hourInTheSimulation != 0u)
@@ -329,6 +319,13 @@ void State::yearEndBuildFromThermalClusterIndex(const uint clusterAreaWideIndex,
         if (thermalClusterProduction <= 0.)
             continue;
 
+        thermalClusterOperatingCostForYear[h]
+          = (thermalClusterProduction * currentCluster->productionCost[h]);
+
+        switch (unitCommitmentMode)
+        {
+        case Antares::Data::UnitCommitmentMode::ucHeuristic:
+
             if (thermalClusterProduction > 0.)
             {
                 thermalClusterOperatingCostForYear[h] = thermalClusterProduction * currentCluster->getOperatingCost(serieIndex, h);
@@ -398,7 +395,7 @@ void State::yearEndBuildFromThermalClusterIndex(const uint clusterAreaWideIndex,
 
         if (ON_max[h] < ON_min[h])
             ON_max[h] = ON_min[h];
-    }
+            }
 
     if (dur > 0)
     {
@@ -512,6 +509,6 @@ void State::yearEndBuildFromThermalClusterIndex(const uint clusterAreaWideIndex,
             //\todo get from the cluster
             thermalClusterDispatchedUnitsCountForYear[i] = optimalCount;
         }
-}
+        }
 
 } // namespace Antares::Solver::Variable

@@ -268,9 +268,6 @@ public:
     //! Spinning (%)
     double spinning;
 
-    //! CO2  / MWh
-    double co2;
-
     //! Efficiency (%)
     double fuelEfficiency;
 

@@ -131,7 +131,6 @@ Data::ThermalCluster::ThermalCluster(Area* parent, uint nbParallelYears) :
  minUpTime(1),
  minDownTime(1),
  spinning(0.),
- co2(0.),
  fuelEfficiency(100.0),
  forcedVolatility(0.),
  plannedVolatility(0.),
@@ -181,7 +180,6 @@ Data::ThermalCluster::ThermalCluster(Area* parent) :
  minUpTime(1),
  minDownTime(1),
  spinning(0.),
- co2(0.),
  fuelEfficiency(100.0),
  forcedVolatility(0.),
  plannedVolatility(0.),
@@ -273,8 +271,6 @@ void Data::ThermalCluster::copyFrom(const ThermalCluster& cluster)
     //emissions
     emissions = cluster.emissions;
 
-    // co2
-    co2 = cluster.co2;
     // efficiency
     fuelEfficiency = cluster.fuelEfficiency;
 
@@ -563,8 +559,6 @@ void Data::ThermalCluster::reset()
     // spinning
     spinning = 0.;
 
-    // co2
-    co2 = 0.;
     // efficiency
     fuelEfficiency = 100.0;
 
