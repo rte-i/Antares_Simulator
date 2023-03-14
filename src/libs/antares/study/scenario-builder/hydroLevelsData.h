@@ -38,7 +38,7 @@ namespace ScenarioBuilder
 /*!
 ** \brief Rules for hydro levels, for all years and areas
 */
-class hydroLevelsData final : public dataInterface
+class hydroLevelsData : public dataInterface
 {
 public:
     //! Matrix
@@ -112,6 +112,20 @@ inline double hydroLevelsData::get_value(uint x, uint y) const
 {
     return pHydroLevelsRules.entry[y][x];
 }
+
+class hydroFinalLevelsData final : public hydroLevelsData
+{
+public:
+    //! Matrix
+    using MatrixType = Matrix<double>;
+
+public:
+    void saveToINIFileFinalHydroLevel(const Study& study, Yuni::IO::File::Stream& file) const;
+
+private:
+    MatrixType pHydroFinalLevelsRules;
+
+}; // class hydroFinalLevelsData
 
 } // namespace ScenarioBuilder
 } // namespace Data

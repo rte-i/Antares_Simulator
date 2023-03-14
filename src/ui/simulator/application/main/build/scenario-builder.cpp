@@ -41,7 +41,7 @@
 #include "toolbox/components/datagrid/renderer/scenario-builder-wind-renderer.h"
 #include "toolbox/components/datagrid/renderer/scenario-builder-solar-renderer.h"
 #include "toolbox/components/datagrid/renderer/scenario-builder-hydro-levels-renderer.h"
-#include "toolbox/components/datagrid/renderer/scenario-builder-hydro-final-levels-renderer.h"
+#include "toolbox/components/datagrid/renderer/scenario-builder-hydro-levels-renderer.h"
 #include "toolbox/components/datagrid/renderer/scenario-builder-ntc-renderer.h"
 
 using namespace Yuni;

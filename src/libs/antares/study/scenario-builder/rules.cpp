@@ -41,6 +41,7 @@ namespace ScenarioBuilder
 {
 Rules::Rules(Study& study) : study_(study), pAreaCount(0)
 {
+    
 }
 
 void Rules::saveToINIFile(Yuni::IO::File::Stream& file) const

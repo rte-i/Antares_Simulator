@@ -48,6 +48,11 @@ public:
     IRenderer::CellStyle cellStyle(int x, int y) const;
 }; // class hydroLevelsScBuilderRenderer
 
+class hydroFinalLevelsScBuilderRenderer : public hydroLevelsScBuilderRenderer
+{
+public:
+    hydroFinalLevelsScBuilderRenderer() = default;
+};
 } // namespace Renderer
 } // namespace Datagrid
 } // namespace Component

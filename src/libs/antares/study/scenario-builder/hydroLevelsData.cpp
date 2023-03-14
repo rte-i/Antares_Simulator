@@ -101,6 +101,38 @@ bool hydroLevelsData::applyHydroLevels(Matrix<double>& scenarioHydroLevels)
     return true;
 }
 
+void hydroFinalLevelsData::saveToINIFileFinalHydroLevel(const Study& study, Yuni::IO::File::Stream& file) const
+{
+    // Prefix
+    CString<512, false> prefix;
+    prefix += "hfl,";
+
+    // Turning values into strings (precision 4)
+    std::ostringstream value_into_string;
+    value_into_string << std::setprecision(4);
+
+    // Foreach year
+    assert(pHydroFinalLevelsRules.width == study.areas.size());
+    for (uint index = 0; index != pHydroFinalLevelsRules.width; ++index)
+    {
+        // alias to the current column
+        const MatrixType::ColumnType& col = pHydroFinalLevelsRules[index];
+        // Foreach area...
+        for (uint y = 0; y != pHydroFinalLevelsRules.height; ++y)
+        {
+            const MatrixType::Type value = col[y];
+            // Equals to zero means 'auto', which is the default mode
+            if (std::isnan(value))
+                continue;
+            assert(index < study.areas.size());
+            value_into_string << value;
+            file << prefix << study.areas.byIndex[index]->id << ',' << y << " = "
+                 << value_into_string.str() << '\n';
+            value_into_string.str(std::string()); // Clearing converter
+        }
+    }
+}
+
 } // namespace ScenarioBuilder
 } // namespace Data
 } // namespace Antares
