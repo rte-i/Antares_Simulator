@@ -120,7 +120,7 @@ public:
     //! hydro initial levels
     hydroLevelsData hydroInitialLevels;
     //! hydro final levels
-    hydroLevelsData hydroFinalLevels;
+    hydroFinalLevelsData hydroFinalLevels; //
 
     // Links NTC
     std::vector<ntcTSNumberData> linksNTC;

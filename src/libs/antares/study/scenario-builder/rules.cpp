@@ -65,8 +65,10 @@ void Rules::saveToINIFile(Yuni::IO::File::Stream& file) const
             linksNTC[i].saveToINIFile(study_, file);
         }
         // hydro levels
-        hydroInitialLevels.saveToINIFileHydroLevel(study_, file, "hl,");
-        hydroFinalLevels.saveToINIFileHydroLevel(study_, file, "hfl,");
+        // hydroInitialLevels.saveToINIFileHydroLevel(study_, file, "hl,");
+        // hydroFinalLevels.saveToINIFileHydroLevel(study_, file, "hfl,");
+        hydroInitialLevels.saveToINIFile(study_, file);
+        hydroFinalLevels.saveToINIFile(study_, file);
     }
     file << '\n';
 }

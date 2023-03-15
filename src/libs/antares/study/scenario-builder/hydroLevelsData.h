@@ -120,7 +120,8 @@ public:
     using MatrixType = Matrix<double>;
 
 public:
-    void saveToINIFileFinalHydroLevel(const Study& study, Yuni::IO::File::Stream& file) const;
+    void saveToINIFile(const Study& study, Yuni::IO::File::Stream& file) const override;
+    bool apply(Study& study) override;
 
 private:
     MatrixType pHydroFinalLevelsRules;

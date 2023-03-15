@@ -101,7 +101,7 @@ bool hydroLevelsData::applyHydroLevels(Matrix<double>& scenarioHydroLevels)
     return true;
 }
 
-void hydroFinalLevelsData::saveToINIFileFinalHydroLevel(const Study& study, Yuni::IO::File::Stream& file) const
+void hydroFinalLevelsData::saveToINIFile(const Study& study, Yuni::IO::File::Stream& file) const
 {
     // Prefix
     CString<512, false> prefix;
@@ -131,6 +131,11 @@ void hydroFinalLevelsData::saveToINIFileFinalHydroLevel(const Study& study, Yuni
             value_into_string.str(std::string()); // Clearing converter
         }
     }
+}
+
+bool hydroFinalLevelsData::apply(Study& study)
+{
+    return true;
 }
 
 } // namespace ScenarioBuilder
