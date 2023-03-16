@@ -80,6 +80,36 @@ IRenderer::CellStyle hydroLevelsScBuilderRenderer::cellStyle(int x, int y) const
     return (valid) ? cellStyleDefaultCenterDisabled : cellStyleDefaultCenter;
 }
 
+bool hydroFinalLevelsScBuilderRenderer::cellValue(int x, int y, const Yuni::String& value)
+{
+    if (!(!study) && !(!pRules) && (uint)x < study->parameters.nbYears)
+    {
+        if ((uint)y < study->areas.size())
+        {
+            assert((uint)y < pRules->hydroFinalLevels.width());
+            assert((uint)x < pRules->hydroFinalLevels.height());
+            double val = fromStringToHydroLevel(value, 100.) / 100.;
+            pRules->hydroFinalLevels.set_value(x, y, val);
+            return true;
+        }
+    }
+    return false;
+}
+
+double hydroFinalLevelsScBuilderRenderer::cellNumericValue(int x, int y) const
+{
+    if (!(!study) && !(!pRules) && (uint)x < study->parameters.nbYears)
+    {
+        if ((uint)y < study->areas.size())
+        {
+            assert((uint)y < pRules->hydroFinalLevels.width());
+            assert((uint)x < pRules->hydroFinalLevels.height());
+            return pRules->hydroFinalLevels.get_value(x, y) * 100.;
+        }
+    }
+    return 0.;
+}
+
 } // namespace Renderer
 } // namespace Datagrid
 } // namespace Component

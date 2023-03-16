@@ -52,7 +52,10 @@ class hydroFinalLevelsScBuilderRenderer : public hydroLevelsScBuilderRenderer
 {
 public:
     hydroFinalLevelsScBuilderRenderer() = default;
-};
+    bool cellValue(int x, int y, const Yuni::String& value);
+    double cellNumericValue(int x, int y) const;
+}; // class hydroLevelsScBuilderRenderer
+
 } // namespace Renderer
 } // namespace Datagrid
 } // namespace Component
