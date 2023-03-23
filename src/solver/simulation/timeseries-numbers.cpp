@@ -712,7 +712,7 @@ void drawAndStoreTSnumbersForNOTintraModal(const array<bool, timeSeriesCount>& i
             {
                 if (!isTSintramodal[indexTS])
                 {
-                    // There is no TS generation for renewable clusters
+                    // There is no TS generation for hydro clusters
                     uint nbTimeSeries = cluster->series->series.width;
                     cluster->series->timeseriesNumbers[0][year] = (uint32)(floor(
                       study.runtime->random[seedTimeseriesNumbers].next() * nbTimeSeries));
