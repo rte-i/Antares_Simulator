@@ -284,8 +284,8 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
             problem.PaliersHydroclusterDuPays[i].previousSimulationFinalLevel.at(clusterIndex)
               = -1.;
 
-            if (problem.previousYearFinalLevels)
-                problem.previousYearFinalLevels[i] = -1.;
+            if (!problem.PaliersHydroclusterDuPays[i].previousYearFinalLevels.empty())
+                problem.PaliersHydroclusterDuPays[i].previousYearFinalLevels.at(clusterIndex) = -1.;
 
             problem.PaliersHydroclusterDuPays[i]
               .hydroClusterMap.at(clusterIndex)
