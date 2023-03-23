@@ -300,7 +300,7 @@ typedef struct
 
     double* ApportNaturelHoraire; // Hourly natural inflow
     double* MingenHoraire; //CR22 mingen per hour
-    double NiveauInitialReservoir;
+    double NiveauInitialReservoir; // Initial reservoir level
     double TailleReservoir;
     double PumpingRatio;
 
@@ -467,8 +467,8 @@ typedef struct
     double* ValeursHorairesDeDefaillanceNegativeAny;
 
     double* ValeursHorairesDeDefaillanceEnReserve;
-    double* PompageHoraire;
-    double* TurbinageHoraire;
+    double* PompageHoraire; // hourly pumping
+    double* TurbinageHoraire; // hourly generating
     double* TurbinageHoraireUp;
     double* TurbinageHoraireDown;
 
