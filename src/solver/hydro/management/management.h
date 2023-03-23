@@ -146,23 +146,23 @@ public:
     //! Temporary data
     struct PerArea
     {
-        //! Monthly local effective demand
+        //! Monthly local effective demand // used to calculate MTG
         double MLE[12];
-        //! Monthly optimal generation
+        //! Monthly optimal generation // exits h2o solver
         double MOG[12];
-        //! Monthly optimal level
+        //! Monthly optimal level // exits h2o solver
         double MOL[12];
-        //! Monthly target generations
+        //! Monthly target generations // enter h2o solver
         double MTG[12];
         //! inflows
         double inflows[12];
         double mingens[12]; //CR22 mingen
 
-        //! Net demand, for each day of the year, for each area
+        //! Net demand, for each day of the year, for each area // used to calculate DLE and MLE
         double DLN[dayYearCount];
-        //! Daily local effective load
+        //! Daily local effective load // used to calculate DTG enters the h2o solver as target value 
         double DLE[dayYearCount];
-        //! Daily optimized Generation
+        //! Daily optimized Generation // not used
         double DOG[dayYearCount];
 
     }; // struct PerArea

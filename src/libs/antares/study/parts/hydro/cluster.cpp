@@ -295,21 +295,12 @@ double HydroclusterCluster::valueAtTimeStep(uint timeSeriesIndex, uint timeStepI
     if (!enabled)
         return 0.;
 
-    // assert(timeStepIndex < series->series.height);
-    // assert(timeSeriesIndex < series->series.width);
-    // const double tsValue = series->series[timeSeriesIndex][timeStepIndex];
-
     assert(timeStepIndex < series->ror.height);
-    assert(timeSeriesIndex < series->ror.width);
-    const double tsValue = series->ror[timeSeriesIndex][timeStepIndex];    
-    // switch (tsMode)
-    // {
-    // case powerGeneration:
-    //     return tsValue;
-    // case productionFactor:
-    //     return unitCount * nominalCapacity * tsValue;
-    // }
-    return 0.;
+    // assert(timeSeriesIndex < series->ror.width);
+    const double tsValue
+      = series->ror[timeSeriesIndex < series->ror.width ? timeSeriesIndex : 0][timeStepIndex];
+
+    return tsValue;
 }
 
 uint64 HydroclusterCluster::memoryUsage() const

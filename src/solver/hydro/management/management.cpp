@@ -255,7 +255,7 @@ void HydroManagement::prepareNetDemand(uint numSpace)
 
         auto& ptchro = *NumeroChroniquesTireesParPays[numSpace][z];
 
-        auto& rormatrix = area.hydro.series->ror; //CR22
+        auto& rormatrix = area.hydro.series->ror;
         auto tsIndex = (uint)ptchro.Hydraulique;
         auto& ror = rormatrix[tsIndex < rormatrix.width ? tsIndex : 0];
 
@@ -272,7 +272,7 @@ void HydroManagement::prepareNetDemand(uint numSpace)
             {
                 netdemand = +scratchpad.ts.load[ptchro.Consommation][hour]
                             - scratchpad.ts.wind[ptchro.Eolien][hour] - scratchpad.miscGenSum[hour]
-                            - scratchpad.ts.solar[ptchro.Solar][hour] - ror[hour] //CR22 todo add mingen here or not?
+                            - scratchpad.ts.solar[ptchro.Solar][hour] - ror[hour]
                             - ((ModeT != Data::stdmAdequacy) ? scratchpad.mustrunSum[hour]
                                                              : scratchpad.originalMustrunSum[hour]);
             }
@@ -281,7 +281,7 @@ void HydroManagement::prepareNetDemand(uint numSpace)
             else if (parameters.renewableGeneration.isClusters())
             {
                 netdemand = scratchpad.ts.load[ptchro.Consommation][hour]
-                            - scratchpad.miscGenSum[hour] - ror[hour] //CR22 todo add mingen here or not?
+                            - scratchpad.miscGenSum[hour] - ror[hour]
                             - ((ModeT != Data::stdmAdequacy) ? scratchpad.mustrunSum[hour]
                                                              : scratchpad.originalMustrunSum[hour]);
 
@@ -294,7 +294,7 @@ void HydroManagement::prepareNetDemand(uint numSpace)
 
             assert(!Math::NaN(netdemand)
                    && "hydro management: NaN detected when calculating the net demande");
-            data.DLN[dayYear] += netdemand;
+            data.DLN[dayYear] += netdemand; // DLN calculated here
         }
     });
 }
@@ -314,12 +314,12 @@ void HydroManagement::prepareEffectiveDemand(uint numSpace)
 
             double effectiveDemand = 0;
             area.hydro.allocation.eachNonNull([&](unsigned areaindex, double value) {
-                effectiveDemand += (pAreas[numSpace][areaindex]).DLN[day] * value;
+                effectiveDemand += (pAreas[numSpace][areaindex]).DLN[day] * value; // DLN used here
             });
 
             assert(!Math::NaN(effectiveDemand) && "nan value detected for effectiveDemand");
-            data.DLE[day] += effectiveDemand;
-            data.MLE[realmonth] += effectiveDemand;
+            data.DLE[day] += effectiveDemand; // DLE calculated here
+            data.MLE[realmonth] += effectiveDemand; // MLE calculated here
 
             assert(not Math::NaN(data.DLE[day]) && "nan value detected for DLE");
             assert(not Math::NaN(data.MLE[realmonth]) && "nan value detected for DLE");
@@ -576,68 +576,77 @@ void HydroManagement::prepareInflowsScalingForCluster(uint numSpace)
 template<enum Data::StudyMode ModeT>
 void HydroManagement::prepareNetDemandForCluster(uint numSpace)
 {
-    study.areas.each([&](Data::Area& area) {
-        area.hydrocluster.list.each(
-          [&](const Data::HydroclusterCluster& cluster)
-          {
-              uint z = area.index;
+    study.areas.each(
+      [&](Data::Area& area)
+      {
+          area.hydrocluster.list.each(
+            [&](const Data::HydroclusterCluster& cluster)
+            {
+                uint z = area.index;
 
-              auto& scratchpad
-                = *(area.scratchpad[numSpace]); // structure scratchpad do not need to be updated
-                                                // for each cluster so far !!
+                auto& scratchpad
+                  = *(area.scratchpad[numSpace]); // structure scratchpad do not need to be updated
+                                                  // for each cluster so far !!
 
-              auto& ptchro = *NumeroChroniquesTireesParPays[numSpace][z];
+                auto& ptchro = *NumeroChroniquesTireesParPays[numSpace][z];
 
-              auto& rormatrix = cluster.series->ror;
-              auto tsIndex = (uint)ptchro.HydroclusterParPalier[cluster.index];
-              auto& ror = rormatrix[tsIndex < rormatrix.width ? tsIndex : 0];
+                auto& data = pAreasCluster[numSpace][z][cluster.index];
 
-              auto& data = pAreasCluster[numSpace][z][cluster.index];
+                for (uint hour = 0; hour != 8760; ++hour)
+                {
+                    auto dayYear = study.calendar.hours[hour].dayYear;
 
-              for (uint hour = 0; hour != 8760; ++hour)
-              {
-                  auto dayYear = study.calendar.hours[hour].dayYear;
+                    double netdemand = 0;
 
-                  double netdemand = 0;
+                    // Aggregated renewable production: wind & solar
+                    if (parameters.renewableGeneration.isAggregated())
+                    {
+                        netdemand
+                          = +scratchpad.ts.load[ptchro.Consommation][hour]
+                            - scratchpad.ts.wind[ptchro.Eolien][hour] - scratchpad.miscGenSum[hour]
+                            - scratchpad.ts.solar[ptchro.Solar][hour]
+                            // - ror[hour]
+                            - ((ModeT != Data::stdmAdequacy) ? scratchpad.mustrunSum[hour]
+                                                             : scratchpad.originalMustrunSum[hour]);
+                    }
 
-                  // Aggregated renewable production: wind & solar
-                  if (parameters.renewableGeneration.isAggregated())
-                  {
-                      netdemand
-                        = +scratchpad.ts.load[ptchro.Consommation][hour]
-                          - scratchpad.ts.wind[ptchro.Eolien][hour] - scratchpad.miscGenSum[hour]
-                          - scratchpad.ts.solar[ptchro.Solar][hour]
-                          - ror[hour] // CR22 todo add mingen here or not?
-                          - ((ModeT != Data::stdmAdequacy) ? scratchpad.mustrunSum[hour]
-                                                           : scratchpad.originalMustrunSum[hour]);
-                  }
+                    // Renewable clusters, if enabled
+                    else if (parameters.renewableGeneration.isClusters())
+                    {
+                        netdemand
+                          = scratchpad.ts.load[ptchro.Consommation][hour]
+                            - scratchpad.miscGenSum[hour]
+                            // - ror[hour]
+                            - ((ModeT != Data::stdmAdequacy) ? scratchpad.mustrunSum[hour]
+                                                             : scratchpad.originalMustrunSum[hour]);
 
-                  // Renewable clusters, if enabled
-                  else if (parameters.renewableGeneration.isClusters())
-                  {
-                      netdemand
-                        = scratchpad.ts.load[ptchro.Consommation][hour]
-                          - scratchpad.miscGenSum[hour]
-                          - ror[hour] // CR22 todo add mingen here or not?
-                          - ((ModeT != Data::stdmAdequacy) ? scratchpad.mustrunSum[hour]
-                                                           : scratchpad.originalMustrunSum[hour]);
+                        area.renewable.list.each(
+                          [&](const Antares::Data::RenewableCluster& cluster)
+                          {
+                              assert(cluster.series->series.jit == NULL
+                                     && "No JIT data from the solver");
+                              netdemand -= cluster.valueAtTimeStep(
+                                ptchro.RenouvelableParPalier[cluster.areaWideIndex], hour);
+                          });
+                    }
 
-                      area.renewable.list.each(
-                        [&](const Antares::Data::RenewableCluster& cluster)
-                        {
-                            assert(cluster.series->series.jit == NULL
-                                   && "No JIT data from the solver");
-                            netdemand -= cluster.valueAtTimeStep(
-                              ptchro.RenouvelableParPalier[cluster.areaWideIndex], hour);
-                        });
-                  }
+                    // NET DEMAND is same for every cluster inside one area.
+                    // Different EFFECTIVE demands are calculated according to the allocation matrix
+                    // to split the load.
+                    area.hydrocluster.list.each(
+                      [&](const Data::HydroclusterCluster& cluster)
+                      {
+                          assert(cluster.series->ror.jit == NULL && "No JIT data from the solver");
+                          netdemand -= cluster.valueAtTimeStep(
+                            ptchro.HydroclusterParPalier[cluster.index], hour);
+                      });
 
-                  assert(!Math::NaN(netdemand)
-                         && "hydro management: NaN detected when calculating the net demande");
-                  data.DLN[dayYear] += netdemand;
-              }
-          });
-    });
+                    assert(!Math::NaN(netdemand)
+                           && "hydro management: NaN detected when calculating the net demande");
+                    data.DLN[dayYear] += netdemand;
+                }
+            });
+      });
 }
 
 void HydroManagement::prepareEffectiveDemandForCluster(uint numSpace)
@@ -658,7 +667,7 @@ void HydroManagement::prepareEffectiveDemandForCluster(uint numSpace)
                     auto realmonth = study.calendar.months[month].realmonth;
 
                     double effectiveDemand = 0;
-                    cluster.allocation.eachNonNull(
+                    cluster.allocation.eachNonNull( // from Florian E-mail You should use the same net demand, but different effective demands though.
                       [&](unsigned areaindex, double value) {
                           effectiveDemand
                             += (pAreasCluster[numSpace][areaindex][cluster.index]).DLN[day] * value;
@@ -708,11 +717,5 @@ void HydroManagement::prepareEffectiveDemandForCluster(uint numSpace)
             });
       });
 }
-
-// TODO Milos: in the prevoius two methods what to do with NET DEMAND.
-// It used to be one NET DEMAND per Area and one Hydro per Area 
-// Now it is still one NET DEMAND per Area but we have multiple Hydro clusters per Area
-// Is the math still correct !? NetDemand ... - Sum(ROR for all clusters) ??
-// Do we need pAreasCluster at all ?! Or we try to sum up all hydro clusters into pAreas structure ?!
 
 } // namespace Antares
