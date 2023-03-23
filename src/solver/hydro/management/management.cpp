@@ -667,7 +667,9 @@ void HydroManagement::prepareEffectiveDemandForCluster(uint numSpace)
                     auto realmonth = study.calendar.months[month].realmonth;
 
                     double effectiveDemand = 0;
-                    cluster.allocation.eachNonNull( // from Florian E-mail You should use the same net demand, but different effective demands though.
+                    // from Florian E-mail You should use the same net demand, but different effective demands though.
+                    // TODO Milos: this allocation UI part is not yet developed -> so once it is over be sure to implement it here correctly
+                    cluster.allocation.eachNonNull(
                       [&](unsigned areaindex, double value) {
                           effectiveDemand
                             += (pAreasCluster[numSpace][areaindex][cluster.index]).DLN[day] * value;
