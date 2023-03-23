@@ -152,6 +152,7 @@ private:
             double** thermalNoisesByArea = randomForCurrentYear.pThermalNoisesByArea;
             double* randomReservoirLevel = nullptr; 
             // TODO Milos: randomReservoirLevel  for all clusters. YES. We need to change the UI for this also!
+            // TODO Milos: set previousYearFinalLevels for all clusters if HOT START is used!
             if (not study.parameters.adequacyDraft())
             {
                 if (hydroHotStart && firstSetParallelWithAPerformedYearWasRun)
