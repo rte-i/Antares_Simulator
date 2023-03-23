@@ -52,7 +52,7 @@ namespace Solver
 namespace TSGenerator
 {
 
-//CR13 todo add for hydrocluster
+//CR13 todo add for hydrocluster // TODO Milos: No need to develop ts-generator for hydro-clusters?!
 
 static void PreproHydroInitMatrices(Data::Study& study, uint tsCount)
 {
