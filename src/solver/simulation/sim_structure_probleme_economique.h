@@ -298,7 +298,7 @@ typedef struct
     double* NiveauHoraireSup;
     double* NiveauHoraireInf;
 
-    double* ApportNaturelHoraire;
+    double* ApportNaturelHoraire; // Hourly natural inflow
     double* MingenHoraire; //CR22 mingen per hour
     double NiveauInitialReservoir;
     double TailleReservoir;
@@ -472,10 +472,10 @@ typedef struct
     double* TurbinageHoraireUp;
     double* TurbinageHoraireDown;
 
-    double* niveauxHoraires;
+    double* niveauxHoraires; // hourly levels
     double* valeurH2oHoraire;
 
-    double* debordementsHoraires;
+    double* debordementsHoraires; // hourly overflows
 
     double* CoutsMarginauxHoraires;
     PRODUCTION_THERMIQUE_OPTIMALE** ProductionThermique;
