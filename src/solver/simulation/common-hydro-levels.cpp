@@ -260,7 +260,7 @@ void computingHydroLevelsForCluster(const Data::Study& study,
 
                 for (uint h = 0; h < nbHoursInAWeek - 1; h++)
                 {
-                    computeLvlObj.run(); // Hugo thinks this is Ok to run for cluster loop
+                    computeLvlObj.run();
                     niv[h] = computeLvlObj.getLevel() * 100 / reservoirCapacity;
                     computeLvlObj.prepareNextStep();
                 }
