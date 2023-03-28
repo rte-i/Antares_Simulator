@@ -89,6 +89,13 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
     for (uint p = 0; p < nbPays; ++p)
         problem.NumeroDeVariableDeTrancheDeStock[p] = (int*)MemAlloc(100 * sizeof(int));
 
+    problem.NumeroDeVariableStockFinalCluster
+      = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+    problem.NumeroDeVariableDeTrancheDeStockCluster
+      = (int**)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int*));
+    for (uint p = 0; p < study.runtime->hydroClusterTotalCount; ++p)
+        problem.NumeroDeVariableDeTrancheDeStockCluster[p] = (int*)MemAlloc(100 * sizeof(int));
+
     problem.ValeursDeNTC
       = (VALEURS_DE_NTC_ET_RESISTANCES**)MemAlloc(NombreDePasDeTemps * sizeof(void*));
     problem.ValeursDeNTCRef
@@ -934,6 +941,11 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
     for (uint p = 0; p < nbPays; ++p)
         MemFree(problem.NumeroDeVariableDeTrancheDeStock[p]);
     MemFree(problem.NumeroDeVariableDeTrancheDeStock);
+
+    MemFree(problem.NumeroDeVariableStockFinalCluster);
+    for (uint p = 0; p < study.runtime->hydroClusterTotalCount; ++p)
+        MemFree(problem.NumeroDeVariableDeTrancheDeStockCluster[p]);
+    MemFree(problem.NumeroDeVariableDeTrancheDeStockCluster);
 
     MemFree(problem.DefaillanceNegativeUtiliserConsoAbattue);
     MemFree(problem.DefaillanceNegativeUtiliserHydro);
