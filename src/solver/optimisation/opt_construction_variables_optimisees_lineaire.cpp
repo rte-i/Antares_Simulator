@@ -221,13 +221,13 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBD
         // ===== HYDRO-CLUSTERS-START ===== //
         for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
         {
-            PALIERS_HYDROCLUSTERS& PaliersHydroclusterDuPays
+            PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
               = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
-            uint areaClusterCount = PaliersHydroclusterDuPays.areaClusterCount;
+            uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
             for (int cluster = 0; cluster < areaClusterCount; cluster++)
             {
-                auto& clusterHydroData = PaliersHydroclusterDuPays.hydroClusterMap.at(cluster);
-                int clusterIndex = PaliersHydroclusterDuPays.clusterIndexTotalCount[cluster];
+                auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+                int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
 
                 if (clusterHydroData.PresenceDHydrauliqueModulable == OUI_ANTARES)
                 {
@@ -358,13 +358,13 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBD
     // ===== HYDRO-CLUSTERS-START ===== //
     for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
     {
-        PALIERS_HYDROCLUSTERS& PaliersHydroclusterDuPays
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
           = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
-        uint areaClusterCount = PaliersHydroclusterDuPays.areaClusterCount;
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
         for (int cluster = 0; cluster < areaClusterCount; cluster++)
         {
-            auto& clusterHydroData = PaliersHydroclusterDuPays.hydroClusterMap.at(cluster);
-            int clusterIndex = PaliersHydroclusterDuPays.clusterIndexTotalCount[cluster];
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+            int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
 
             if (clusterHydroData.AccurateWaterValue == OUI_ANTARES)
             {

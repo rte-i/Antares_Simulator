@@ -236,7 +236,7 @@ void computingHydroLevelsForCluster(const Data::Study& study,
                 double reservoirCapacity = cluster.reservoirCapacity;
 
                 double* inflows = problem.PaliersHydroclusterDuPays[index]
-                                    .hydroClusterMap.at(cluster.index)
+                                    ->hydroClusterMap.at(cluster.index)
                                     .ApportNaturelHoraire;
 
                 RESULTATS_HORAIRES* weeklyResults = problem.ResultatsHoraires[index];
@@ -247,7 +247,7 @@ void computingHydroLevelsForCluster(const Data::Study& study,
                 double pumpingRatio = cluster.pumpingEfficiency;
 
                 double nivInit = problem.PaliersHydroclusterDuPays[index]
-                                   .hydroClusterMap.at(cluster.index)
+                                   ->hydroClusterMap.at(cluster.index)
                                    .NiveauInitialReservoir;
                 double* niv = weeklyResults->niveauxHoraires;
 
@@ -310,7 +310,7 @@ void interpolateWaterValueForCluster(const Data::Study& study,
                 double* niv = weeklyResults->niveauxHoraires;
 
                 Antares::Data::getWaterValue(
-                  problem.PaliersHydroclusterDuPays[index].previousSimulationFinalLevel.at(
+                  problem.PaliersHydroclusterDuPays[index]->previousSimulationFinalLevel.at(
                     cluster.index)
                     * 100 / reservoirCapacity,
                   cluster.waterValues,
@@ -347,7 +347,7 @@ void updatingWeeklyFinalHydroLevelForCluster(const Data::Study& study,
 
                 double* niv = weeklyResults->niveauxHoraires;
 
-                problem.PaliersHydroclusterDuPays[index].previousSimulationFinalLevel.insert(
+                problem.PaliersHydroclusterDuPays[index]->previousSimulationFinalLevel.insert(
                   {cluster.index, niv[nbHoursInAWeek - 1] * reservoirCapacity / 100});
             });
       });
@@ -371,9 +371,9 @@ void updatingAnnualFinalHydroLevelForCluster(const Data::Study& study, PROBLEME_
 
                 double reservoirCapacity = cluster.reservoirCapacity;
 
-                problem.PaliersHydroclusterDuPays[index].previousYearFinalLevels.insert(
+                problem.PaliersHydroclusterDuPays[index]->previousYearFinalLevels.insert(
                   {cluster.index,
-                   problem.PaliersHydroclusterDuPays[index].previousSimulationFinalLevel.at(
+                   problem.PaliersHydroclusterDuPays[index]->previousSimulationFinalLevel.at(
                      cluster.index)
                      / reservoirCapacity});
             });

@@ -307,7 +307,7 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
                 {
                     auto dYear = day + dayYear;
                     if (data.DLE[dYear] > demandMax)
-                        demandMax = data.DLE[dYear];
+                        demandMax = data.DLE[dYear]; // DLE used here
                 }
 
                 if (not Math::Zero(demandMax))
@@ -318,7 +318,7 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
                     for (uint day = 0; day != daysPerMonth; ++day)
                     {
                         auto dYear = day + dayYear;
-                        coeff += Math::Power(data.DLE[dYear] / demandMax,
+                        coeff += Math::Power(data.DLE[dYear] / demandMax,// DLE used here
                                              area.hydro.interDailyBreakdown);
                     }
                     coeff = data.MOG[realmonth] / coeff;
@@ -327,7 +327,7 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
                     {
                         auto dYear = day + dayYear;
                         dtg[dYear] = coeff
-                                     * Math::Power(data.DLE[dYear] / demandMax,
+                                     * Math::Power(data.DLE[dYear] / demandMax, // DLE used here
                                                    area.hydro.interDailyBreakdown);
                     }
                 }
@@ -754,7 +754,7 @@ inline void HydroManagement::prepareDailyOptimalGenerationsForCluster(Solver::Va
                              << " MW.";
                 }
 
-                problem.TurbineCible[dayMonth] = dtg[day];
+                problem.TurbineCible[dayMonth] = dtg[day]; // dtg used as input in h20 solver // dtg caclulated using DLE
                 dayMonth++;
             }
 
@@ -906,7 +906,7 @@ inline void HydroManagement::prepareDailyOptimalGenerationsForCluster(Solver::Va
         }
 
         uint firstDaySimu = study.parameters.simulationDays.first;
-        state.problemeHebdo->PaliersHydroclusterDuPays[z].previousSimulationFinalLevel.insert(
+        state.problemeHebdo->PaliersHydroclusterDuPays[z]->previousSimulationFinalLevel.insert(
           {clusterIndex,
            valgen.NiveauxReservoirsDebutJours[firstDaySimu]
              * reservoirCapacity}); // this is now filling the results

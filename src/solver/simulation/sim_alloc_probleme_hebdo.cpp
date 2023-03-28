@@ -113,7 +113,7 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
     problem.CaracteristiquesHydrauliques
       = (ENERGIES_ET_PUISSANCES_HYDRAULIQUES**)MemAlloc(nbPays * sizeof(void*));
     problem.PaliersHydroclusterDuPays
-      = (PALIERS_HYDROCLUSTERS*)MemAlloc(nbPays * sizeof(PALIERS_HYDROCLUSTERS));
+      = (PALIERS_HYDROCLUSTERS**)MemAlloc(nbPays * sizeof(void*));
     problem.previousSimulationFinalLevel = (double*)MemAlloc(nbPays * sizeof(double));
 
     problem.previousYearFinalLevels = nullptr;
@@ -379,6 +379,8 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
           = (PALIERS_THERMIQUES*)MemAlloc(sizeof(PALIERS_THERMIQUES));
         problem.CaracteristiquesHydrauliques[k] = (ENERGIES_ET_PUISSANCES_HYDRAULIQUES*)MemAlloc(
           sizeof(ENERGIES_ET_PUISSANCES_HYDRAULIQUES));
+        problem.PaliersHydroclusterDuPays[k]
+          = (PALIERS_HYDROCLUSTERS*)MemAlloc(sizeof(PALIERS_HYDROCLUSTERS));
 
         problem.CoutsMarginauxDesContraintesDeReserveParZone[k]
           = (COUTS_MARGINAUX_ZONES_DE_RESERVE*)MemAlloc(sizeof(COUTS_MARGINAUX_ZONES_DE_RESERVE));
@@ -836,6 +838,7 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
         }
         MemFree(problem.PaliersThermiquesDuPays[k]->PuissanceDisponibleEtCout);
         MemFree(problem.PaliersThermiquesDuPays[k]);
+        MemFree(problem.PaliersHydroclusterDuPays[k]);
         MemFree(problem.ResultatsHoraires[k]->ValeursHorairesDeDefaillancePositive);
         MemFree(problem.ResultatsHoraires[k]->ValeursHorairesDENS);
         MemFree(problem.ResultatsHoraires[k]->ValeursHorairesLmrViolations);
@@ -885,6 +888,7 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
     }
     MemFree(problem.PaliersThermiquesDuPays);
     MemFree(problem.CaracteristiquesHydrauliques);
+    MemFree(problem.PaliersHydroclusterDuPays);
     MemFree(problem.previousSimulationFinalLevel);
     if (problem.previousYearFinalLevels)
         MemFree(problem.previousYearFinalLevels);

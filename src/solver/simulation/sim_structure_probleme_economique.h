@@ -565,7 +565,7 @@ struct PROBLEME_HEBDO
 
     PALIERS_THERMIQUES** PaliersThermiquesDuPays;
     ENERGIES_ET_PUISSANCES_HYDRAULIQUES** CaracteristiquesHydrauliques;
-    PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays;
+    PALIERS_HYDROCLUSTERS** PaliersHydroclusterDuPays;
     /* Optimization problem */
     int NbTermesContraintesPourLesCoutsDeDemarrage;
     char* DefaillanceNegativeUtiliserPMinThermique;
