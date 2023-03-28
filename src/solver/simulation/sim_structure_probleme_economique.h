@@ -324,15 +324,16 @@ typedef struct
 
 typedef struct
 {
+    //! map of ENERGIES_ET_PUISSANCES_HYDRAULIQUES per each cluster
     std::map<int, ENERGIES_ET_PUISSANCES_HYDRAULIQUES> hydroClusterMap; 
     // TODO Milos: needs to allocate memory for each pointer inside structure ENERGIES_ET_PUISSANCES_HYDRAULIQUES for each cluster
     // do it once working with CaracteristiquesHydrauliques
+    //! number of hydro clusters in area
     int areaClusterCount;
-    // TODO Milos: Maybe create uint variable "clusterCount" and a method to caclule it.
-    // To avoid using hydroClusterMap.size() all the time?! 
     std::map<int, double> previousSimulationFinalLevel;
     std::map<int, double> previousYearFinalLevels;
-    std::vector<int> clusterIndexTotalCount; // for each cluster contains index in the total cluster count // TODO Milos: generate this indexes
+    //! contains total hydro cluster count index
+    std::vector<int> clusterIndexTotalCount;
 } PALIERS_HYDROCLUSTERS;
 
 class AdequacyPatchRuntimeData

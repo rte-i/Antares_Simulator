@@ -54,6 +54,7 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
                                      uint numSpace)
 {
     int NombrePaliers;
+    int totalNumberOfHydroClusters;
     CONTRAINTES_COUPLANTES* PtMat;
 
     auto& parameters = study.parameters;
@@ -304,6 +305,19 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
             assert(cluster.intraDailyModulation >= 1. && "Intra-daily modulation must be >= 1.0");
             problem.CoefficientEcretementPMaxHydraulique[i] = cluster.intraDailyModulation;
         }
+    }
+
+    totalNumberOfHydroClusters = 0;
+    for (uint i = 0; i < study.areas.size(); ++i)
+    {
+        auto& area = *(study.areas.byIndex[i]);
+        auto& hydroData = *(problem.PaliersHydroclusterDuPays[i]);
+        hydroData.areaClusterCount = area.hydrocluster.list.size();
+
+        for (uint l = 0; l != area.hydrocluster.list.size(); ++l)
+            hydroData.clusterIndexTotalCount.push_back(totalNumberOfHydroClusters + l);
+
+        totalNumberOfHydroClusters += area.hydrocluster.list.size();
     }
 
     for (uint i = 0; i < study.runtime->interconnectionsCount; ++i)
