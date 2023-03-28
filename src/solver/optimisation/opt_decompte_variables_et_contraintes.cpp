@@ -37,7 +37,7 @@
 #include <antares/emergency.h>
 
 using namespace Antares;
-
+// TODO Milos: remove this translation: count variables and constraints
 void OPT_DecompteDesVariablesEtDesContraintesDuProblemeAOptimiser(PROBLEME_HEBDO* ProblemeHebdo,
                                                                   int* MxPalierThermique)
 {
@@ -90,6 +90,32 @@ void OPT_DecompteDesVariablesEtDesContraintesDuProblemeAOptimiser(PROBLEME_HEBDO
         {
             ProblemeAResoudre->NombreDeVariables += 1;
         }
+
+        // ===== HYDRO-CLUSTERS-START ===== //
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+
+            if (clusterHydroData.PresenceDHydrauliqueModulable == OUI_ANTARES)
+            {
+                ProblemeAResoudre->NombreDeVariables++;
+            }
+
+            if (clusterHydroData.PresenceDePompageModulable == OUI_ANTARES)
+            {
+                ProblemeAResoudre->NombreDeVariables++;
+            }
+
+            if (clusterHydroData.SuiviNiveauHoraire == OUI_ANTARES)
+            {
+                ProblemeAResoudre->NombreDeVariables++;
+                ProblemeAResoudre->NombreDeVariables++;
+            }
+        }
+        // ===== HYDRO-CLUSTER-END ===== //
     }
     ProblemeAResoudre->NombreDeVariables *= NombreDePasDeTempsPourUneOptimisation;
 
@@ -100,6 +126,21 @@ void OPT_DecompteDesVariablesEtDesContraintesDuProblemeAOptimiser(PROBLEME_HEBDO
             ProblemeAResoudre->NombreDeVariables += 1;   /* Final Stock Level */
             ProblemeAResoudre->NombreDeVariables += 100; /* Reservoir layers  */
         }
+
+        // ===== HYDRO-CLUSTERS-START ===== //
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+            if (clusterHydroData.AccurateWaterValue == OUI_ANTARES)
+            {
+                ProblemeAResoudre->NombreDeVariables += 1;   /* Final Stock Level */
+                ProblemeAResoudre->NombreDeVariables += 100; /* Reservoir layers  */
+            }
+        }
+        // ===== HYDRO-CLUSTER-END ===== //
     }
 
     ProblemeAResoudre->NombreDeContraintes = ProblemeHebdo->NombreDePays;
@@ -173,6 +214,28 @@ void OPT_DecompteDesVariablesEtDesContraintesDuProblemeAOptimiser(PROBLEME_HEBDO
                 ProblemeAResoudre->NombreDeContraintes++;
             }
         }
+
+        // ===== HYDRO-CLUSTERS-START ===== //
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+            char PumpCluster = clusterHydroData.PresenceDePompageModulable;
+            char TurbEntreBornesCluster = clusterHydroData.TurbinageEntreBornes;
+            char MonitorHourlyLevCluster = clusterHydroData.SuiviNiveauHoraire;
+
+            if (PumpCluster == NON_ANTARES && TurbEntreBornesCluster == NON_ANTARES
+                && MonitorHourlyLevCluster == NON_ANTARES)
+            {
+                if (clusterHydroData.PresenceDHydrauliqueModulable == OUI_ANTARES)
+                {
+                    ProblemeAResoudre->NombreDeContraintes++;
+                }
+            }
+        }
+        // ===== HYDRO-CLUSTER-END ===== //
 
         if (Pump == OUI_ANTARES && TurbEntreBornes == NON_ANTARES
             && MonitorHourlyLev == NON_ANTARES)
@@ -256,6 +319,34 @@ void OPT_DecompteDesVariablesEtDesContraintesDuProblemeAOptimiser(PROBLEME_HEBDO
                 ProblemeAResoudre->NombreDeContraintes += NombreDePasDeTempsPourUneOptimisation * 2;
             }
         }
+
+        // ===== HYDRO-CLUSTERS-START ===== //
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+            if (clusterHydroData.PresenceDHydrauliqueModulable == OUI_ANTARES)
+            {
+                if (ProblemeHebdo->TypeDeLissageHydraulique
+                    == LISSAGE_HYDRAULIQUE_SUR_SOMME_DES_VARIATIONS)
+                {
+                    ProblemeAResoudre->NombreDeVariables
+                      += NombreDePasDeTempsPourUneOptimisation * 2;
+                    ProblemeAResoudre->NombreDeContraintes += NombreDePasDeTempsPourUneOptimisation;
+                }
+
+                else if (ProblemeHebdo->TypeDeLissageHydraulique
+                         == LISSAGE_HYDRAULIQUE_SUR_VARIATION_MAX)
+                {
+                    ProblemeAResoudre->NombreDeVariables += 2;
+                    ProblemeAResoudre->NombreDeContraintes
+                      += NombreDePasDeTempsPourUneOptimisation * 2;
+                }
+            }
+        }
+        // ===== HYDRO-CLUSTER-END ===== //
     }
 
     for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
@@ -265,6 +356,22 @@ void OPT_DecompteDesVariablesEtDesContraintesDuProblemeAOptimiser(PROBLEME_HEBDO
             ProblemeAResoudre->NombreDeContraintes
               += 2; /* Final Stock Level : (1 bound cnt or 1 equivalence cnt)+ 1 expression cnt */
         }
+
+        // ===== HYDRO-CLUSTERS-START ===== //
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+            if (clusterHydroData.AccurateWaterValue == OUI_ANTARES)
+            {
+                ProblemeAResoudre->NombreDeContraintes
+                  += 2; /* Final Stock Level : (1 bound cnt or 1 equivalence cnt)+ 1 expression cnt
+                         */
+            }
+        }
+        // ===== HYDRO-CLUSTER-END ===== //
     }
 
     *MxPalierThermique = MxPaliers;
