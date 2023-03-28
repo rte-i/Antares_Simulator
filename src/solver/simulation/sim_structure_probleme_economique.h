@@ -56,10 +56,10 @@ typedef struct
     int* NumeroDeVariablesDeNiveau;
     int* NumeroDeVariablesDeDebordement;
 
-    int* NumberOfVariablesProdHydClu; // TODO Milos: allocate memory
-    int* NumberOfVariablesPumpHydClu; // TODO Milos: allocate memory
-    int* NumberOfVariablesLevelClu; // TODO Milos: allocate memory
-    int* NumberOfVariablesOverflowClu; // TODO Milos: allocate memory
+    int* NumberOfVariablesProdHydClu;
+    int* NumberOfVariablesPumpHydClu;
+    int* NumberOfVariablesLevelClu;
+    int* NumberOfVariablesOverflowClu;
 
     int* NumeroDeVariableDefaillancePositive;
     int* NumeroDeVariableDefaillancePositiveUp;
@@ -76,12 +76,12 @@ typedef struct
     int* NumeroDeVariablesVariationHydALaBaisse;
     int* NumeroDeVariablesVariationHydALaBaisseUp;
     int* NumeroDeVariablesVariationHydALaBaisseDown;
-    int* NumeroDeVariablesVariationHydALaBaisseClu; //TODO Milos:  allocate memory
+    int* NumeroDeVariablesVariationHydALaBaisseClu;
 
     int* NumeroDeVariablesVariationHydALaHausse;
     int* NumeroDeVariablesVariationHydALaHausseUp;
     int* NumeroDeVariablesVariationHydALaHausseDown;
-    int* NumeroDeVariablesVariationHydALaHausseClu; // TODO Milos: allocate memory
+    int* NumeroDeVariablesVariationHydALaHausseClu;
 
     int* NumeroDeVariableDuNombreDeGroupesEnMarcheDuPalierThermique;
     int* NumeroDeVariableDuNombreDeGroupesQuiDemarrentDuPalierThermique;
