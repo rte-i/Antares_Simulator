@@ -270,6 +270,19 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
           ->NumeroDeVariableDuNombreDeGroupesQuiTombentEnPanneDuPalierThermique
           = (int*)MemAlloc(study.runtime->thermalPlantTotalCount * sizeof(int));
 
+        problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesProdHydClu
+          = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+        problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesPumpHydClu
+          = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+        problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesLevelClu
+          = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+        problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesOverflowClu
+          = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+        problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeVariablesVariationHydALaBaisseClu
+          = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+        problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeVariablesVariationHydALaHausseClu
+          = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+
         problem.CorrespondanceCntNativesCntOptim[k]->NumeroDeContrainteDesBilansPays
           = (int*)MemAlloc(nbPays * sizeof(int));
         problem.CorrespondanceCntNativesCntOptim[k]->NumeroDeContraintePourEviterLesChargesFictives
@@ -697,6 +710,13 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
         MemFree(problem.CorrespondanceCntNativesCntOptim[k]);
         MemFree(problem.VariablesDualesDesContraintesDeNTC[k]->VariableDualeParInterconnexion);
         MemFree(problem.VariablesDualesDesContraintesDeNTC[k]);
+
+        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesProdHydClu);
+        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesPumpHydClu);
+        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesLevelClu);
+        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesOverflowClu);
+        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeVariablesVariationHydALaBaisseClu);
+        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeVariablesVariationHydALaHausseClu);
     }
     MemFree(problem.ValeursDeNTC);
     MemFree(problem.ConsommationsAbattues);
