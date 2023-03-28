@@ -56,6 +56,11 @@ typedef struct
     int* NumeroDeVariablesDeNiveau;
     int* NumeroDeVariablesDeDebordement;
 
+    int* NumberOfVariablesProdHydClu; // TODO Milos: allocate memory
+    int* NumberOfVariablesPumpHydClu; // TODO Milos: allocate memory
+    int* NumberOfVariablesLevelClu; // TODO Milos: allocate memory
+    int* NumberOfVariablesOverflowClu; // TODO Milos: allocate memory
+
     int* NumeroDeVariableDefaillancePositive;
     int* NumeroDeVariableDefaillancePositiveUp;
     int* NumeroDeVariableDefaillancePositiveDown;
@@ -71,10 +76,12 @@ typedef struct
     int* NumeroDeVariablesVariationHydALaBaisse;
     int* NumeroDeVariablesVariationHydALaBaisseUp;
     int* NumeroDeVariablesVariationHydALaBaisseDown;
+    int* NumeroDeVariablesVariationHydALaBaisseClu; //TODO Milos:  allocate memory
 
     int* NumeroDeVariablesVariationHydALaHausse;
     int* NumeroDeVariablesVariationHydALaHausseUp;
     int* NumeroDeVariablesVariationHydALaHausseDown;
+    int* NumeroDeVariablesVariationHydALaHausseClu; // TODO Milos: allocate memory
 
     int* NumeroDeVariableDuNombreDeGroupesEnMarcheDuPalierThermique;
     int* NumeroDeVariableDuNombreDeGroupesQuiDemarrentDuPalierThermique;
@@ -264,44 +271,44 @@ typedef struct
 
 typedef struct
 {
-    double* MaxEnergieHydrauParIntervalleOptimise;
+    double* MaxEnergieHydrauParIntervalleOptimise; // Max Hydraulic Energy Per Optimized Interval
 
-    double* MinEnergieHydrauParIntervalleOptimise;
+    double* MinEnergieHydrauParIntervalleOptimise; // Min Hydraulic Energy Per Optimized Interval
 
-    double* CntEnergieH2OParIntervalleOptimise;
-    double* CntEnergieH2OParJour;
-    double* ContrainteDePmaxHydrauliqueHoraire;
+    double* CntEnergieH2OParIntervalleOptimise; // H2O Energy Cnt By Optimized Interval
+    double* CntEnergieH2OParJour; // Cnt Energy H2O Per Day
+    double* ContrainteDePmaxHydrauliqueHoraire; // Hourly Hydraulic Pmax Stress
 
-    double MaxDesPmaxHydrauliques;
+    double MaxDesPmaxHydrauliques; // Max Hydraulic Pmax
 
-    double* CntEnergieH2OParIntervalleOptimiseRef;
-    double* ContrainteDePmaxHydrauliqueHoraireRef;
-    double MaxDesPmaxHydrauliquesRef;
+    double* CntEnergieH2OParIntervalleOptimiseRef; // Cnt Energy H2O ParInterval Optimize Ref
+    double* ContrainteDePmaxHydrauliqueHoraireRef; // Hourly Hydraulic Pmax Stress Ref
+    double MaxDesPmaxHydrauliquesRef; // Max Hydraulic Pmax Ref
 
-    double* MaxEnergiePompageParIntervalleOptimise;
-    double* ContrainteDePmaxPompageHoraire;
+    double* MaxEnergiePompageParIntervalleOptimise; // Max Energy Pumping Per Optimized Interval
+    double* ContrainteDePmaxPompageHoraire; // Constraint Of Pmax Hourly Pumping
 
-    char PresenceDePompageModulable;
-    char PresenceDHydrauliqueModulable;
+    char PresenceDePompageModulable; // Modular Pumping Presence
+    char PresenceDHydrauliqueModulable; // Modular Hydraulic Presence
 
-    double PenalisationDeLaVariationDeProductionHydrauliqueSurSommeDesVariations;
-    double PenalisationDeLaVariationDeProductionHydrauliqueSurVariationMax;
+    double PenalisationDeLaVariationDeProductionHydrauliqueSurSommeDesVariations; // Production Variation Penalty Hydraulic On Sum Of Variations
+    double PenalisationDeLaVariationDeProductionHydrauliqueSurVariationMax; // Production Variation Penalty Hydraulic On Max Variation
 
     double WeeklyWaterValueStateRegular;
     double WeeklyWaterValueStateUp;
     double WeeklyWaterValueStateDown;
 
-    char TurbinageEntreBornes;
+    char TurbinageEntreBornes; // Turbining Between Terminals
 
-    char SuiviNiveauHoraire;
+    char SuiviNiveauHoraire; //Hourly Level Tracking
 
-    double* NiveauHoraireSup;
-    double* NiveauHoraireInf;
+    double* NiveauHoraireSup; // Upper Time Level
+    double* NiveauHoraireInf; // Lower Time Level
 
     double* ApportNaturelHoraire; // Hourly natural inflow
     double* MingenHoraire; //CR22 mingen per hour
     double NiveauInitialReservoir; // Initial reservoir level
-    double TailleReservoir;
+    double TailleReservoir; // Tank Size
     double PumpingRatio;
 
     double WeeklyGeneratingModulation;
@@ -320,8 +327,12 @@ typedef struct
     std::map<int, ENERGIES_ET_PUISSANCES_HYDRAULIQUES> hydroClusterMap; 
     // TODO Milos: needs to allocate memory for each pointer inside structure ENERGIES_ET_PUISSANCES_HYDRAULIQUES for each cluster
     // do it once working with CaracteristiquesHydrauliques
+    int areaClusterCount;
+    // TODO Milos: Maybe create uint variable "clusterCount" and a method to caclule it.
+    // To avoid using hydroClusterMap.size() all the time?! 
     std::map<int, double> previousSimulationFinalLevel;
     std::map<int, double> previousYearFinalLevels;
+    std::vector<int> clusterIndexTotalCount; // for each cluster contains index in the total cluster count // TODO Milos: generate this indexes
 } PALIERS_HYDROCLUSTERS;
 
 class AdequacyPatchRuntimeData
@@ -608,6 +619,9 @@ struct PROBLEME_HEBDO
 
     int* NumeroDeVariableStockFinal;
     int** NumeroDeVariableDeTrancheDeStock;
+
+    int* NumeroDeVariableStockFinalCluster; // Ending Stock Variable Number ???
+    int** NumeroDeVariableDeTrancheDeStockCluster; // Stock Slice Variable Number ???
 
     int* numeroOptimisation;
 

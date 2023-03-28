@@ -217,6 +217,116 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBD
                 CorrespondanceVarNativesVarOptim->NumeroDeVariablesDeDebordement[Pays] = -1;
             }
         }
+
+        // ===== HYDRO-CLUSTERS-START ===== //
+        for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+        {
+            PALIERS_HYDROCLUSTERS& PaliersHydroclusterDuPays
+              = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+            uint areaClusterCount = PaliersHydroclusterDuPays.areaClusterCount;
+            for (int cluster = 0; cluster < areaClusterCount; cluster++)
+            {
+                auto& clusterHydroData = PaliersHydroclusterDuPays.hydroClusterMap.at(cluster);
+                int clusterIndex = PaliersHydroclusterDuPays.clusterIndexTotalCount[cluster];
+
+                if (clusterHydroData.PresenceDHydrauliqueModulable == OUI_ANTARES)
+                {
+                    CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[clusterIndex]
+                      = NombreDeVariables;
+                    ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
+                      = VARIABLE_BORNEE_DES_DEUX_COTES;
+                    NombreDeVariables++;
+                }
+                else
+                    CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[Pays] = -1;
+
+                CorrespondanceVarNativesVarOptim
+                  ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex]
+                  = -1;
+                CorrespondanceVarNativesVarOptim
+                  ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex]
+                  = -1;
+                if (ProblemeHebdo->TypeDeLissageHydraulique
+                    == LISSAGE_HYDRAULIQUE_SUR_SOMME_DES_VARIATIONS) // HYDRAULIC SMOOTHING ON SUM
+                                                                     // OF VARIATIONS
+                {
+                    if (clusterHydroData.PresenceDHydrauliqueModulable == OUI_ANTARES)
+                    {
+                        CorrespondanceVarNativesVarOptim
+                          ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex]
+                          = NombreDeVariables;
+                        ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
+                          = VARIABLE_BORNEE_INFERIEUREMENT;
+                        NombreDeVariables++;
+                        CorrespondanceVarNativesVarOptim
+                          ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex]
+                          = NombreDeVariables;
+                        ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
+                          = VARIABLE_BORNEE_INFERIEUREMENT; // LOWER_BOUNDED VARIABLE
+                        NombreDeVariables++;
+                    }
+                }
+                else if (ProblemeHebdo->TypeDeLissageHydraulique
+                         == LISSAGE_HYDRAULIQUE_SUR_VARIATION_MAX) // HYDRAULIC SMOOTHING ON MAX
+                                                                   // VARIATION
+                {
+                    if (clusterHydroData.PresenceDHydrauliqueModulable == OUI_ANTARES)
+                    {
+                        if (Pdt == 0)
+                        {
+                            CorrespondanceVarNativesVarOptim
+                              ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex]
+                              = NombreDeVariables;
+
+                            ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
+                              = VARIABLE_BORNEE_DES_DEUX_COTES; // VARIABLE BOUNDED on BOTH SIDES
+                            NombreDeVariables++;
+                            CorrespondanceVarNativesVarOptim
+                              ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex]
+                              = NombreDeVariables;
+
+                            ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
+                              = VARIABLE_BORNEE_DES_DEUX_COTES;
+                            NombreDeVariables++;
+                        }
+                    }
+                }
+
+                if (clusterHydroData.PresenceDePompageModulable == OUI_ANTARES)
+                {
+                    CorrespondanceVarNativesVarOptim->NumberOfVariablesPumpHydClu[clusterIndex]
+                      = NombreDeVariables;
+                    ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
+                      = VARIABLE_BORNEE_DES_DEUX_COTES;
+                    NombreDeVariables++;
+                }
+                else
+                    CorrespondanceVarNativesVarOptim->NumberOfVariablesPumpHydClu[clusterIndex]
+                      = -1;
+
+                if (clusterHydroData.SuiviNiveauHoraire == OUI_ANTARES)
+                {
+                    CorrespondanceVarNativesVarOptim->NumberOfVariablesLevelClu[clusterIndex]
+                      = NombreDeVariables;
+                    ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
+                      = VARIABLE_BORNEE_DES_DEUX_COTES;
+                    NombreDeVariables++;
+                    CorrespondanceVarNativesVarOptim->NumberOfVariablesOverflowClu[clusterIndex]
+                      = NombreDeVariables;
+                    ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
+                      = VARIABLE_BORNEE_DES_DEUX_COTES;
+                    NombreDeVariables++;
+                }
+                else
+                {
+                    CorrespondanceVarNativesVarOptim->NumberOfVariablesLevelClu[clusterIndex] = -1;
+                    CorrespondanceVarNativesVarOptim->NumberOfVariablesOverflowClu[clusterIndex]
+                      = -1;
+                }
+            }
+        }
+
+        // ===== HYDRO-CLUSTER-END ===== //
     }
 
     for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
@@ -244,6 +354,45 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBD
             }
         }
     }
+
+    // ===== HYDRO-CLUSTERS-START ===== //
+    for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+    {
+        PALIERS_HYDROCLUSTERS& PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays.areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays.hydroClusterMap.at(cluster);
+            int clusterIndex = PaliersHydroclusterDuPays.clusterIndexTotalCount[cluster];
+
+            if (clusterHydroData.AccurateWaterValue == OUI_ANTARES)
+            {
+                ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex] = NombreDeVariables;
+                ProblemeAResoudre->TypeDeVariable[NombreDeVariables] = VARIABLE_NON_BORNEE;
+                NombreDeVariables++;
+
+                for (uint nblayer = 0; nblayer < 100; nblayer++)
+                {
+                    ProblemeHebdo->NumeroDeVariableDeTrancheDeStockCluster[clusterIndex][nblayer]
+                      = NombreDeVariables;
+                    ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
+                      = VARIABLE_BORNEE_DES_DEUX_COTES;
+                    NombreDeVariables++;
+                }
+            }
+            else
+            {
+                ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex] = -1;
+                for (uint nblayer = 0; nblayer < 100; nblayer++)
+                {
+                    ProblemeHebdo->NumeroDeVariableDeTrancheDeStockCluster[clusterIndex][nblayer]
+                      = -1;
+                }
+            }
+        }
+    }
+    // ===== HYDRO-CLUSTER-END ===== //
 
     ProblemeAResoudre->NombreDeVariables = NombreDeVariables;
 
