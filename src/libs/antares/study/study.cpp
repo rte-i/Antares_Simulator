@@ -1315,6 +1315,13 @@ void Study::initializeProgressMeter(bool tsGeneratorOnly)
                 n += (int)areas.size();
             progression.add(y, Solver::Progression::sectTSGHydro, n);
         }
+        if (TS<timeSeriesHydrocluster>::IsNeeded(*this, y))
+        {
+            n = runtime->hydroClusterTotalCount;
+            if (0 != (timeSeriesHydrocluster & parameters.timeSeriesToArchive))
+                n += (int)runtime->hydroClusterTotalCount;
+            progression.add(y, Solver::Progression::sectTSGHydro, n);
+        }
         if (TS<timeSeriesThermal>::IsNeeded(*this, y))
         {
             n = runtime->thermalPlantTotalCount;

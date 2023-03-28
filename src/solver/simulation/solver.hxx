@@ -562,6 +562,14 @@ void ISimulation<Impl>::estimateMemoryForWeeklyPb(Antares::Data::StudyMemoryUsag
         thermalPlantTotalCount += area.thermal.list.size();
     }
 
+    // Total number of hydro clusters
+    uint hydroClusterTotalCount = 0;
+    for (uint i = 0; i != study.areas.size(); i++)
+    {
+        auto& area = *(study.areas.byIndex[i]);
+        hydroClusterTotalCount += area.hydrocluster.list.size();
+    }
+
     // Weekly problem size
     Yuni::uint64 requiredMemoryForWeeklyPb = 0;
 
@@ -594,6 +602,14 @@ void ISimulation<Impl>::estimateMemoryForWeeklyPb(Antares::Data::StudyMemoryUsag
     for (int k = 0; k < NombreDePasDeTemps; k++)
     {
         requiredMemoryForWeeklyPb += 8 * thermalPlantTotalCount * sizeof(int);
+    }
+
+    // -------------------------------------------------------
+    // Memory allocated based on the number of hydro clusters
+    // -------------------------------------------------------
+    for (int k = 0; k < NombreDePasDeTemps; k++)
+    {
+        requiredMemoryForWeeklyPb += 8 * hydroClusterTotalCount * sizeof(int); // TODO Milos: what is 8 ?
     }
 
     // -------------------------------------------------

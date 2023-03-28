@@ -135,6 +135,7 @@ static void StudyRuntimeInfosInitializeAllAreas(Study& study, StudyRuntimeInfos&
         // statistics
         r.thermalPlantTotalCount += area.thermal.list.size();
         r.thermalPlantTotalCountMustRun += area.thermal.mustrunList.size();
+        r.hydroClusterTotalCount += area.hydrocluster.list.size();
     }
 }
 
@@ -444,6 +445,7 @@ StudyRuntimeInfos::StudyRuntimeInfos(uint nbYearsParallel) :
  bindingConstraintCount(0),
  bindingConstraint(nullptr),
  thermalPlantTotalCount(0),
+ hydroClusterTotalCount(0),
  thermalPlantTotalCountMustRun(0),
 #ifdef ANTARES_USE_GLOBAL_MAXIMUM_COST
  hydroCostByAreaShouldBeInfinite(nullptr),
@@ -489,6 +491,7 @@ bool StudyRuntimeInfos::loadFromStudy(Study& study)
     parameters = &study.parameters;
     mode = gd.mode;
     thermalPlantTotalCount = 0;
+    hydroClusterTotalCount = 0;
     thermalPlantTotalCountMustRun = 0;
 
     // Calendar
@@ -597,6 +600,7 @@ bool StudyRuntimeInfos::loadFromStudy(Study& study)
     logs.info() << "     links: " << interconnectionsCount;
     logs.info() << "     thermal clusters: " << thermalPlantTotalCount;
     logs.info() << "     thermal clusters (must-run): " << thermalPlantTotalCountMustRun;
+    logs.info() << "     hydro clusters: " << hydroClusterTotalCount;
     logs.info() << "     binding constraints: " << bindingConstraintCount;
     logs.info() << "     geographic trimming:" << (gd.geographicTrimming ? "true" : "false");
     logs.info() << "     memory : " << ((study.memoryUsage()) / 1024 / 1024) << "Mo";

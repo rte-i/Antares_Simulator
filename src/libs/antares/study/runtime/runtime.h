@@ -163,6 +163,7 @@ public:
     //! Total
     uint thermalPlantTotalCount;
     uint thermalPlantTotalCountMustRun;
+    uint hydroClusterTotalCount;
 
     //! Override enable/disable TS generation per cluster
     bool thermalTSRefresh = false;
