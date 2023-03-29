@@ -56,10 +56,15 @@ typedef struct
     int* NumeroDeVariablesDeNiveau;
     int* NumeroDeVariablesDeDebordement;
 
+    // HYDRO-CLUSTER-START
     int* NumberOfVariablesProdHydClu;
     int* NumberOfVariablesPumpHydClu;
     int* NumberOfVariablesLevelClu;
     int* NumberOfVariablesOverflowClu;
+
+    int* NumeroDeVariablesVariationHydALaBaisseClu;
+    int* NumeroDeVariablesVariationHydALaHausseClu;
+    // HYDRO-CLUSTER-END
 
     int* NumeroDeVariableDefaillancePositive;
     int* NumeroDeVariableDefaillancePositiveUp;
@@ -76,12 +81,10 @@ typedef struct
     int* NumeroDeVariablesVariationHydALaBaisse;
     int* NumeroDeVariablesVariationHydALaBaisseUp;
     int* NumeroDeVariablesVariationHydALaBaisseDown;
-    int* NumeroDeVariablesVariationHydALaBaisseClu;
 
     int* NumeroDeVariablesVariationHydALaHausse;
     int* NumeroDeVariablesVariationHydALaHausseUp;
     int* NumeroDeVariablesVariationHydALaHausseDown;
-    int* NumeroDeVariablesVariationHydALaHausseClu;
 
     int* NumeroDeVariableDuNombreDeGroupesEnMarcheDuPalierThermique;
     int* NumeroDeVariableDuNombreDeGroupesQuiDemarrentDuPalierThermique;
@@ -246,7 +249,7 @@ typedef struct
     int* NombreMaxDeGroupesEnMarcheDuPalierThermique;
     int* NombreMinDeGroupesEnMarcheDuPalierThermique;
 
-} PDISP_ET_COUTS_HORAIRES_PAR_PALIER;
+} PDISP_ET_COUTS_HORAIRES_PAR_PALIER; // TODO Milos: do I need hourly costs per hydro clusters ?
 
 typedef struct
 {
@@ -322,19 +325,22 @@ typedef struct
                                       constraint on final level*/
 } ENERGIES_ET_PUISSANCES_HYDRAULIQUES;
 
+// HYDRO-CLUSTER-START
 typedef struct
 {
     //! map of ENERGIES_ET_PUISSANCES_HYDRAULIQUES per each cluster
-    std::map<int, ENERGIES_ET_PUISSANCES_HYDRAULIQUES> hydroClusterMap; 
-    // TODO Milos: needs to allocate memory for each pointer inside structure ENERGIES_ET_PUISSANCES_HYDRAULIQUES for each cluster
-    // do it once working with CaracteristiquesHydrauliques
+    std::map<int, ENERGIES_ET_PUISSANCES_HYDRAULIQUES> hydroClusterMap;
     //! number of hydro clusters in area
     int areaClusterCount;
+
     std::map<int, double> previousSimulationFinalLevel;
     std::map<int, double> previousYearFinalLevels;
+    
     //! contains total hydro cluster count index
     std::vector<int> clusterIndexTotalCount;
+
 } PALIERS_HYDROCLUSTERS;
+// HYDRO-CLUSTER-END
 
 class AdequacyPatchRuntimeData
 {
@@ -464,6 +470,18 @@ typedef struct
 
 } PRODUCTION_THERMIQUE_OPTIMALE;
 
+// HYDRO-CLUSTER-START
+typedef struct
+{
+    double* PompageHoraire; // hourly pumping
+    double* TurbinageHoraire; // hourly generating
+    double* niveauxHoraires; // hourly levels
+    double* valeurH2oHoraire;
+    double* debordementsHoraires; // hourly overflows
+
+} PRODUCTION_HYDRO_OPTIMAL;
+// HYDRO-CLUSTER-END
+
 typedef struct
 {
     double* ValeursHorairesDeDefaillancePositive;
@@ -479,18 +497,21 @@ typedef struct
     double* ValeursHorairesDeDefaillanceNegativeAny;
 
     double* ValeursHorairesDeDefaillanceEnReserve;
-    double* PompageHoraire; // hourly pumping
-    double* TurbinageHoraire; // hourly generating
+    double* PompageHoraire;
+    double* TurbinageHoraire;
     double* TurbinageHoraireUp;
     double* TurbinageHoraireDown;
 
-    double* niveauxHoraires; // hourly levels
+    double* niveauxHoraires;
     double* valeurH2oHoraire;
 
-    double* debordementsHoraires; // hourly overflows
+    double* debordementsHoraires;
 
     double* CoutsMarginauxHoraires;
     PRODUCTION_THERMIQUE_OPTIMALE** ProductionThermique;
+    // HYDRO-CLUSTER-START
+    PRODUCTION_HYDRO_OPTIMAL** productionHydroCluster;
+    // HYDRO-CLUSTER-END
 } RESULTATS_HORAIRES;
 
 typedef struct
@@ -621,8 +642,16 @@ struct PROBLEME_HEBDO
     int* NumeroDeVariableStockFinal;
     int** NumeroDeVariableDeTrancheDeStock;
 
+    // HYDRO-CLUSTER-START
     int* NumeroDeVariableStockFinalCluster; // Ending Stock Variable Number ???
     int** NumeroDeVariableDeTrancheDeStockCluster; // Stock Slice Variable Number ???
+    
+    // Next two are transfered in PALIERS_HYDROCLUSTERS // maybe keep them here ?!
+    // double* previousYearFinalLevelsCluster;
+    // double* previousSimulationFinalLevelCluster;
+
+
+    // HYDRO-CLUSTER-END
 
     int* numeroOptimisation;
 
