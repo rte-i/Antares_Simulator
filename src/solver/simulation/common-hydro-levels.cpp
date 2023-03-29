@@ -93,12 +93,6 @@ void computingHydroLevels(const Data::Study& study, // used as post-optimization
 
         computeLvlObj.run();
         niv[nbHoursInAWeek - 1] = computeLvlObj.getLevel() * 100 / reservoirCapacity;
-        // TODO Milos:
-        // calling computeLvlObj method run with parameters:
-        // nivInit, inflows, pumpingRatio, reservoirCapacity -> different for each cluster
-        // while parameters:
-        // ovf, turb, pump -> extracted from weekly results (from solver) -> so far one per area
-        // is not applicable!  
     });
 }
 
@@ -169,17 +163,6 @@ void updatingWeeklyFinalHydroLevel(const Data::Study& study, // used as post-opt
 
         problem.previousSimulationFinalLevel[index]
           = niv[nbHoursInAWeek - 1] * reservoirCapacity / 100;
-        // TODO Milos:
-        // update final reservoir level at the end of the week -> stored in previousSimulationFinalLevel[area] (made another structure for clusters so this is ok, I have where to store it) 
-        // with the final reservoir level value from the optimization-solver -> extracting this values from the weeklyResults (from solver output)!
-        // this value is set as initial reservoir level at the beginning of the next week
-        
-        // this creates an ISSUE. We have ONE weekly results for area (for all the clusters inside one area) so far. 
-        // E.g. one H.LEV [%] also one H.STOR[Mwh], H.PUMP[Mwh], H.INFL[MWh] and H.OVFL[%]
-        // Do we create outputs for all the clusters? This is going to be difficult since number of clusters per area is different,
-        // and we can also end up with too many columns!?
-        // Or we just create structures to remember weekly results for all the hydro clusters
-        // And for the final output we "sum up" cluster outputs somehow!?  
     });
 }
 
@@ -198,16 +181,10 @@ void updatingAnnualFinalHydroLevel(const Data::Study& study, PROBLEME_HEBDO& pro
 
         problem.previousYearFinalLevels[index]
           = problem.previousSimulationFinalLevel[index] / reservoirCapacity;
-        // TODO Milos:
-        // Only for HOT START.
-        // update final reservoir level at the end of the YEAR -> stored inside previousYearFinalLevels[area] (made another structure for clusters so this is ok, I have where to store it)
-        // with the final reservoir level at the end of the "last week" in that year. -> stored in previousSimulationFinalLevel[area] (made another structure for clusters so this is ok, I have where to store it)
-        // this value is set as initial reservoir level at the beginning of the next YEAR
-
-        // NO ISSUE here. Since both structures previousYearFinalLevels and previousSimulationFinalLevel are created for clusters!
     });
 }
 
+// TODO Milos: call next 4 functions where is necessary!
 void computingHydroLevelsForCluster(const Data::Study& study,
                                     PROBLEME_HEBDO& problem,
                                     uint nbHoursInAWeek,
@@ -240,18 +217,19 @@ void computingHydroLevelsForCluster(const Data::Study& study,
                                     .ApportNaturelHoraire;
 
                 RESULTATS_HORAIRES* weeklyResults = problem.ResultatsHoraires[index];
+                PRODUCTION_HYDRO_OPTIMAL& clusterResults = weeklyResults->productionHydroCluster[cluster.index];
 
-                double* turb = weeklyResults->TurbinageHoraire;
+                double* turb = clusterResults.hourlyGenPerCluster;
 
-                double* pump = weeklyResults->PompageHoraire;
+                double* pump = clusterResults.hourlyPumpPerCluster;
                 double pumpingRatio = cluster.pumpingEfficiency;
 
                 double nivInit = problem.PaliersHydroclusterDuPays[index]
                                    ->hydroClusterMap.at(cluster.index)
                                    .NiveauInitialReservoir;
-                double* niv = weeklyResults->niveauxHoraires;
+                double* niv = clusterResults.hourlyLevelPerCluster;
 
-                double* ovf = weeklyResults->debordementsHoraires;
+                double* ovf = clusterResults.hourlyOvfPerCluster;
 
                 auto& computeLvlObj = problem.computeLvl_object;
 
@@ -293,8 +271,9 @@ void interpolateWaterValueForCluster(const Data::Study& study,
             {
                 uint index = area.index;
                 RESULTATS_HORAIRES* weeklyResults = problem.ResultatsHoraires[index];
+                PRODUCTION_HYDRO_OPTIMAL& clusterResults = weeklyResults->productionHydroCluster[cluster.index];
 
-                double* waterVal = weeklyResults->valeurH2oHoraire;
+                double* waterVal = clusterResults.valueH2oSchedulePerCluster;
 
                 for (uint h = 0; h < nbHoursInAWeek; h++)
                     waterVal[h] = 0.;
@@ -307,7 +286,7 @@ void interpolateWaterValueForCluster(const Data::Study& study,
 
                 double reservoirCapacity = cluster.reservoirCapacity;
 
-                double* niv = weeklyResults->niveauxHoraires;
+                double* niv = clusterResults.hourlyLevelPerCluster;
 
                 Antares::Data::getWaterValue(
                   problem.PaliersHydroclusterDuPays[index]->previousSimulationFinalLevel.at(
@@ -344,8 +323,9 @@ void updatingWeeklyFinalHydroLevelForCluster(const Data::Study& study,
 
                 double reservoirCapacity = cluster.reservoirCapacity;
                 RESULTATS_HORAIRES* weeklyResults = problem.ResultatsHoraires[index];
+                PRODUCTION_HYDRO_OPTIMAL& clusterResults = weeklyResults->productionHydroCluster[cluster.index];
 
-                double* niv = weeklyResults->niveauxHoraires;
+                double* niv = clusterResults.hourlyLevelPerCluster;
 
                 problem.PaliersHydroclusterDuPays[index]->previousSimulationFinalLevel.insert(
                   {cluster.index, niv[nbHoursInAWeek - 1] * reservoirCapacity / 100});
