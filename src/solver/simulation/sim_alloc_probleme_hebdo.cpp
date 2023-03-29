@@ -722,6 +722,17 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
         MemFree(problem.CorrespondanceVarNativesVarOptim[k]
                   ->NumeroDeVariableDuNombreDeGroupesQuiTombentEnPanneDuPalierThermique);
 
+        // HYDRO-CLUSTER-START
+        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesProdHydClu);
+        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesPumpHydClu);
+        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesLevelClu);
+        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesOverflowClu);
+        MemFree(
+          problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeVariablesVariationHydALaBaisseClu);
+        MemFree(
+          problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeVariablesVariationHydALaHausseClu);
+        // HYDRO-CLUSTER-END
+
         MemFree(problem.CorrespondanceVarNativesVarOptim[k]);
         MemFree(problem.CorrespondanceCntNativesCntOptim[k]->NumeroDeContrainteDesBilansPays);
         MemFree(problem.CorrespondanceCntNativesCntOptim[k]->NumeroDeContrainteDesNiveauxPays);
@@ -745,13 +756,6 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
         MemFree(problem.CorrespondanceCntNativesCntOptim[k]);
         MemFree(problem.VariablesDualesDesContraintesDeNTC[k]->VariableDualeParInterconnexion);
         MemFree(problem.VariablesDualesDesContraintesDeNTC[k]);
-
-        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesProdHydClu);
-        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesPumpHydClu);
-        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesLevelClu);
-        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumberOfVariablesOverflowClu);
-        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeVariablesVariationHydALaBaisseClu);
-        MemFree(problem.CorrespondanceVarNativesVarOptim[k]->NumeroDeVariablesVariationHydALaHausseClu);
     }
     MemFree(problem.ValeursDeNTC);
     MemFree(problem.ConsommationsAbattues);
