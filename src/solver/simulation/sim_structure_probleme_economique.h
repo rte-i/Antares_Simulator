@@ -471,13 +471,13 @@ typedef struct
 } PRODUCTION_THERMIQUE_OPTIMALE;
 
 // HYDRO-CLUSTER-START
-typedef struct
+typedef struct hydroClusterResult
 {
-    double* PompageHoraire; // hourly pumping
-    double* TurbinageHoraire; // hourly generating
-    double* niveauxHoraires; // hourly levels
-    double* valeurH2oHoraire;
-    double* debordementsHoraires; // hourly overflows
+    double* hourlyPumpPerCluster;
+    double* hourlyGenPerCluster;
+    double* hourlyLevelPerCluster;
+    double* valueH2oSchedulePerCluster;
+    double* hourlyOvfPerCluster;
 
 } PRODUCTION_HYDRO_OPTIMAL;
 // HYDRO-CLUSTER-END
@@ -498,7 +498,7 @@ typedef struct
 
     double* ValeursHorairesDeDefaillanceEnReserve;
     double* PompageHoraire;
-    double* TurbinageHoraire;
+    double* TurbinageHoraire; // smer: broj area pa broj koraka
     double* TurbinageHoraireUp;
     double* TurbinageHoraireDown;
 
@@ -508,9 +508,9 @@ typedef struct
     double* debordementsHoraires;
 
     double* CoutsMarginauxHoraires;
-    PRODUCTION_THERMIQUE_OPTIMALE** ProductionThermique;
+    PRODUCTION_THERMIQUE_OPTIMALE** ProductionThermique; // obrnuto: broj koraka pa broj area
     // HYDRO-CLUSTER-START
-    PRODUCTION_HYDRO_OPTIMAL** productionHydroCluster;
+    std::vector<PRODUCTION_HYDRO_OPTIMAL> productionHydroCluster;
     // HYDRO-CLUSTER-END
 } RESULTATS_HORAIRES;
 

@@ -403,16 +403,6 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
         problem.PaliersHydroclusterDuPays[k]
           = (PALIERS_HYDROCLUSTERS*)MemAlloc(sizeof(PALIERS_HYDROCLUSTERS));
 
-        for (j = 0; j < (int)numHydClu; ++j)
-        {
-            // This calls the constructor to create a new "blank"
-            // ENERGIES_ET_PUISSANCES_HYDRAULIQUES to put at key=j.
-            // The [] operator will create an entry if there isn't already an entry
-            problem.PaliersHydroclusterDuPays[k]->hydroClusterMap[j];
-            // TODO Milos: do I have to allocate memory for each pointer inside
-            // problem.PaliersHydroclusterDuPays[k]->hydroClusterMap[j]
-        }
-
         problem.CoutsMarginauxDesContraintesDeReserveParZone[k]
           = (COUTS_MARGINAUX_ZONES_DE_RESERVE*)MemAlloc(sizeof(COUTS_MARGINAUX_ZONES_DE_RESERVE));
         problem.CoutsMarginauxDesContraintesDeReserveParZone[k]
@@ -528,8 +518,22 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
           = (PDISP_ET_COUTS_HORAIRES_PAR_PALIER**)MemAlloc(nbPaliers * sizeof(void*));
         problem.ResultatsHoraires[k]->ProductionThermique
           = (PRODUCTION_THERMIQUE_OPTIMALE**)MemAlloc(NombreDePasDeTemps * sizeof(void*));
-        problem.ResultatsHoraires[k]->productionHydroCluster
-          = (PRODUCTION_HYDRO_OPTIMAL**)MemAlloc(NombreDePasDeTemps * sizeof(void*));
+
+        // HYDRO-CLUSTER-START
+        for (j = 0; j < (int)numHydClu; ++j)
+        {
+            // This calls the constructor to create a new "blank"
+            // ENERGIES_ET_PUISSANCES_HYDRAULIQUES to put at key=j.
+            // The [] operator will create an entry if there isn't already an entry
+            problem.PaliersHydroclusterDuPays[k]->hydroClusterMap[j];
+            // TODO Milos: do I have to allocate memory for each pointer inside
+            // problem.PaliersHydroclusterDuPays[k]->hydroClusterMap[j]
+
+            problem.ResultatsHoraires[k]->productionHydroCluster.push_back(hydroClusterResult());
+            // TODO Milos: do I have to allocate memory for each pointer inside
+            // problem.ResultatsHoraires[k]->productionHydroCluster
+        }
+        // HYDRO-CLUSTER-END
 
         for (j = 0; j < (int)nbPaliers; ++j)
         {
@@ -607,21 +611,6 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
               ->ProductionThermique[j]
               ->NombreDeGroupesQuiTombentEnPanneDuPalier
               = (double*)MemAlloc(nbPaliers * sizeof(double));
-
-            // HYDRO-CLUSTER-START
-            problem.ResultatsHoraires[k]->productionHydroCluster[j]
-              = (PRODUCTION_HYDRO_OPTIMAL*)MemAlloc(sizeof(PRODUCTION_HYDRO_OPTIMAL));
-            problem.ResultatsHoraires[k]->productionHydroCluster[j]->PompageHoraire
-              = (double*)MemAlloc(numHydClu * sizeof(double));
-            problem.ResultatsHoraires[k]->productionHydroCluster[j]->TurbinageHoraire
-              = (double*)MemAlloc(numHydClu * sizeof(double));
-            problem.ResultatsHoraires[k]->productionHydroCluster[j]->niveauxHoraires
-              = (double*)MemAlloc(numHydClu * sizeof(double));
-            problem.ResultatsHoraires[k]->productionHydroCluster[j]->valeurH2oHoraire
-              = (double*)MemAlloc(numHydClu * sizeof(double));
-            problem.ResultatsHoraires[k]->productionHydroCluster[j]->debordementsHoraires
-              = (double*)MemAlloc(numHydClu * sizeof(double));
-            // HYDRO-CLUSTER-END
         }
     }
 
@@ -939,18 +928,8 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
                       ->ProductionThermique[j]
                       ->NombreDeGroupesQuiTombentEnPanneDuPalier);
             MemFree(problem.ResultatsHoraires[k]->ProductionThermique[j]);
-
-            // HYDRO-CLUSTER-START
-            MemFree(problem.ResultatsHoraires[k]->productionHydroCluster[j]->PompageHoraire);
-            MemFree(problem.ResultatsHoraires[k]->productionHydroCluster[j]->TurbinageHoraire);
-            MemFree(problem.ResultatsHoraires[k]->productionHydroCluster[j]->niveauxHoraires);
-            MemFree(problem.ResultatsHoraires[k]->productionHydroCluster[j]->valeurH2oHoraire);
-            MemFree(problem.ResultatsHoraires[k]->productionHydroCluster[j]->debordementsHoraires);
-            MemFree(problem.ResultatsHoraires[k]->productionHydroCluster[j]);
-            // HYDRO-CLUSTER-END
         }
         MemFree(problem.ResultatsHoraires[k]->ProductionThermique);
-        MemFree(problem.ResultatsHoraires[k]->productionHydroCluster);
         MemFree(problem.ResultatsHoraires[k]);
 
         MemFree(problem.BruitSurCoutHydraulique[k]);
