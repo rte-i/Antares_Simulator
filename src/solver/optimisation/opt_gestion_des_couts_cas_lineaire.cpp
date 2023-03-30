@@ -173,6 +173,34 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
                            ->WeeklyWaterValueStateRegular;
             }
 
+            // HYDRO-CLUSTER-START
+            PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+              = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+            uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+
+            for (int cluster = 0; cluster < areaClusterCount; cluster++)
+            {
+                auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+                int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
+
+                Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[clusterIndex];
+                if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
+                    ProblemeAResoudre->CoutLineaire[Var] = 0.0;
+
+                if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
+                {
+                    ProblemeAResoudre->CoutLineaire[Var]
+                      = ProblemeHebdo->BruitSurCoutHydrauliqueCluster[clusterIndex]
+                                                                     [ProblemeHebdo->HeureDansLAnnee
+                                                                      + PdtHebdo];
+
+                    if (clusterHydroData.AccurateWaterValue == NON_ANTARES)
+                        ProblemeAResoudre->CoutLineaire[Var]
+                          += clusterHydroData.WeeklyWaterValueStateRegular;
+                }
+            }
+            // HYDRO-CLUSTER-END
+
             if (ProblemeHebdo->CaracteristiquesHydrauliques[Pays]->PresenceDHydrauliqueModulable
                 == OUI_ANTARES)
             {
@@ -210,6 +238,50 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
                 }
             }
 
+            // HYDRO-CLUSTER-START
+            for (int cluster = 0; cluster < areaClusterCount; cluster++)
+            {
+                auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+                int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
+
+                if (clusterHydroData.PresenceDHydrauliqueModulable == OUI_ANTARES)
+                {
+                    if (ProblemeHebdo->TypeDeLissageHydraulique
+                        == LISSAGE_HYDRAULIQUE_SUR_SOMME_DES_VARIATIONS)
+                    {
+                        P = clusterHydroData
+                              .PenalisationDeLaVariationDeProductionHydrauliqueSurSommeDesVariations;
+
+                        Var = CorrespondanceVarNativesVarOptim
+                                ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex];
+                        if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
+                            ProblemeAResoudre->CoutLineaire[Var] = P;
+                        Var = CorrespondanceVarNativesVarOptim
+                                ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex];
+                        if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
+                            ProblemeAResoudre->CoutLineaire[Var] = P;
+                    }
+                    else if (ProblemeHebdo->TypeDeLissageHydraulique
+                             == LISSAGE_HYDRAULIQUE_SUR_VARIATION_MAX)
+                    {
+                        if (PdtJour == 0)
+                        {
+                            P = clusterHydroData
+                                  .PenalisationDeLaVariationDeProductionHydrauliqueSurVariationMax;
+                            Var = CorrespondanceVarNativesVarOptim
+                                    ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex];
+                            if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
+                                ProblemeAResoudre->CoutLineaire[Var] = P;
+                            Var = CorrespondanceVarNativesVarOptim
+                                    ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex];
+                            if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
+                                ProblemeAResoudre->CoutLineaire[Var] = -P;
+                        }
+                    }
+                }
+            }
+            // HYDRO-CLUSTER-END
+
             Var = CorrespondanceVarNativesVarOptim->NumeroDeVariablesDePompage[Pays];
             if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
             {
@@ -242,6 +314,45 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
             {
                 ProblemeAResoudre->CoutLineaire[Var] = 0;
             }
+
+            // HYDRO-CLUSTER-START
+            for (int cluster = 0; cluster < areaClusterCount; cluster++)
+            {
+                auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+                int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
+
+                Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesPumpHydClu[clusterIndex];
+                if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
+                {
+                    ProblemeAResoudre->CoutLineaire[Var]
+                      = ProblemeHebdo->BruitSurCoutHydrauliqueCluster[clusterIndex]
+                                                                     [ProblemeHebdo->HeureDansLAnnee
+                                                                      + PdtHebdo];
+
+                    if (clusterHydroData.AccurateWaterValue == NON_ANTARES)
+                        ProblemeAResoudre->CoutLineaire[Var]
+                          += clusterHydroData.WeeklyWaterValueStateRegular;
+
+                    ProblemeAResoudre->CoutLineaire[Var] *= clusterHydroData.PumpingRatio;
+                    ProblemeAResoudre->CoutLineaire[Var] *= -1.;
+                }
+
+                Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesOverflowClu[clusterIndex];
+                if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
+                {
+                    ProblemeAResoudre->CoutLineaire[Var]
+                      = clusterHydroData.WeeklyWaterValueStateRegular;
+                    ProblemeAResoudre->CoutLineaire[Var] *= 1.001;
+                    ProblemeAResoudre->CoutLineaire[Var] += 1.e-03;
+                }
+
+                Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesLevelClu[clusterIndex];
+                if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
+                {
+                    ProblemeAResoudre->CoutLineaire[Var] = 0;
+                }
+            }
+            // HYDRO-CLUSTER-END
 
             Var = CorrespondanceVarNativesVarOptim->NumeroDeVariableDefaillancePositive[Pays];
             if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
@@ -291,6 +402,40 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
             }
         }
     }
+
+    // HYDRO-CLUSTER-START
+    for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; ++Pays)
+    {
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+            int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
+
+            if (clusterHydroData.AccurateWaterValue == OUI_ANTARES)
+            {
+                Var = ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex];
+                if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
+                {
+                    ProblemeAResoudre->CoutLineaire[Var] = 0;
+                }
+
+                for (layerindex = 0; layerindex < 100; layerindex++)
+                {
+                    Var = ProblemeHebdo
+                            ->NumeroDeVariableDeTrancheDeStockCluster[clusterIndex][layerindex];
+                    if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
+                    {
+                        ProblemeAResoudre->CoutLineaire[Var]
+                          = -clusterHydroData.WaterLayerValues[layerindex];
+                    }
+                }
+            }
+        }
+    }
+    // HYDRO-CLUSTER-END
 
     if (ProblemeHebdo->OptimisationAvecCoutsDeDemarrage == OUI_ANTARES)
     {
