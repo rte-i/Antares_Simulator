@@ -58,6 +58,13 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
     for (uint p = 0; p < nbPays; ++p)
         problem.BruitSurCoutHydraulique[p] = (double*)MemAlloc(8784 * sizeof(double));
 
+    // HYDRO-CLUSTER-START
+    problem.BruitSurCoutHydrauliqueCluster
+      = (double**)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(double*));
+    for (uint p = 0; p < nbPays; ++p)
+        problem.BruitSurCoutHydrauliqueCluster[p] = (double*)MemAlloc(8784 * sizeof(double));
+    // HYDRO-CLUSTER-END
+
     problem.NomsDesPays = (const char**)MemAlloc(nbPays * sizeof(char*));
     problem.PaysExtremiteDeLInterconnexion = (int*)MemAlloc(linkCount * sizeof(int));
     problem.PaysOrigineDeLInterconnexion = (int*)MemAlloc(linkCount * sizeof(int));
@@ -975,6 +982,9 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
     MemFree(problem.CoefficientEcretementPMaxHydraulique);
 
     MemFree(problem.BruitSurCoutHydraulique);
+    for (uint p = 0; p < study.runtime->hydroClusterTotalCount; ++p)
+        MemFree(problem.BruitSurCoutHydrauliqueCluster[p]);
+    MemFree(problem.BruitSurCoutHydrauliqueCluster);
 
     MemFree(problem.numeroOptimisation);
     MemFree(problem.coutOptimalSolution1);

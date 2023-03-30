@@ -56,7 +56,7 @@ typedef struct
     int* NumeroDeVariablesDeNiveau;
     int* NumeroDeVariablesDeDebordement;
 
-    // HYDRO-CLUSTER-START
+    // HYDRO-CLUSTER-START // ovih imamo onoliko koliko je broj hidro clustera
     int* NumberOfVariablesProdHydClu;
     int* NumberOfVariablesPumpHydClu;
     int* NumberOfVariablesLevelClu;
@@ -329,15 +329,15 @@ typedef struct
 typedef struct
 {
     //! map of ENERGIES_ET_PUISSANCES_HYDRAULIQUES per each cluster
-    std::map<int, ENERGIES_ET_PUISSANCES_HYDRAULIQUES> hydroClusterMap;
+    std::map<int, ENERGIES_ET_PUISSANCES_HYDRAULIQUES> hydroClusterMap; // ovih imamo broj area x broj clustera
     //! number of hydro clusters in area
     int areaClusterCount;
 
-    std::map<int, double> previousSimulationFinalLevel;
-    std::map<int, double> previousYearFinalLevels;
+    std::map<int, double> previousSimulationFinalLevel; // ovih imamo broj area x broj clustera
+    std::map<int, double> previousYearFinalLevels; // ovih imamo broj area x broj clustera
     
     //! contains total hydro cluster count index
-    std::vector<int> clusterIndexTotalCount;
+    std::vector<int> clusterIndexTotalCount; // ovih imamo broj area x broj clustera
 
 } PALIERS_HYDROCLUSTERS;
 // HYDRO-CLUSTER-END
@@ -643,9 +643,9 @@ struct PROBLEME_HEBDO
     int** NumeroDeVariableDeTrancheDeStock;
 
     // HYDRO-CLUSTER-START
-    int* NumeroDeVariableStockFinalCluster; // Ending Stock Variable Number ???
-    int** NumeroDeVariableDeTrancheDeStockCluster; // Stock Slice Variable Number ???
-    
+    int* NumeroDeVariableStockFinalCluster; // Ending Stock Variable Number ??? // ovih imamo onoliko koliko je broj hidro clustera
+    int** NumeroDeVariableDeTrancheDeStockCluster; // Stock Slice Variable Number ??? // ovih imamo onoliko koliko je broj hidro clustera x 100
+    double** BruitSurCoutHydrauliqueCluster; // NoiseOverCostHydraulicsCluster // ovih imamo onoliko koliko je broj hidro clustera 
     // Next two are transfered in PALIERS_HYDROCLUSTERS // maybe keep them here ?!
     // double* previousYearFinalLevelsCluster;
     // double* previousSimulationFinalLevelCluster;
