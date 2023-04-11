@@ -61,6 +61,15 @@ AreaScratchpad::AreaScratchpad(const StudyRuntimeInfos& rinfos, Area& area) : ts
         pumpingMaxPower[d] = std::numeric_limits<double>::quiet_NaN();
     }
 
+    for (uint cluster = 0; cluster != area.hydrocluster.clusterCount(); ++cluster)
+    {
+        for (uint d = 0; d != DAYS_PER_YEAR; ++d)
+        {
+            optimalMaxPowerPerCluster[cluster][d] = std::numeric_limits<double>::quiet_NaN();
+            pumpingMaxPowerPerCluster[cluster][d] = std::numeric_limits<double>::quiet_NaN();
+        }
+    }
+
     // Fatal hors hydro
     {
         double sum;
