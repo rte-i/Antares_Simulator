@@ -204,107 +204,71 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
         problem.CoefficientEcretementPMaxHydraulique[i] = area.hydro.intraDailyModulation;
 
         // TODO Milos: IF HYDROCLUSTERS
+        // HYDRO-CLUSTER-START
         for (uint clusterIndex = 0; clusterIndex != area.hydrocluster.clusterCount();
              clusterIndex++)
         {
             auto& cluster = *(area.hydrocluster.clusters.at(clusterIndex));
+            auto& problemCluster
+              = problem.PaliersHydroclusterDuPays[i]->hydroClusterMap.at(clusterIndex);
 
-            problem.PaliersHydroclusterDuPays[i]
-              ->hydroClusterMap.at(clusterIndex)
-              .PresenceDHydrauliqueModulable
+            problemCluster.PresenceDHydrauliqueModulable
               = (area.scratchpad[numSpace]->hydroHasModPerCluster[clusterIndex] ? OUI_ANTARES
                                                                                 : NON_ANTARES);
 
-            problem.PaliersHydroclusterDuPays[i]
-              ->hydroClusterMap.at(clusterIndex)
-              .PresenceDePompageModulable
+            problemCluster.PresenceDePompageModulable
               = ((cluster.reservoirManagement
                   && area.scratchpad[numSpace]->pumpHasModPerCluster[clusterIndex]
-                  && cluster.pumpingEfficiency > 0.
-                  && problem.PaliersHydroclusterDuPays[i]
-                       ->hydroClusterMap.at(clusterIndex)
-                       .PresenceDHydrauliqueModulable)
+                  && cluster.pumpingEfficiency > 0. && problemCluster.PresenceDHydrauliqueModulable)
                    ? OUI_ANTARES
                    : NON_ANTARES);
 
-            problem.PaliersHydroclusterDuPays[i]->hydroClusterMap.at(clusterIndex).PumpingRatio
-              = cluster.pumpingEfficiency;
+            problemCluster.PumpingRatio = cluster.pumpingEfficiency;
 
-            problem.PaliersHydroclusterDuPays[i]
-              ->hydroClusterMap.at(clusterIndex)
-              .TurbinageEntreBornes
+            problemCluster.TurbinageEntreBornes
               = ((cluster.reservoirManagement && (!cluster.useHeuristicTarget || cluster.useLeeway))
                    ? OUI_ANTARES
                    : NON_ANTARES);
 
-            problem.PaliersHydroclusterDuPays[i]->hydroClusterMap.at(clusterIndex).SuiviNiveauHoraire
+            problemCluster.SuiviNiveauHoraire
               = ((cluster.reservoirManagement && !cluster.useHeuristicTarget) ? OUI_ANTARES
                                                                               : NON_ANTARES);
 
-            problem.PaliersHydroclusterDuPays[i]->hydroClusterMap.at(clusterIndex).AccurateWaterValue
-              = NON_ANTARES;
+            problemCluster.AccurateWaterValue = NON_ANTARES;
             if (problem.WaterValueAccurate == OUI_ANTARES
-                && problem.PaliersHydroclusterDuPays[i]
-                       ->hydroClusterMap.at(clusterIndex)
-                       .TurbinageEntreBornes
-                     == OUI_ANTARES)
-                problem.PaliersHydroclusterDuPays[i]
-                  ->hydroClusterMap.at(clusterIndex)
-                  .AccurateWaterValue
-                  = OUI_ANTARES;
+                && problemCluster.TurbinageEntreBornes == OUI_ANTARES)
+                problemCluster.AccurateWaterValue = OUI_ANTARES;
 
-            problem.PaliersHydroclusterDuPays[i]->hydroClusterMap.at(clusterIndex).DirectLevelAccess
-              = NON_ANTARES;
+            problemCluster.DirectLevelAccess = NON_ANTARES;
             if (problem.WaterValueAccurate == OUI_ANTARES
-                && problem.PaliersHydroclusterDuPays[i]
-                       ->hydroClusterMap.at(clusterIndex)
-                       .SuiviNiveauHoraire
-                     == OUI_ANTARES)
-                problem.PaliersHydroclusterDuPays[i]
-                  ->hydroClusterMap.at(clusterIndex)
-                  .DirectLevelAccess
-                  = OUI_ANTARES;
+                && problemCluster.SuiviNiveauHoraire == OUI_ANTARES)
+                problemCluster.DirectLevelAccess = OUI_ANTARES;
 
-            problem.PaliersHydroclusterDuPays[i]->hydroClusterMap.at(clusterIndex).TailleReservoir
+            problemCluster.TailleReservoir
               = cluster.reservoirCapacity;
 
             for (int pdt = 0; pdt < NombreDePasDeTemps; pdt++)
             {
-                problem.PaliersHydroclusterDuPays[i]
-                  ->hydroClusterMap.at(clusterIndex)
-                  .NiveauHoraireInf[pdt]
-                  = 0;
-                problem.PaliersHydroclusterDuPays[i]
-                  ->hydroClusterMap.at(clusterIndex)
-                  .NiveauHoraireSup[pdt]
-                  = problem.PaliersHydroclusterDuPays[i]
-                      ->hydroClusterMap.at(clusterIndex)
-                      .TailleReservoir;
+                problemCluster.NiveauHoraireInf[pdt] = 0;
+                problemCluster.NiveauHoraireSup[pdt] = problemCluster.TailleReservoir;
             }
 
             problem.PaliersHydroclusterDuPays[i]->previousSimulationFinalLevel.at(clusterIndex)
               = -1.;
 
             if (!problem.PaliersHydroclusterDuPays[i]->previousYearFinalLevels.empty())
-                problem.PaliersHydroclusterDuPays[i]->previousYearFinalLevels.at(clusterIndex) = -1.;
+                problem.PaliersHydroclusterDuPays[i]->previousYearFinalLevels.at(clusterIndex)
+                  = -1.;
 
-            problem.PaliersHydroclusterDuPays[i]
-              ->hydroClusterMap.at(clusterIndex)
-              .WeeklyWaterValueStateRegular
-              = 0.;
+            problemCluster.WeeklyWaterValueStateRegular = 0.;
 
-            problem.PaliersHydroclusterDuPays[i]
-              ->hydroClusterMap.at(clusterIndex)
-              .WeeklyGeneratingModulation
-              = 1.;
-            problem.PaliersHydroclusterDuPays[i]
-              ->hydroClusterMap.at(clusterIndex)
-              .WeeklyPumpingModulation
-              = 1.;
+            problemCluster.WeeklyGeneratingModulation = 1.;
+            problemCluster.WeeklyPumpingModulation = 1.;
 
             assert(cluster.intraDailyModulation >= 1. && "Intra-daily modulation must be >= 1.0");
             problem.CoefficientEcretementPMaxHydraulique[i] = cluster.intraDailyModulation;
         }
+        // HYDRO-CLUSTER-END
     }
 
     totalNumberOfHydroClusters = 0;
@@ -662,6 +626,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
         }
 
         // TODO Milos: IF HYDROCLUSTERS
+        // HYDRO-CLUSTER-START
         for (uint clusterIndex = 0; clusterIndex < area.hydrocluster.clusterCount(); ++clusterIndex)
         {
             auto& cluster = *(area.hydrocluster.clusters.at(clusterIndex));
@@ -766,6 +731,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                 }
             }
         }
+        // HYDRO-CLUSTER-END
     }
 
     for (int j = 0; j < problem.NombreDePasDeTemps; ++j, ++indx)
@@ -935,6 +901,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
               = area.reserves[fhrDayBefore][PasDeTempsDebut + j];
 
             // TODO Milos: IF HYDROCLUSTERS
+            // HYDRO-CLUSTER-START
             for (uint clusterIndex = 0; clusterIndex < area.hydrocluster.clusterCount();
                  ++clusterIndex)
             {
@@ -956,6 +923,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                         * clusterMap.WeeklyPumpingModulation;
                 }
             }
+            // HYDRO-CLUSTER-END
     }
 
     {
@@ -1245,6 +1213,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
             }
 
             // TODO Milos: IF HYDROCLUSTERS
+            // HYDRO-CLUSTER-START
             auto& area = *study.areas.byIndex[k];
             for (uint clusterIndex = 0; clusterIndex < area.hydrocluster.clusterCount();
                  ++clusterIndex)
@@ -1260,13 +1229,13 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                     auto const& srcinflows
                       = inflowsmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
 
-                    auto& mingenmatrix = cluster.series->mingen; // CR22
+                    auto& mingenmatrix = cluster.series->mingen;
                     auto const& srcmingen
                       = mingenmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
                     for (uint j = 0; j < problem.NombreDePasDeTemps; ++j)
                     {
                         clusterMap.MingenHoraire[j]
-                          = srcmingen[PasDeTempsDebut + j]; // CR22
+                          = srcmingen[PasDeTempsDebut + j];
                     }
 
                     if (cluster.reservoirManagement)
@@ -1518,6 +1487,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                     }
                 }
             }
+            // HYDRO-CLUSTER-END
         }
 #endif
     }
@@ -1543,7 +1513,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                      ->CoutHoraireDeProductionDuPalierThermique,
                    pasDeTempsSizeDouble);
         }
-
+        
         memcpy(
           (char*)problem.CaracteristiquesHydrauliques[k]->CntEnergieH2OParIntervalleOptimiseRef,
           (char*)problem.CaracteristiquesHydrauliques[k]->CntEnergieH2OParIntervalleOptimise,
@@ -1553,7 +1523,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
           (char*)problem.CaracteristiquesHydrauliques[k]->ContrainteDePmaxHydrauliqueHoraire,
           pasDeTempsSizeDouble);
 
-        // hydro clusters
+        // HYDRO-CLUSTER-START
         area.hydrocluster.list.each(
           [&](const Data::HydroclusterCluster& cluster)
           {
@@ -1573,7 +1543,8 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                        .ContrainteDePmaxHydrauliqueHoraire,
                      pasDeTempsSizeDouble);
           });
-
+        // HYDRO-CLUSTER-END
+        
         memcpy((char*)problem.ReserveJMoins1[k]->ReserveHoraireJMoins1Ref,
                (char*)problem.ReserveJMoins1[k]->ReserveHoraireJMoins1,
                pasDeTempsSizeDouble);

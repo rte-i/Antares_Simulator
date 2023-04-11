@@ -62,8 +62,8 @@ typedef struct
     int* NumberOfVariablesLevelClu;
     int* NumberOfVariablesOverflowClu;
 
-    int* NumeroDeVariablesVariationHydALaBaisseClu;
-    int* NumeroDeVariablesVariationHydALaHausseClu;
+    int* NumeroDeVariablesVariationHydALaBaisseClu; // Number Of Variables Variation Hyd Downward
+    int* NumeroDeVariablesVariationHydALaHausseClu; // Number Of Variables Variation Hyd On The Rise
     // HYDRO-CLUSTER-END
 
     int* NumeroDeVariableDefaillancePositive;
@@ -510,7 +510,7 @@ typedef struct
     double* CoutsMarginauxHoraires;
     PRODUCTION_THERMIQUE_OPTIMALE** ProductionThermique; // obrnuto: broj koraka pa broj area
     // HYDRO-CLUSTER-START
-    std::vector<PRODUCTION_HYDRO_OPTIMAL> productionHydroCluster;
+    std::vector<PRODUCTION_HYDRO_OPTIMAL> productionHydroCluster; // ovih imamo broj area x broj clustera
     // HYDRO-CLUSTER-END
 } RESULTATS_HORAIRES;
 
@@ -645,7 +645,7 @@ struct PROBLEME_HEBDO
     // HYDRO-CLUSTER-START
     int* NumeroDeVariableStockFinalCluster; // Ending Stock Variable Number ??? // ovih imamo onoliko koliko je broj hidro clustera
     int** NumeroDeVariableDeTrancheDeStockCluster; // Stock Slice Variable Number ??? // ovih imamo onoliko koliko je broj hidro clustera x 100
-    double** BruitSurCoutHydrauliqueCluster; // NoiseOverCostHydraulicsCluster // ovih imamo onoliko koliko je broj hidro clustera 
+    double** BruitSurCoutHydrauliqueCluster; // NoiseOverCostHydraulicsCluster // ovih imamo onoliko koliko je broj hidro clustera  x vidi sta?
     // Next two are transfered in PALIERS_HYDROCLUSTERS // maybe keep them here ?!
     // double* previousYearFinalLevelsCluster;
     // double* previousSimulationFinalLevelCluster;
