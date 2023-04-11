@@ -35,7 +35,8 @@
 
 #include "spx_constantes_externes.h"
 #include "../simulation/sim_structure_probleme_adequation.h"
-
+// TODO Milos: remove this translation:
+// OPT Initialize Hydraulic Energy Constraint By Optimized Interval
 void OPT_InitialiserLesContrainteDEnergieHydrauliqueParIntervalleOptimise(
   PROBLEME_HEBDO* ProblemeHebdo)
 {
@@ -170,6 +171,132 @@ void OPT_InitialiserLesContrainteDEnergieHydrauliqueParIntervalleOptimise(
             InflowForTimeInterval[i] = InflowSum;
         }
     }
+
+    // HYDRO-CLUSTER-START
+    for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+    {
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+
+            char presenceHydro = clusterHydroData.PresenceDHydrauliqueModulable;
+            char TurbEntreBornes = clusterHydroData.TurbinageEntreBornes;
+            if (presenceHydro == OUI_ANTARES && TurbEntreBornes == NON_ANTARES)
+            {
+                CntEnergieH2OParIntervalleOptimise
+                  = clusterHydroData.CntEnergieH2OParIntervalleOptimise;
+                CntEnergieH2OParIntervalleOptimiseRef
+                  = clusterHydroData.CntEnergieH2OParIntervalleOptimiseRef;
+                CntEnergieH2OParJour = clusterHydroData.CntEnergieH2OParJour;
+
+                Jour = 0;
+                for (i = 0; i < NbIntervallesOptimises; i++)
+                {
+                    CntTurbParIntervalle = 0.0;
+                    MaxPompageParIntervalle = 0.;
+                    for (j = 0; j < NombreDeJoursParIntervalle; j++, Jour++)
+                    {
+                        CntTurbParIntervalle += CntEnergieH2OParIntervalleOptimise[Jour];
+
+                        CntEnergieH2OParJour[Jour] = CntEnergieH2OParIntervalleOptimise[Jour];
+                    }
+
+                    CntEnergieH2OParIntervalleOptimise[i] = CntTurbParIntervalle;
+                    CntEnergieH2OParIntervalleOptimiseRef[i] = CntTurbParIntervalle;
+                }
+            }
+        }
+    }
+
+    for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+    {
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+
+            char presenceHydro = clusterHydroData.PresenceDHydrauliqueModulable;
+            char TurbEntreBornes = clusterHydroData.TurbinageEntreBornes;
+            if (presenceHydro == OUI_ANTARES && TurbEntreBornes == OUI_ANTARES)
+            {
+                MinEnergieHydrauParIntervalleOptimise
+                  = clusterHydroData.MinEnergieHydrauParIntervalleOptimise;
+                MaxEnergieHydrauParIntervalleOptimise
+                  = clusterHydroData.MaxEnergieHydrauParIntervalleOptimise;
+                CntEnergieH2OParJour = clusterHydroData.CntEnergieH2OParJour;
+                Jour = 0;
+                for (i = 0; i < NbIntervallesOptimises; i++)
+                {
+                    CntMinEParIntervalle = 0.;
+                    CntMaxEParIntervalle = 0.;
+                    for (j = 0; j < NombreDeJoursParIntervalle; j++, Jour++)
+                    {
+                        CntMinEParIntervalle += MinEnergieHydrauParIntervalleOptimise[Jour];
+                        CntMaxEParIntervalle += MaxEnergieHydrauParIntervalleOptimise[Jour];
+
+                        CntEnergieH2OParJour[Jour]
+                          = clusterHydroData.MaxEnergieHydrauParIntervalleOptimise[Jour];
+                    }
+                    MinEnergieHydrauParIntervalleOptimise[i] = CntMinEParIntervalle;
+                    MaxEnergieHydrauParIntervalleOptimise[i] = CntMaxEParIntervalle;
+                }
+            }
+        }
+    }
+
+    for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+    {
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+
+            MaxEnergiePompageParIntervalleOptimise
+              = clusterHydroData.MaxEnergiePompageParIntervalleOptimise;
+
+            Jour = 0;
+            for (i = 0; i < NbIntervallesOptimises; i++)
+            {
+                CntTurbParIntervalle = 0.0;
+                MaxPompageParIntervalle = 0.;
+                for (j = 0; j < NombreDeJoursParIntervalle; j++, Jour++)
+                    MaxPompageParIntervalle += MaxEnergiePompageParIntervalleOptimise[Jour];
+
+                MaxEnergiePompageParIntervalleOptimise[i] = MaxPompageParIntervalle;
+            }
+        }
+    }
+
+    for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+    {
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+
+            InflowForTimeInterval = clusterHydroData.InflowForTimeInterval;
+            Jour = 0;
+            for (i = 0; i < NbIntervallesOptimises; i++)
+            {
+                InflowSum = 0.;
+                for (j = 0; j < NombreDeJoursParIntervalle; j++, Jour++)
+                    InflowSum += InflowForTimeInterval[Jour];
+
+                InflowForTimeInterval[i] = InflowSum;
+            }
+        }
+    }
+
+    // HYDRO-CLUSTER-END
 
     return;
 }
