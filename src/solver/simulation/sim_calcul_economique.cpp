@@ -130,6 +130,21 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
         break;
     }
 
+    //HYDRO-CLUSTER-START
+    totalNumberOfHydroClusters = 0;
+    for (uint i = 0; i < study.areas.size(); ++i)
+    {
+        auto& area = *(study.areas.byIndex[i]);
+        auto& hydroData = *(problem.PaliersHydroclusterDuPays[i]);
+        hydroData.areaClusterCount = area.hydrocluster.list.size();
+
+        for (uint l = 0; l != area.hydrocluster.list.size(); ++l)
+            hydroData.clusterIndexTotalCount.push_back(totalNumberOfHydroClusters + l);
+
+        totalNumberOfHydroClusters += area.hydrocluster.list.size();
+    }
+    //HYDRO-CLUSTER-END
+
     for (uint i = 0; i != study.areas.size(); i++)
     {
         auto& area = *(study.areas[i]);
@@ -205,20 +220,6 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
 
         // TODO Milos: IF HYDROCLUSTERS
         // HYDRO-CLUSTER-START
-
-        totalNumberOfHydroClusters = 0;
-        for (uint i = 0; i < study.areas.size(); ++i)
-        {
-            auto& area = *(study.areas.byIndex[i]);
-            auto& hydroData = *(problem.PaliersHydroclusterDuPays[i]);
-            hydroData.areaClusterCount = area.hydrocluster.list.size();
-
-            for (uint l = 0; l != area.hydrocluster.list.size(); ++l)
-                hydroData.clusterIndexTotalCount.push_back(totalNumberOfHydroClusters + l);
-
-            totalNumberOfHydroClusters += area.hydrocluster.list.size();
-        }
-
         for (uint clusterIndex = 0; clusterIndex != area.hydrocluster.clusterCount();
              clusterIndex++)
         {
