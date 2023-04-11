@@ -84,6 +84,9 @@ bool OPT_PilotageOptimisationLineaire(PROBLEME_HEBDO* ProblemeHebdo, uint numSpa
     OPT_InitialiserLesContrainteDEnergieHydrauliqueParIntervalleOptimise(ProblemeHebdo);
 
     OPT_MaxDesPmaxHydrauliques(ProblemeHebdo);
+    // TODO Milos: insert function OPT_MaxDesPmaxHydrauliques - per cluster. 
+    // Investigate what it does here in OPT Control Linear Optimization!
+    OPT_MaxDesPmaxHydrauliquesPerCluster(ProblemeHebdo); 
 
     if (ProblemeHebdo->OptimisationAvecCoutsDeDemarrage == OUI_ANTARES)
     {
