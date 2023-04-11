@@ -125,7 +125,7 @@ double HydroManagement::prepareMonthlyTargetGenerations(Data::Area& area, PerAre
 
         for (uint realmonth = 0; realmonth != 12; ++realmonth)
         {
-            assert(data.MLE[realmonth] / monthlyMaxDemand >= 0.);
+            assert(data.MLE[realmonth] / monthlyMaxDemand >= 0.); // MLE used to calculate MTG
             data.MTG[realmonth] = coeff
                                   * Math::Power(data.MLE[realmonth] / monthlyMaxDemand,
                                                 area.hydro.intermonthlyBreakdown);
