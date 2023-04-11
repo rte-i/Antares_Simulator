@@ -98,6 +98,8 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
 
     problem.NumeroDeVariableStockFinalCluster
       = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+    problem.CoefficientEcretementPMaxHydrauliquePerCluster
+      = (double*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(double));
     problem.NumeroDeVariableDeTrancheDeStockCluster
       = (int**)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int*));
     for (uint p = 0; p < study.runtime->hydroClusterTotalCount; ++p)
@@ -971,6 +973,7 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
     MemFree(problem.NumeroDeVariableDeTrancheDeStock);
 
     MemFree(problem.NumeroDeVariableStockFinalCluster);
+    MemFree(problem.CoefficientEcretementPMaxHydrauliquePerCluster);
     for (uint p = 0; p < study.runtime->hydroClusterTotalCount; ++p)
         MemFree(problem.NumeroDeVariableDeTrancheDeStockCluster[p]);
     MemFree(problem.NumeroDeVariableDeTrancheDeStockCluster);

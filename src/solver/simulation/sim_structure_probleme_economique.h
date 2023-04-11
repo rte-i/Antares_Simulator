@@ -649,6 +649,7 @@ struct PROBLEME_HEBDO
     // Next two are transfered in PALIERS_HYDROCLUSTERS // maybe keep them here ?!
     // double* previousYearFinalLevelsCluster;
     // double* previousSimulationFinalLevelCluster;
+    double* CoefficientEcretementPMaxHydrauliquePerCluster; // P Max Hydraulic Shrinkage Coefficient - intraDailyModulation // ovih imamo onoliko koliko je broj hidro clustera
 
 
     // HYDRO-CLUSTER-END

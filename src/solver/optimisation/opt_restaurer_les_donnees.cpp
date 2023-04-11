@@ -33,7 +33,8 @@
 
 #include "opt_fonctions.h"
 #include <iostream>
-// TODO Milos: remove this translation: opt restore data
+// TODO Milos: remove this translation: 
+// opt restore data
 void OPT_RestaurerLesDonnees(PROBLEME_HEBDO* ProblemeHebdo)
 {
     int Pays;
@@ -188,6 +189,98 @@ void OPT_RestaurerLesDonnees(PROBLEME_HEBDO* ProblemeHebdo)
               = CaracteristiquesHydrauliques->MaxDesPmaxHydrauliquesRef;
         }
     }
+
+    // HYDRO-CLUSTER-START
+
+    for (Pdt = 0; Pdt < DernierPasDeTemps; Pdt++)
+    {
+        for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+        {
+            PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+              = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+            uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+            for (int cluster = 0; cluster < areaClusterCount; cluster++)
+            {
+                auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+                int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
+
+                if (clusterHydroData.PresenceDHydrauliqueModulable != OUI_ANTARES)
+                    continue;
+
+                clusterHydroData.ContrainteDePmaxHydrauliqueHoraire[Pdt]
+                  = clusterHydroData.ContrainteDePmaxHydrauliqueHoraireRef[Pdt];
+
+                Jour = NumeroDeJourDuPasDeTemps[Pdt];
+                PmaxHydEcretee = clusterHydroData.CntEnergieH2OParJour[Jour];
+                PmaxHydEcretee
+                  *= ProblemeHebdo->CoefficientEcretementPMaxHydrauliquePerCluster[clusterIndex];
+                PmaxHydEcretee /= (double)ProblemeHebdo->NombreDePasDeTempsDUneJournee;
+                // The primary generating power allowance may need to be uplifted to match pumping
+                // power allowance
+                if (clusterHydroData.PresenceDePompageModulable == OUI_ANTARES)
+                {
+                    PmaxHydUplift = clusterHydroData.ContrainteDePmaxPompageHoraire[Pdt];
+                    PmaxHydUplift
+                      *= ProblemeHebdo
+                           ->CoefficientEcretementPMaxHydrauliquePerCluster[clusterIndex];
+                    // The uplifted energy  cannot, throughout the week, exceed the remaining stock
+                    if (PmaxHydUplift * double(168) > clusterHydroData.NiveauInitialReservoir)
+                    {
+                        PmaxHydUplift = clusterHydroData.NiveauInitialReservoir / double(168);
+                    }
+
+                    if (PmaxHydEcretee < PmaxHydUplift)
+                        PmaxHydEcretee = PmaxHydUplift;
+                }
+
+                // The generating power allowance cannot exceed the maximum available generating
+                // power
+                if (PmaxHydEcretee < clusterHydroData.ContrainteDePmaxHydrauliqueHoraire[Pdt])
+                {
+                    clusterHydroData.ContrainteDePmaxHydrauliqueHoraire[Pdt] = PmaxHydEcretee;
+                }
+            }
+        }
+    }
+
+    for (Pdt = 0; Pdt < DernierPasDeTemps;)
+    {
+        Intervalle = ProblemeHebdo->NumeroDIntervalleOptimiseDuPasDeTemps[Pdt];
+        Pdt += ProblemeHebdo->NombreDePasDeTempsPourUneOptimisation;
+        for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+        {
+            PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+              = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+            uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+            for (int cluster = 0; cluster < areaClusterCount; cluster++)
+            {
+                auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+                if (clusterHydroData.PresenceDHydrauliqueModulable == OUI_ANTARES)
+                {
+                    clusterHydroData.CntEnergieH2OParIntervalleOptimise[Intervalle]
+                      = clusterHydroData.CntEnergieH2OParIntervalleOptimiseRef[Intervalle];
+                }
+            }
+        }
+    }
+
+    for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+    {
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+            if (clusterHydroData.PresenceDHydrauliqueModulable == OUI_ANTARES)
+            {
+                clusterHydroData.MaxDesPmaxHydrauliques
+                  = clusterHydroData.MaxDesPmaxHydrauliquesRef;
+            }
+        }
+    }
+
+    // HYDRO-CLUSTER-END
 
     for (Pdt = 0; Pdt < DernierPasDeTemps; Pdt++)
     {
