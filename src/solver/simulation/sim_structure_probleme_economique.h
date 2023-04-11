@@ -249,7 +249,7 @@ typedef struct
     int* NombreMaxDeGroupesEnMarcheDuPalierThermique;
     int* NombreMinDeGroupesEnMarcheDuPalierThermique;
 
-} PDISP_ET_COUTS_HORAIRES_PAR_PALIER; // TODO Milos: do I need hourly costs per hydro clusters ?
+} PDISP_ET_COUTS_HORAIRES_PAR_PALIER;
 
 typedef struct
 {
