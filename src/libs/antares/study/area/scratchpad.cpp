@@ -61,8 +61,11 @@ AreaScratchpad::AreaScratchpad(const StudyRuntimeInfos& rinfos, Area& area) : ts
         pumpingMaxPower[d] = std::numeric_limits<double>::quiet_NaN();
     }
 
+    const std::array<double, DAYS_PER_YEAR> tmp = {0.};
     for (uint cluster = 0; cluster != area.hydrocluster.clusterCount(); ++cluster)
     {
+        optimalMaxPowerPerCluster.push_back(tmp);
+        pumpingMaxPowerPerCluster.push_back(tmp);
         for (uint d = 0; d != DAYS_PER_YEAR; ++d)
         {
             optimalMaxPowerPerCluster[cluster][d] = std::numeric_limits<double>::quiet_NaN();
