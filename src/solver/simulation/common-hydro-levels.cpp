@@ -219,17 +219,17 @@ void computingHydroLevelsForCluster(const Data::Study& study,
                 RESULTATS_HORAIRES* weeklyResults = problem.ResultatsHoraires[index];
                 PRODUCTION_HYDRO_OPTIMAL& clusterResults = weeklyResults->productionHydroCluster[cluster.index];
 
-                double* turb = clusterResults.hourlyGenPerCluster;
+                double* turb = clusterResults.hourlyGen;
 
-                double* pump = clusterResults.hourlyPumpPerCluster;
+                double* pump = clusterResults.hourlyPump;
                 double pumpingRatio = cluster.pumpingEfficiency;
 
                 double nivInit = problem.PaliersHydroclusterDuPays[index]
                                    ->hydroClusterMap.at(cluster.index)
                                    .NiveauInitialReservoir;
-                double* niv = clusterResults.hourlyLevelPerCluster;
+                double* niv = clusterResults.hourlyHydLevel;
 
-                double* ovf = clusterResults.hourlyOvfPerCluster;
+                double* ovf = clusterResults.hourlyHydOverflow;
 
                 auto& computeLvlObj = problem.computeLvl_object;
 
@@ -273,7 +273,7 @@ void interpolateWaterValueForCluster(const Data::Study& study,
                 RESULTATS_HORAIRES* weeklyResults = problem.ResultatsHoraires[index];
                 PRODUCTION_HYDRO_OPTIMAL& clusterResults = weeklyResults->productionHydroCluster[cluster.index];
 
-                double* waterVal = clusterResults.valueH2oSchedulePerCluster;
+                double* waterVal = clusterResults.valueH2oSchedule;
 
                 for (uint h = 0; h < nbHoursInAWeek; h++)
                     waterVal[h] = 0.;
@@ -286,7 +286,7 @@ void interpolateWaterValueForCluster(const Data::Study& study,
 
                 double reservoirCapacity = cluster.reservoirCapacity;
 
-                double* niv = clusterResults.hourlyLevelPerCluster;
+                double* niv = clusterResults.hourlyHydLevel;
 
                 Antares::Data::getWaterValue(
                   problem.PaliersHydroclusterDuPays[index]->previousSimulationFinalLevel.at(
@@ -325,7 +325,7 @@ void updatingWeeklyFinalHydroLevelForCluster(const Data::Study& study,
                 RESULTATS_HORAIRES* weeklyResults = problem.ResultatsHoraires[index];
                 PRODUCTION_HYDRO_OPTIMAL& clusterResults = weeklyResults->productionHydroCluster[cluster.index];
 
-                double* niv = clusterResults.hourlyLevelPerCluster;
+                double* niv = clusterResults.hourlyHydLevel;
 
                 problem.PaliersHydroclusterDuPays[index]->previousSimulationFinalLevel.insert(
                   {cluster.index, niv[nbHoursInAWeek - 1] * reservoirCapacity / 100});

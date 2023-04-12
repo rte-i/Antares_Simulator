@@ -407,10 +407,10 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                 auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
                 int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
 
-                Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[clusterIndex];
+                Var = CorrespondanceVarNativesVarOptim->NumOfVarHydGenPerCluster[clusterIndex];
                 ProblemeHebdo->ResultatsHoraires[Pays]
                   ->productionHydroCluster[cluster]
-                  .hourlyGenPerCluster[PdtHebdo]
+                  .hourlyGen[PdtHebdo]
                   = 0.0;
                 if (Var >= 0)
                 {
@@ -418,7 +418,7 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                     Xmax[Var] = clusterHydroData.ContrainteDePmaxHydrauliqueHoraire[PdtHebdo];
                     AdresseDuResultat = &(ProblemeHebdo->ResultatsHoraires[Pays]
                                             ->productionHydroCluster[cluster]
-                                            .hourlyGenPerCluster[PdtHebdo]);
+                                            .hourlyGen[PdtHebdo]);
                     AdresseOuPlacerLaValeurDesVariablesOptimisees[Var] = AdresseDuResultat;
                 }
 
@@ -428,7 +428,7 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                         == LISSAGE_HYDRAULIQUE_SUR_SOMME_DES_VARIATIONS)
                     {
                         Var = CorrespondanceVarNativesVarOptim
-                                ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex];
+                                ->NumeroDeVariablesVariationHydALaBaissePerCluster[clusterIndex];
                         if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                         {
                             Xmin[Var] = 0.0;
@@ -437,7 +437,7 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                             AdresseOuPlacerLaValeurDesVariablesOptimisees[Var] = NULL;
                         }
                         Var = CorrespondanceVarNativesVarOptim
-                                ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex];
+                                ->NumeroDeVariablesVariationHydALaHaussePerCluster[clusterIndex];
                         if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                         {
                             Xmin[Var] = 0.0;
@@ -452,7 +452,7 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                         if (PdtJour == 0)
                         {
                             Var = CorrespondanceVarNativesVarOptim
-                                    ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex];
+                                    ->NumeroDeVariablesVariationHydALaBaissePerCluster[clusterIndex];
                             if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                             {
                                 Xmin[Var] = 0.0;
@@ -462,7 +462,7 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                             }
 
                             Var = CorrespondanceVarNativesVarOptim
-                                    ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex];
+                                    ->NumeroDeVariablesVariationHydALaHaussePerCluster[clusterIndex];
                             if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                             {
                                 Xmin[Var] = 0.0;
@@ -474,10 +474,10 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                     }
                 }
 
-                Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesPumpHydClu[clusterIndex];
+                Var = CorrespondanceVarNativesVarOptim->NumOfVarHydPumpPerCluster[clusterIndex];
                 ProblemeHebdo->ResultatsHoraires[Pays]
                   ->productionHydroCluster[cluster]
-                  .hourlyPumpPerCluster[PdtHebdo]
+                  .hourlyPump[PdtHebdo]
                   = 0.0;
                 if (Var >= 0)
                 {
@@ -485,14 +485,14 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                     Xmax[Var] = clusterHydroData.ContrainteDePmaxPompageHoraire[PdtHebdo];
                     AdresseDuResultat = &(ProblemeHebdo->ResultatsHoraires[Pays]
                                             ->productionHydroCluster[cluster]
-                                            .hourlyPumpPerCluster[PdtHebdo]);
+                                            .hourlyPump[PdtHebdo]);
                     AdresseOuPlacerLaValeurDesVariablesOptimisees[Var] = AdresseDuResultat;
                 }
 
-                Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesOverflowClu[clusterIndex];
+                Var = CorrespondanceVarNativesVarOptim->NumOfVarHydOverflowPerCluster[clusterIndex];
                 ProblemeHebdo->ResultatsHoraires[Pays]
                   ->productionHydroCluster[cluster]
-                  .hourlyOvfPerCluster[PdtHebdo]
+                  .hourlyHydOverflow[PdtHebdo]
                   = 0.0;
                 if (Var >= 0)
                 {
@@ -502,14 +502,14 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                     AdresseOuPlacerLaValeurDesVariablesOptimisees[Var] = NULL;
                 }
 
-                Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesLevelClu[clusterIndex];
+                Var = CorrespondanceVarNativesVarOptim->NumOfVarHydLevelPerCluster[clusterIndex];
                 if (Var >= 0)
                 {
                     Xmin[Var] = clusterHydroData.NiveauHoraireInf[PdtHebdo];
                     Xmax[Var] = clusterHydroData.NiveauHoraireSup[PdtHebdo];
                     AdresseDuResultat = &(ProblemeHebdo->ResultatsHoraires[Pays]
                                             ->productionHydroCluster[cluster]
-                                            .hourlyLevelPerCluster[PdtHebdo]);
+                                            .hourlyHydLevel[PdtHebdo]);
                     AdresseOuPlacerLaValeurDesCoutsReduits[Var] = NULL;
                     AdresseOuPlacerLaValeurDesVariablesOptimisees[Var] = AdresseDuResultat;
                 }
@@ -641,7 +641,7 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
 
             if (clusterHydroData.AccurateWaterValue == OUI_ANTARES)
             {
-                Var = ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex];
+                Var = ProblemeHebdo->NumeroDeVariableStockFinalPerCluster[clusterIndex];
                 if (Var >= 0)
                 {
                     Xmin[Var] = -(LINFINI_ANTARES);
@@ -659,7 +659,7 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* Prob
                 for (uint nblayer = 0; nblayer < 100; nblayer++)
                 {
                     Var = ProblemeHebdo
-                            ->NumeroDeVariableDeTrancheDeStockCluster[clusterIndex][nblayer];
+                            ->NumeroDeVariableDeTrancheDeStockPerCluster[clusterIndex][nblayer];
                     if (Var >= 0)
                     {
                         Xmin[Var] = 0;

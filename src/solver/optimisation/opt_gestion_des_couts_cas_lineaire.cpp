@@ -183,14 +183,14 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
                 auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
                 int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
 
-                Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[clusterIndex];
+                Var = CorrespondanceVarNativesVarOptim->NumOfVarHydGenPerCluster[clusterIndex];
                 if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                     ProblemeAResoudre->CoutLineaire[Var] = 0.0;
 
                 if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                 {
                     ProblemeAResoudre->CoutLineaire[Var]
-                      = ProblemeHebdo->BruitSurCoutHydrauliqueCluster[clusterIndex]
+                      = ProblemeHebdo->BruitSurCoutHydrauliquePerCluster[clusterIndex]
                                                                      [ProblemeHebdo->HeureDansLAnnee
                                                                       + PdtHebdo];
 
@@ -253,11 +253,11 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
                               .PenalisationDeLaVariationDeProductionHydrauliqueSurSommeDesVariations;
 
                         Var = CorrespondanceVarNativesVarOptim
-                                ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex];
+                                ->NumeroDeVariablesVariationHydALaBaissePerCluster[clusterIndex];
                         if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                             ProblemeAResoudre->CoutLineaire[Var] = P;
                         Var = CorrespondanceVarNativesVarOptim
-                                ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex];
+                                ->NumeroDeVariablesVariationHydALaHaussePerCluster[clusterIndex];
                         if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                             ProblemeAResoudre->CoutLineaire[Var] = P;
                     }
@@ -269,11 +269,11 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
                             P = clusterHydroData
                                   .PenalisationDeLaVariationDeProductionHydrauliqueSurVariationMax;
                             Var = CorrespondanceVarNativesVarOptim
-                                    ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex];
+                                    ->NumeroDeVariablesVariationHydALaBaissePerCluster[clusterIndex];
                             if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                                 ProblemeAResoudre->CoutLineaire[Var] = P;
                             Var = CorrespondanceVarNativesVarOptim
-                                    ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex];
+                                    ->NumeroDeVariablesVariationHydALaHaussePerCluster[clusterIndex];
                             if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                                 ProblemeAResoudre->CoutLineaire[Var] = -P;
                         }
@@ -321,11 +321,11 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
                 auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
                 int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
 
-                Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesPumpHydClu[clusterIndex];
+                Var = CorrespondanceVarNativesVarOptim->NumOfVarHydPumpPerCluster[clusterIndex];
                 if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                 {
                     ProblemeAResoudre->CoutLineaire[Var]
-                      = ProblemeHebdo->BruitSurCoutHydrauliqueCluster[clusterIndex]
+                      = ProblemeHebdo->BruitSurCoutHydrauliquePerCluster[clusterIndex]
                                                                      [ProblemeHebdo->HeureDansLAnnee
                                                                       + PdtHebdo];
 
@@ -337,7 +337,7 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
                     ProblemeAResoudre->CoutLineaire[Var] *= -1.;
                 }
 
-                Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesOverflowClu[clusterIndex];
+                Var = CorrespondanceVarNativesVarOptim->NumOfVarHydOverflowPerCluster[clusterIndex];
                 if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                 {
                     ProblemeAResoudre->CoutLineaire[Var]
@@ -346,7 +346,7 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
                     ProblemeAResoudre->CoutLineaire[Var] += 1.e-03;
                 }
 
-                Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesLevelClu[clusterIndex];
+                Var = CorrespondanceVarNativesVarOptim->NumOfVarHydLevelPerCluster[clusterIndex];
                 if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                 {
                     ProblemeAResoudre->CoutLineaire[Var] = 0;
@@ -416,7 +416,7 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
 
             if (clusterHydroData.AccurateWaterValue == OUI_ANTARES)
             {
-                Var = ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex];
+                Var = ProblemeHebdo->NumeroDeVariableStockFinalPerCluster[clusterIndex];
                 if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                 {
                     ProblemeAResoudre->CoutLineaire[Var] = 0;
@@ -425,7 +425,7 @@ void OPT_InitialiserLesCoutsLineaire(PROBLEME_HEBDO* ProblemeHebdo,
                 for (layerindex = 0; layerindex < 100; layerindex++)
                 {
                     Var = ProblemeHebdo
-                            ->NumeroDeVariableDeTrancheDeStockCluster[clusterIndex][layerindex];
+                            ->NumeroDeVariableDeTrancheDeStockPerCluster[clusterIndex][layerindex];
                     if (Var >= 0 && Var < ProblemeAResoudre->NombreDeVariables)
                     {
                         ProblemeAResoudre->CoutLineaire[Var]

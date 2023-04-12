@@ -231,20 +231,20 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBD
 
                 if (clusterHydroData.PresenceDHydrauliqueModulable == OUI_ANTARES)
                 {
-                    CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[clusterIndex]
+                    CorrespondanceVarNativesVarOptim->NumOfVarHydGenPerCluster[clusterIndex]
                       = NombreDeVariables;
                     ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
                       = VARIABLE_BORNEE_DES_DEUX_COTES;
                     NombreDeVariables++;
                 }
                 else
-                    CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[Pays] = -1;
+                    CorrespondanceVarNativesVarOptim->NumOfVarHydGenPerCluster[Pays] = -1;
 
                 CorrespondanceVarNativesVarOptim
-                  ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex]
+                  ->NumeroDeVariablesVariationHydALaBaissePerCluster[clusterIndex]
                   = -1;
                 CorrespondanceVarNativesVarOptim
-                  ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex]
+                  ->NumeroDeVariablesVariationHydALaHaussePerCluster[clusterIndex]
                   = -1;
                 if (ProblemeHebdo->TypeDeLissageHydraulique
                     == LISSAGE_HYDRAULIQUE_SUR_SOMME_DES_VARIATIONS) // HYDRAULIC SMOOTHING ON SUM
@@ -253,13 +253,13 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBD
                     if (clusterHydroData.PresenceDHydrauliqueModulable == OUI_ANTARES)
                     {
                         CorrespondanceVarNativesVarOptim
-                          ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex]
+                          ->NumeroDeVariablesVariationHydALaBaissePerCluster[clusterIndex]
                           = NombreDeVariables;
                         ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
                           = VARIABLE_BORNEE_INFERIEUREMENT;
                         NombreDeVariables++;
                         CorrespondanceVarNativesVarOptim
-                          ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex]
+                          ->NumeroDeVariablesVariationHydALaHaussePerCluster[clusterIndex]
                           = NombreDeVariables;
                         ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
                           = VARIABLE_BORNEE_INFERIEUREMENT; // LOWER_BOUNDED VARIABLE
@@ -275,14 +275,14 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBD
                         if (Pdt == 0)
                         {
                             CorrespondanceVarNativesVarOptim
-                              ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex]
+                              ->NumeroDeVariablesVariationHydALaBaissePerCluster[clusterIndex]
                               = NombreDeVariables;
 
                             ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
                               = VARIABLE_BORNEE_DES_DEUX_COTES; // VARIABLE BOUNDED on BOTH SIDES
                             NombreDeVariables++;
                             CorrespondanceVarNativesVarOptim
-                              ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex]
+                              ->NumeroDeVariablesVariationHydALaHaussePerCluster[clusterIndex]
                               = NombreDeVariables;
 
                             ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
@@ -294,24 +294,24 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBD
 
                 if (clusterHydroData.PresenceDePompageModulable == OUI_ANTARES)
                 {
-                    CorrespondanceVarNativesVarOptim->NumberOfVariablesPumpHydClu[clusterIndex]
+                    CorrespondanceVarNativesVarOptim->NumOfVarHydPumpPerCluster[clusterIndex]
                       = NombreDeVariables;
                     ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
                       = VARIABLE_BORNEE_DES_DEUX_COTES;
                     NombreDeVariables++;
                 }
                 else
-                    CorrespondanceVarNativesVarOptim->NumberOfVariablesPumpHydClu[clusterIndex]
+                    CorrespondanceVarNativesVarOptim->NumOfVarHydPumpPerCluster[clusterIndex]
                       = -1;
 
                 if (clusterHydroData.SuiviNiveauHoraire == OUI_ANTARES)
                 {
-                    CorrespondanceVarNativesVarOptim->NumberOfVariablesLevelClu[clusterIndex]
+                    CorrespondanceVarNativesVarOptim->NumOfVarHydLevelPerCluster[clusterIndex]
                       = NombreDeVariables;
                     ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
                       = VARIABLE_BORNEE_DES_DEUX_COTES;
                     NombreDeVariables++;
-                    CorrespondanceVarNativesVarOptim->NumberOfVariablesOverflowClu[clusterIndex]
+                    CorrespondanceVarNativesVarOptim->NumOfVarHydOverflowPerCluster[clusterIndex]
                       = NombreDeVariables;
                     ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
                       = VARIABLE_BORNEE_DES_DEUX_COTES;
@@ -319,8 +319,8 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBD
                 }
                 else
                 {
-                    CorrespondanceVarNativesVarOptim->NumberOfVariablesLevelClu[clusterIndex] = -1;
-                    CorrespondanceVarNativesVarOptim->NumberOfVariablesOverflowClu[clusterIndex]
+                    CorrespondanceVarNativesVarOptim->NumOfVarHydLevelPerCluster[clusterIndex] = -1;
+                    CorrespondanceVarNativesVarOptim->NumOfVarHydOverflowPerCluster[clusterIndex]
                       = -1;
                 }
             }
@@ -368,13 +368,13 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBD
 
             if (clusterHydroData.AccurateWaterValue == OUI_ANTARES)
             {
-                ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex] = NombreDeVariables;
+                ProblemeHebdo->NumeroDeVariableStockFinalPerCluster[clusterIndex] = NombreDeVariables;
                 ProblemeAResoudre->TypeDeVariable[NombreDeVariables] = VARIABLE_NON_BORNEE;
                 NombreDeVariables++;
 
                 for (uint nblayer = 0; nblayer < 100; nblayer++)
                 {
-                    ProblemeHebdo->NumeroDeVariableDeTrancheDeStockCluster[clusterIndex][nblayer]
+                    ProblemeHebdo->NumeroDeVariableDeTrancheDeStockPerCluster[clusterIndex][nblayer]
                       = NombreDeVariables;
                     ProblemeAResoudre->TypeDeVariable[NombreDeVariables]
                       = VARIABLE_BORNEE_DES_DEUX_COTES;
@@ -383,10 +383,10 @@ void OPT_ConstruireLaListeDesVariablesOptimiseesDuProblemeLineaire(PROBLEME_HEBD
             }
             else
             {
-                ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex] = -1;
+                ProblemeHebdo->NumeroDeVariableStockFinalPerCluster[clusterIndex] = -1;
                 for (uint nblayer = 0; nblayer < 100; nblayer++)
                 {
-                    ProblemeHebdo->NumeroDeVariableDeTrancheDeStockCluster[clusterIndex][nblayer]
+                    ProblemeHebdo->NumeroDeVariableDeTrancheDeStockPerCluster[clusterIndex][nblayer]
                       = -1;
                 }
             }

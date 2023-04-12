@@ -57,13 +57,13 @@ typedef struct
     int* NumeroDeVariablesDeDebordement;
 
     // HYDRO-CLUSTER-START // ovih imamo onoliko koliko je broj hidro clustera
-    int* NumberOfVariablesProdHydClu;
-    int* NumberOfVariablesPumpHydClu;
-    int* NumberOfVariablesLevelClu;
-    int* NumberOfVariablesOverflowClu;
+    int* NumOfVarHydGenPerCluster;
+    int* NumOfVarHydPumpPerCluster;
+    int* NumOfVarHydLevelPerCluster;
+    int* NumOfVarHydOverflowPerCluster;
 
-    int* NumeroDeVariablesVariationHydALaBaisseClu; // Number Of Variables Variation Hyd Downward
-    int* NumeroDeVariablesVariationHydALaHausseClu; // Number Of Variables Variation Hyd On The Rise
+    int* NumeroDeVariablesVariationHydALaBaissePerCluster; // Number Of Variables Variation Hyd Downward
+    int* NumeroDeVariablesVariationHydALaHaussePerCluster; // Number Of Variables Variation Hyd On The Rise
     // HYDRO-CLUSTER-END
 
     int* NumeroDeVariableDefaillancePositive;
@@ -109,7 +109,7 @@ typedef struct
     int* NumeroDeLaDeuxiemeContrainteDesContraintesDesGroupesQuiTombentEnPanne;
 
     int* NumeroDeContrainteDesNiveauxPays; // Number of constraints hydro-level, per country
-    int* NumberOfHydroLevelConstraintsAllClusters; // Number of constraints hydro-level, all clusters
+    int* NumOfHydLevelConstraintsPerClusters; // Number of constraints hydro-level, all clusters
 
 } CORRESPONDANCES_DES_CONTRAINTES;
 
@@ -474,11 +474,11 @@ typedef struct
 // HYDRO-CLUSTER-START
 typedef struct hydroClusterResult
 {
-    double* hourlyPumpPerCluster;
-    double* hourlyGenPerCluster;
-    double* hourlyLevelPerCluster;
-    double* valueH2oSchedulePerCluster;
-    double* hourlyOvfPerCluster;
+    double* hourlyPump;
+    double* hourlyGen;
+    double* hourlyHydLevel;
+    double* valueH2oSchedule;
+    double* hourlyHydOverflow;
 
 } PRODUCTION_HYDRO_OPTIMAL;
 // HYDRO-CLUSTER-END
@@ -650,12 +650,12 @@ struct PROBLEME_HEBDO
     int* NumeroDeContrainteMaxEnergieHydrauliquePerCluster; // Hydraulic Max Energy Constraint Number
     int* NumeroDeContrainteMaxPompagePerCluster; // Max Pumping Constraint Number
 
-    int* NumeroDeVariableStockFinalCluster; // Ending Stock Variable Number ??? // ovih imamo onoliko koliko je broj hidro clustera
+    int* NumeroDeVariableStockFinalPerCluster; // Ending Stock Variable Number ??? // ovih imamo onoliko koliko je broj hidro clustera
     int* NumeroDeContrainteBorneStockFinalPerCluster;
     int* NumeroDeContrainteEquivalenceStockFinalPerCluster;
     int* NumeroDeContrainteExpressionStockFinalPerCluster;
-    int** NumeroDeVariableDeTrancheDeStockCluster; // Stock Slice Variable Number ??? // ovih imamo onoliko koliko je broj hidro clustera x 100
-    double** BruitSurCoutHydrauliqueCluster; // Noise Over Cost Hydraulics Cluster // ovih imamo onoliko koliko je broj hidro clustera  x 8784?
+    int** NumeroDeVariableDeTrancheDeStockPerCluster; // Stock Slice Variable Number ??? // ovih imamo onoliko koliko je broj hidro clustera x 100
+    double** BruitSurCoutHydrauliquePerCluster; // Noise Over Cost Hydraulics Cluster // ovih imamo onoliko koliko je broj hidro clustera  x 8784?
     // Next two are transfered in PALIERS_HYDROCLUSTERS // maybe keep them here ?!
     // double* previousYearFinalLevelsCluster;
     // double* previousSimulationFinalLevelCluster;

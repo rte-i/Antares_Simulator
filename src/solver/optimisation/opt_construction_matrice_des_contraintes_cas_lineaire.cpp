@@ -877,7 +877,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                     for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
                     {
                         Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
-                                ->NumberOfVariablesProdHydClu[clusterIndex];
+                                ->NumOfVarHydGenPerCluster[clusterIndex];
                         if (Var >= 0)
                         {
                             Pi[NombreDeTermes] = 1.0;
@@ -891,7 +891,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                     for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
                     {
                         Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
-                                ->NumberOfVariablesProdHydClu[clusterIndex];
+                                ->NumOfVarHydGenPerCluster[clusterIndex];
                         if (Var >= 0)
                         {
                             Pi[NombreDeTermes] = 1.0;
@@ -899,7 +899,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                             NombreDeTermes++;
                         }
                         Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
-                                ->NumberOfVariablesPumpHydClu[clusterIndex];
+                                ->NumOfVarHydPumpPerCluster[clusterIndex];
                         if (Var >= 0)
                         {
                             Pi[NombreDeTermes] = clusterHydroData.PumpingRatio;
@@ -1053,7 +1053,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                       = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt];
                     NombreDeTermes = 0;
                     Var
-                      = CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[clusterIndex];
+                      = CorrespondanceVarNativesVarOptim->NumOfVarHydGenPerCluster[clusterIndex];
                     if (Var >= 0)
                     {
                         Pi[NombreDeTermes] = 1.0;
@@ -1064,7 +1064,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                     if (Pdt1 >= NombreDePasDeTempsPourUneOptimisation)
                         Pdt1 = 0;
                     Var1 = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt1]
-                             ->NumberOfVariablesProdHydClu[clusterIndex];
+                             ->NumOfVarHydGenPerCluster[clusterIndex];
                     if (Var1 >= 0)
                     {
                         Pi[NombreDeTermes] = -1.0;
@@ -1072,7 +1072,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                         NombreDeTermes++;
                     }
                     Var2 = CorrespondanceVarNativesVarOptim
-                             ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex];
+                             ->NumeroDeVariablesVariationHydALaBaissePerCluster[clusterIndex];
                     if (Var2 >= 0)
                     {
                         Pi[NombreDeTermes] = -1.0;
@@ -1080,7 +1080,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                         NombreDeTermes++;
                     }
                     Var3 = CorrespondanceVarNativesVarOptim
-                             ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex];
+                             ->NumeroDeVariablesVariationHydALaHaussePerCluster[clusterIndex];
                     if (Var3 >= 0)
                     {
                         Pi[NombreDeTermes] = 1.0;
@@ -1115,7 +1115,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                       = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt];
                     NombreDeTermes = 0;
                     Var
-                      = CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[clusterIndex];
+                      = CorrespondanceVarNativesVarOptim->NumOfVarHydGenPerCluster[clusterIndex];
                     if (Var >= 0)
                     {
                         Pi[NombreDeTermes] = 1.0;
@@ -1123,7 +1123,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                         NombreDeTermes++;
                     }
                     Var1 = ProblemeHebdo->CorrespondanceVarNativesVarOptim[0]
-                             ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex];
+                             ->NumeroDeVariablesVariationHydALaBaissePerCluster[clusterIndex];
                     if (Var1 >= 0)
                     {
                         Pi[NombreDeTermes] = -1.0;
@@ -1142,7 +1142,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                         NombreDeTermes++;
                     }
                     Var1 = ProblemeHebdo->CorrespondanceVarNativesVarOptim[0]
-                             ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex];
+                             ->NumeroDeVariablesVariationHydALaHaussePerCluster[clusterIndex];
                     if (Var1 >= 0)
                     {
                         Pi[NombreDeTermes] = -1.0;
@@ -1446,7 +1446,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                 for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
                 {
                     Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
-                            ->NumberOfVariablesProdHydClu[clusterIndex];
+                            ->NumOfVarHydGenPerCluster[clusterIndex];
                     if (Var >= 0)
                     {
                         Pi[NombreDeTermes] = 1.0;
@@ -1470,7 +1470,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                 for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
                 {
                     Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
-                            ->NumberOfVariablesProdHydClu[clusterIndex];
+                            ->NumOfVarHydGenPerCluster[clusterIndex];
                     if (Var >= 0)
                     {
                         Pi[NombreDeTermes] = 1.0;
@@ -1506,7 +1506,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                 for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
                 {
                     Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
-                            ->NumberOfVariablesPumpHydClu[clusterIndex];
+                            ->NumOfVarHydPumpPerCluster[clusterIndex];
                     if (Var >= 0)
                     {
                         Pi[NombreDeTermes] = 1.0;
@@ -1547,7 +1547,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                 {
                     NombreDeTermes = 0;
 
-                    Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesLevelClu[clusterIndex];
+                    Var = CorrespondanceVarNativesVarOptim->NumOfVarHydLevelPerCluster[clusterIndex];
                     if (Var >= 0)
                     {
                         Pi[NombreDeTermes] = 1.0;
@@ -1558,7 +1558,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                     if (Pdt > 0)
                     {
                         Var1 = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt - 1]
-                                 ->NumberOfVariablesLevelClu[clusterIndex];
+                                 ->NumOfVarHydLevelPerCluster[clusterIndex];
                         if (Var1 >= 0)
                         {
                             Pi[NombreDeTermes] = -1.0;
@@ -1567,7 +1567,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                         }
                     }
 
-                    Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[clusterIndex];
+                    Var = CorrespondanceVarNativesVarOptim->NumOfVarHydGenPerCluster[clusterIndex];
                     if (Var >= 0)
                     {
                         Pi[NombreDeTermes] = 1.0;
@@ -1575,7 +1575,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                         NombreDeTermes++;
                     }
 
-                    Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesPumpHydClu[clusterIndex];
+                    Var = CorrespondanceVarNativesVarOptim->NumOfVarHydPumpPerCluster[clusterIndex];
                     if (Var >= 0)
                     {
                         Pi[NombreDeTermes]
@@ -1585,14 +1585,14 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                         NombreDeTermes++;
                     }
 
-                    Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesOverflowClu[clusterIndex];
+                    Var = CorrespondanceVarNativesVarOptim->NumOfVarHydOverflowPerCluster[clusterIndex];
                     if (Var >= 0)
                     {
                         Pi[NombreDeTermes] = 1.;
                         Colonne[NombreDeTermes] = Var;
                         NombreDeTermes++;
                     }
-                    CorrespondanceCntNativesCntOptim->NumberOfHydroLevelConstraintsAllClusters[clusterIndex]
+                    CorrespondanceCntNativesCntOptim->NumOfHydLevelConstraintsPerClusters[clusterIndex]
                       = ProblemeAResoudre->NombreDeContraintes;
 
                     NomDeLaContrainte = "hydro_level::" + std::to_string(timeStepInYear + 1)
@@ -1605,7 +1605,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                 }
                 else
                     CorrespondanceCntNativesCntOptim
-                      ->NumberOfHydroLevelConstraintsAllClusters[clusterIndex]
+                      ->NumOfHydLevelConstraintsPerClusters[clusterIndex]
                       = -1;
             }
         }
@@ -1629,7 +1629,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
              * InflowsForTimeInterval + LevelForTimeInterval*/
             {
                 NombreDeTermes = 0;
-                Var = ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex];
+                Var = ProblemeHebdo->NumeroDeVariableStockFinalPerCluster[clusterIndex];
                 if (Var >= 0)
                 {
                     Pi[NombreDeTermes] = 1.0;
@@ -1640,7 +1640,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                 for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
                 {
                     Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
-                            ->NumberOfVariablesProdHydClu[clusterIndex];
+                            ->NumOfVarHydGenPerCluster[clusterIndex];
                     if (Var >= 0)
                     {
                         Pi[NombreDeTermes] = 1.0;
@@ -1653,7 +1653,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                     for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
                     {
                         Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
-                                ->NumberOfVariablesPumpHydClu[clusterIndex];
+                                ->NumOfVarHydPumpPerCluster[clusterIndex];
                         if (Var >= 0)
                         {
                             Pi[NombreDeTermes] = clusterHydroData.PumpingRatio;
@@ -1675,7 +1675,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
             /*  equivalence constraint : StockFinal- Niveau[T]= 0*/
             {
                 NombreDeTermes = 0;
-                Var = ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex];
+                Var = ProblemeHebdo->NumeroDeVariableStockFinalPerCluster[clusterIndex];
                 if (Var >= 0)
                 {
                     Pi[NombreDeTermes] = 1.0;
@@ -1685,7 +1685,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                 Var
                   = ProblemeHebdo
                       ->CorrespondanceVarNativesVarOptim[NombreDePasDeTempsPourUneOptimisation - 1]
-                      ->NumberOfVariablesLevelClu[clusterIndex];
+                      ->NumOfVarHydLevelPerCluster[clusterIndex];
                 if (Var >= 0)
                 {
                     Pi[NombreDeTermes] = -1.0;
@@ -1703,7 +1703,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
             /*  expression constraint : - StockFinal +sum (stocklayers) = 0*/
             {
                 NombreDeTermes = 0;
-                Var = ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex];
+                Var = ProblemeHebdo->NumeroDeVariableStockFinalPerCluster[clusterIndex];
                 if (Var >= 0)
                 {
                     Pi[NombreDeTermes] = -1.0;
@@ -1712,7 +1712,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
                 }
                 for (layerindex = 0; layerindex < 100; layerindex++)
                 {
-                    Var = ProblemeHebdo->NumeroDeVariableDeTrancheDeStockCluster[clusterIndex][layerindex];
+                    Var = ProblemeHebdo->NumeroDeVariableDeTrancheDeStockPerCluster[clusterIndex][layerindex];
 
                     if (Var >= 0)
                     {
