@@ -855,6 +855,74 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
             ProblemeHebdo->NumeroDeContrainteEnergieHydraulique[Pays] = -1;
     }
 
+    // ==================== HYDRO-CLUSTER-START ====================//
+    for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+    {
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+            int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
+
+            char presenceHydro = clusterHydroData.PresenceDHydrauliqueModulable;
+            char TurbEntreBornes = clusterHydroData.TurbinageEntreBornes;
+            char presencePompage = clusterHydroData.PresenceDePompageModulable;
+            if (presenceHydro == OUI_ANTARES && TurbEntreBornes == NON_ANTARES)
+            {
+                NombreDeTermes = 0;
+                if (presencePompage == NON_ANTARES)
+                {
+                    for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
+                    {
+                        Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
+                                ->NumberOfVariablesProdHydClu[clusterIndex];
+                        if (Var >= 0)
+                        {
+                            Pi[NombreDeTermes] = 1.0;
+                            Colonne[NombreDeTermes] = Var;
+                            NombreDeTermes++;
+                        }
+                    }
+                }
+                if (presencePompage == OUI_ANTARES)
+                {
+                    for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
+                    {
+                        Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
+                                ->NumberOfVariablesProdHydClu[clusterIndex];
+                        if (Var >= 0)
+                        {
+                            Pi[NombreDeTermes] = 1.0;
+                            Colonne[NombreDeTermes] = Var;
+                            NombreDeTermes++;
+                        }
+                        Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
+                                ->NumberOfVariablesPumpHydClu[clusterIndex];
+                        if (Var >= 0)
+                        {
+                            Pi[NombreDeTermes] = clusterHydroData.PumpingRatio;
+                            Pi[NombreDeTermes] *= -1.0;
+                            Colonne[NombreDeTermes] = Var;
+                            NombreDeTermes++;
+                        }
+                    }
+                }
+
+                ProblemeHebdo->NumeroDeContrainteEnergieHydrauliquePerCluster[clusterIndex]
+                  = ProblemeAResoudre->NombreDeContraintes;
+
+                OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
+                  ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '=');
+            }
+            else
+                ProblemeHebdo->NumeroDeContrainteEnergieHydrauliquePerCluster[clusterIndex] = -1;
+        }
+    }
+
+    // ==================== HYDRO-CLUSTER-END ====================//
+
     if (ProblemeHebdo->TypeDeLissageHydraulique == LISSAGE_HYDRAULIQUE_SUR_SOMME_DES_VARIATIONS)
     {
         for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
@@ -961,6 +1029,134 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
             }
         }
     }
+
+    // ==================== HYDRO-CLUSTER-START ==================== //
+
+    if (ProblemeHebdo->TypeDeLissageHydraulique == LISSAGE_HYDRAULIQUE_SUR_SOMME_DES_VARIATIONS)
+    {
+        for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+        {
+            PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+              = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+            uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+            for (int cluster = 0; cluster < areaClusterCount; cluster++)
+            {
+                auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+                int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
+
+                if (clusterHydroData.PresenceDHydrauliqueModulable != OUI_ANTARES)
+                    continue;
+
+                for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
+                {
+                    CorrespondanceVarNativesVarOptim
+                      = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt];
+                    NombreDeTermes = 0;
+                    Var
+                      = CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[clusterIndex];
+                    if (Var >= 0)
+                    {
+                        Pi[NombreDeTermes] = 1.0;
+                        Colonne[NombreDeTermes] = Var;
+                        NombreDeTermes++;
+                    }
+                    Pdt1 = Pdt + 1;
+                    if (Pdt1 >= NombreDePasDeTempsPourUneOptimisation)
+                        Pdt1 = 0;
+                    Var1 = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt1]
+                             ->NumberOfVariablesProdHydClu[clusterIndex];
+                    if (Var1 >= 0)
+                    {
+                        Pi[NombreDeTermes] = -1.0;
+                        Colonne[NombreDeTermes] = Var1;
+                        NombreDeTermes++;
+                    }
+                    Var2 = CorrespondanceVarNativesVarOptim
+                             ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex];
+                    if (Var2 >= 0)
+                    {
+                        Pi[NombreDeTermes] = -1.0;
+                        Colonne[NombreDeTermes] = Var2;
+                        NombreDeTermes++;
+                    }
+                    Var3 = CorrespondanceVarNativesVarOptim
+                             ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex];
+                    if (Var3 >= 0)
+                    {
+                        Pi[NombreDeTermes] = 1.0;
+                        Colonne[NombreDeTermes] = Var3;
+                        NombreDeTermes++;
+                    }
+
+                    OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
+                      ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '=');
+                }
+            }
+        }
+    }
+    else if (ProblemeHebdo->TypeDeLissageHydraulique == LISSAGE_HYDRAULIQUE_SUR_VARIATION_MAX)
+    {
+        for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+        {
+            PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+              = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+            uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+            for (int cluster = 0; cluster < areaClusterCount; cluster++)
+            {
+                auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+                int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
+
+                if (clusterHydroData.PresenceDHydrauliqueModulable != OUI_ANTARES)
+                    continue;
+
+                for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
+                {
+                    CorrespondanceVarNativesVarOptim
+                      = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt];
+                    NombreDeTermes = 0;
+                    Var
+                      = CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[clusterIndex];
+                    if (Var >= 0)
+                    {
+                        Pi[NombreDeTermes] = 1.0;
+                        Colonne[NombreDeTermes] = Var;
+                        NombreDeTermes++;
+                    }
+                    Var1 = ProblemeHebdo->CorrespondanceVarNativesVarOptim[0]
+                             ->NumeroDeVariablesVariationHydALaBaisseClu[clusterIndex];
+                    if (Var1 >= 0)
+                    {
+                        Pi[NombreDeTermes] = -1.0;
+                        Colonne[NombreDeTermes] = Var1;
+                        NombreDeTermes++;
+                    }
+
+                    OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
+                      ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '<');
+
+                    NombreDeTermes = 0;
+                    if (Var >= 0)
+                    {
+                        Pi[NombreDeTermes] = 1.0;
+                        Colonne[NombreDeTermes] = Var;
+                        NombreDeTermes++;
+                    }
+                    Var1 = ProblemeHebdo->CorrespondanceVarNativesVarOptim[0]
+                             ->NumeroDeVariablesVariationHydALaHausseClu[clusterIndex];
+                    if (Var1 >= 0)
+                    {
+                        Pi[NombreDeTermes] = -1.0;
+                        Colonne[NombreDeTermes] = Var1;
+                        NombreDeTermes++;
+                    }
+
+                    OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
+                      ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '>');
+                }
+            }
+        }
+    }
+    // ==================== HYDRO-CLUSTER-END ==================== //
 
     for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
     {
@@ -1229,6 +1425,312 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
               ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '=');
         }
     }
+
+    // ==================== HYDRO-CLUSTER-START ==================== //
+
+    for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+    {
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+            int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
+
+            char presenceHydro = clusterHydroData.PresenceDHydrauliqueModulable;
+            char TurbEntreBornes = clusterHydroData.TurbinageEntreBornes;
+            if (presenceHydro == OUI_ANTARES && TurbEntreBornes == OUI_ANTARES)
+            {
+                NombreDeTermes = 0;
+                for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
+                {
+                    Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
+                            ->NumberOfVariablesProdHydClu[clusterIndex];
+                    if (Var >= 0)
+                    {
+                        Pi[NombreDeTermes] = 1.0;
+                        Colonne[NombreDeTermes] = Var;
+                        NombreDeTermes++;
+                    }
+                }
+
+                ProblemeHebdo->NumeroDeContrainteMinEnergieHydrauliquePerCluster[clusterIndex]
+                  = ProblemeAResoudre->NombreDeContraintes;
+
+                OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
+                  ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '>');
+            }
+            else
+                ProblemeHebdo->NumeroDeContrainteMinEnergieHydrauliquePerCluster[clusterIndex] = -1;
+
+            if (presenceHydro == OUI_ANTARES && TurbEntreBornes == OUI_ANTARES)
+            {
+                NombreDeTermes = 0;
+                for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
+                {
+                    Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
+                            ->NumberOfVariablesProdHydClu[clusterIndex];
+                    if (Var >= 0)
+                    {
+                        Pi[NombreDeTermes] = 1.0;
+                        Colonne[NombreDeTermes] = Var;
+                        NombreDeTermes++;
+                    }
+                }
+
+                ProblemeHebdo->NumeroDeContrainteMaxEnergieHydrauliquePerCluster[clusterIndex]
+                  = ProblemeAResoudre->NombreDeContraintes;
+
+                OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
+                  ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '<');
+            }
+            else
+                ProblemeHebdo->NumeroDeContrainteMaxEnergieHydrauliquePerCluster[clusterIndex] = -1;
+        }
+    }
+
+    for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+    {
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+            int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
+
+            if (clusterHydroData.PresenceDePompageModulable == OUI_ANTARES)
+            {
+                NombreDeTermes = 0;
+                for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
+                {
+                    Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
+                            ->NumberOfVariablesPumpHydClu[clusterIndex];
+                    if (Var >= 0)
+                    {
+                        Pi[NombreDeTermes] = 1.0;
+                        Colonne[NombreDeTermes] = Var;
+                        NombreDeTermes++;
+                    }
+                }
+
+                ProblemeHebdo->NumeroDeContrainteMaxPompagePerCluster[clusterIndex]
+                  = ProblemeAResoudre->NombreDeContraintes;
+
+                OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
+                  ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '<');
+            }
+            else
+                ProblemeHebdo->NumeroDeContrainteMaxPompagePerCluster[clusterIndex] = -1;
+        }
+    }
+
+    for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
+    {
+        CorrespondanceVarNativesVarOptim = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt];
+        CorrespondanceCntNativesCntOptim = ProblemeHebdo->CorrespondanceCntNativesCntOptim[Pdt];
+
+        int timeStepInYear = study->runtime->weekInTheYear[numSpace] * 168 + Pdt;
+
+        for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+        {
+            PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+              = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+            uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+            for (int cluster = 0; cluster < areaClusterCount; cluster++)
+            {
+                auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+                int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
+
+                if (clusterHydroData.SuiviNiveauHoraire == OUI_ANTARES)
+                {
+                    NombreDeTermes = 0;
+
+                    Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesLevelClu[clusterIndex];
+                    if (Var >= 0)
+                    {
+                        Pi[NombreDeTermes] = 1.0;
+                        Colonne[NombreDeTermes] = Var;
+                        NombreDeTermes++;
+                    }
+
+                    if (Pdt > 0)
+                    {
+                        Var1 = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt - 1]
+                                 ->NumberOfVariablesLevelClu[clusterIndex];
+                        if (Var1 >= 0)
+                        {
+                            Pi[NombreDeTermes] = -1.0;
+                            Colonne[NombreDeTermes] = Var1;
+                            NombreDeTermes++;
+                        }
+                    }
+
+                    Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesProdHydClu[clusterIndex];
+                    if (Var >= 0)
+                    {
+                        Pi[NombreDeTermes] = 1.0;
+                        Colonne[NombreDeTermes] = Var;
+                        NombreDeTermes++;
+                    }
+
+                    Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesPumpHydClu[clusterIndex];
+                    if (Var >= 0)
+                    {
+                        Pi[NombreDeTermes]
+                          = clusterHydroData.PumpingRatio;
+                        Pi[NombreDeTermes] *= -1;
+                        Colonne[NombreDeTermes] = Var;
+                        NombreDeTermes++;
+                    }
+
+                    Var = CorrespondanceVarNativesVarOptim->NumberOfVariablesOverflowClu[clusterIndex];
+                    if (Var >= 0)
+                    {
+                        Pi[NombreDeTermes] = 1.;
+                        Colonne[NombreDeTermes] = Var;
+                        NombreDeTermes++;
+                    }
+                    CorrespondanceCntNativesCntOptim->NumberOfHydroLevelConstraintsAllClusters[clusterIndex]
+                      = ProblemeAResoudre->NombreDeContraintes;
+
+                    NomDeLaContrainte = "hydro_level::" + std::to_string(timeStepInYear + 1)
+                                        + "::" + ProblemeHebdo->NomsDesPays[Pays]
+                                        + "::" + std::to_string(clusterIndex + 1);
+                    // TODO Milos: add maybe cluster name not index
+
+                    OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
+                      ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '=', NomDeLaContrainte);
+                }
+                else
+                    CorrespondanceCntNativesCntOptim
+                      ->NumberOfHydroLevelConstraintsAllClusters[clusterIndex]
+                      = -1;
+            }
+        }
+    }
+
+    /* For each area with ad hoc properties, two possible sets of two additional constraints */
+    for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
+    {
+        PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
+          = ProblemeHebdo->PaliersHydroclusterDuPays[Pays];
+        uint areaClusterCount = PaliersHydroclusterDuPays->areaClusterCount;
+        for (int cluster = 0; cluster < areaClusterCount; cluster++)
+        {
+            auto& clusterHydroData = PaliersHydroclusterDuPays->hydroClusterMap.at(cluster);
+            int clusterIndex = PaliersHydroclusterDuPays->clusterIndexTotalCount[cluster];
+
+            char PumpAvailable = clusterHydroData.PresenceDePompageModulable;
+            if (clusterHydroData.AccurateWaterValue == OUI_ANTARES
+                && clusterHydroData.DirectLevelAccess == NON_ANTARES)
+            /*  bounding constraint : StockFinal- efficiency*sum(Pump) +sum(Gen) <=
+             * InflowsForTimeInterval + LevelForTimeInterval*/
+            {
+                NombreDeTermes = 0;
+                Var = ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex];
+                if (Var >= 0)
+                {
+                    Pi[NombreDeTermes] = 1.0;
+                    Colonne[NombreDeTermes] = Var;
+                    NombreDeTermes++;
+                }
+
+                for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
+                {
+                    Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
+                            ->NumberOfVariablesProdHydClu[clusterIndex];
+                    if (Var >= 0)
+                    {
+                        Pi[NombreDeTermes] = 1.0;
+                        Colonne[NombreDeTermes] = Var;
+                        NombreDeTermes++;
+                    }
+                }
+                if (PumpAvailable == OUI_ANTARES)
+                {
+                    for (Pdt = 0; Pdt < NombreDePasDeTempsPourUneOptimisation; Pdt++)
+                    {
+                        Var = ProblemeHebdo->CorrespondanceVarNativesVarOptim[Pdt]
+                                ->NumberOfVariablesPumpHydClu[clusterIndex];
+                        if (Var >= 0)
+                        {
+                            Pi[NombreDeTermes] = clusterHydroData.PumpingRatio;
+                            Pi[NombreDeTermes] *= -1.0;
+                            Colonne[NombreDeTermes] = Var;
+                            NombreDeTermes++;
+                        }
+                    }
+                }
+
+                ProblemeHebdo->NumeroDeContrainteBorneStockFinalPerCluster[clusterIndex]
+                  = ProblemeAResoudre->NombreDeContraintes;
+
+                OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
+                  ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '<');
+            }
+            if (clusterHydroData.AccurateWaterValue == OUI_ANTARES
+                && clusterHydroData.DirectLevelAccess == OUI_ANTARES)
+            /*  equivalence constraint : StockFinal- Niveau[T]= 0*/
+            {
+                NombreDeTermes = 0;
+                Var = ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex];
+                if (Var >= 0)
+                {
+                    Pi[NombreDeTermes] = 1.0;
+                    Colonne[NombreDeTermes] = Var;
+                    NombreDeTermes++;
+                }
+                Var
+                  = ProblemeHebdo
+                      ->CorrespondanceVarNativesVarOptim[NombreDePasDeTempsPourUneOptimisation - 1]
+                      ->NumberOfVariablesLevelClu[clusterIndex];
+                if (Var >= 0)
+                {
+                    Pi[NombreDeTermes] = -1.0;
+                    Colonne[NombreDeTermes] = Var;
+                    NombreDeTermes++;
+                }
+                ProblemeHebdo->NumeroDeContrainteEquivalenceStockFinalPerCluster[clusterIndex]
+                  = ProblemeAResoudre->NombreDeContraintes;
+
+                OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
+                  ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '=');
+            }
+            if (clusterHydroData.AccurateWaterValue
+                == OUI_ANTARES)
+            /*  expression constraint : - StockFinal +sum (stocklayers) = 0*/
+            {
+                NombreDeTermes = 0;
+                Var = ProblemeHebdo->NumeroDeVariableStockFinalCluster[clusterIndex];
+                if (Var >= 0)
+                {
+                    Pi[NombreDeTermes] = -1.0;
+                    Colonne[NombreDeTermes] = Var;
+                    NombreDeTermes++;
+                }
+                for (layerindex = 0; layerindex < 100; layerindex++)
+                {
+                    Var = ProblemeHebdo->NumeroDeVariableDeTrancheDeStockCluster[clusterIndex][layerindex];
+
+                    if (Var >= 0)
+                    {
+                        Pi[NombreDeTermes] = 1.0;
+                        Colonne[NombreDeTermes] = Var;
+                        NombreDeTermes++;
+                    }
+                }
+
+                ProblemeHebdo->NumeroDeContrainteExpressionStockFinalPerCluster[clusterIndex]
+                  = ProblemeAResoudre->NombreDeContraintes;
+
+                OPT_ChargerLaContrainteDansLaMatriceDesContraintes(
+                  ProblemeAResoudre, Pi, Colonne, NombreDeTermes, '=');
+            }
+        }
+    }
+    // ==================== HYDRO-CLUSTER-END ==================== //
 
     if (ProblemeHebdo->OptimisationAvecCoutsDeDemarrage == OUI_ANTARES)
     {

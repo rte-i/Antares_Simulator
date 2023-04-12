@@ -87,9 +87,20 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
     problem.NumeroDeContrainteMaxPompage = (int*)MemAlloc(nbPays * sizeof(int));
     problem.NumeroDeContrainteDeSoldeDEchange = (int*)MemAlloc(nbPays * sizeof(int));
 
+    problem.NumeroDeContrainteEnergieHydrauliquePerCluster = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+    problem.NumeroDeContrainteMinEnergieHydrauliquePerCluster = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+    problem.NumeroDeContrainteMaxEnergieHydrauliquePerCluster = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+    problem.NumeroDeContrainteMaxPompagePerCluster = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+
     problem.NumeroDeContrainteBorneStockFinal = (int*)MemAlloc(nbPays * sizeof(int));
     problem.NumeroDeContrainteEquivalenceStockFinal = (int*)MemAlloc(nbPays * sizeof(int));
     problem.NumeroDeContrainteExpressionStockFinal = (int*)MemAlloc(nbPays * sizeof(int));
+    problem.NumeroDeContrainteBorneStockFinalPerCluster
+      = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+    problem.NumeroDeContrainteEquivalenceStockFinalPerCluster
+      = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
+    problem.NumeroDeContrainteExpressionStockFinalPerCluster
+      = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
 
     problem.NumeroDeVariableStockFinal = (int*)MemAlloc(nbPays * sizeof(int));
     problem.NumeroDeVariableDeTrancheDeStock = (int**)MemAlloc(nbPays * sizeof(int*));
@@ -305,6 +316,8 @@ void SIM_AllocationProblemeHebdo(PROBLEME_HEBDO& problem, int NombreDePasDeTemps
           = (int*)MemAlloc(nbPays * sizeof(int));
         problem.CorrespondanceCntNativesCntOptim[k]->NumeroDeContrainteDesNiveauxPays
           = (int*)MemAlloc(nbPays * sizeof(int));
+        problem.CorrespondanceCntNativesCntOptim[k]->NumberOfHydroLevelConstraintsAllClusters
+          = (int*)MemAlloc(study.runtime->hydroClusterTotalCount * sizeof(int));
 
         problem.CorrespondanceCntNativesCntOptim[k]->NumeroPremiereContrainteDeReserveParZone
           = (int*)MemAlloc(nbPays * sizeof(int));
@@ -734,6 +747,7 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
         MemFree(problem.CorrespondanceVarNativesVarOptim[k]);
         MemFree(problem.CorrespondanceCntNativesCntOptim[k]->NumeroDeContrainteDesBilansPays);
         MemFree(problem.CorrespondanceCntNativesCntOptim[k]->NumeroDeContrainteDesNiveauxPays);
+        MemFree(problem.CorrespondanceCntNativesCntOptim[k]->NumberOfHydroLevelConstraintsAllClusters);
         MemFree(problem.CorrespondanceCntNativesCntOptim[k]
                   ->NumeroDeContraintePourEviterLesChargesFictives);
 
@@ -964,9 +978,17 @@ void SIM_DesallocationProblemeHebdo(PROBLEME_HEBDO& problem)
     MemFree(problem.NumeroDeContrainteMaxPompage);
     MemFree(problem.NumeroDeContrainteDeSoldeDEchange);
 
+    MemFree(problem.NumeroDeContrainteEnergieHydrauliquePerCluster);
+    MemFree(problem.NumeroDeContrainteMinEnergieHydrauliquePerCluster);
+    MemFree(problem.NumeroDeContrainteMaxEnergieHydrauliquePerCluster);
+    MemFree(problem.NumeroDeContrainteMaxPompagePerCluster);
+
     MemFree(problem.NumeroDeContrainteBorneStockFinal);
     MemFree(problem.NumeroDeContrainteEquivalenceStockFinal);
     MemFree(problem.NumeroDeContrainteExpressionStockFinal);
+    MemFree(problem.NumeroDeContrainteBorneStockFinalPerCluster);
+    MemFree(problem.NumeroDeContrainteEquivalenceStockFinalPerCluster);
+    MemFree(problem.NumeroDeContrainteExpressionStockFinalPerCluster);
     MemFree(problem.NumeroDeVariableStockFinal);
     for (uint p = 0; p < nbPays; ++p)
         MemFree(problem.NumeroDeVariableDeTrancheDeStock[p]);

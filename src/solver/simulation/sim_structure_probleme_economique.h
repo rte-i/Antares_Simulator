@@ -108,7 +108,8 @@ typedef struct
     int* NumeroDeContrainteDesContraintesDeDureeMinDArret;
     int* NumeroDeLaDeuxiemeContrainteDesContraintesDesGroupesQuiTombentEnPanne;
 
-    int* NumeroDeContrainteDesNiveauxPays;
+    int* NumeroDeContrainteDesNiveauxPays; // Number of constraints hydro-level, per country
+    int* NumberOfHydroLevelConstraintsAllClusters; // Number of constraints hydro-level, all clusters
 
 } CORRESPONDANCES_DES_CONTRAINTES;
 
@@ -615,7 +616,7 @@ struct PROBLEME_HEBDO
     bool firstWeekOfSimulation;
 
     CORRESPONDANCES_DES_VARIABLES** CorrespondanceVarNativesVarOptim;
-    CORRESPONDANCES_DES_CONTRAINTES** CorrespondanceCntNativesCntOptim;
+    CORRESPONDANCES_DES_CONTRAINTES** CorrespondanceCntNativesCntOptim; // CORRESPONDENCE OF CONSTRAINTS
     CORRESPONDANCES_DES_CONTRAINTES_JOURNALIERES** CorrespondanceCntNativesCntOptimJournalieres;
     CORRESPONDANCES_DES_CONTRAINTES_HEBDOMADAIRES** CorrespondanceCntNativesCntOptimHebdomadaires;
 
@@ -643,9 +644,18 @@ struct PROBLEME_HEBDO
     int** NumeroDeVariableDeTrancheDeStock;
 
     // HYDRO-CLUSTER-START
+
+    int* NumeroDeContrainteEnergieHydrauliquePerCluster; // Hydraulic Energy Constraint Number
+    int* NumeroDeContrainteMinEnergieHydrauliquePerCluster; // Hydraulic Min Energy Constraint Number
+    int* NumeroDeContrainteMaxEnergieHydrauliquePerCluster; // Hydraulic Max Energy Constraint Number
+    int* NumeroDeContrainteMaxPompagePerCluster; // Max Pumping Constraint Number
+
     int* NumeroDeVariableStockFinalCluster; // Ending Stock Variable Number ??? // ovih imamo onoliko koliko je broj hidro clustera
+    int* NumeroDeContrainteBorneStockFinalPerCluster;
+    int* NumeroDeContrainteEquivalenceStockFinalPerCluster;
+    int* NumeroDeContrainteExpressionStockFinalPerCluster;
     int** NumeroDeVariableDeTrancheDeStockCluster; // Stock Slice Variable Number ??? // ovih imamo onoliko koliko je broj hidro clustera x 100
-    double** BruitSurCoutHydrauliqueCluster; // NoiseOverCostHydraulicsCluster // ovih imamo onoliko koliko je broj hidro clustera  x vidi sta?
+    double** BruitSurCoutHydrauliqueCluster; // Noise Over Cost Hydraulics Cluster // ovih imamo onoliko koliko je broj hidro clustera  x 8784?
     // Next two are transfered in PALIERS_HYDROCLUSTERS // maybe keep them here ?!
     // double* previousYearFinalLevelsCluster;
     // double* previousSimulationFinalLevelCluster;
