@@ -352,8 +352,8 @@ public:
     double* pSpilledEnergy;
 
     // Hydro costs noises
-    double** pHydroCostsByArea_freeMod;
-    double* pHydroCosts_rampingOrExcursion;
+    double** pHydroCostsByArea_freeMod; // TODO Milos: we need this for clusters?
+    double* pHydroCosts_rampingOrExcursion; // TODO Milos: we need this for clusters?
 };
 
 class randomNumbers
