@@ -325,7 +325,7 @@ void PrepareRandomNumbers(Data::Study& study,
         }
         problem.CoutDeDefaillanceNegative[area.index] = area.thermal.spilledEnergyCost + alea;
 
-        auto* noise = problem.BruitSurCoutHydraulique[area.index]; // TODO Milos: make this per cluster
+        auto* noise = problem.BruitSurCoutHydraulique[area.index];
         switch (study.parameters.power.fluctuations)
         {
         case Data::lssFreeModulations:
