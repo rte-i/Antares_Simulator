@@ -47,6 +47,7 @@ namespace Solver
 namespace Simulation
 {
 template<uint step>
+// TODO Milos: how to implement clusters into hydro-remix method
 static bool Remix(const Data::Study& study, PROBLEME_HEBDO& problem, uint numSpace, uint hourInYear)
 {
     double HE[168];
@@ -130,7 +131,7 @@ static bool Remix(const Data::Study& study, PROBLEME_HEBDO& problem, uint numSpa
             }
 
             auto& P
-              = problem.CaracteristiquesHydrauliques[index]->ContrainteDePmaxHydrauliqueHoraire;
+              = problem.CaracteristiquesHydrauliques[index]->ContrainteDePmaxHydrauliqueHoraire; 
 
             double ecart = 1.;
             uint loop = 100;
