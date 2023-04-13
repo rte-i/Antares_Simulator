@@ -855,7 +855,7 @@ void OPT_ConstruireLaMatriceDesContraintesDuProblemeLineaire(PROBLEME_HEBDO* Pro
             ProblemeHebdo->NumeroDeContrainteEnergieHydraulique[Pays] = -1;
     }
 
-    // ==================== HYDRO-CLUSTER-START ====================//
+    // ==================== HYDRO-CLUSTER-START ==================== //
     for (Pays = 0; Pays < ProblemeHebdo->NombreDePays; Pays++)
     {
         PALIERS_HYDROCLUSTERS* PaliersHydroclusterDuPays
