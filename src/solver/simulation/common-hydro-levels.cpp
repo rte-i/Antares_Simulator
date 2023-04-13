@@ -209,12 +209,11 @@ void computingHydroLevelsForCluster(const Data::Study& study,
                 }
 
                 uint index = area.index;
+                auto& clusterHydroData = problem.PaliersHydroclusterDuPays[index]->hydroClusterMap.at(cluster.index);
 
                 double reservoirCapacity = cluster.reservoirCapacity;
 
-                double* inflows = problem.PaliersHydroclusterDuPays[index]
-                                    ->hydroClusterMap.at(cluster.index)
-                                    .ApportNaturelHoraire;
+                double* inflows = clusterHydroData.ApportNaturelHoraire;
 
                 RESULTATS_HORAIRES* weeklyResults = problem.ResultatsHoraires[index];
                 PRODUCTION_HYDRO_OPTIMAL& clusterResults = weeklyResults->productionHydroCluster[cluster.index];
@@ -224,9 +223,7 @@ void computingHydroLevelsForCluster(const Data::Study& study,
                 double* pump = clusterResults.hourlyPump;
                 double pumpingRatio = cluster.pumpingEfficiency;
 
-                double nivInit = problem.PaliersHydroclusterDuPays[index]
-                                   ->hydroClusterMap.at(cluster.index)
-                                   .NiveauInitialReservoir;
+                double nivInit = clusterHydroData.NiveauInitialReservoir;
                 double* niv = clusterResults.hourlyHydLevel;
 
                 double* ovf = clusterResults.hourlyHydOverflow;
