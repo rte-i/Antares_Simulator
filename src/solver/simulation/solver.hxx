@@ -1386,7 +1386,7 @@ void ISimulation<Impl>::computeRandomNumbers(randomNumbers& randomForYears,
                 if (isPerformed)
                     randomForYears.pYears[indexYear].pReservoirLevels[areaIndex] = randomLevel;
             }
-
+            // TODO Milos: random needs to be per cluster not per area!
             area.hydrocluster.list.each(
               [&](const Data::HydroclusterCluster& cluster)
               {

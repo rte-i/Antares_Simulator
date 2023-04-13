@@ -91,7 +91,7 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
     double OI[168];
 
     // H.STOR
-    double* H = weeklyResults.TurbinageHoraire;
+    double* H = weeklyResults.TurbinageHoraire; // TODO Milos: perform this per cluster and subtract from opmrg !
 
     // energie turbinee de la semaine
     {
@@ -151,7 +151,7 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
             if (niveau > OI[i])
             {
                 uint dayYear = calendar.hours[i + state.hourInTheYear].dayYear;
-                double sum = 0.0;
+                double sum = 0.0; // TODO Milos: change to more expressive name!
                 area.hydrocluster.list.each(
                   [&](const Data::HydroclusterCluster& cluster)
                   { sum += cluster.maxPower[Data::PartHydro::genMaxP][dayYear]; });

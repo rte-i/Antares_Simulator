@@ -650,14 +650,14 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                 double nivInit = clusterMap.NiveauInitialReservoir;
                 if (nivInit < 0.)
                 {
-                    logs.fatal() << "Area " << area.name << ", week " << state.weekInTheYear + 1
+                    logs.fatal() << "Area " << area.name << ", week " << state.weekInTheYear + 1 // TODO Milos: add cluster name
                                  << " : initial level < 0";
                     AntaresSolverEmergencyShutdown();
                 }
 
                 if (nivInit > cluster.reservoirCapacity)
                 {
-                    logs.fatal() << "Area " << area.name << ", week " << state.weekInTheYear + 1
+                    logs.fatal() << "Area " << area.name << ", week " << state.weekInTheYear + 1  // TODO Milos: add cluster name
                                  << " : initial level over capacity";
                     AntaresSolverEmergencyShutdown();
                 }
