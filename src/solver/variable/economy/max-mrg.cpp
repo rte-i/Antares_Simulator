@@ -93,6 +93,21 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
     // H.STOR
     double* H = weeklyResults.TurbinageHoraire; // TODO Milos: perform this per cluster and subtract from opmrg !
 
+    // prepare arrays with summed-up values for all clusters
+    std::array<double, endHour> hourlyGenForAllClusters;
+    std::array<double, endHour> maxPowerForAllClusters;
+    for (uint i = offset; i != endHour; ++i)
+    {
+        area.hydrocluster.list.each(
+          [&](const Data::HydroclusterCluster& cluster)
+          {
+              uint dayYear = calendar.hours[i + state.hourInTheYear].dayYear;
+              hourlyGenForAllClusters[i]
+                += weeklyResults.productionHydroCluster[cluster.index].hourlyGen[i];
+              maxPowerForAllClusters[i] += cluster.maxPower[Data::PartHydro::genMaxP][dayYear];
+          });
+    }
+
     // energie turbinee de la semaine
     {
         // DTG MRG
@@ -103,7 +118,10 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
             // H.STOR
             auto& H = weeklyResults.TurbinageHoraire;
             for (uint i = offset; i != endHour; ++i)
+            {
                 WH += H[i];
+                WH += hourlyGenForAllClusters[i];
+            }
         }
 
         if (Math::Zero(WH)) // no hydro
@@ -151,17 +169,14 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
             if (niveau > OI[i])
             {
                 uint dayYear = calendar.hours[i + state.hourInTheYear].dayYear;
-                double sum = 0.0; // TODO Milos: change to more expressive name!
-                area.hydrocluster.list.each(
-                  [&](const Data::HydroclusterCluster& cluster)
-                  { sum += cluster.maxPower[Data::PartHydro::genMaxP][dayYear]; });
-
-                opmrg[i] = Math::Min(niveau, OI[i] + P[dayYear] + sum - H[i]);
+                opmrg[i] = Math::Min(niveau,
+                                     OI[i] + P[dayYear] - H[i] + maxPowerForAllClusters[i]
+                                       - hourlyGenForAllClusters[i]);
                 SM += opmrg[i] - OI[i];
             }
             else
             {
-                opmrg[i] = Math::Max(niveau, OI[i] - H[i]);
+                opmrg[i] = Math::Max(niveau, OI[i] - H[i] - hourlyGenForAllClusters[i]);
                 SP += OI[i] - opmrg[i];
             }
         }
