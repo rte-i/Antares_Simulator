@@ -365,6 +365,58 @@ void PrepareRandomNumbers(Data::Study& study,
             break;
         }
         }
+
+        // ==================== HYDRO-CLUSTER-START ==================== //
+        area.hydrocluster.list.each(
+          [&](const Data::HydroclusterCluster& cluster)
+          {
+            int clusterIndex = problem.PaliersHydroclusterDuPays[area.index]->clusterIndexTotalCount[cluster.index];
+              auto* noise
+                = problem.BruitSurCoutHydrauliquePerCluster[clusterIndex];
+              switch (study.parameters.power.fluctuations)
+              {
+              case Data::lssFreeModulations:
+              {
+                  for (uint j = 0; j != 8784; ++j)
+                      noise[j] = randomForYear.pHydroCostsByArea_freeMod[area.index][j]; // TODO Milos: pHydroCostsByArea_freeMod[area.index]
+
+                  auto& penalty = problem.PaliersHydroclusterDuPays[area.index]->hydroClusterMap.at(cluster.index);
+                  penalty.PenalisationDeLaVariationDeProductionHydrauliqueSurSommeDesVariations
+                    = 5.e-4;
+                  penalty.PenalisationDeLaVariationDeProductionHydrauliqueSurVariationMax = 5.e-4;
+                  break;
+              }
+
+              case Data::lssMinimizeRamping:
+              case Data::lssMinimizeExcursions:
+              {
+                  (void)::memset(noise, 0, 8784 * sizeof(double));
+
+                  auto& penalty = problem.PaliersHydroclusterDuPays[area.index]->hydroClusterMap.at(cluster.index);
+                  double rnd = randomForYear.pHydroCosts_rampingOrExcursion[indexArea]; // TODO Milos: pHydroCosts_rampingOrExcursion[indexArea];
+
+                  penalty.PenalisationDeLaVariationDeProductionHydrauliqueSurSommeDesVariations
+                    = 0.01 * (1. + rnd / 10.);
+                  penalty.PenalisationDeLaVariationDeProductionHydrauliqueSurVariationMax
+                    = 0.1 * (1. + rnd / 100.);
+                  break;
+              }
+
+              case Data::lssUnknown:
+              {
+                  assert(false && "invalid power fluctuations");
+                  (void)::memset(noise, 0, 8784 * sizeof(double));
+
+                  auto& penalty = problem.PaliersHydroclusterDuPays[area.index]->hydroClusterMap.at(cluster.index);
+                  penalty.PenalisationDeLaVariationDeProductionHydrauliqueSurSommeDesVariations
+                    = 1e-4;
+                  penalty.PenalisationDeLaVariationDeProductionHydrauliqueSurVariationMax = 1e-4;
+                  break;
+              }
+              }
+          });
+        // ==================== HYDRO-CLUSTER-END ==================== //
+
         indexArea++;
     });
 }
