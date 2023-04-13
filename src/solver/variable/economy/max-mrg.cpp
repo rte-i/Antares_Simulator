@@ -91,7 +91,7 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
     double OI[168];
 
     // H.STOR
-    double* H = weeklyResults.TurbinageHoraire; // TODO Milos: perform this per cluster and subtract from opmrg !
+    double* H = weeklyResults.TurbinageHoraire;
 
     // prepare arrays with summed-up values for all clusters
     std::array<double, endHour> hourlyGenForAllClusters;
