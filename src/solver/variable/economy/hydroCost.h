@@ -167,7 +167,7 @@ public:
     void initializeFromArea(Data::Study* study, Data::Area* area)
     {
         // Setting the pumping efficiency
-        pPumpRatio = area->hydro.pumpingEfficiency;
+        pPumpRatio = area->hydro.pumpingEfficiency; // TODO Milos: adjust results for hydro clusters
 
         // Next
         NextType::initializeFromArea(study, area);
@@ -233,7 +233,7 @@ public:
         NextType::hourBegin(hourInTheYear);
     }
 
-    void hourForEachArea(State& state, unsigned int numSpace)
+    void hourForEachArea(State& state, unsigned int numSpace) // TODO Milos: adjust results for hydro clusters
     {
         // Hydro costs : storage and pumping
         pValuesForTheCurrentYear[numSpace].hour[state.hourInTheYear]

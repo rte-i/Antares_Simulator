@@ -387,7 +387,7 @@ void HydroManagement::prepareMonthlyOptimalGenerationsForCluster(double* random_
 
                 double lvi = -1.;
                 if (cluster.reservoirManagement)
-                    lvi = random_reservoir_level[indexArea]; // TODO Milos - this needs to be per cluster
+                    lvi = random_reservoir_level[indexArea]; // TODO Milos: - this needs to be per cluster
 
                 indexArea++;
 
