@@ -253,7 +253,7 @@ public:
         NextType::hourBegin(hourInTheYear);
     }
 
-    void hourForEachArea(State& state, unsigned int numSpace)
+    void hourForEachArea(State& state, unsigned int numSpace) // TODO Milos: adjust results for hydro clusters
     {
         const double costForSpilledOrUnsuppliedEnergy =
           // Total UnsupliedEnergy emissions

@@ -58,10 +58,14 @@ typedef struct
 
 typedef struct
 {
+    // Daily Modulating Hydraulics
     double* HydrauliqueModulableQuotidien; /* indice par jour */
+    // Random Production Cost Per Cluster - you do not need this for hydro !!!
     double* AleaCoutDeProductionParPalier; /* epsilon sur le cout de production */
+    // Reservoir Levels Start Days - used in hydro-daily
     double* NiveauxReservoirsDebutJours;   // Niveaux (quotidiens) du reservoir de d�but de jour (en
                                            // cas de gestion des reservoirs).
+    // Reservoir Levels End Days - used only locally in hydro-daily
     double* NiveauxReservoirsFinJours; // Niveaux (quotidiens) du reservoir de fin de jour (en cas
                                        // de gestion des reservoirs).
 } VALEURS_GENEREES_PAR_PAYS;

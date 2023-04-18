@@ -141,7 +141,7 @@ bool Adequacy::simplexIsRequired(uint hourInTheYear, uint numSpace) const
 
             double quantity
               = pProblemesHebdo[numSpace]->ConsommationsAbattues[j]->ConsommationAbattueDuPays[k]
-                - valgen.HydrauliqueModulableQuotidien[dayInTheYear] / 24.;
+                - valgen.HydrauliqueModulableQuotidien[dayInTheYear] / 24.; // TODO Milos: hyd-clusters?!!
 
             if (quantity > 0.)
                 return true; // Call to the solver is required to find an optimal solution
@@ -296,7 +296,7 @@ bool Adequacy::year(Progression::Task& progression,
                        0,
                        sizeof(double) * nbHoursInAWeek);
                 memset(hourlyResults.CoutsMarginauxHoraires, 0, sizeof(double) * nbHoursInAWeek);
-                memset(hourlyResults.PompageHoraire, 0, sizeof(double) * nbHoursInAWeek);
+                memset(hourlyResults.PompageHoraire, 0, sizeof(double) * nbHoursInAWeek);// TODO Milos: hydro-clusters!?
                 memset(hourlyResults.debordementsHoraires, 0, sizeof(double) * nbHoursInAWeek);
                 memset(hourlyResults.niveauxHoraires, 0, sizeof(double) * nbHoursInAWeek);
             }
@@ -306,7 +306,8 @@ bool Adequacy::year(Progression::Task& progression,
             for (uint j = 0; j != nbHoursInAWeek; ++j, ++indx)
             {
                 uint dayInTheYear = study.calendar.hours[indx].dayYear;
-
+                // TODO Milos: hydro-clusters!? - 
+                // YES + insert neccessary methods like computingHydroLevels, updatingWeeklyFinalHydroLevel ..  
                 for (uint k = 0; k != nbAreas; ++k)
                 {
                     assert(k < state.resSpilled.width);
@@ -321,7 +322,7 @@ bool Adequacy::year(Progression::Task& progression,
                       = +valgen.HydrauliqueModulableQuotidien[dayInTheYear] / 24.
                         - pProblemesHebdo[numSpace]
                             ->ConsommationsAbattues[j]
-                            ->ConsommationAbattueDuPays[k];
+                            ->ConsommationAbattueDuPays[k]; //Reduced consumption of the country
                 }
             }
 
