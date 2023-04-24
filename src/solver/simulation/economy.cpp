@@ -286,16 +286,21 @@ bool Economy::year(Progression::Task& progression,
               study, *pProblemesHebdo[numSpace], numSpace, hourInTheYear, nbHoursInAWeek);
 
             computingHydroLevels(study, *pProblemesHebdo[numSpace], nbHoursInAWeek, false);
+            computingHydroLevelsForCluster(study, *pProblemesHebdo[numSpace], nbHoursInAWeek, false);
 
             RemixHydroForAllAreas(
               study, *pProblemesHebdo[numSpace], numSpace, hourInTheYear, nbHoursInAWeek);
 
             computingHydroLevels(study, *pProblemesHebdo[numSpace], nbHoursInAWeek, true);
+            computingHydroLevelsForCluster(study, *pProblemesHebdo[numSpace], nbHoursInAWeek, false);
 
             interpolateWaterValue(
               study, *pProblemesHebdo[numSpace], state, hourInTheYear, nbHoursInAWeek);
+            interpolateWaterValueForCluster(
+              study, *pProblemesHebdo[numSpace], state, hourInTheYear, nbHoursInAWeek);
 
             updatingWeeklyFinalHydroLevel(study, *pProblemesHebdo[numSpace], nbHoursInAWeek);
+            updatingWeeklyFinalHydroLevelForCluster(study, *pProblemesHebdo[numSpace], nbHoursInAWeek);
 
             variables.weekBegin(state);
             uint previousHourInTheYear = state.hourInTheYear;
@@ -359,6 +364,7 @@ bool Economy::year(Progression::Task& progression,
     }
 
     updatingAnnualFinalHydroLevel(study, *pProblemesHebdo[numSpace]);
+    updatingAnnualFinalHydroLevelForCluster(study, *pProblemesHebdo[numSpace]);
 
     logs.info() << pProblemesHebdo[numSpace]->optimizationStatistics_object.toString();
     auto& optStat = pProblemesHebdo[numSpace]->optimizationStatistics_object;

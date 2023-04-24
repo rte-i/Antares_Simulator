@@ -184,7 +184,6 @@ void updatingAnnualFinalHydroLevel(const Data::Study& study, PROBLEME_HEBDO& pro
     });
 }
 
-// TODO Milos: call next 4 functions where is necessary!
 void computingHydroLevelsForCluster(const Data::Study& study,
                                     PROBLEME_HEBDO& problem,
                                     uint nbHoursInAWeek,
