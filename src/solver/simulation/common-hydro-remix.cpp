@@ -99,6 +99,7 @@ static bool Remix(const Data::Study& study, PROBLEME_HEBDO& problem, uint numSpa
 
             WH = 0.;
 
+             // Returns the maximum finite value representable by the numeric type double
             double bottom = std::numeric_limits<double>::max();
             double top = 0;
 
@@ -108,7 +109,7 @@ static bool Remix(const Data::Study& study, PROBLEME_HEBDO& problem, uint numSpa
 
             auto& L = (loadTS < load.width) ? load[loadTS] : load[0];
 
-            const double* M = area.scratchpad[numSpace]->dispatchableGenerationMargin;
+            const double* M = area.scratchpad[numSpace]->dispatchableGenerationMargin; // koliko jos moze da ponudi Thermal u Area u odnosu na koliko vec proizvodi
 
             for (uint i = offset; i < endHour; ++i)
             {
