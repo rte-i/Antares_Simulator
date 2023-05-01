@@ -69,7 +69,8 @@ private:
     //! Page
     Component::Notebook::Page* pPageFatal;
 
-    Component::Datagrid::Component **com; 
+    Component::Datagrid::Component **com;
+    uint datagridNum; 
 }; // class Series
 
 } // namespace Hydro
