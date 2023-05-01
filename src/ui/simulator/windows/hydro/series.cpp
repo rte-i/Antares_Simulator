@@ -44,8 +44,7 @@ Series::Series(wxWindow* parent, Toolbox::InputSelector::Area* notifier) :
     auto* notebook = new Component::Notebook(this, Component::Notebook::orTop);
     notebook->displayTitle(false);
     notebook->theme(Component::Notebook::themeLight);
-    
-    datagridNum = 3;
+  
     AllocateComponents(notebook);
 
     com[0]->renderer(new Component::Datagrid::Renderer::TimeSeriesHydroFatal(com[0], notifier));
@@ -71,14 +70,14 @@ Series::Series(wxWindow* parent, Toolbox::InputSelector::Area* notifier) :
 
 void Series::AllocateComponents(Component::Notebook* notebook)
 {
-    com = new Component::Datagrid::Component*[datagridNum];
-    for (uint i = 0; i < datagridNum; i++)
+    com = new Component::Datagrid::Component*[3];
+    for (uint i = 0; i < 3; i++)
         com[i] = new Component::Datagrid::Component(notebook);
 }
 
 void Series::DeallocateComponents()
 {
-    for (uint i = 0; i < datagridNum; i++)
+    for (uint i = 0; i < 3; i++)
         delete (com + i);
     delete[] com;
     com = nullptr;
