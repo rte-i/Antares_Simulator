@@ -44,18 +44,17 @@ Series::Series(wxWindow* parent, Toolbox::InputSelector::Area* notifier) :
     auto* notebook = new Component::Notebook(this, Component::Notebook::orTop);
     notebook->displayTitle(false);
     notebook->theme(Component::Notebook::themeLight);
+  
+    AllocateComponents(notebook);
 
-    auto* com = new Component::Datagrid::Component(notebook);
-    com->renderer(new Component::Datagrid::Renderer::TimeSeriesHydroFatal(com, notifier));
-    pPageFatal = notebook->add(com, wxT("Run-of-the-river (ROR)"));
+    com[0]->renderer(new Component::Datagrid::Renderer::TimeSeriesHydroFatal(com[0], notifier));
+    pPageFatal = notebook->add(com[0], wxT("Run-of-the-river (ROR)"));
 
-    com = new Component::Datagrid::Component(notebook);
-    com->renderer(new Component::Datagrid::Renderer::TimeSeriesHydroMod(com, notifier));
-    notebook->add(com, wxT("Hydro Storage"));
+    com[1]->renderer(new Component::Datagrid::Renderer::TimeSeriesHydroMod(com[1], notifier));    
+    notebook->add(com[1], wxT("Hydro Storage"));
 
-    com = new Component::Datagrid::Component(notebook);
-    com->renderer(new Component::Datagrid::Renderer::TimeSeriesHydroMinGen(com, notifier));
-    notebook->add(com, wxT("Minimum Generation"));
+    com[2]->renderer(new Component::Datagrid::Renderer::TimeSeriesHydroMinGen(com[2], notifier));
+    notebook->add(com[2], wxT("Minimum Generation"));
 
     // Connection to the notifier
     if (pNotifier)
@@ -69,9 +68,25 @@ Series::Series(wxWindow* parent, Toolbox::InputSelector::Area* notifier) :
     OnStudyLoaded.connect(this, &Series::onStudyLoaded);
 }
 
+void Series::AllocateComponents(Component::Notebook* notebook)
+{
+    com = new Component::Datagrid::Component*[3];
+    for (uint i = 0; i < 3; i++)
+        com[i] = new Component::Datagrid::Component(notebook);
+}
+
+void Series::DeallocateComponents()
+{
+    for (uint i = 0; i < 3; i++)
+        delete (com + i);
+    delete[] com;
+    com = nullptr;
+}
+
 Series::~Series()
 {
     destroyBoundEvents();
+    DeallocateComponents();
 }
 
 void Series::onAreaChanged(Data::Area* area)
