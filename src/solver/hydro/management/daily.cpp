@@ -173,7 +173,9 @@ struct DebugData
                 double niveauDeb = valgen.NiveauxReservoirsDebutJours[day];
                 double niveauFin = valgen.NiveauxReservoirsFinJours[day];
                 double apports = srcinflows[day] / reservoirCapacity;
-                double turbMax = maxP[day] * maxE[day] / reservoirCapacity;
+                double turbMax = maxP[day] * maxE[day] / reservoirCapacity; 
+                // For the debug purpose we can leave daily structure turbMax.
+                // Just calculate it using new hourly Pmax data and the appropriate TimeSeries number.
                 double turbCible = dailyTargetGen[day] / reservoirCapacity;
                 double turbCibleUpdated = dailyTargetGen[day] / reservoirCapacity
                                           + previousMonthWaste[realmonth] / daysPerMonth;
@@ -247,7 +249,7 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
                                                 data,
                                                 valgen,
                                                 srcinflows,
-                                                maxP,
+                                                maxP, // Input for debug method
                                                 maxE,
                                                 dailyTargetGen,
                                                 lowLevel,
@@ -266,10 +268,16 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
             auto dYear = day + dayYear;
             assert(day < 32);
             assert(dYear < 366);
-            scratchpad.optimalMaxPower[dYear] = maxP[dYear];
+            scratchpad.optimalMaxPower[dYear] = maxP[dYear]; 
+            // optimalMaxPower in scratchpad is set as maxP[dYear]. 
+            // optimalMaxPower is only used then src/solver/simulation/sim_calcul_economique.cpp line 642 to calculate ContrainteDePmaxHydrauliqueHoraire!
+            // We can calculate it using hourly Pmax data. 
+            // However, need for scratchpad.optimalMaxPower[dYear] is obsolete. 
+            // set ContrainteDePmaxHydrauliqueHoraire directly to hourly Pmax values.
 
             if (debugData)
                 debugData->OPP[dYear] = maxP[dYear] * maxE[dYear];
+                // Input for debug data/method - Use hourly values to calculate it.
         }
 
         dayYear += daysPerMonth;
@@ -378,7 +386,9 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
             uint dayMonth = 0;
             for (uint day = firstDay; day != endDay; ++day)
             {
-                problem.TurbineMax[dayMonth] = maxP[day] * maxE[day];
+                problem.TurbineMax[dayMonth] = maxP[day] * maxE[day]; 
+                // In daily heuristic, TurbineMax is set as maxP[day] * maxE[day];, 
+                // Apply same principe as for mingen to caclulate it using hourly Pmax values.
                 problem.TurbineMin[dayMonth] = data.dailyMinGen[day];
                 problem.TurbineCible[dayMonth] = dailyTargetGen[day];
                 dayMonth++;
@@ -457,7 +467,9 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
             uint dayMonth = 0;
             for (uint day = firstDay; day != endDay; ++day)
             {
-                problem.TurbineMax[dayMonth] = maxP[day] * maxE[day] / reservoirCapacity;       
+                problem.TurbineMax[dayMonth] = maxP[day] * maxE[day] / reservoirCapacity;
+                // TurbineMax in daily is calculated like this, 
+                // maybe do something similar as for mingen. calculate with hourly values and forward to the solver. 
                 problem.TurbineMin[dayMonth] = data.dailyMinGen[day] / reservoirCapacity;
 
                 problem.TurbineCible[dayMonth]
@@ -470,7 +482,10 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
                 dayMonth++;
             }
 
-            H2O2_J_OptimiserUnMois(&problem);
+            H2O2_J_OptimiserUnMois(&problem); 
+            // TurbineMax and TurbineMin goes inside H2O solver here. 
+            // Inside the solver we do not need to change anything. 
+            // Pmax bound is already present.
 
             switch (problem.ResultatsValides)
             {

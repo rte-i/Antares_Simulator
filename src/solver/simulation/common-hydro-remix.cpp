@@ -126,7 +126,7 @@ static bool Remix(const Data::AreaList& areas, PROBLEME_HEBDO& problem, uint num
             }
 
             auto& P
-              = problem.CaracteristiquesHydrauliques[index]->ContrainteDePmaxHydrauliqueHoraire;
+              = problem.CaracteristiquesHydrauliques[index]->ContrainteDePmaxHydrauliqueHoraire; // new Pmax will be automatically applied as upper bound
 
             double ecart = 1.;
             uint loop = 100;

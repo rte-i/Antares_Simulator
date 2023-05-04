@@ -259,7 +259,10 @@ struct ENERGIES_ET_PUISSANCES_HYDRAULIQUES
 
     double* CntEnergieH2OParIntervalleOptimise;
     double* CntEnergieH2OParJour;
-    double* ContrainteDePmaxHydrauliqueHoraire;
+    double* ContrainteDePmaxHydrauliqueHoraire; 
+    // New "pointer to double" for MaxgenHoraire is not neccessary,
+    // use existing ContrainteDePmaxHydrauliqueHoraire
+    // consider renaming it!
 
     double MaxDesPmaxHydrauliques;
 

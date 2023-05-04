@@ -125,6 +125,8 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
 
         problem.CaracteristiquesHydrauliques[i]->PresenceDHydrauliqueModulable
           = area.scratchpad[numSpace]->hydroHasMod;
+          // use appropriate tsIndex for hydroHasMod that should be transferred to vector.
+          // and then calculate PresenceDHydrauliqueModulable per each area & year
 
         problem.CaracteristiquesHydrauliques[i]->PresenceDePompageModulable
           = area.hydro.reservoirManagement && area.scratchpad[numSpace]->pumpHasMod
@@ -641,6 +643,9 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                 problem.CaracteristiquesHydrauliques[k]->ContrainteDePmaxHydrauliqueHoraire[j]
                   = scratchpad.optimalMaxPower[dayInTheYear]
                     * problem.CaracteristiquesHydrauliques[k]->WeeklyGeneratingModulation;
+                     // j-> number of time stemps, k-> number of areas 
+                     // scratchpad.optimalMaxPower is depricated. 
+                     // Set directly new hourly Pmax as ContrainteDePmaxHydrauliqueHoraire (*modulation of course)!
             }
 
             if (problem.CaracteristiquesHydrauliques[k]->PresenceDePompageModulable)
@@ -696,6 +701,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                                 * area.hydro.maxPower[area.hydro.genMaxE][day]
                                 * problem.CaracteristiquesHydrauliques[k]
                                     ->WeeklyGeneratingModulation;
+                                    // calculate MaxEnergieHydrauParIntervalleOptimise using hourly Pmax values, not daily values 
                         }
                     }
 
@@ -745,6 +751,8 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
 
                             double DGC = area.hydro.maxPower[area.hydro.genMaxP][day]
                                          * area.hydro.maxPower[area.hydro.genMaxE][day];
+                                         // Calculate DGC using hourly Pmax values, not daily. 
+                                         // DGC = DailyGeneration Something??
 
                             DGU_tmp[j] = DNT[day] * LUB;
                             DGL_tmp[j] = DNT[day] * LLB;

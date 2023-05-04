@@ -137,6 +137,9 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
     auto& calendar = state.study.calendar;
     // Pmax
     auto& P = area.hydro.maxPower[Data::PartHydro::genMaxP];
+     // Calculate P using new hourly Pmax data.
+     // Since we can have TimeSeries, use appropriate tsIndex!
+     // This is used for Antares output - column MAX-MRG
     // auto& P = problem.CaracteristiquesHydrauliques[index]->ContrainteDePmaxHydrauliqueHoraire;
 
     do

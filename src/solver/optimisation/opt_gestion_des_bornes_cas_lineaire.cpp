@@ -59,12 +59,12 @@ void OPT_MaxDesPmaxHydrauliques(PROBLEME_HEBDO* problemeHebdo)
         if (!problemeHebdo->CaracteristiquesHydrauliques[pays]->PresenceDHydrauliqueModulable)
             continue;
         const double* ContrainteDePmaxHydrauliqueHoraire
-          = problemeHebdo->CaracteristiquesHydrauliques[pays]->ContrainteDePmaxHydrauliqueHoraire;
+          = problemeHebdo->CaracteristiquesHydrauliques[pays]->ContrainteDePmaxHydrauliqueHoraire; // new Pmax will be automatically applied as upper bound
         double pmaxHyd = -1;
         for (int pdtHebdo = 0; pdtHebdo < problemeHebdo->NombreDePasDeTemps; pdtHebdo++)
         {
             if (ContrainteDePmaxHydrauliqueHoraire[pdtHebdo] > pmaxHyd)
-                pmaxHyd = ContrainteDePmaxHydrauliqueHoraire[pdtHebdo];
+                pmaxHyd = ContrainteDePmaxHydrauliqueHoraire[pdtHebdo]; // new Pmax will be automatically applied as upper bound
         }
 
         problemeHebdo->CaracteristiquesHydrauliques[pays]->MaxDesPmaxHydrauliques = pmaxHyd;
@@ -291,7 +291,7 @@ void OPT_InitialiserLesBornesDesVariablesDuProblemeLineaire(PROBLEME_HEBDO* prob
                 Xmin[var]
                   = problemeHebdo->CaracteristiquesHydrauliques[pays]->MingenHoraire[pdtHebdo];
                 Xmax[var] = problemeHebdo->CaracteristiquesHydrauliques[pays]
-                              ->ContrainteDePmaxHydrauliqueHoraire[pdtHebdo];
+                              ->ContrainteDePmaxHydrauliqueHoraire[pdtHebdo]; // new Pmax will be automatically applied as upper bound
                 double* adresseDuResultat
                   = &(problemeHebdo->ResultatsHoraires[pays]->TurbinageHoraire[pdtHebdo]);
                 AdresseOuPlacerLaValeurDesVariablesOptimisees[var] = adresseDuResultat;

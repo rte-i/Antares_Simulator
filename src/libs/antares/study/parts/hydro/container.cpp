@@ -111,6 +111,9 @@ void PartHydro::reset()
 
 bool PartHydro::LoadFromFolder(Study& study, const AnyString& folder)
 {
+    // all the load/save ... functions related to area.hydro.maxPower should be left for versions below 8.x
+    // above 8.x-v deprecated
+
     auto& buffer = study.bufferLoadingTS;
     bool ret = true;
 
@@ -243,6 +246,8 @@ bool PartHydro::LoadFromFolder(Study& study, const AnyString& folder)
         else
         {
             // Is area hydro modulable ?
+            // calculate hydroModulable using new hourly Pmax.
+            // Since we can have TimeSeries, hydroModulable should be a vector now!
             auto& max = area.hydro.maxPower[area.hydro.genMaxP];
 
             for (uint y = 0; y != area.hydro.maxPower.height; ++y)
