@@ -645,7 +645,11 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                     * problem.CaracteristiquesHydrauliques[k]->WeeklyGeneratingModulation;
                      // j-> number of time stemps, k-> number of areas 
                      // scratchpad.optimalMaxPower is depricated. 
-                     // Set directly new hourly Pmax as ContrainteDePmaxHydrauliqueHoraire (*modulation of course)!
+                     // Set directly new hourly Pmax as ContrainteDePmaxHydrauliqueHoraire 
+                     // (*modulation of course)!! - on the other hand should we keep this modulation
+                     // let's consult RTE with that also, but if we follow the minGen logic. We shoul leave out modulations.
+                     // what does modulation do -> it multiples the power with the coeff that depends on the reservoir level (0-100%)
+                     // the coeff is user defined in Hydro-LocalData-DailyPowerAndEnergyCredits-creditModulations(reservoir level)
             }
 
             if (problem.CaracteristiquesHydrauliques[k]->PresenceDePompageModulable)
@@ -701,7 +705,9 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                                 * area.hydro.maxPower[area.hydro.genMaxE][day]
                                 * problem.CaracteristiquesHydrauliques[k]
                                     ->WeeklyGeneratingModulation;
-                                    // calculate MaxEnergieHydrauParIntervalleOptimise using hourly Pmax values, not daily values 
+                                    // calculate MaxEnergieHydrauParIntervalleOptimise using hourly Pmax values, not daily values
+                                    // (*modulation of course)!! - on the other hand should we keep this modulation
+                                    // let's consult RTE with that also, but if we follow the minGen logic. We shoul leave out modulations. 
                         }
                     }
 
