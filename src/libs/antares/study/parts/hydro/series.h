@@ -103,7 +103,7 @@ public:
     /*!
     ** \brief Check TS number for Minimum Generation and logs error if necessary
     */
-    void checkMinGenTsNumber(Study& s, const AreaName& areaID);
+    void checkMaxMinGenTsNumber(Study& study, const AreaName& areaID, Matrix<double, Yuni::sint32> &MinMax);
 
 public:
     /*!
@@ -128,6 +128,13 @@ public:
     ** Merely a matrix of TimeSeriesCount * HOURS_PER_YEAR values
     */
     Matrix<double, Yuni::sint32> mingen;
+
+     /*!
+    ** \brief Maximum Generation (MW)
+    **
+    ** Merely a matrix of TimeSeriesCount * HOURS_PER_YEAR values
+    */
+    Matrix<double, Yuni::sint32> maxgen;
 
     /*!
     ** \brief The number of time-series
