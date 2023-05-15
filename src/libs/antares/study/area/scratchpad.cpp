@@ -90,23 +90,27 @@ AreaScratchpad::AreaScratchpad(const StudyRuntimeInfos& rinfos, Area& area) : ts
     // Hydro generation permission
     // ------------------------------
     // Useful whether we use a heuristic target or not
-    bool hydroGenerationPermission = false;
+    auto const &maxPowTSs = area.hydro.series->maxgen;
+    auto const TSnumber = area.hydro.series->maxgen.width;
 
-    // ... Getting hydro max power
-    auto const& maxPower = area.hydro.maxPower;
+    std::vector<bool> hydroGenerationPermission(TSnumber, false);
 
-    // ... Hydro max generating power and energy
-    auto const& maxGenP = maxPower[Data::PartHydro::genMaxP];
-    auto const& maxGenE = maxPower[Data::PartHydro::genMaxE];
+    double value;
+    for(uint i = 0; i < TSnumber; i++)
+    {
+        value = 0.;
+        for (uint d = 0; d < HOURS_PER_YEAR; ++d)
+        {
+            value += maxPowTSs[i][d];
+        }
 
-    double value = 0.;
-    for (uint d = 0; d < DAYS_PER_YEAR; ++d)
-        value += maxGenP[d] * maxGenE[d];
+        // If generating energy is nil over the whole year, hydroGenerationPermission is false, true
+        // otherwise.
+        hydroGenerationPermission[i] = (value > 0.);
 
-    // If generating energy is nil over the whole year, hydroGenerationPermission is false, true
-    // otherwise.
-    hydroGenerationPermission = (value > 0.);
+    }
 
+    
     // ---------------------
     // Hydro has inflows
     // ---------------------
@@ -132,8 +136,13 @@ AreaScratchpad::AreaScratchpad(const StudyRuntimeInfos& rinfos, Area& area) : ts
     // --------------------------
     // hydroHasMod definition
     // --------------------------
-    hydroHasMod = hydroHasInflows || hydroGenerationPermission;
 
+    hydroHasMod = std::vector<bool>(TSnumber, false);
+    
+    for(uint i = 0; i < TSnumber; i++)
+    {
+        hydroHasMod[i] = hydroHasInflows || hydroGenerationPermission[i];
+    }
 
     // ===============
     // Pumping
@@ -141,6 +150,8 @@ AreaScratchpad::AreaScratchpad(const StudyRuntimeInfos& rinfos, Area& area) : ts
     // ... Hydro max power
 
     // ... Hydro max pumping power and energy
+    // ... Getting hydro max power
+    auto const& maxPower = area.hydro.maxPower;
     auto const& maxPumpingP = maxPower[Data::PartHydro::pumpMaxP];
     auto const& maxPumpingE = maxPower[Data::PartHydro::pumpMaxE];
 

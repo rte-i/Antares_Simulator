@@ -124,7 +124,7 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
           = (anoNonDispatchPower & area.nodalOptimization) != 0;
 
         problem.CaracteristiquesHydrauliques[i]->PresenceDHydrauliqueModulable
-          = area.scratchpad[numSpace]->hydroHasMod;
+          = area.scratchpad[numSpace]->hydroHasMod[0]; //It is 0 for just for compiling purpose, additional logic has to be implemented
 
         problem.CaracteristiquesHydrauliques[i]->PresenceDePompageModulable
           = area.hydro.reservoirManagement && area.scratchpad[numSpace]->pumpHasMod

@@ -80,7 +80,7 @@ public:
     //! Timeseries
     TimeseriesData ts;
 
-    bool hydroHasMod;
+    std::vector<bool> hydroHasMod;
 
     //! if sum(365)[pumpMaxP * pumpMaxE] > 0. then pumpHasMod = true
     //	else pumpHasMod = false
