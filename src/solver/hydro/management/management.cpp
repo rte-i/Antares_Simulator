@@ -283,15 +283,15 @@ void HydroManagement::checkWeeklyMinGeneration(uint tsIndex, Data::Area& area) c
     }
 }
 
-void HydroManagement::checkHourlyMinGeneration(uint tsIndex, Data::Area& area) const
+void HydroManagement::checkHourlyMinMaxGeneration(uint tsIndex, Data::Area& area) const
 {
     // Hourly minimum generation <= hourly inflows for each hour
     const auto& calendar = study.calendar;
     auto& mingenmatrix = area.hydro.series->mingen;
+    auto& maxgenmatrix = area.hydro.series->maxgen;
     auto const& srcmingen = mingenmatrix[tsIndex < mingenmatrix.width ? tsIndex : 0];
-    auto const& maxPower = area.hydro.maxPower;
-    auto const& maxP = maxPower[Data::PartHydro::genMaxP];
-
+    auto const& srcmaxgen = maxgenmatrix[tsIndex < maxgenmatrix.width ? tsIndex : 0];
+    
     if (!area.hydro.reservoirManagement)
     {
         for (uint month = 0; month != 12; ++month)
@@ -306,13 +306,13 @@ void HydroManagement::checkHourlyMinGeneration(uint tsIndex, Data::Area& area) c
             {
                 for (uint h = 0; h < 24; ++h)
                 {
-                    if (srcmingen[day * 24 + h] > maxP[day])
+                    if (srcmingen[day * 24 + h] > srcmaxgen[day * 24 + h])
                     {
                         logs.error()
-                          << "In area: " << area.name << " [hourly] minimum generation of "
-                          << srcmingen[day * 24 + h] << " MW in timestep " << day * 24 + h + 1
+                          << "In area: " << area.name << " [hourly] maximum generation of "
+                          << srcmaxgen[day * 24 + h] << " MW in timestep " << day * 24 + h + 1
                           << " of TS-" << tsIndex + 1
-                          << " is incompatible with the maximum generation of " << maxP[day]
+                          << " is incompatible with the minimum generation of " << srcmingen[day * 24 + h]
                           << " MW.";
                     }
                 }
@@ -336,7 +336,7 @@ void HydroManagement::checkMinGeneration(uint numSpace)
           checkMonthlyMinGeneration(numSpace, tsIndex, area);
           checkYearlyMinGeneration(numSpace, tsIndex, area);
           checkWeeklyMinGeneration(tsIndex, area);
-          checkHourlyMinGeneration(tsIndex, area);
+          checkHourlyMinMaxGeneration(tsIndex, area);
       });
 }
 
