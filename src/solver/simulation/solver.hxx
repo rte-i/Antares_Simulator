@@ -756,7 +756,7 @@ void ISimulation<Impl>::estimateMemoryForOptimizationPb(Antares::Data::StudyMemo
         auto& area = *(study.areas.byIndex[i]);
         NombreDeVariables += area.thermal.list.size();
 
-        if (area.hydro.hydroModulable)
+        if (area.hydro.hydroModulable[0]) //Figure out how to estimate RAM with new data implemented
         {
             NombreDeVariables++; /* La variable de production hydraulique */
             NombreDeVariables++; // pumping
@@ -806,7 +806,7 @@ void ISimulation<Impl>::estimateMemoryForOptimizationPb(Antares::Data::StudyMemo
     for (uint i = 0; i != study.areas.size(); i++)
     {
         auto& area = *(study.areas.byIndex[i]);
-        if (area.hydro.hydroModulable)
+        if (area.hydro.hydroModulable[0])//Same thing with previos usage of hydroModulable vector
         {
             NombreDeContraintes++; /* Contraintes de turbine min */
             NombreDeContraintes++; /* Contraintes de turbine max */

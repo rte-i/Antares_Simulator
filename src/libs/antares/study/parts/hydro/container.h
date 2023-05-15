@@ -156,7 +156,7 @@ public:
     Matrix<double> inflowPattern;
 
     // Useful for solver RAM estimation
-    bool hydroModulable;
+    std::vector<bool> hydroModulable;
 
     //! Daily reservoir level ({min,avg,max}x365)
     Matrix<double> reservoirLevel;

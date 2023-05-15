@@ -241,18 +241,25 @@ bool PartHydro::LoadFromFolder(Study& study, const AnyString& folder)
             }
         }
         else
-        {
-            // Is area hydro modulable ?
-            auto& max = area.hydro.maxPower[area.hydro.genMaxP];
-
-            for (uint y = 0; y != area.hydro.maxPower.height; ++y)
+        {	
+			//Is area hydro modulable
+            uint TSNubmer = area.hydro.series->maxgen.width;
+            uint hours = area.hydro.series->maxgen.height;
+            auto& max = area.hydro.series->maxgen;
+            
+            for (uint y = 0; y != TSNubmer; ++y)
             {
-                if (max[y] > 0.)
+                auto& max = area.hydro.series->maxgen[y];
+
+                for(uint z = 0; z < hours; z++)
                 {
-                    area.hydro.hydroModulable = true;
-                    break;
-                }
-            }
+                    if (max[z] > 0.)
+                    {
+                        area.hydro.hydroModulable[y] = true;
+                        break;
+                    }
+            	}   
+			}
         }
     });
 
