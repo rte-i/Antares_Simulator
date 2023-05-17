@@ -49,6 +49,7 @@ DataSeriesHydro::DataSeriesHydro() : count(0)
     // For compatibility reasons with existing studies, mingen is set to one column of zeros
     // by default
     mingen.reset(1, HOURS_PER_YEAR);
+    maxgen.reset(1, HOURS_PER_YEAR);
 }
 
 bool DataSeriesHydro::saveToFolder(const AreaName& areaID, const AnyString& folder) const
