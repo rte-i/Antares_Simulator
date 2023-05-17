@@ -44,6 +44,11 @@ namespace Data
 {
 DataSeriesHydro::DataSeriesHydro() : count(0)
 {
+    // Pmin was introduced in v8.6
+    // The previous behavior was Pmin=0
+    // For compatibility reasons with existing studies, mingen is set to one column of zeros
+    // by default
+    mingen.reset(1, HOURS_PER_YEAR);
 }
 
 bool DataSeriesHydro::saveToFolder(const AreaName& areaID, const AnyString& folder) const
@@ -94,14 +99,6 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
         buffer.clear() << folder << SEP << areaID << SEP << "maxgen." << study.inputExtension;
         ret = maxgen.loadFromCSVFile(buffer, 1, HOURS_PER_YEAR, &study.dataBuffer) && ret;
     }
-    else
-    {
-        mingen.reset(0, HOURS_PER_YEAR);
-        mingen.markAsModified();
-        maxgen.reset(0, HOURS_PER_YEAR);
-        maxgen.markAsModified();
-
-    }
 
     if (study.usedByTheSolver)
     {
@@ -111,8 +108,8 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
                          << "`: empty matrix detected. Fixing it with default values";
             ror.reset(1, HOURS_PER_YEAR);
             storage.reset(1, DAYS_PER_YEAR);
-            mingen.reset(0, HOURS_PER_YEAR);
-            maxgen.reset(0, HOURS_PER_YEAR);
+            mingen.reset(1, HOURS_PER_YEAR);
+            maxgen.reset(1, HOURS_PER_YEAR);
         }
         else
         {
@@ -157,7 +154,6 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
             }
             checkMaxMinGenTsNumber(study, areaID, this->mingen);
             checkMaxMinGenTsNumber(study, areaID, this->maxgen);
-            
         }
 
         if (study.parameters.derated)
@@ -175,12 +171,13 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
     return ret;
 }
 
-
-void DataSeriesHydro::checkMaxMinGenTsNumber(Study& study, const AreaName& areaID, Matrix<double, Yuni::sint32> &MinMax)
+void DataSeriesHydro::checkMaxMinGenTsNumber(Study& study,
+                                             const AreaName& areaID,
+                                             Matrix<double, Yuni::sint32>& MinMax)
 {
     if (MinMax.width != storage.width)
     {
-        if (MinMax.width > 1)                                                                           
+        if (MinMax.width > 1)
         {
             logs.fatal() << "Hydro: `" << areaID
                          << "`: The matrices Maximum/Minimum Generation must "
@@ -190,27 +187,26 @@ void DataSeriesHydro::checkMaxMinGenTsNumber(Study& study, const AreaName& areaI
         else
         {
             MinMax.resizeWithoutDataLost(count, MinMax.height);
-            
+
             for (uint x = 1; x < count; ++x)
             {
                 MinMax.pasteToColumn(x, MinMax[0]);
-                
             }
-                
+
             Area* areaToInvalidate = study.areas.find(areaID);
             if (areaToInvalidate)
             {
                 areaToInvalidate->invalidateJIT = true;
-                logs.info() << "  '" << areaID
-                            << "': The hydro Maximum/Minimum generation data have been normalized to "
-                            << count << " timeseries";
+                logs.info()
+                  << "  '" << areaID
+                  << "': The hydro Maximum/Minimum generation data have been normalized to "
+                  << count << " timeseries";
             }
             else
                 logs.error() << "Impossible to find the area `" << areaID << "` to invalidate it";
-        }               
+        }
     }
 }
-
 
 bool DataSeriesHydro::forceReload(bool reload) const
 {
@@ -262,35 +258,8 @@ void DataSeriesHydro::reset()
 
 uint64 DataSeriesHydro::memoryUsage() const
 {
-    return sizeof(double) + ror.memoryUsage() + storage.memoryUsage() + mingen.memoryUsage() + maxgen.memoryUsage();
-}
-
-void DataSeriesHydro::AdjustMonth(const Study& study,
-                                  uint firstDayMonth[13],
-                                  uint daysPerMonthDecals[12])
-{
-    for (int oldMonth = 0; oldMonth < 12; oldMonth++)
-    {
-        int realMonth = (oldMonth + study.parameters.firstMonthInYear) % 12;
-        daysPerMonthDecals[oldMonth] = Constants::daysPerMonth[realMonth];
-        if (study.parameters.leapYear)
-        {
-            if (realMonth == 1) // February
-            {
-                daysPerMonthDecals[oldMonth]++;
-            }
-            if (oldMonth == 11) // Last month of the year
-            {
-                daysPerMonthDecals[oldMonth]--;
-            }
-        }
-    }
-
-    firstDayMonth[0] = 0;
-    for (int i = 1; i < 13; i++)
-    {
-        firstDayMonth[i] = daysPerMonthDecals[i - 1] + firstDayMonth[i - 1];
-    }
+    return sizeof(double) + ror.memoryUsage() + storage.memoryUsage() + mingen.memoryUsage()
+           + maxgen.memoryUsage();
 }
 
 } // namespace Data

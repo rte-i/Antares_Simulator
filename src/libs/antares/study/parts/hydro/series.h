@@ -103,7 +103,9 @@ public:
     /*!
     ** \brief Check TS number for Minimum Generation and logs error if necessary
     */
-    void checkMaxMinGenTsNumber(Study& study, const AreaName& areaID, Matrix<double, Yuni::sint32> &MinMax);
+    void checkMaxMinGenTsNumber(Study& study,
+                                const AreaName& areaID,
+                                Matrix<double, Yuni::sint32>& MinMax);
 
 public:
     /*!
@@ -145,10 +147,6 @@ public:
     ** indicate that the two values are not strictly equal)
     */
     uint count;
-
-    static void AdjustMonth(const Study& study,
-                            uint firstDayMonth[13],
-                            uint daysPerMonthDecals[12]);
 
     /*!
     ** \brief Monte-Carlo

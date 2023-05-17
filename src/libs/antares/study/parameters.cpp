@@ -193,6 +193,16 @@ Parameters::Parameters() : noOutput(false)
 
 Parameters::~Parameters() = default;
 
+bool Parameters::economy() const
+{
+    return mode == stdmEconomy;
+}
+
+bool Parameters::adequacy() const
+{
+    return mode == stdmAdequacy;
+}
+
 void Parameters::resetSeeds()
 {
     // Initialize all seeds
@@ -336,6 +346,11 @@ void Parameters::reset()
     resetSeeds();
 }
 
+bool Parameters::isTSGeneratedByPrepro(const TimeSeries ts) const
+{
+    return (timeSeriesToGenerate & ts);
+}
+
 static void ParametersSaveTimeSeries(IniFile::Section* s, const char* name, uint value)
 {
     CString<60, false> v;
@@ -384,8 +399,7 @@ static void ParametersSaveTimeSeries(IniFile::Section* s, const char* name, uint
 static bool SGDIntLoadFamily_General(Parameters& d,
                                      const String& key,
                                      const String& value,
-                                     const String& rawvalue,
-                                     uint)
+                                     const String& rawvalue)
 {
     if (key == "active-rules-scenario")
     {
@@ -517,8 +531,7 @@ static bool SGDIntLoadFamily_General(Parameters& d,
 static bool SGDIntLoadFamily_Input(Parameters& d,
                                    const String& key,
                                    const String& value,
-                                   const String&,
-                                   uint)
+                                   const String&)
 {
     if (key == "import")
         return ConvertCStrToListTimeSeries(value, d.timeSeriesToImport);
@@ -528,8 +541,7 @@ static bool SGDIntLoadFamily_Input(Parameters& d,
 static bool SGDIntLoadFamily_Output(Parameters& d,
                                     const String& key,
                                     const String& value,
-                                    const String&,
-                                    uint)
+                                    const String&)
 {
     if (key == "archives")
         return ConvertCStrToListTimeSeries(value, d.timeSeriesToArchive);
@@ -546,8 +558,7 @@ static bool SGDIntLoadFamily_Output(Parameters& d,
 static bool SGDIntLoadFamily_Optimization(Parameters& d,
                                           const String& key,
                                           const String& value,
-                                          const String&,
-                                          uint)
+                                          const String&)
 {
     if (key == "include-constraints")
         return value.to<bool>(d.include.constraints);
@@ -621,8 +632,7 @@ static bool SGDIntLoadFamily_Optimization(Parameters& d,
 static bool SGDIntLoadFamily_AdqPatch(Parameters& d,
                                       const String& key,
                                       const String& value,
-                                      const String&,
-                                      uint)
+                                      const String&)
 {
     return d.adqPatchParams.updateFromKeyValue(key, value);
 }
@@ -630,8 +640,7 @@ static bool SGDIntLoadFamily_AdqPatch(Parameters& d,
 static bool SGDIntLoadFamily_OtherPreferences(Parameters& d,
                                               const String& key,
                                               const String& value,
-                                              const String&,
-                                              uint)
+                                              const String&)
 {
     if (key == "hydro-heuristic-policy")
     {
@@ -735,8 +744,7 @@ static bool SGDIntLoadFamily_OtherPreferences(Parameters& d,
 static bool SGDIntLoadFamily_AdvancedParameters(Parameters& d,
                                                 const String& key,
                                                 const String& value,
-                                                const String&,
-                                                uint)
+                                                const String&)
 {
     if (key == "accuracy-on-correlation")
         return ConvertCStrToListTimeSeries(value, d.timeSeriesAccuracyOnCorrelation);
@@ -745,8 +753,7 @@ static bool SGDIntLoadFamily_AdvancedParameters(Parameters& d,
 static bool SGDIntLoadFamily_Playlist(Parameters& d,
                                       const String& key,
                                       const String& value,
-                                      const String&,
-                                      uint)
+                                      const String&)
 {
     if (key == "playlist_reset")
     {
@@ -837,8 +844,7 @@ static bool SGDIntLoadFamily_Playlist(Parameters& d,
 static bool SGDIntLoadFamily_VariablesSelection(Parameters& d,
                                                 const String& key,
                                                 const String& value,
-                                                const String&,
-                                                uint)
+                                                const String&)
 {
     if (key == "selected_vars_reset")
     {
@@ -848,7 +854,7 @@ static bool SGDIntLoadFamily_VariablesSelection(Parameters& d,
     }
     if (key == "select_var +" || key == "select_var -")
     {
-        // Check if the read output variable exists 
+        // Check if the read output variable exists
         if (not d.variablesPrintInfo.exists(value.to<std::string>()))
             return false;
 
@@ -861,8 +867,7 @@ static bool SGDIntLoadFamily_VariablesSelection(Parameters& d,
 static bool SGDIntLoadFamily_SeedsMersenneTwister(Parameters& d,
                                                   const String& key,
                                                   const String& value,
-                                                  const String&,
-                                                  uint)
+                                                  const String&)
 {
     if (key.startsWith("seed")) // seeds
     {
@@ -953,8 +958,7 @@ bool Parameters::loadFromINI(const IniFile& ini, uint version, const StudyLoadOp
       Parameters&,   // [out] Parameter object to load the data into
       const String&, // [in] Key, comes left to the '=' sign in the .ini file
       const String&, // [in] Lowercase value, comes right to the '=' sign in the .ini file
-      const String&, // [in] Raw value as writtent right to the '=' sign in the .ini file
-      uint);         // [in] Version of the study (such as 710)
+      const String&); // [in] Raw value as writtent right to the '=' sign in the .ini file
 
     static const std::map<String, Callback> sectionAssociatedToKeysProcess
       = {{"general", &SGDIntLoadFamily_General},
@@ -999,9 +1003,9 @@ bool Parameters::loadFromINI(const IniFile& ini, uint version, const StudyLoadOp
             // Deal with the current property
             // Do not forget the variable `key` and `value` are identical to
             // `p->key` and `p->value` except they are already in the lower case format
-            if (not handleAllKeysInSection(*this, p->key, value, p->value, version))
+            if (!handleAllKeysInSection(*this, p->key, value, p->value))
             {
-                if (not SGDIntLoadFamily_Legacy(*this, p->key, value, p->value, version))
+                if (!SGDIntLoadFamily_Legacy(*this, p->key, value, p->value, version))
                 {
                     // Continue on error
                     logs.warning() << ini.filename() << ": '" << p->key << "': Unknown property";
@@ -1150,6 +1154,12 @@ void Parameters::fixBadValues()
         nbTimeSeriesWind = 1;
     if (!nbTimeSeriesSolar)
         nbTimeSeriesSolar = 1;
+}
+
+Yuni::uint64 Parameters::memoryUsage() const
+{
+    return sizeof(Parameters) + yearsWeight.size() * sizeof(double)
+           + yearsFilter.size(); // vector of bools, 1 bit per coefficient
 }
 
 void Parameters::resetYearsWeigth()
@@ -1774,5 +1784,4 @@ bool Parameters::RenewableGeneration::isClusters() const
 {
     return rgModelling == Antares::Data::rgClusters;
 }
-
 } // namespace Antares::Data

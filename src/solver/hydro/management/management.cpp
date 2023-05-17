@@ -151,8 +151,6 @@ void HydroManagement::prepareInflowsScaling(uint numSpace)
 
 void HydroManagement::minGenerationScaling(uint numSpace)
 {
-    if (study.header.version < 860)
-        return;
     const auto& calendar = study.calendar;
 
     study.areas.each(
@@ -291,7 +289,7 @@ void HydroManagement::checkHourlyMinMaxGeneration(uint tsIndex, Data::Area& area
     auto& maxgenmatrix = area.hydro.series->maxgen;
     auto const& srcmingen = mingenmatrix[tsIndex < mingenmatrix.width ? tsIndex : 0];
     auto const& srcmaxgen = maxgenmatrix[tsIndex < maxgenmatrix.width ? tsIndex : 0];
-    
+
     if (!area.hydro.reservoirManagement)
     {
         for (uint month = 0; month != 12; ++month)
@@ -312,8 +310,8 @@ void HydroManagement::checkHourlyMinMaxGeneration(uint tsIndex, Data::Area& area
                           << "In area: " << area.name << " [hourly] maximum generation of "
                           << srcmaxgen[day * 24 + h] << " MW in timestep " << day * 24 + h + 1
                           << " of TS-" << tsIndex + 1
-                          << " is incompatible with the minimum generation of " << srcmingen[day * 24 + h]
-                          << " MW.";
+                          << " is incompatible with the minimum generation of "
+                          << srcmingen[day * 24 + h] << " MW.";
                     }
                 }
             }
@@ -323,9 +321,6 @@ void HydroManagement::checkHourlyMinMaxGeneration(uint tsIndex, Data::Area& area
 
 void HydroManagement::checkMinGeneration(uint numSpace)
 {
-    if (study.header.version < 860)
-        return;
-
     study.areas.each(
       [this, &numSpace](Data::Area& area)
       {
@@ -346,7 +341,7 @@ void HydroManagement::prepareNetDemand(uint numSpace)
     study.areas.each([&](Data::Area& area) {
         uint z = area.index;
 
-        auto& scratchpad = *(area.scratchpad[numSpace]);
+        auto& scratchpad = area.scratchpad[numSpace];
 
         auto& ptchro = *NumeroChroniquesTireesParPays[numSpace][z];
 
