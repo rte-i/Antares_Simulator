@@ -155,7 +155,6 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
             }
             checkMaxMinGenTsNumber(study, areaID, this->mingen);
             checkMaxMinGenTsNumber(study, areaID, this->maxgen);
-            
         }
 
         if (study.parameters.derated)
@@ -173,12 +172,13 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
     return ret;
 }
 
-
-void DataSeriesHydro::checkMaxMinGenTsNumber(Study& study, const AreaName& areaID, Matrix<double, Yuni::sint32> &MinMax)
+void DataSeriesHydro::checkMaxMinGenTsNumber(Study& study,
+                                             const AreaName& areaID,
+                                             Matrix<double, Yuni::sint32>& MinMax)
 {
     if (MinMax.width != storage.width)
     {
-        if (MinMax.width > 1)                                                                           
+        if (MinMax.width > 1)
         {
             logs.fatal() << "Hydro: `" << areaID
                          << "`: The matrices Maximum/Minimum Generation must "
@@ -188,27 +188,26 @@ void DataSeriesHydro::checkMaxMinGenTsNumber(Study& study, const AreaName& areaI
         else
         {
             MinMax.resizeWithoutDataLost(count, MinMax.height);
-            
+
             for (uint x = 1; x < count; ++x)
             {
                 MinMax.pasteToColumn(x, MinMax[0]);
-                
             }
-                
+
             Area* areaToInvalidate = study.areas.find(areaID);
             if (areaToInvalidate)
             {
                 areaToInvalidate->invalidateJIT = true;
-                logs.info() << "  '" << areaID
-                            << "': The hydro Maximum/Minimum generation data have been normalized to "
-                            << count << " timeseries";
+                logs.info()
+                  << "  '" << areaID
+                  << "': The hydro Maximum/Minimum generation data have been normalized to "
+                  << count << " timeseries";
             }
             else
                 logs.error() << "Impossible to find the area `" << areaID << "` to invalidate it";
-        }               
+        }
     }
 }
-
 
 bool DataSeriesHydro::forceReload(bool reload) const
 {
@@ -260,7 +259,8 @@ void DataSeriesHydro::reset()
 
 uint64 DataSeriesHydro::memoryUsage() const
 {
-    return sizeof(double) + ror.memoryUsage() + storage.memoryUsage() + mingen.memoryUsage() + maxgen.memoryUsage();
+    return sizeof(double) + ror.memoryUsage() + storage.memoryUsage() + mingen.memoryUsage()
+           + maxgen.memoryUsage();
 }
 
 } // namespace Data
