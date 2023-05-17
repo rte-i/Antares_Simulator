@@ -174,8 +174,7 @@ struct DebugData
                 double niveauFin = valgen.NiveauxReservoirsFinJours[day];
                 double apports = srcinflows[day] / reservoirCapacity;
                 double turbMax = maxP[day] * maxE[day] / reservoirCapacity; 
-                // For the debug purpose we can leave daily structure turbMax.
-                // Just calculate it using new hourly Pmax data and the appropriate TimeSeries number.
+                // keep daily energy credit values
                 double turbCible = dailyTargetGen[day] / reservoirCapacity;
                 double turbCibleUpdated = dailyTargetGen[day] / reservoirCapacity
                                           + previousMonthWaste[realmonth] / daysPerMonth;
@@ -277,7 +276,7 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
 
             if (debugData)
                 debugData->OPP[dYear] = maxP[dYear] * maxE[dYear];
-                // Input for debug data/method - Use hourly values to calculate it.
+                // Input for debug data/method - keep daily energy credits for calculation
         }
 
         dayYear += daysPerMonth;
@@ -388,7 +387,7 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
             {
                 problem.TurbineMax[dayMonth] = maxP[day] * maxE[day]; 
                 // In daily heuristic, TurbineMax is set as maxP[day] * maxE[day];, 
-                // Apply same principe as for mingen to caclulate it using hourly Pmax values.
+                // keep daily credits, or find min[daily energy credits, sum of max available hourly power].
                 problem.TurbineMin[dayMonth] = data.dailyMinGen[day];
                 problem.TurbineCible[dayMonth] = dailyTargetGen[day];
                 dayMonth++;

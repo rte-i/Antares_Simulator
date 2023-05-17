@@ -125,8 +125,7 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
 
         problem.CaracteristiquesHydrauliques[i]->PresenceDHydrauliqueModulable
           = area.scratchpad[numSpace]->hydroHasMod;
-          // use appropriate tsIndex for hydroHasMod that should be transferred to vector.
-          // and then calculate PresenceDHydrauliqueModulable per each area & year
+          // this should stay the same, since energy credits have only one TS
 
         problem.CaracteristiquesHydrauliques[i]->PresenceDePompageModulable
           = area.hydro.reservoirManagement && area.scratchpad[numSpace]->pumpHasMod
@@ -646,10 +645,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                      // j-> number of time stemps, k-> number of areas 
                      // scratchpad.optimalMaxPower is depricated. 
                      // Set directly new hourly Pmax as ContrainteDePmaxHydrauliqueHoraire 
-                     // (*modulation of course)!! - on the other hand should we keep this modulation
-                     // let's consult RTE with that also, but if we follow the minGen logic. We shoul leave out modulations.
-                     // what does modulation do -> it multiples the power with the coeff that depends on the reservoir level (0-100%)
-                     // the coeff is user defined in Hydro-LocalData-DailyPowerAndEnergyCredits-creditModulations(reservoir level)
+                     // (*modulation of course)!!
             }
 
             if (problem.CaracteristiquesHydrauliques[k]->PresenceDePompageModulable)
@@ -705,9 +701,9 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                                 * area.hydro.maxPower[area.hydro.genMaxE][day]
                                 * problem.CaracteristiquesHydrauliques[k]
                                     ->WeeklyGeneratingModulation;
-                                    // calculate MaxEnergieHydrauParIntervalleOptimise using hourly Pmax values, not daily values
-                                    // (*modulation of course)!! - on the other hand should we keep this modulation
-                                    // let's consult RTE with that also, but if we follow the minGen logic. We shoul leave out modulations. 
+                                    // calculate MaxEnergieHydrauParIntervalleOptimise using daily energy credits 
+                                    // or find min[daily energy credits, sum of max available hourly power].
+                                    // (*modulation of course)!!
                         }
                     }
 
@@ -757,7 +753,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
 
                             double DGC = area.hydro.maxPower[area.hydro.genMaxP][day]
                                          * area.hydro.maxPower[area.hydro.genMaxE][day];
-                                         // Calculate DGC using hourly Pmax values, not daily. 
+                                         // Calculate DGC using daily energy credits or find min[daily energy credits, sum of max available hourly power].. 
                                          // DGC = DailyGeneration Something??
 
                             DGU_tmp[j] = DNT[day] * LUB;

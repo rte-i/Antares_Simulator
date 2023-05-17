@@ -106,9 +106,8 @@ AreaScratchpad::AreaScratchpad(const StudyRuntimeInfos& rinfos, Area& area) : ts
     // If generating energy is nil over the whole year, hydroGenerationPermission is false, true
     // otherwise.
     hydroGenerationPermission = (value > 0.); 
-    // if sum of max yearly energy is > 0 then hydroGenerationPermission is true. 
-    // Calculate hydroGenerationPermission using new hourly Pmax data
-    // Since we can have TimeSeries, hydroGenerationPermission should be a vector now!
+    // if sum of max yearly energy is > 0 then hydroGenerationPermission is true.
+    // since we are keeping daily energy credit values this should stay the same
 
     // ---------------------
     // Hydro has inflows
@@ -136,7 +135,7 @@ AreaScratchpad::AreaScratchpad(const StudyRuntimeInfos& rinfos, Area& area) : ts
     // hydroHasMod definition
     // --------------------------
     hydroHasMod = hydroHasInflows || hydroGenerationPermission;
-    // Since hydroGenerationPermission should be a vector now -> hydroHasMod also becomes a vector!
+    // stays the same
 
 
     // ===============

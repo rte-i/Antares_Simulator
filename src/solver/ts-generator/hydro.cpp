@@ -51,7 +51,7 @@ namespace Solver
 {
 namespace TSGenerator
 {
-    // should we even generate rand ts for maxGen. it only created issues and broke tests for minGen!
+    // apply same solution as for mingen
 static void PreproHydroInitMatrices(Data::Study& study, uint tsCount)
 {
     study.areas.each([&](Data::Area& area) {
