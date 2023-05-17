@@ -46,7 +46,7 @@ DataSeriesHydro::DataSeriesHydro() : count(0)
 {
     // Pmin was introduced in v8.6
     // The previous behavior was Pmin=0
-    // For compatibility reasons with existing studies, mingen is set to one column of zeros
+    // For compatibility reasons with existing studies, mingen and maxgen is set to one column of zeros
     // by default
     mingen.reset(1, HOURS_PER_YEAR);
     maxgen.reset(1, HOURS_PER_YEAR);
