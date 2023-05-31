@@ -678,7 +678,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
             if (problem.CaracteristiquesHydrauliques[k]->PresenceDHydrauliqueModulable > 0)
             {
                 problem.CaracteristiquesHydrauliques[k]->ContrainteDePmaxHydrauliqueHoraire[j]
-                  = ContrainteDePmaxHydrauliqueHoraire // scratchpad.optimalMaxPower[dayInTheYear]
+                  = ContrainteDePmaxHydrauliqueHoraire
                     * problem.CaracteristiquesHydrauliques[k]->WeeklyGeneratingModulation;
             }
 
