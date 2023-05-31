@@ -136,8 +136,11 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
     // ref to the study calendar
     auto& calendar = state.study.calendar;
     // Pmax
-    auto& P = area.hydro.maxPower[Data::PartHydro::genMaxP];
+    // auto& P = area.hydro.maxPower[Data::PartHydro::genMaxP];
     // auto& P = problem.CaracteristiquesHydrauliques[index]->ContrainteDePmaxHydrauliqueHoraire;
+    uint tsIndex = (*NumeroChroniquesTireesParPays[numSpace][index]).Hydraulique;
+    auto& maxgenmatrix = area.hydro.series->maxgen;
+    auto const& P = maxgenmatrix[tsIndex < maxgenmatrix.width ? tsIndex : 0];
 
     do
     {
@@ -151,7 +154,7 @@ inline void PrepareMaxMRGFor(const State& state, double* opmrg, uint numSpace)
             if (niveau > OI[i])
             {
                 uint dayYear = calendar.hours[i + state.hourInTheYear].dayYear;
-                opmrg[i] = Math::Min(niveau, OI[i] + P[dayYear] - H[i]);
+                opmrg[i] = Math::Min(niveau, OI[i] + P[i + state.hourInTheYear] - H[i]);
                 SM += opmrg[i] - OI[i];
             }
             else

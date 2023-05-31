@@ -601,9 +601,14 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
         for (uint k = 0; k < nbPays; ++k)
         {
             auto& tsIndex = *NumeroChroniquesTireesParPays[numSpace][k];
+            uint tsIndexMaxgen = tsIndex.Hydraulique;
             auto& area = *(study.areas.byIndex[k]);
             auto& scratchpad = area.scratchpad[numSpace];
             auto& ror = area.hydro.series->ror;
+            auto& maxgenmatrix = area.hydro.series->maxgen;
+            auto const& srcmaxgen
+              = maxgenmatrix[tsIndexMaxgen < maxgenmatrix.width ? tsIndexMaxgen : 0];
+            auto const& ContrainteDePmaxHydrauliqueHoraire = srcmaxgen[PasDeTempsDebut + j];
 
             assert(&scratchpad);
             assert((uint)indx < scratchpad.ts.load.height);
@@ -673,7 +678,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
             if (problem.CaracteristiquesHydrauliques[k]->PresenceDHydrauliqueModulable > 0)
             {
                 problem.CaracteristiquesHydrauliques[k]->ContrainteDePmaxHydrauliqueHoraire[j]
-                  = scratchpad.optimalMaxPower[dayInTheYear]
+                  = ContrainteDePmaxHydrauliqueHoraire // scratchpad.optimalMaxPower[dayInTheYear]
                     * problem.CaracteristiquesHydrauliques[k]->WeeklyGeneratingModulation;
             }
 
