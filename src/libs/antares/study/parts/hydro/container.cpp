@@ -113,6 +113,7 @@ bool PartHydro::LoadFromFolder(Study& study, const AnyString& folder)
 {
     // all the load/save ... functions related to area.hydro.maxPower should be left for versions below 8.x
     // above 8.x-v deprecated
+    // actually above we use new ones without daily max gen and pump values. Only hours remain!
 
     auto& buffer = study.bufferLoadingTS;
     bool ret = true;

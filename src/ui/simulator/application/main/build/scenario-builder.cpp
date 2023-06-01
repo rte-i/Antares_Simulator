@@ -162,6 +162,7 @@ class loadScBuilderPageMaker final : public simpleScBuilderPageMaker
 };
 
 // Hydro ...
+// add separate scenario builder for Hydro - maxGen and maxPump 
 class hydroScBuilderPageMaker final : public simpleScBuilderPageMaker
 {
     using simpleScBuilderPageMaker::simpleScBuilderPageMaker;
