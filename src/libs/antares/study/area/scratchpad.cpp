@@ -155,11 +155,16 @@ AreaScratchpad::AreaScratchpad(const StudyRuntimeInfos& rinfos, Area& area) : ts
     // ... Pumping max power
     for (uint d = 0; d != DAYS_PER_YEAR; ++d)
         pumpingMaxPower[d] = maxPumpingP[d];
+        // pumpingMaxPower should be deprecated
 
     double valuePumping = 0.;
     // ... Computing 'pumpHasMod' parameter
     for (uint d = 0; d < DAYS_PER_YEAR; ++d)
         valuePumping += maxPumpingP[d] * maxPumpingE[d];
+    // since maxPumpingP is going to be a matrix, 
+    // calculate the sum by columns
+    //  and if at least one column has positive sum
+    // pumpHasMod -> true  
 
     // If pumping energy is nil over the whole year, pumpHasMod is false, true otherwise.
     pumpHasMod = (valuePumping > 0.);

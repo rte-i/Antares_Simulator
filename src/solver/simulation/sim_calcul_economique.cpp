@@ -131,6 +131,7 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
           = area.hydro.reservoirManagement && area.scratchpad[numSpace]->pumpHasMod
               && area.hydro.pumpingEfficiency > 0.
               && problem.CaracteristiquesHydrauliques[i]->PresenceDHydrauliqueModulable;
+              // pumpHasMod will stay as bool so no need to change anything here
 
         problem.CaracteristiquesHydrauliques[i]->PumpingRatio = area.hydro.pumpingEfficiency;
 
@@ -644,7 +645,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                     * problem.CaracteristiquesHydrauliques[k]->WeeklyGeneratingModulation;
                      // j-> number of time stemps, k-> number of areas 
                      // scratchpad.optimalMaxPower is depricated. 
-                     // Set directly new hourly Pmax as ContrainteDePmaxHydrauliqueHoraire (proper TS)
+                     // Set directly new hourly gen Pmax as ContrainteDePmaxHydrauliqueHoraire (proper TS)
                      // (*modulation of course)!!
             }
 
@@ -653,6 +654,9 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                 problem.CaracteristiquesHydrauliques[k]->ContrainteDePmaxPompageHoraire[j]
                   = scratchpad.pumpingMaxPower[dayInTheYear]
                     * problem.CaracteristiquesHydrauliques[k]->WeeklyPumpingModulation;
+                // scratchpad.pumpingMaxPower is depricated.
+                // Set directly new hourly pump Pmax as ContrainteDePmaxPompageHoraire (proper TS)
+                // (*modulation of course)!!
             }
 
             problem.ReserveJMoins1[k]->ReserveHoraireJMoins1[j]
@@ -702,7 +706,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                                 * problem.CaracteristiquesHydrauliques[k]
                                     ->WeeklyGeneratingModulation;
                                     // calculate MaxEnergieHydrauParIntervalleOptimise using 
-                                    // genMaxE * mean_per_day(Pmax[hourly])
+                                    // genMaxE * mean_per_day(Pmax_gen[hourly])
                                     // (*modulation of course)!!
                         }
                     }
@@ -754,7 +758,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                             double DGC = area.hydro.maxPower[area.hydro.genMaxP][day]
                                          * area.hydro.maxPower[area.hydro.genMaxE][day];
                                          // Calculate DGC using 
-                                         // genMaxE * mean_per_day(Pmax[hourly]) 
+                                         // genMaxE * mean_per_day(Pmax_gen[hourly]) 
                                          // DGC = DailyGeneration Something??
 
                             DGU_tmp[j] = DNT[day] * LUB;
@@ -867,6 +871,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                                     * area.hydro.maxPower[area.hydro.pumpMaxE][day]
                                     * problem.CaracteristiquesHydrauliques[k]
                                         ->WeeklyPumpingModulation;
+                                        // pumpMaxE * mean_per_day(Pmax_pump[hourly]) 
                             }
                         }
 
@@ -898,6 +903,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
 
                                 double DPC = area.hydro.maxPower[area.hydro.pumpMaxP][day]
                                              * area.hydro.maxPower[area.hydro.pumpMaxE][day];
+                                             // pumpMaxE * mean_per_day(Pmax_pump[hourly])
 
                                 WPU += DPC;
                             }
@@ -909,6 +915,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                                 uint day = study.calendar.hours[PasDeTempsDebut + j * 24].dayYear;
                                 double DPC = area.hydro.maxPower[area.hydro.pumpMaxP][day]
                                              * area.hydro.maxPower[area.hydro.pumpMaxE][day];
+                                             // pumpMaxE * mean_per_day(Pmax_pump[hourly])
                                 double rc = area.hydro.reservoirCapacity;
 
                                 if (not area.hydro.hardBoundsOnRuleCurves)

@@ -100,10 +100,11 @@ public:
 
     //! Optimal max power (OPP) - Hydro management
     double optimalMaxPower[DAYS_PER_YEAR];
-    // This should be deprecated and hourly Pmax values used directly!
+    // This should be deprecated and hourly Pmax gen values used directly!
 
     //!
     double pumpingMaxPower[DAYS_PER_YEAR];
+    // This should be deprecated and hourly Pmax pump values used directly!
 
     /*!
     ** \brief Dispatchable Generation Margin
