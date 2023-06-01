@@ -186,7 +186,7 @@ void HydroManagement::prepareMonthlyOptimalGenerations(double* random_reservoir_
 
                 problem.TurbineMax[month] = totalInflowsYear; 
                 // In the monthly heuristic, TurbineMax value is set to total yearly inflow value.
-                // Consult with RTE: Change TurbineMax to monthly sum of Pmax values or leave it as yearly sum of inflow values. 
+                // leave it as it is
                 problem.TurbineMin[month] = data.mingens[realmonth];
                 problem.TurbineCible[month] = data.MTG[realmonth];
                 problem.Apport[month] = data.inflows[realmonth];

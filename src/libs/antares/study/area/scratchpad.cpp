@@ -107,7 +107,13 @@ AreaScratchpad::AreaScratchpad(const StudyRuntimeInfos& rinfos, Area& area) : ts
     // otherwise.
     hydroGenerationPermission = (value > 0.); 
     // if sum of max yearly energy is > 0 then hydroGenerationPermission is true.
-    // since we are keeping daily energy credit values this should stay the same
+    // since maxGenP[d] is going to be removed and maxGenP[hour] added. 
+    // hydroGenerationPermission will be calculated with hourly values and is also TS dependent.
+    // so we can use existing function MatrixTestForAtLeastOnePositiveValue to calculate it
+    // input for this function would be [area.hydro.series->maxgen] x maxGenE[d] - this needs to be multiplied correctly
+    // then we need to check if at least at one mutual TS, area.hydro.series->storage and [area.hydro.series->maxgen] x maxGenE[d]
+    // both have values different from zero
+    // area.hydro.series->storage and area.hydro.series->maxgen will be using different scenario builder so be careful with that
 
     // ---------------------
     // Hydro has inflows
@@ -135,7 +141,6 @@ AreaScratchpad::AreaScratchpad(const StudyRuntimeInfos& rinfos, Area& area) : ts
     // hydroHasMod definition
     // --------------------------
     hydroHasMod = hydroHasInflows || hydroGenerationPermission;
-    // stays the same
 
 
     // ===============

@@ -125,7 +125,7 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
 
         problem.CaracteristiquesHydrauliques[i]->PresenceDHydrauliqueModulable
           = area.scratchpad[numSpace]->hydroHasMod;
-          // this should stay the same, since energy credits have only one TS
+          // hydroHasMod will stay as bool so no need to change anything here
 
         problem.CaracteristiquesHydrauliques[i]->PresenceDePompageModulable
           = area.hydro.reservoirManagement && area.scratchpad[numSpace]->pumpHasMod
@@ -644,7 +644,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                     * problem.CaracteristiquesHydrauliques[k]->WeeklyGeneratingModulation;
                      // j-> number of time stemps, k-> number of areas 
                      // scratchpad.optimalMaxPower is depricated. 
-                     // Set directly new hourly Pmax as ContrainteDePmaxHydrauliqueHoraire 
+                     // Set directly new hourly Pmax as ContrainteDePmaxHydrauliqueHoraire (proper TS)
                      // (*modulation of course)!!
             }
 
@@ -701,8 +701,8 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                                 * area.hydro.maxPower[area.hydro.genMaxE][day]
                                 * problem.CaracteristiquesHydrauliques[k]
                                     ->WeeklyGeneratingModulation;
-                                    // calculate MaxEnergieHydrauParIntervalleOptimise using daily energy credits 
-                                    // or find min[daily energy credits, sum of max available hourly power].
+                                    // calculate MaxEnergieHydrauParIntervalleOptimise using 
+                                    // genMaxE * mean_per_day(Pmax[hourly])
                                     // (*modulation of course)!!
                         }
                     }
@@ -753,7 +753,8 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
 
                             double DGC = area.hydro.maxPower[area.hydro.genMaxP][day]
                                          * area.hydro.maxPower[area.hydro.genMaxE][day];
-                                         // Calculate DGC using daily energy credits or find min[daily energy credits, sum of max available hourly power].. 
+                                         // Calculate DGC using 
+                                         // genMaxE * mean_per_day(Pmax[hourly]) 
                                          // DGC = DailyGeneration Something??
 
                             DGU_tmp[j] = DNT[day] * LUB;

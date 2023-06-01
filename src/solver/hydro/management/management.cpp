@@ -315,6 +315,7 @@ void HydroManagement::checkHourlyMinGeneration(uint tsIndex, Data::Area& area) c
                           << " is incompatible with the maximum generation of " << maxP[day]
                           << " MW.";
                           // Adjust the pre-check to compare hourly Pmax and Pmin.
+                          // be careful they are using different TS from scenario builder
                     }
                 }
             }

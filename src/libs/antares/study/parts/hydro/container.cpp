@@ -247,7 +247,7 @@ bool PartHydro::LoadFromFolder(Study& study, const AnyString& folder)
         {
             // Is area hydro modulable ?
             // calculate hydroModulable using new hourly Pmax.
-            // Since we can have TimeSeries, hydroModulable should be a vector now!
+            // as if at least sum of one column is positive then it is true
             auto& max = area.hydro.maxPower[area.hydro.genMaxP];
 
             for (uint y = 0; y != area.hydro.maxPower.height; ++y)

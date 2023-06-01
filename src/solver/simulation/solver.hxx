@@ -757,14 +757,7 @@ void ISimulation<Impl>::estimateMemoryForOptimizationPb(Antares::Data::StudyMemo
         NombreDeVariables += area.thermal.list.size();
 
         if (area.hydro.hydroModulable)
-        // area.hydro.hydroModulable is not fixed for all the TimeSeries anymore.
-        // For some TS it can be true and for some false.
-        // Not sure how to proceed here. Should we leave number of variables the same to be on the safe side.
-        // if it is only used for RAM estimation
-        // or this will break the simulation.
-        // if NombreDeVariables is used later for variable count
-        // consult with RTE! 
-        // is the proper tsIndex number even available at this point in solver!?   
+        // area.hydro.hydroModulable will be kept as one bool.
         {
             NombreDeVariables++; /* La variable de production hydraulique */
             NombreDeVariables++; // pumping
@@ -815,14 +808,7 @@ void ISimulation<Impl>::estimateMemoryForOptimizationPb(Antares::Data::StudyMemo
     {
         auto& area = *(study.areas.byIndex[i]);
         if (area.hydro.hydroModulable)
-        // area.hydro.hydroModulable is not fixed for all the TimeSeries anymore.
-        // For some TS it can be true and for some false.
-        // Not sure how to proceed here. Should we leave number of variables the same to be on the safe side.
-        // if it is only used for RAM estimation
-        // or this will break the simulation.
-        // if NombreDeVariables is used later for variable count
-        // consult with RTE! 
-        // is the proper tsIndex number even available at this point in solver!?
+        // area.hydro.hydroModulable will be kept as one bool.
         {
             NombreDeContraintes++; /* Contraintes de turbine min */
             NombreDeContraintes++; /* Contraintes de turbine max */
