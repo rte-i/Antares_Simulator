@@ -361,6 +361,7 @@ bool Rules::apply()
         returned_status = load.apply(study_) && returned_status;
         returned_status = solar.apply(study_) && returned_status;
         returned_status = hydro.apply(study_) && returned_status;
+        returned_status = hydroEnergyCredits.apply(study_) && returned_status;
         returned_status = wind.apply(study_) && returned_status;
         for (uint i = 0; i != pAreaCount; ++i)
         {
