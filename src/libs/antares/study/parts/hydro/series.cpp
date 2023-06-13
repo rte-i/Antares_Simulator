@@ -92,7 +92,6 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
 
     // The number of time-series
     count = storage.width;
-    countenergycredits = maxgen.width;
 
     if (ror.width > count)
         count = ror.width;
@@ -106,6 +105,11 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
         buffer.clear() << folder << SEP << areaID << SEP << "maxpump." << study.inputExtension;
         ret = maxpump.loadFromCSVFile(buffer, 1, HOURS_PER_YEAR, &study.dataBuffer) && ret;
     }
+
+    countenergycredits = maxgen.width;
+
+    if(maxpump.width > countenergycredits)
+        countenergycredits = maxpump.width;
 
     if (study.usedByTheSolver)
     {

@@ -314,7 +314,10 @@ void HydroManagement::checkHourlyMinMaxGeneration(uint tsIndex,
             {
                 for (uint h = 0; h < 24; ++h)
                 {
-                    if (srcmingen[day * 24 + h] > srcmaxgen[day * 24 * h])
+                    auto const& max = srcmaxgen[day * 24 + h];
+                    auto const& min = srcmingen[day * 24 + h];
+
+                    if (max < min)
                     {
                         logs.error()
                           << "In area: " << area.name << " [hourly] minimum generation of "
