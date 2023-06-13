@@ -300,7 +300,6 @@ protected:
     }
 };
 
-
 class TimeSeriesHydroMinGen final : public ATimeSeries
 {
 public:
@@ -329,6 +328,37 @@ private:
     void internalAreaChanged(Antares::Data::Area* area) override
     {
         matrix((area && Data::Study::Current::Valid()) ? &(area->hydro.series->mingen) : NULL);
+        Renderer::ARendererArea::internalAreaChanged(area);
+    }
+};
+class TimeSeriesHydroMaxGen final : public ATimeSeries
+{
+public:
+    using AncestorType = Renderer::Matrix<double, Yuni::sint32>;
+
+    TimeSeriesHydroMaxGen(wxWindow* control, Toolbox::InputSelector::Area* notifier) :
+     ATimeSeries(control, notifier)
+    {
+    }
+    ~TimeSeriesHydroMaxGen() override
+    {
+        destroyBoundEvents();
+    }
+
+    Date::Precision precision() override
+    {
+        return Date::hourly;
+    }
+
+    uint maxHeightResize() const override
+    {
+        return HOURS_PER_YEAR;
+    }
+
+private:
+    void internalAreaChanged(Antares::Data::Area* area) override
+    {
+        matrix((area && Data::Study::Current::Valid()) ? &(area->hydro.series->maxgen) : NULL);
         Renderer::ARendererArea::internalAreaChanged(area);
     }
 };
