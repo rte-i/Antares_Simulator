@@ -109,6 +109,8 @@ public:
     solarTSNumberData solar;
     //! Hydro
     hydroTSNumberData hydro;
+    //! Hydro
+    hydroEnergyCreditsTSNumberData hydroEnergyCredits;
     //! Wind
     windTSNumberData wind;
 
@@ -133,6 +135,7 @@ private:
     bool readSolar(const AreaName::Vector& instrs, String value, bool updaterMode);
     bool readHydroLevels(const AreaName::Vector& instrs, String value, bool updaterMode);
     bool readLink(const AreaName::Vector& instrs, String value, bool updaterMode);
+    bool readHydroEnergyCredits(const AreaName::Vector& splitKey, String value, bool updaterMode);
 
     Data::Area* getArea(const AreaName& areaname, bool updaterMode);
     Data::AreaLink* getLink(const AreaName& fromAreaName,
