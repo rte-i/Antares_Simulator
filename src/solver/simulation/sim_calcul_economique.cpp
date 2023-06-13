@@ -116,8 +116,7 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
     problem.OptimisationAvecCoutsDeDemarrage
       = (study.parameters.unitCommitment.ucMode == Antares::Data::UnitCommitmentMode::ucMILP);
 
-    problem.OptimisationAuPasHebdomadaire
-      = (parameters.simplexOptimizationRange == Data::sorWeek);
+    problem.OptimisationAuPasHebdomadaire = (parameters.simplexOptimizationRange == Data::sorWeek);
 
     switch (parameters.power.fluctuations)
     {
@@ -160,8 +159,8 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
 
         problem.CaracteristiquesHydrauliques[i]->PresenceDePompageModulable
           = area.hydro.reservoirManagement && area.scratchpad[numSpace].pumpHasMod
-              && area.hydro.pumpingEfficiency > 0.
-              && problem.CaracteristiquesHydrauliques[i]->PresenceDHydrauliqueModulable;
+            && area.hydro.pumpingEfficiency > 0.
+            && problem.CaracteristiquesHydrauliques[i]->PresenceDHydrauliqueModulable;
 
         problem.CaracteristiquesHydrauliques[i]->PumpingRatio = area.hydro.pumpingEfficiency;
 
@@ -170,13 +169,12 @@ void SIM_InitialisationProblemeHebdo(Data::Study& study,
 
         problem.CaracteristiquesHydrauliques[i]->TurbinageEntreBornes
           = area.hydro.reservoirManagement
-              && (!area.hydro.useHeuristicTarget || area.hydro.useLeeway);
+            && (!area.hydro.useHeuristicTarget || area.hydro.useLeeway);
 
         problem.CaracteristiquesHydrauliques[i]->SuiviNiveauHoraire
-          = area.hydro.reservoirManagement
-              && (problem.OptimisationAuPasHebdomadaire == true)
-              && (!area.hydro.useHeuristicTarget
-                  || problem.CaracteristiquesHydrauliques[i]->PresenceDePompageModulable);
+          = area.hydro.reservoirManagement && (problem.OptimisationAuPasHebdomadaire == true)
+            && (!area.hydro.useHeuristicTarget
+                || problem.CaracteristiquesHydrauliques[i]->PresenceDePompageModulable);
 
         problem.CaracteristiquesHydrauliques[i]->DirectLevelAccess = false;
         problem.CaracteristiquesHydrauliques[i]->AccurateWaterValue = false;
@@ -601,9 +599,21 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
         for (uint k = 0; k < nbPays; ++k)
         {
             auto& tsIndex = *NumeroChroniquesTireesParPays[numSpace][k];
+            uint tsIndexEnergyCredits = tsIndex.HydrauliqueEnergyCredits;
             auto& area = *(study.areas.byIndex[k]);
             auto& scratchpad = area.scratchpad[numSpace];
             auto& ror = area.hydro.series->ror;
+
+            auto& maxgenmatrix = area.hydro.series->maxgen;
+            auto const& srcmaxgen
+              = maxgenmatrix[tsIndexEnergyCredits < maxgenmatrix.width ? tsIndexEnergyCredits : 0];
+            auto const& ContrainteDePmaxHydrauliqueHoraire = srcmaxgen[PasDeTempsDebut + j];
+            
+            auto& maxpumpmatrix = area.hydro.series->maxpump;
+            auto const& srcmaxpump
+              = maxpumpmatrix[tsIndexEnergyCredits < maxpumpmatrix.width ? tsIndexEnergyCredits
+                                                                         : 0];
+            auto const& ContrainteDePmaxPompageHoraire = srcmaxpump[PasDeTempsDebut + j];
 
             assert(&scratchpad);
             assert((uint)indx < scratchpad.ts.load.height);
@@ -632,11 +642,14 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                 mustRunGen = scratchpad.miscGenSum[indx] + ror[tsFatalIndex][indx]
                              + scratchpad.mustrunSum[indx];
 
-                area.renewable.list.each([&](const RenewableCluster& cluster) {
-                    assert(cluster.series->timeSeries.jit == NULL && "No JIT data from the solver");
-                    mustRunGen += cluster.valueAtTimeStep(
-                      tsIndex.RenouvelableParPalier[cluster.areaWideIndex], (uint)indx);
-                });
+                area.renewable.list.each(
+                  [&](const RenewableCluster& cluster)
+                  {
+                      assert(cluster.series->timeSeries.jit == NULL
+                             && "No JIT data from the solver");
+                      mustRunGen += cluster.valueAtTimeStep(
+                        tsIndex.RenouvelableParPalier[cluster.areaWideIndex], (uint)indx);
+                  });
             }
 
             assert(
@@ -647,40 +660,43 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
               = +scratchpad.ts.load[tsIndex.Consommation][indx]
                 - problem.AllMustRunGeneration[j]->AllMustRunGenerationOfArea[k];
 
-            area.thermal.list.each([&](const Data::ThermalCluster& cluster) {
-                assert((uint)tsIndex.ThermiqueParPalier[cluster.areaWideIndex]
-                       < cluster.series->timeSeries.width);
-                assert((uint)indx < cluster.series->timeSeries.height);
-                assert(cluster.series->timeSeries.jit == NULL && "No JIT data from the solver");
+            area.thermal.list.each(
+              [&](const Data::ThermalCluster& cluster)
+              {
+                  assert((uint)tsIndex.ThermiqueParPalier[cluster.areaWideIndex]
+                         < cluster.series->timeSeries.width);
+                  assert((uint)indx < cluster.series->timeSeries.height);
+                  assert(cluster.series->timeSeries.jit == NULL && "No JIT data from the solver");
 
-                auto& Pt
-                  = *problem.PaliersThermiquesDuPays[k]->PuissanceDisponibleEtCout[cluster.index];
-                auto& PtValGen = *ValeursGenereesParPays[numSpace][k];
+                  auto& Pt
+                    = *problem.PaliersThermiquesDuPays[k]->PuissanceDisponibleEtCout[cluster.index];
+                  auto& PtValGen = *ValeursGenereesParPays[numSpace][k];
 
-                Pt.PuissanceDisponibleDuPalierThermique[j]
-                  = cluster.series->timeSeries[tsIndex.ThermiqueParPalier[cluster.areaWideIndex]][indx];
+                  Pt.PuissanceDisponibleDuPalierThermique[j]
+                    = cluster.series
+                        ->timeSeries[tsIndex.ThermiqueParPalier[cluster.areaWideIndex]][indx];
 
-                Pt.CoutHoraireDeProductionDuPalierThermique[j]
-                  = cluster.marketBidCost * cluster.modulation[thermalModulationMarketBid][indx]
-                    + PtValGen.AleaCoutDeProductionParPalier[cluster.areaWideIndex];
+                  Pt.CoutHoraireDeProductionDuPalierThermique[j]
+                    = cluster.marketBidCost * cluster.modulation[thermalModulationMarketBid][indx]
+                      + PtValGen.AleaCoutDeProductionParPalier[cluster.areaWideIndex];
 
-                Pt.PuissanceMinDuPalierThermique[j]
-                  = (Pt.PuissanceDisponibleDuPalierThermique[j] < cluster.PthetaInf[indx])
-                      ? Pt.PuissanceDisponibleDuPalierThermique[j]
-                      : cluster.PthetaInf[indx];
-            });
+                  Pt.PuissanceMinDuPalierThermique[j]
+                    = (Pt.PuissanceDisponibleDuPalierThermique[j] < cluster.PthetaInf[indx])
+                        ? Pt.PuissanceDisponibleDuPalierThermique[j]
+                        : cluster.PthetaInf[indx];
+              });
 
             if (problem.CaracteristiquesHydrauliques[k]->PresenceDHydrauliqueModulable > 0)
             {
                 problem.CaracteristiquesHydrauliques[k]->ContrainteDePmaxHydrauliqueHoraire[j]
-                  = scratchpad.optimalMaxPower[dayInTheYear]
+                  = ContrainteDePmaxHydrauliqueHoraire
                     * problem.CaracteristiquesHydrauliques[k]->WeeklyGeneratingModulation;
             }
 
             if (problem.CaracteristiquesHydrauliques[k]->PresenceDePompageModulable)
             {
                 problem.CaracteristiquesHydrauliques[k]->ContrainteDePmaxPompageHoraire[j]
-                  = scratchpad.pumpingMaxPower[dayInTheYear]
+                  = ContrainteDePmaxPompageHoraire
                     * problem.CaracteristiquesHydrauliques[k]->WeeklyPumpingModulation;
             }
 
@@ -699,8 +715,8 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                 auto& inflowsmatrix = area.hydro.series->storage;
                 auto const& srcinflows = inflowsmatrix[tsIndex < inflowsmatrix.width ? tsIndex : 0];
                 {
-                auto& mingenmatrix = area.hydro.series->mingen;
-                auto const& srcmingen
+                    auto& mingenmatrix = area.hydro.series->mingen;
+                    auto const& srcmingen
                       = mingenmatrix[tsIndex < mingenmatrix.width ? tsIndex : 0];
                     for (uint j = 0; j < problem.NombreDePasDeTemps; ++j)
                     {

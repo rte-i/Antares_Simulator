@@ -152,6 +152,7 @@ public:
     ** indicate that the two values are not strictly equal)
     */
     uint count;
+    uint countenergycredits;
 
     /*!
     ** \brief Monte-Carlo
