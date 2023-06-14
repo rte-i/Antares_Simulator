@@ -297,9 +297,6 @@ void HydroManagement::checkHourlyMinMaxGeneration(uint tsIndex,
     auto const& srcmaxgen
       = maxgenmatrix[tsIndexEnergyCredits < maxgenmatrix.width ? tsIndexEnergyCredits : 0];
 
-    auto const& maxPower = area.hydro.maxPower;
-    auto const& maxP = maxPower[Data::PartHydro::genMaxP];
-
     if (!area.hydro.reservoirManagement)
     {
         for (uint month = 0; month != 12; ++month)
