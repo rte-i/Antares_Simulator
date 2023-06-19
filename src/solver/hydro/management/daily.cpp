@@ -232,9 +232,10 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
 
     uint dayYear = 0;
 
-    auto const& maxPower = area.hydro.maxPower;
-
-    auto const& maxP = maxPower[Data::PartHydro::genMaxP];
+    uint tsIndexEnergyCredits
+      = (*NumeroChroniquesTireesParPays[numSpace][z]).HydrauliqueEnergyCredits;
+    auto const& maxPower = area.hydro.series->maxgen;
+    auto const& maxP = maxPower[tsIndexEnergyCredits < maxPower.width ? tsIndexEnergyCredits : 0];
     auto const& maxE = maxPower[Data::PartHydro::genMaxE];
 
     auto const& valgen = *ValeursGenereesParPays[numSpace][z];
@@ -264,12 +265,14 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
         for (uint day = 0; day != daysPerMonth; ++day)
         {
             auto dYear = day + dayYear;
+            double meanPower = 0.;
             assert(day < 32);
             assert(dYear < 366);
-            scratchpad.optimalMaxPower[dYear] = maxP[dYear];
+
+            meanPower = CalculateDailyMeanPower(dYear, maxP);
 
             if (debugData)
-                debugData->OPP[dYear] = maxP[dYear] * maxE[dYear];
+                debugData->OPP[dYear] = meanPower * maxE[dYear];
         }
 
         dayYear += daysPerMonth;
@@ -378,7 +381,9 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
             uint dayMonth = 0;
             for (uint day = firstDay; day != endDay; ++day)
             {
-                problem.TurbineMax[dayMonth] = maxP[day] * maxE[day];
+                double meanPower = 0;
+                meanPower = CalculateDailyMeanPower(day, maxP);
+                problem.TurbineMax[dayMonth] = meanPower * maxE[day];
                 problem.TurbineMin[dayMonth] = data.dailyMinGen[day];
                 problem.TurbineCible[dayMonth] = dailyTargetGen[day];
                 dayMonth++;
@@ -457,7 +462,9 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
             uint dayMonth = 0;
             for (uint day = firstDay; day != endDay; ++day)
             {
-                problem.TurbineMax[dayMonth] = maxP[day] * maxE[day] / reservoirCapacity;       
+                double meanPower = 0;
+                meanPower = CalculateDailyMeanPower(day, maxP);
+                problem.TurbineMax[dayMonth] = meanPower * maxE[day] / reservoirCapacity;
                 problem.TurbineMin[dayMonth] = data.dailyMinGen[day] / reservoirCapacity;
 
                 problem.TurbineCible[dayMonth]
@@ -542,6 +549,18 @@ void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::State& st
 {
     study.areas.each(
       [&](Data::Area& area) { prepareDailyOptimalGenerations(state, area, y, numSpace); });
+}
+
+double CalculateDailyMeanPower(uint dYear, const double* maxPower)
+{
+    double meanPower = 0.;
+
+    for (uint h = 0; h < 24; h++)
+    {
+        meanPower += maxPower[dYear * 24 + h];
+    }
+
+    return meanPower /= 24.;
 }
 
 } // namespace Antares
