@@ -111,6 +111,13 @@ inline bool CheckValidity<Data::AreaLink>(uint value,
     return value < data.directCapacities.width;
 }
 
+template<class D>
+static inline bool CheckValidityHydroEnergyCredits(uint value, const D& data, uint tsGenMax)
+{
+    // When the TS-Generators are not used
+    return (!tsGenMax) ? (value < data.countenergycredits) : (value < tsGenMax);
+}
+
 template<class StringT, class D>
 bool ApplyToMatrix(uint& errors,
                    StringT& logprefix,
@@ -179,7 +186,7 @@ bool ApplyToMatrixEnergyCredits(uint& errors,
             uint tsNum = years[y] - 1;
 
             // When the TS-Generators are not used
-            if (!CheckValidity(tsNum, data, tsGenMax))
+            if (!CheckValidityHydroEnergyCredits(tsNum, data, tsGenMax))
             {
                 if (errors <= maxErrors)
                 {

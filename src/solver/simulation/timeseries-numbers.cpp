@@ -88,6 +88,7 @@ static bool GenerateDeratedMode(Study& study)
         area.solar.series->timeseriesNumbers.zero();
         area.wind.series->timeseriesNumbers.zero();
         area.hydro.series->timeseriesNumbers.zero();
+        area.hydro.series->timeseriesNumbersEnergyCredits.zero();
 
         for (uint i = 0; i != area.thermal.clusterCount(); ++i)
         {
@@ -149,6 +150,23 @@ public:
     uint getGeneratedTimeSeriesNumber()
     {
         return study_.parameters.nbTimeSeriesHydro;
+    }
+};
+
+class hydroEneregyCreditsAreaNumberOfTSretriever : public areaNumberOfTSretriever
+{
+public:
+    hydroEneregyCreditsAreaNumberOfTSretriever(Study& study) : areaNumberOfTSretriever(study)
+    {
+    }
+    std::vector<uint> getAreaTimeSeriesNumber(const Area& area)
+    {
+        std::vector<uint> to_return = {area.hydro.series->countenergycredits};
+        return to_return;
+    }
+    uint getGeneratedTimeSeriesNumber()
+    {
+        return study_.parameters.nbTimeSeriesHydroEnergyCredits;
     }
 };
 
@@ -632,6 +650,19 @@ void drawAndStoreTSnumbersForNOTintraModal(const array<bool, timeSeriesCount>& i
             uint nbTimeSeries
               = isTSgenerated[indexTS] ? nbTimeseriesByMode[indexTS] : area.hydro.series->ror.width;
             area.hydro.series->timeseriesNumbers[0][year]
+              = (uint32)(floor(study.runtime->random[seedTimeseriesNumbers].next() * nbTimeSeries));
+        }
+
+        // -------------
+        // Hydro Energy Credits ...
+        // -------------
+        indexTS = ts_to_tsIndex.at(timeSeriesHydro);
+
+        if (!isTSintramodal[indexTS])
+        {
+            uint nbTimeSeries
+              = isTSgenerated[indexTS] ? nbTimeseriesByMode[indexTS] : area.hydro.series->maxgen.width;
+            area.hydro.series->timeseriesNumbersEnergyCredits[0][year]
               = (uint32)(floor(study.runtime->random[seedTimeseriesNumbers].next() * nbTimeSeries));
         }
 

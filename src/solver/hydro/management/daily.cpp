@@ -560,7 +560,7 @@ double CalculateDailyMeanPower(uint dYear, const double* maxPower)
         meanPower += maxPower[dYear * 24 + h];
     }
 
-    return meanPower /= 24.;
+    return meanPower / 24.;
 }
 
 } // namespace Antares
