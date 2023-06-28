@@ -28,11 +28,7 @@
 #include "TSnumberData.h"
 #include "scBuilderUtils.h"
 
-namespace Antares
-{
-namespace Data
-{
-namespace ScenarioBuilder
+namespace Antares::Data::ScenarioBuilder
 {
 enum
 {
@@ -108,6 +104,9 @@ inline bool CheckValidity<Data::AreaLink>(uint value,
                                           const Data::AreaLink& data,
                                           uint /* tsGenMax */)
 {
+    //Value = index of time series
+    //Direct Capacities = all time series
+    //directCapacities.width = Number of time series
     return value < data.directCapacities.width;
 }
 
@@ -116,6 +115,14 @@ static inline bool CheckValidityHydroEnergyCredits(uint value, const D& data, ui
 {
     // When the TS-Generators are not used
     return (!tsGenMax) ? (value < data.countenergycredits) : (value < tsGenMax);
+}
+
+template<>
+inline bool CheckValidity<Data::BindingConstraintTimeSeriesNumbers>(uint, const Data::BindingConstraintTimeSeriesNumbers&, uint)
+{
+    //TS-Generator never used
+    //Should check for time-series width, but we are missing information at this point
+    return true;
 }
 
 template<class StringT, class D>
@@ -703,6 +710,17 @@ uint ntcTSNumberData::get_tsGenCount(const Study& /* study */) const
     return 0;
 }
 
-} // namespace ScenarioBuilder
-} // namespace Data
+// ================================
+// Binding Constraints ...
+// ================================
+bool BindingConstraintsTSNumberData::apply(Study& study)
+{
+    uint errors = 0;
+    CString<512, false> logprefix;
+    for (const auto& [group_name, ts_numbers]: rules_) {
+        ApplyToMatrix(errors, logprefix, study.bindingConstraints.groupToTimeSeriesNumbers[group_name], ts_numbers[0],
+                      get_tsGenCount(study));
+    }
+    return true;
+}
 } // namespace Antares
