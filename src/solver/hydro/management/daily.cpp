@@ -43,6 +43,7 @@
 #include <limits>
 #include <variable/state.h>
 #include <array>
+#include <numeric>
 
 using namespace Yuni;
 
@@ -551,14 +552,11 @@ void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::State& st
       [&](Data::Area& area) { prepareDailyOptimalGenerations(state, area, y, numSpace); });
 }
 
-double CalculateDailyMeanPower(uint dYear, const double* maxPower)
+double CalculateDailyMeanPower(uint dYear, const Matrix<double>::ColumnType&  maxPower)
 {
     double meanPower = 0.;
 
-    for (uint h = 0; h < 24; h++)
-    {
-        meanPower += maxPower[dYear * 24 + h];
-    }
+    meanPower = std::accumulate(maxPower + dYear * 24, maxPower + dYear * 24 + 24, 0);
 
     return meanPower / 24.;
 }
