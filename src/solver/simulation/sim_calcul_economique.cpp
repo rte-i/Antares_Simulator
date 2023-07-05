@@ -680,16 +680,16 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
 
             if (problem.CaracteristiquesHydrauliques[k].PresenceDHydrauliqueModulable > 0)
             {
-                problem.CaracteristiquesHydrauliques[k]->ContrainteDePmaxHydrauliqueHoraire[j]
+                problem.CaracteristiquesHydrauliques[k].ContrainteDePmaxHydrauliqueHoraire[j]
                   = ContrainteDePmaxHydrauliqueHoraire
-                    * problem.CaracteristiquesHydrauliques[k]->WeeklyGeneratingModulation;
+                    * problem.CaracteristiquesHydrauliques[k].WeeklyGeneratingModulation;
             }
 
             if (problem.CaracteristiquesHydrauliques[k].PresenceDePompageModulable)
             {
-                problem.CaracteristiquesHydrauliques[k]->ContrainteDePmaxPompageHoraire[j]
+                problem.CaracteristiquesHydrauliques[k].ContrainteDePmaxPompageHoraire[j]
                   = ContrainteDePmaxPompageHoraire
-                    * problem.CaracteristiquesHydrauliques[k]->WeeklyPumpingModulation;
+                    * problem.CaracteristiquesHydrauliques[k].WeeklyPumpingModulation;
             }
 
             problem.ReserveJMoins1[k].ReserveHoraireJMoins1[j]
@@ -739,7 +739,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                               .MinEnergieHydrauParIntervalleOptimise[j]
                               = 0.;
                             problem.CaracteristiquesHydrauliques[k]
-                              ->MaxEnergieHydrauParIntervalleOptimise[j]
+                              .MaxEnergieHydrauParIntervalleOptimise[j]
                               = meanPower * area.hydro.maxPower[area.hydro.genMaxE][day]
                                 * problem.CaracteristiquesHydrauliques[k]
                                     .WeeklyGeneratingModulation;
@@ -899,7 +899,7 @@ void SIM_RenseignementProblemeHebdo(PROBLEME_HEBDO& problem,
                                 auto meanPump = CalculateDailyMeanPower(day, srcmaxpump);
 
                                 problem.CaracteristiquesHydrauliques[k]
-                                  ->MaxEnergiePompageParIntervalleOptimise[j]
+                                  .MaxEnergiePompageParIntervalleOptimise[j]
                                   = meanPump * area.hydro.maxPower[area.hydro.pumpMaxE][day]
                                     * problem.CaracteristiquesHydrauliques[k]
                                         .WeeklyPumpingModulation;
