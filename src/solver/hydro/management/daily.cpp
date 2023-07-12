@@ -174,7 +174,7 @@ struct DebugData
                 double niveauDeb = valgen.NiveauxReservoirsDebutJours[day];
                 double niveauFin = valgen.NiveauxReservoirsFinJours[day];
                 double apports = srcinflows[day] / reservoirCapacity;
-                double turbMax = maxP[day] * maxE[day] / reservoirCapacity;
+                double turbMax = CalculateDailyMeanPower(day, maxP) * maxE[day] / reservoirCapacity;
                 double turbCible = dailyTargetGen[day] / reservoirCapacity;
                 double turbCibleUpdated = dailyTargetGen[day] / reservoirCapacity
                                           + previousMonthWaste[realmonth] / daysPerMonth;
@@ -235,9 +235,12 @@ inline void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::St
 
     uint tsIndexEnergyCredits
       = (*NumeroChroniquesTireesParPays[numSpace][z]).HydrauliqueEnergyCredits;
+
     auto const& maxPower = area.hydro.series->maxgen;
+    auto const& maxPowerHours = area.hydro.maxPower;
+
     auto const& maxP = maxPower[tsIndexEnergyCredits < maxPower.width ? tsIndexEnergyCredits : 0];
-    auto const& maxE = maxPower[Data::PartHydro::genMaxE];
+    auto const& maxE = maxPowerHours[Data::PartHydro::genMaxE];
 
     auto const& valgen = *ValeursGenereesParPays[numSpace][z];
 
@@ -552,13 +555,9 @@ void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::State& st
       [&](Data::Area& area) { prepareDailyOptimalGenerations(state, area, y, numSpace); });
 }
 
-double CalculateDailyMeanPower(uint dYear, const Matrix<double>::ColumnType&  maxPower)
+inline double CalculateDailyMeanPower(uint dYear, const Matrix<double>::ColumnType& maxPower)
 {
-    double meanPower = 0.;
-
-    meanPower = std::accumulate(maxPower + dYear * 24, maxPower + dYear * 24 + 24, 0);
-
-    return meanPower / 24.;
+    return std::accumulate(maxPower + dYear * 24, maxPower + dYear * 24 + 24, 0) / 24.;
 }
 
 } // namespace Antares
