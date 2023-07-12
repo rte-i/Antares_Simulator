@@ -69,7 +69,7 @@ static bool ConvertCStrToListTimeSeries(const String& value, uint& v)
         else if (word == "hydro")
             v |= timeSeriesHydro;
         else if (word == "hydro-energy-credits")
-            v |= timeSeriesHydro;
+            v |= timeSeriesHydroEnergyCredits;
         else if (word == "thermal")
             v |= timeSeriesThermal;
         else if (word == "solar")
@@ -365,6 +365,12 @@ static void ParametersSaveTimeSeries(IniFile::Section* s, const char* name, uint
         if (not v.empty())
             v += ", ";
         v += "hydro";
+    }
+     if (value & timeSeriesHydroEnergyCredits)
+    {
+        if (not v.empty())
+            v += ", ";
+        v += "hydro energy credits";
     }
     if (value & timeSeriesWind)
     {
@@ -1374,7 +1380,7 @@ void Parameters::prepareForSimulation(const StudyLoadOptions& options)
 
     if (interModal == timeSeriesLoad || interModal == timeSeriesSolar
         || interModal == timeSeriesWind || interModal == timeSeriesHydro
-        || interModal == timeSeriesThermal || interModal == timeSeriesRenewable)
+        || interModal == timeSeriesThermal || interModal == timeSeriesRenewable || interModal == timeSeriesHydroEnergyCredits)
     {
         // Only one timeseries in interModal correlation, which is the same than nothing
         interModal = 0;

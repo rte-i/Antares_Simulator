@@ -346,6 +346,7 @@ private:
     void storeTimeseriesNumbersForSolar(Solver::IResultWriter::Ptr writer) const;
     void storeTimeseriesNumbersForWind(Solver::IResultWriter::Ptr writer) const;
     void storeTimeseriesNumbersForHydro(Solver::IResultWriter::Ptr writer) const;
+    void storeTimeseriesNumbersForHydroEnergyCredits(Solver::IResultWriter::Ptr writer) const;
     void storeTimeseriesNumbersForThermal(Solver::IResultWriter::Ptr writer) const;
     void storeTimeseriesNumbersForRenewable(Solver::IResultWriter::Ptr writer) const;
     void storeTimeseriesNumbersForTransmissionCapacities(Solver::IResultWriter::Ptr writer) const;
