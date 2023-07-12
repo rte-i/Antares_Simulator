@@ -439,6 +439,9 @@ bool checkInterModalConsistencyForArea(Area& area,
         uint nbTimeSeries
           = isTSgenerated[indexTS] ? parameters.nbTimeSeriesHydro : area.hydro.series->count;
         listNumberTsOverArea.push_back(nbTimeSeries);
+
+        nbTimeSeries = isTSgenerated[indexTS] ? parameters.nbTimeSeriesHydroEnergyCredits : area.hydro.series->countenergycredits;
+        listNumberTsOverArea.push_back(nbTimeSeries);
     }
 
     // Thermal : Add thermal's number of TS of each cluster in area ...
@@ -548,8 +551,10 @@ void storeTSnumbersForIntraModal(const array<uint32, timeSeriesCount>& intramoda
         indexTS = ts_to_tsIndex.at(timeSeriesHydro);
 
         if (isTSintramodal[indexTS])
+        {
             area.hydro.series->timeseriesNumbers[0][year] = intramodal_draws[indexTS];
-
+            area.hydro.series->timeseriesNumbersEnergyCredits[0][year] = intramodal_draws[indexTS];
+        }
         // -------------
         // Thermal ...
         // -------------
@@ -810,9 +815,12 @@ void applyMatrixDrawsToInterModalModesInArea(Matrix<uint32>* tsNumbersMtx,
             area.wind.series->timeseriesNumbers[0][year] = draw;
 
         assert(year < area.hydro.series->timeseriesNumbers.height);
+        assert(year < area.hydro.series->timeseriesNumbersEnergyCredits.height);
         if (isTSintermodal[ts_to_tsIndex.at(timeSeriesHydro)])
+        {
             area.hydro.series->timeseriesNumbers[0][year] = draw;
-
+            area.hydro.series->timeseriesNumbersEnergyCredits[0][year] = draw;
+        }
         if (isTSintermodal[ts_to_tsIndex.at(timeSeriesThermal)])
         {
             uint clusterCount = (uint)area.thermal.clusterCount();
@@ -865,6 +873,8 @@ static void fixTSNumbersWhenWidthIsOne(Study& study)
         // Hydro
         fixTSNumbersSingleAreaSingleMode(
           area.hydro.series->timeseriesNumbers, area.hydro.series->count, years);
+        fixTSNumbersSingleAreaSingleMode(
+          area.hydro.series->timeseriesNumbersEnergyCredits, area.hydro.series->countenergycredits, years);  
 
         // Thermal
         std::for_each(area.thermal.clusters.cbegin(),
