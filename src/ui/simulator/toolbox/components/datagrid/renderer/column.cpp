@@ -163,6 +163,23 @@ ColumnNTC::ColumnNTC() : Column(timeSeriesTransmissionCapacities, "  Links NTC  
               new_check_allocation<inactiveCell>(wxT("-"))};
 }
 
+ColumnHydroEnergyCredits::ColumnHydroEnergyCredits() : Column(timeSeriesHydroEnergyCredits, "   Hydro Energy Credits   ")
+{
+    cells_ = {new_check_allocation<blankCell>(),
+              new_check_allocation<inactiveCell>(wxT("On")),
+              new_check_allocation<inactiveCell>(wxT("-")),
+              new_check_allocation<inactiveCell>(wxT("-")),
+              new_check_allocation<inactiveCell>(wxT("-")),
+              new_check_allocation<inactiveCell>(wxT("-")),
+              new_check_allocation<inactiveCell>(wxT("-")),
+              new_check_allocation<inactiveCell>(wxT("-")),
+              new_check_allocation<inactiveCell>(wxT("-")),
+              new_check_allocation<inactiveCell>(wxT("-")),
+              new_check_allocation<blankCell>(),
+              new_check_allocation<intraModalCell>(tsKind_),
+              new_check_allocation<interModalCell>(tsKind_)};
+}
+
 } // namespace Renderer
 } // namespace Datagrid
 } // namespace Component

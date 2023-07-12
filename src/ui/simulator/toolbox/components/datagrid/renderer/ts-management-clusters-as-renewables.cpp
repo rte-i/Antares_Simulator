@@ -41,6 +41,7 @@ TSmanagementRenewableCluster::TSmanagementRenewableCluster() : TSmanagement()
 {
     columns_.push_back(new ColumnRenewableClusters());
     columns_.push_back(new ColumnNTC());
+    columns_.push_back(new ColumnHydroEnergyCredits());
 
     checkLineNumberInColumns();
 }

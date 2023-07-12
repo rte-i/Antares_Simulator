@@ -42,6 +42,7 @@ TSmanagementAggregatedAsRenewable::TSmanagementAggregatedAsRenewable() : TSmanag
     columns_.push_back(new classicColumn(Antares::Data::timeSeriesWind, "      Wind      "));
     columns_.push_back(new classicColumn(Antares::Data::timeSeriesSolar, "      Solar      "));
     columns_.push_back(new ColumnNTC());
+    columns_.push_back(new ColumnHydroEnergyCredits());
 
     checkLineNumberInColumns();
 }

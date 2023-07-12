@@ -98,6 +98,13 @@ public:
     ~ColumnNTC() override = default;
 };
 
+class ColumnHydroEnergyCredits final : public Column
+{
+public:
+    ColumnHydroEnergyCredits();
+    ~ColumnHydroEnergyCredits() override = default;
+};
+
 } // namespace Renderer
 } // namespace Datagrid
 } // namespace Component
