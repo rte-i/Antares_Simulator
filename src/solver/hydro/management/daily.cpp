@@ -555,7 +555,7 @@ void HydroManagement::prepareDailyOptimalGenerations(Solver::Variable::State& st
       [&](Data::Area& area) { prepareDailyOptimalGenerations(state, area, y, numSpace); });
 }
 
-inline double CalculateDailyMeanPower(uint dYear, const Matrix<double>::ColumnType& maxPower)
+double CalculateDailyMeanPower(uint dYear, const Matrix<double>::ColumnType& maxPower)
 {
     return std::accumulate(maxPower + dYear * 24, maxPower + dYear * 24 + 24, 0) / 24.;
 }
