@@ -243,15 +243,11 @@ bool PartHydro::LoadFromFolder(Study& study, const AnyString& folder)
         else
         {
             // Is area hydro modulable ?
-            auto& max = area.hydro.maxPower[area.hydro.genMaxP];
+            auto& max = area.hydro.series->maxgen;
 
-            for (uint y = 0; y != area.hydro.maxPower.height; ++y)
+            if (MatrixTestForAtLeastOnePositiveValue(max))
             {
-                if (max[y] > 0.)
-                {
-                    area.hydro.hydroModulable = true;
-                    break;
-                }
+                area.hydro.hydroModulable = true;
             }
         }
     });
