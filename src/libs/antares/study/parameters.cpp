@@ -1081,6 +1081,8 @@ bool Parameters::loadFromINI(const IniFile& ini, uint version, const StudyLoadOp
 
     fixGenRefreshForNTC();
 
+    fixGenRefreshForHydroEnergyCredits();
+
     // Specific action before launching a simulation
     if (options.usedByTheSolver)
         prepareForSimulation(options);
@@ -1131,6 +1133,22 @@ void Parameters::fixGenRefreshForNTC()
         interModal &= ~timeSeriesTransmissionCapacities;
         logs.error() << "Inter-modal correlation is not available for transmission capacities. It "
                         "will be automatically disabled.";
+    }
+}
+
+void Parameters::fixGenRefreshForHydroEnergyCredits()
+{
+    if ((timeSeriesHydroEnergyCredits & timeSeriesToGenerate) != 0)
+    {
+        timeSeriesToGenerate &= ~timeSeriesHydroEnergyCredits;
+        logs.error() << "Time-series generation is not available for hydro energy credits. It "
+                        "will be automatically disabled.";
+    }
+    if ((timeSeriesHydroEnergyCredits & timeSeriesToRefresh) != 0)
+    {
+        timeSeriesToRefresh &= ~timeSeriesHydroEnergyCredits;
+        logs.error() << "Time-series refresh is not available for hydro energy credits. It will "
+                        "be automatically disabled.";
     }
 }
 
@@ -1380,7 +1398,7 @@ void Parameters::prepareForSimulation(const StudyLoadOptions& options)
 
     if (interModal == timeSeriesLoad || interModal == timeSeriesSolar
         || interModal == timeSeriesWind || interModal == timeSeriesHydro
-        || interModal == timeSeriesThermal || interModal == timeSeriesRenewable)
+        || interModal == timeSeriesThermal || interModal == timeSeriesRenewable || interModal == timeSeriesHydroEnergyCredits)
     {
         // Only one timeseries in interModal correlation, which is the same than nothing
         interModal = 0;
