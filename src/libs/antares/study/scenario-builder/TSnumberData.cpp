@@ -383,7 +383,7 @@ uint hydroEnergyCreditsTSNumberData::get_tsGenCount(const Study& study) const
     // General data
     auto& parameters = study.parameters;
 
-    const bool tsGenHydro = (0 != (parameters.timeSeriesToGenerate & timeSeriesHydro));
+    const bool tsGenHydro = (0 != (parameters.timeSeriesToGenerate & timeSeriesHydroEnergyCredits));
     return tsGenHydro ? parameters.nbTimeSeriesHydroEnergyCredits : 0u;
 }
 

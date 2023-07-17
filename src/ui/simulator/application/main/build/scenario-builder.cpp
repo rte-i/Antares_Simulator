@@ -187,7 +187,7 @@ class hydroEnergyCreditsScBuilderPageMaker final : public simpleScBuilderPageMak
     }
     Notebook::Page* addPageToNotebook() override
     {
-        return notebook()->add(grid(), wxT("hydro-energy-credits"), wxT("Hydro-Energy Credits"));
+        return notebook()->add(grid(), wxT("hydro-energy-credits"), wxT("Hydro-Energy-Credits"));
     }
 };
 
