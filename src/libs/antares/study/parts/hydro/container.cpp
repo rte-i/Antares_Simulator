@@ -242,13 +242,20 @@ bool PartHydro::LoadFromFolder(Study& study, const AnyString& folder)
         }
         else
         {
-            // Is area hydro modulable ?
+            /*
+            Maxgen matrix is not initialized at this moment, so this code will induce
+            Segmentation fault (core dumped) because maxgen matrix pointing to invalid memory
+            address. This code block is moved to series.cpp file for hydro.
+
+            Is area hydro modulable ?
+
             auto& max = area.hydro.series->maxgen;
 
             if (MatrixTestForAtLeastOnePositiveValue(max))
             {
                 area.hydro.hydroModulable = true;
             }
+            */
         }
     });
 
