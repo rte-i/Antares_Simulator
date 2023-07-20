@@ -359,10 +359,17 @@ void DataSeriesHydro::AutoTransferData(Study& study,
                                        Matrix<double, Yuni::sint32>& matrix,
                                        const Matrix<double>::ColumnType& maxPower)
 {
-    for (uint h = 0; h < HOURS_PER_YEAR; ++h)
+    uint hours = 0;
+    uint days = 0;
+
+    while (hours < HOURS_PER_YEAR && days < DAYS_PER_YEAR)
     {
-        const uint dayInTheYear = study.calendar.hours[h].dayYear;
-        matrix[0][h] = maxPower[dayInTheYear];
+        for(uint i = 0; i < 24; ++i)
+        {
+            matrix[0][hours] = maxPower[days];
+            ++hours;
+        }
+    ++days;
     }
 }
 
