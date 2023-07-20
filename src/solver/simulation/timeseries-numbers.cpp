@@ -59,7 +59,7 @@ const map<TimeSeries, string> ts_to_tsTitle
      {timeSeriesSolar, "solar"},
      {timeSeriesRenewable, "renewable clusters"},
      {timeSeriesTransmissionCapacities, "transmission capacities"},
-     {timeSeriesHydroEnergyCredits, "hydro-energy-credits"}};
+     {timeSeriesHydroEnergyCredits, "energy-credits"}};
 
 void addInterModalTimeSeriesToMessage(const array<bool, timeSeriesCount>& isTSintermodal,
                                       std::string& interModalTsMsg)

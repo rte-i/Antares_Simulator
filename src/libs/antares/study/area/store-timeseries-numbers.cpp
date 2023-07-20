@@ -83,7 +83,7 @@ void Area::storeTimeseriesNumbersForHydro(Solver::IResultWriter::Ptr writer) con
 
 void Area::storeTimeseriesNumbersForHydroEnergyCredits(Solver::IResultWriter::Ptr writer) const
 {
-    genericStoreTimeseriesNumbers(writer, hydro.series->timeseriesNumbersEnergyCredits, id, "hydro-energy-credits");
+    genericStoreTimeseriesNumbers(writer, hydro.series->timeseriesNumbersEnergyCredits, id, "energy-credits");
 }
 
 void Area::storeTimeseriesNumbersForWind(Solver::IResultWriter::Ptr writer) const
