@@ -171,7 +171,7 @@ public:
     }
     uint getGeneratedTimeSeriesNumber()
     {
-        return study_.parameters.nbTimeSeriesHydroEnergyCredits;
+        return 1;
     }
 };
 
@@ -444,11 +444,11 @@ bool checkInterModalConsistencyForArea(Area& area,
         listNumberTsOverArea.push_back(nbTimeSeries);
     }
 
+    // Hydro Energy Credits : Add hydro energy credits number of TS in area
     indexTS = ts_to_tsIndex.at(timeSeriesHydroEnergyCredits);
     if (isTSintermodal[indexTS])
     {
-        uint nbTimeSeries
-          = isTSgenerated[indexTS] ? parameters.nbTimeSeriesHydroEnergyCredits : area.hydro.series->countenergycredits;
+        uint nbTimeSeries = area.hydro.series->countenergycredits;
         listNumberTsOverArea.push_back(nbTimeSeries);
     }
 
@@ -678,14 +678,13 @@ void drawAndStoreTSnumbersForNOTintraModal(const array<bool, timeSeriesCount>& i
         }
 
         // -------------
-        // Hydro ...
+        // Hydro Energy Credits...
         // -------------
         indexTS = ts_to_tsIndex.at(timeSeriesHydroEnergyCredits);
 
         if (!isTSintramodal[indexTS])
         {
-            uint nbTimeSeries
-              = isTSgenerated[indexTS] ? nbTimeseriesByMode[indexTS] : area.hydro.series->maxgen.width;
+            uint nbTimeSeries = area.hydro.series->maxgen.width;
             area.hydro.series->timeseriesNumbersEnergyCredits[0][year]
               = (uint32)(floor(study.runtime->random[seedTimeseriesNumbers].next() * nbTimeSeries));
         }

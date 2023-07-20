@@ -119,10 +119,10 @@ inline bool CheckValidity<Data::BindingConstraintTimeSeriesNumbers>(uint, const 
 }
 
 template<class D>
-static inline bool CheckValidityHydroEnergyCredits(uint value, const D& data, uint tsGenMax)
+static inline bool CheckValidityHydroEnergyCredits(uint value, const D& data)
 {
-    // When the TS-Generators are not used
-    return (!tsGenMax) ? (value < data.countenergycredits) : (value < tsGenMax);
+    // TS Generator never used
+    return value < data.countenergycredits;
 }
 
 template<class StringT, class D>
@@ -174,8 +174,7 @@ template<class StringT, class D>
 bool ApplyToMatrixEnergyCredits(uint& errors,
                                 StringT& logprefix,
                                 D& data,
-                                const TSNumberData::MatrixType::ColumnType& years,
-                                uint tsGenMax)
+                                const TSNumberData::MatrixType::ColumnType& years)
 {
     bool ret = true;
 
@@ -193,7 +192,7 @@ bool ApplyToMatrixEnergyCredits(uint& errors,
             uint tsNum = years[y] - 1;
 
             // When the TS-Generators are not used
-            if (!CheckValidityHydroEnergyCredits(tsNum, data, tsGenMax))
+            if (!CheckValidityHydroEnergyCredits(tsNum, data))
             {
                 if (errors <= maxErrors)
                 {
@@ -380,11 +379,8 @@ bool hydroTSNumberData::apply(Study& study)
 
 uint hydroEnergyCreditsTSNumberData::get_tsGenCount(const Study& study) const
 {
-    // General data
-    auto& parameters = study.parameters;
-
-    const bool tsGenHydro = (0 != (parameters.timeSeriesToGenerate & timeSeriesHydroEnergyCredits));
-    return tsGenHydro ? parameters.nbTimeSeriesHydroEnergyCredits : 0u;
+    //This function must be overriden because it is inherited from abstract class
+    return 0;
 }
 
 bool hydroEnergyCreditsTSNumberData::apply(Study& study)
@@ -397,7 +393,6 @@ bool hydroEnergyCreditsTSNumberData::apply(Study& study)
     // The total number of areas;
     const uint areaCount = study.areas.size();
 
-    const uint tsGenCountHydro = get_tsGenCount(study);
 
     for (uint areaIndex = 0; areaIndex != areaCount; ++areaIndex)
     {
@@ -408,7 +403,7 @@ bool hydroEnergyCreditsTSNumberData::apply(Study& study)
         const MatrixType::ColumnType& col = pTSNumberRules[areaIndex];
 
         logprefix.clear() << "Hydro Energy Credits: Area '" << area.name << "': ";
-        ret = ApplyToMatrixEnergyCredits(errors, logprefix, *area.hydro.series, col, tsGenCountHydro) && ret;
+        ret = ApplyToMatrixEnergyCredits(errors, logprefix, *area.hydro.series, col) && ret;
     }
     return ret;
 }

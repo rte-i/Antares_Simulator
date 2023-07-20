@@ -271,8 +271,6 @@ public:
     uint nbTimeSeriesLoad;
     //! Nb of timeSeries : Hydro
     uint nbTimeSeriesHydro;
-    //! Nb of timeSeries : Hydro Energy Credits
-    uint nbTimeSeriesHydroEnergyCredits;
     //! Nb of timeSeries : Wind
     uint nbTimeSeriesWind;
     //! Nb of timeSeries : Thermal

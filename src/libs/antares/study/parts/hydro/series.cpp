@@ -326,17 +326,16 @@ void DataSeriesHydro::estimateMemoryUsage(StudyMemoryUsage& u) const
         ror.estimateMemoryUsage(u, true, u.study.parameters.nbTimeSeriesHydro, HOURS_PER_YEAR);
         storage.estimateMemoryUsage(u, true, u.study.parameters.nbTimeSeriesHydro, 12);
         mingen.estimateMemoryUsage(u, true, u.study.parameters.nbTimeSeriesHydro, HOURS_PER_YEAR);
-        maxgen.estimateMemoryUsage(u, true, u.study.parameters.nbTimeSeriesHydroEnergyCredits, HOURS_PER_YEAR);
-        maxpump.estimateMemoryUsage(u, true, u.study.parameters.nbTimeSeriesHydroEnergyCredits, HOURS_PER_YEAR);
     }
     else
     {
         ror.estimateMemoryUsage(u);
         storage.estimateMemoryUsage(u);
         mingen.estimateMemoryUsage(u);
-        maxgen.estimateMemoryUsage(u);
-        maxpump.estimateMemoryUsage(u);
     }
+
+    maxgen.estimateMemoryUsage(u);
+    maxpump.estimateMemoryUsage(u);
 }
 
 void DataSeriesHydro::reset()

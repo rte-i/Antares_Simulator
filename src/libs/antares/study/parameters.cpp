@@ -267,7 +267,6 @@ void Parameters::reset()
     nbTimeSeriesLoad = 1;
     nbTimeSeriesSolar = 1;
     nbTimeSeriesHydro = 1;
-    nbTimeSeriesHydroEnergyCredits = 1;
     nbTimeSeriesWind = 1;
     nbTimeSeriesThermal = 1;
     // Time-series refresh
@@ -473,8 +472,6 @@ static bool SGDIntLoadFamily_General(Parameters& d,
         return value.to<uint>(d.nbTimeSeriesLoad);
     if (key == "nbtimeserieshydro")
         return value.to<uint>(d.nbTimeSeriesHydro);
-    if (key == "nbtimeserieshydroenergycredits")
-        return value.to<uint>(d.nbTimeSeriesHydroEnergyCredits);
     if (key == "nbtimeserieswind")
         return value.to<uint>(d.nbTimeSeriesWind);
     if (key == "nbtimeseriesthermal")
@@ -1179,8 +1176,6 @@ void Parameters::fixBadValues()
         nbTimeSeriesThermal = 1;
     if (!nbTimeSeriesHydro)
         nbTimeSeriesHydro = 1;
-    if (!nbTimeSeriesHydroEnergyCredits)
-        nbTimeSeriesHydroEnergyCredits = 1;
     if (!nbTimeSeriesWind)
         nbTimeSeriesWind = 1;
     if (!nbTimeSeriesSolar)
@@ -1548,7 +1543,6 @@ void Parameters::saveToINI(IniFile& ini) const
         ParametersSaveTimeSeries(section, "generate", timeSeriesToGenerate);
         section->add("nbTimeSeriesLoad    ", nbTimeSeriesLoad);
         section->add("nbTimeSeriesHydro   ", nbTimeSeriesHydro);
-        section->add("nbTimeSeriesHydroEnergyCredits   ", nbTimeSeriesHydroEnergyCredits);
         section->add("nbTimeSeriesWind    ", nbTimeSeriesWind);
         section->add("nbTimeSeriesThermal ", nbTimeSeriesThermal);
         section->add("nbTimeSeriesSolar   ", nbTimeSeriesSolar);
