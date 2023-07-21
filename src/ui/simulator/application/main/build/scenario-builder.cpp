@@ -177,7 +177,7 @@ class hydroScBuilderPageMaker final : public simpleScBuilderPageMaker
 };
 
 // Hydro Energy Credits ...
-class hydroEnergyCreditsScBuilderPageMaker final : public simpleScBuilderPageMaker
+class hydroPowerCreditsScBuilderPageMaker final : public simpleScBuilderPageMaker
 {
     using simpleScBuilderPageMaker::simpleScBuilderPageMaker;
 
@@ -187,7 +187,7 @@ class hydroEnergyCreditsScBuilderPageMaker final : public simpleScBuilderPageMak
     }
     Notebook::Page* addPageToNotebook() override
     {
-        return notebook()->add(grid(), wxT("energy-credits"), wxT("Hydro-Energy-Credits"));
+        return notebook()->add(grid(), wxT("power-credits"), wxT("Hydro-Power-Credits"));
     }
 };
 
@@ -372,9 +372,9 @@ void ApplWnd::createNBScenarioBuilder()
     hydroScBuilderPageMaker hydroSBpageMaker(scenarioBuilderPanel, pScenarioBuilderNotebook);
     pageScBuilderHydro = hydroSBpageMaker.createPage();
 
-    hydroEnergyCreditsScBuilderPageMaker hydroEnergyCreditsSBpageMaker(scenarioBuilderPanel,
+    hydroPowerCreditsScBuilderPageMaker hydroPowerCreditsSBpageMaker(scenarioBuilderPanel,
                                                                        pScenarioBuilderNotebook);
-    pageScBuilderHydroEnergyCredits = hydroEnergyCreditsSBpageMaker.createPage();
+    pageScBuilderHydroPowerCredits = hydroPowerCreditsSBpageMaker.createPage();
 
     windScBuilderPageMaker windSBpageMaker(scenarioBuilderPanel, pScenarioBuilderNotebook);
     pageScBuilderWind = windSBpageMaker.createPage();
