@@ -69,7 +69,7 @@ double hydroScBuilderRenderer::cellNumericValue(int x, int y) const
     return 0.;
 }
 
-bool hydroEnergyCreditsScBuilderRenderer::cellValue(int x, int y, const Yuni::String& value)
+bool hydroPowerCreditsScBuilderRenderer::cellValue(int x, int y, const Yuni::String& value)
 {
     if (!(!study) && !(!pRules) && (uint)x < study->parameters.nbYears)
     {
@@ -85,7 +85,7 @@ bool hydroEnergyCreditsScBuilderRenderer::cellValue(int x, int y, const Yuni::St
     return false;
 }
 
-double hydroEnergyCreditsScBuilderRenderer::cellNumericValue(int x, int y) const
+double hydroPowerCreditsScBuilderRenderer::cellNumericValue(int x, int y) const
 {
     if (!(!study) && !(!pRules) && (uint)x < study->parameters.nbYears)
     {

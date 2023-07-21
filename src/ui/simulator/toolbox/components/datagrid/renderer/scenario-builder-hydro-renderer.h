@@ -46,10 +46,10 @@ public:
     double cellNumericValue(int x, int y) const;
 }; // class hydroScBuilderRenderer
 
-class hydroEnergyCreditsScBuilderRenderer : public ScBuilderRendererAreasAsRows
+class hydroPowerCreditsScBuilderRenderer : public ScBuilderRendererAreasAsRows
 {
 public:
-    hydroEnergyCreditsScBuilderRenderer() = default;
+    hydroPowerCreditsScBuilderRenderer() = default;
 
     bool cellValue(int x, int y, const Yuni::String& value);
     double cellNumericValue(int x, int y) const;

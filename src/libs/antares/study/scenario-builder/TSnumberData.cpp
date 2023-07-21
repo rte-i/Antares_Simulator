@@ -179,10 +179,10 @@ bool ApplyToMatrixEnergyCredits(uint& errors,
     bool ret = true;
 
     // In this case, m.height represents the total number of years
-    const uint nbYears = data.timeseriesNumbersEnergyCredits.height;
+    const uint nbYears = data.timeseriesNumbersPowerCredits.height;
     // The matrix m has only one column
-    assert(data.timeseriesNumbersEnergyCredits.width == 1);
-    typename Matrix<uint32>::ColumnType& target = data.timeseriesNumbersEnergyCredits[0];
+    assert(data.timeseriesNumbersPowerCredits.width == 1);
+    typename Matrix<uint32>::ColumnType& target = data.timeseriesNumbersPowerCredits[0];
 
     for (uint y = 0; y != nbYears; ++y)
     {

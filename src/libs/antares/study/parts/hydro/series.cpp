@@ -239,7 +239,7 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
     }
 
     timeseriesNumbers.clear();
-    timeseriesNumbersEnergyCredits.clear();
+    timeseriesNumbersPowerCredits.clear();
 
     if (study.header.version < 870)
     {
@@ -319,7 +319,7 @@ void DataSeriesHydro::estimateMemoryUsage(StudyMemoryUsage& u) const
 {
     u.requiredMemoryForInput += sizeof(DataSeriesHydro);
     timeseriesNumbers.estimateMemoryUsage(u, true, 1, u.years);
-    timeseriesNumbersEnergyCredits.estimateMemoryUsage(u, true, 1, u.years);
+    timeseriesNumbersPowerCredits.estimateMemoryUsage(u, true, 1, u.years);
     // series
     if ((timeSeriesHydro & u.study.parameters.timeSeriesToGenerate))
     {

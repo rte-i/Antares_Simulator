@@ -176,7 +176,7 @@ public:
     ** \brief Monte-Carlo
     */
     Matrix<Yuni::uint32> timeseriesNumbers;
-    Matrix<Yuni::uint32> timeseriesNumbersEnergyCredits;
+    Matrix<Yuni::uint32> timeseriesNumbersPowerCredits;
 
 }; // class DataSeriesHydro
 

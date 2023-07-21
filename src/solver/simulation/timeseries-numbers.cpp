@@ -564,11 +564,11 @@ void storeTSnumbersForIntraModal(const array<uint32, timeSeriesCount>& intramoda
         // -------------
         // Hydro Energy Credits ...
         // -------------
-        assert(year < area.hydro.series->timeseriesNumbersEnergyCredits.height);
+        assert(year < area.hydro.series->timeseriesNumbersPowerCredits.height);
         indexTS = ts_to_tsIndex.at(timeSeriesHydroEnergyCredits);
 
         if (isTSintramodal[indexTS])
-            area.hydro.series->timeseriesNumbersEnergyCredits[0][year] = intramodal_draws[indexTS];
+            area.hydro.series->timeseriesNumbersPowerCredits[0][year] = intramodal_draws[indexTS];
 
         // -------------
         // Thermal ...
@@ -685,7 +685,7 @@ void drawAndStoreTSnumbersForNOTintraModal(const array<bool, timeSeriesCount>& i
         if (!isTSintramodal[indexTS])
         {
             uint nbTimeSeries = area.hydro.series->maxgen.width;
-            area.hydro.series->timeseriesNumbersEnergyCredits[0][year]
+            area.hydro.series->timeseriesNumbersPowerCredits[0][year]
               = (uint32)(floor(study.runtime->random[seedTimeseriesNumbers].next() * nbTimeSeries));
         }
 
@@ -801,7 +801,7 @@ Matrix<uint32>* getFirstTSnumberInterModalMatrixFoundInArea(
                  && area.renewable.clusterCount() > 0)
             tsNumbersMtx = &(area.renewable.clusters[0]->series->timeseriesNumbers);
         else if (isTSintermodal[ts_to_tsIndex.at(timeSeriesHydroEnergyCredits)])
-            tsNumbersMtx = &(area.hydro.series->timeseriesNumbersEnergyCredits);
+            tsNumbersMtx = &(area.hydro.series->timeseriesNumbersPowerCredits);
     }
     assert(tsNumbersMtx);
 
@@ -834,9 +834,9 @@ void applyMatrixDrawsToInterModalModesInArea(Matrix<uint32>* tsNumbersMtx,
         if (isTSintermodal[ts_to_tsIndex.at(timeSeriesHydro)])
             area.hydro.series->timeseriesNumbers[0][year] = draw;
 
-        assert(year < area.hydro.series->timeseriesNumbersEnergyCredits.height);
+        assert(year < area.hydro.series->timeseriesNumbersPowerCredits.height);
         if (isTSintermodal[ts_to_tsIndex.at(timeSeriesHydroEnergyCredits)])
-            area.hydro.series->timeseriesNumbersEnergyCredits[0][year] = draw;
+            area.hydro.series->timeseriesNumbersPowerCredits[0][year] = draw;
 
         if (isTSintermodal[ts_to_tsIndex.at(timeSeriesThermal)])
         {
@@ -892,7 +892,7 @@ static void fixTSNumbersWhenWidthIsOne(Study& study)
           area.hydro.series->timeseriesNumbers, area.hydro.series->count, years);
         // Hydro Energy Credits
         fixTSNumbersSingleAreaSingleMode(
-          area.hydro.series->timeseriesNumbersEnergyCredits, area.hydro.series->countenergycredits, years);
+          area.hydro.series->timeseriesNumbersPowerCredits, area.hydro.series->countenergycredits, years);
 
         // Thermal
         std::for_each(area.thermal.clusters.cbegin(),
