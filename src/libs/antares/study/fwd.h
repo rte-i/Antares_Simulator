@@ -215,13 +215,13 @@ enum TimeSeries : unsigned int
     //! TimeSeries : Wind
     timeSeriesWind = 4,
     //! TimeSeries : Thermal
-    timeSeriesThermal = 16,
+    timeSeriesThermal = 128,
     //! TimeSeries : Solar
-    timeSeriesSolar = 32,
+    timeSeriesSolar = 16,
     //! TimeSeries : Renewable
-    timeSeriesRenewable = 64,
+    timeSeriesRenewable = 32,
     //! TimeSeries : Renewable
-    timeSeriesTransmissionCapacities = 128,
+    timeSeriesTransmissionCapacities = 64,
     //! TimeSeries : Hydro Energy Credits
     timeSeriesHydroEnergyCredits = 256,
 
@@ -258,7 +258,7 @@ struct TimeSeriesBitPatternIntoIndex<4>
     };
 };
 template<>
-struct TimeSeriesBitPatternIntoIndex<16>
+struct TimeSeriesBitPatternIntoIndex<128>
 {
     enum
     {
@@ -266,7 +266,7 @@ struct TimeSeriesBitPatternIntoIndex<16>
     };
 };
 template<>
-struct TimeSeriesBitPatternIntoIndex<32>
+struct TimeSeriesBitPatternIntoIndex<16>
 {
     enum
     {
@@ -274,7 +274,7 @@ struct TimeSeriesBitPatternIntoIndex<32>
     };
 };
 template<>
-struct TimeSeriesBitPatternIntoIndex<64>
+struct TimeSeriesBitPatternIntoIndex<32>
 {
     enum
     {
@@ -309,7 +309,7 @@ struct TimeSeriesToCStr<4>
     }
 };
 template<>
-struct TimeSeriesToCStr<16>
+struct TimeSeriesToCStr<128>
 {
     static const char* Value()
     {
@@ -317,7 +317,7 @@ struct TimeSeriesToCStr<16>
     }
 };
 template<>
-struct TimeSeriesToCStr<32>
+struct TimeSeriesToCStr<16>
 {
     static const char* Value()
     {
@@ -325,7 +325,7 @@ struct TimeSeriesToCStr<32>
     }
 };
 template<>
-struct TimeSeriesToCStr<64>
+struct TimeSeriesToCStr<32>
 {
     static const char* Value()
     {
