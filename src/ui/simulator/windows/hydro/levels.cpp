@@ -25,7 +25,7 @@
 ** SPDX-License-Identifier: licenceRef-GPL3_WITH_RTE-Exceptions
 */
 
-#include "levelsandvalues.h"
+#include "levels.h"
 #include <wx/stattext.h>
 #include "../../toolbox/components/datagrid/renderer/area/reservoirlevels.h"
 #include "../../toolbox/components/datagrid/renderer/area/watervalues.h"
@@ -43,19 +43,19 @@ namespace Window
 {
 namespace Hydro
 {
-LevelsAndValues::LevelsAndValues(wxWindow* parent, Toolbox::InputSelector::Area* notifier) :
+Levels::Levels(wxWindow* parent, Toolbox::InputSelector::Area* notifier) :
  Component::Panel(parent),
  pInputAreaSelector(notifier),
  pArea(nullptr),
  pComponentsAreReady(false),
  pSupport(nullptr)
 {
-    OnStudyClosed.connect(this, &LevelsAndValues::onStudyClosed);
+    OnStudyClosed.connect(this, &Levels::onStudyClosed);
     if (notifier)
-        notifier->onAreaChanged.connect(this, &LevelsAndValues::onAreaChanged);
+        notifier->onAreaChanged.connect(this, &Levels::onAreaChanged);
 }
 
-void LevelsAndValues::createComponents()
+void Levels::createComponents()
 {
     if (pComponentsAreReady)
         return;
@@ -73,27 +73,26 @@ void LevelsAndValues::createComponents()
 
     ssGrids->Add(new Component::Datagrid::Component(
                    pSupport,
-                   new Component::Datagrid::Renderer::WaterValues(this, pInputAreaSelector),
-                   wxT("Water values")),
-                 3,
+                   new Component::Datagrid::Renderer::ReservoirLevels(this, pInputAreaSelector),
+                   wxT("Reservoir levels")),
+                 2,
                  wxALL | wxEXPAND | wxFIXED_MINSIZE,
                  5);
     ssGrids->Add(
       new wxStaticLine(pSupport, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL),
       0,
       wxALL | wxEXPAND);
-
     ssGrids->Layout();
 }
 
-LevelsAndValues::~LevelsAndValues()
+Levels::~Levels()
 {
     destroyBoundEvents();
     // destroy all children as soon as possible to prevent against corrupt vtable
     DestroyChildren();
 }
 
-void LevelsAndValues::onAreaChanged(Data::Area* area)
+void Levels::onAreaChanged(Data::Area* area)
 {
     pArea = area;
     if (area and area->hydro.prepro)
@@ -106,7 +105,7 @@ void LevelsAndValues::onAreaChanged(Data::Area* area)
     }
 }
 
-void LevelsAndValues::onStudyClosed()
+void Levels::onStudyClosed()
 {
     pArea = nullptr;
 
