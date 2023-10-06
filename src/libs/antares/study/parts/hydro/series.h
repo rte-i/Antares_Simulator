@@ -29,6 +29,7 @@
 
 #include <antares/array/matrix.h>
 #include "../../fwd.h"
+#include <antares/exception/antares/exception/LoadingError.hpp>
 
 namespace Antares
 {
@@ -104,6 +105,7 @@ public:
     ** \brief Check TS number for Minimum Generation and logs error if necessary
     */
     void checkMinGenTsNumber(Study& s, const AreaName& areaID);
+    void checkReservoirLevelTsNumber(Study& study, const AreaName& areaID);
 
     unsigned int getIndex(unsigned int year) const;
 
@@ -130,6 +132,8 @@ public:
     ** Merely a matrix of TimeSeriesCount * HOURS_PER_YEAR values
     */
     Matrix<double, int32_t> mingen;
+
+    Matrix<double, int32_t> reservoirLevels;
 
     /*!
     ** \brief The number of time-series

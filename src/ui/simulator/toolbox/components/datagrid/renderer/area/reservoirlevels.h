@@ -39,6 +39,125 @@ namespace Datagrid
 {
 namespace Renderer
 {
+
+class ATimeSeriesLevels : public Renderer::Matrix<double, int32_t>, public Renderer::ARendererArea
+{
+public:
+    using AncestorType = Renderer::Matrix<double, int32_t>;
+
+public:
+    ATimeSeriesLevels(wxWindow* control, Toolbox::InputSelector::Area* notifier);
+
+    virtual ~ATimeSeriesLevels();
+
+    virtual int width() const
+    {
+        return AncestorType::width();
+    }
+
+    virtual int height() const
+    {
+        return AncestorType::height();
+    }
+
+    virtual int internalWidth() const
+    {
+        return AncestorType::width();
+    }
+    virtual int internalHeight() const
+    {
+        return AncestorType::height();
+    }
+
+    virtual wxString columnCaption(int colIndx) const;
+
+    virtual wxString rowCaption(int rowIndx) const
+    {
+        return AncestorType::rowCaption(rowIndx);
+    }
+
+    virtual wxString cellValue(int x, int y) const;
+
+    virtual double cellNumericValue(int x, int y) const;
+
+    virtual bool cellValue(int x, int y, const Yuni::String& value)
+    {
+        return AncestorType::cellValue(x, y, value);
+    }
+
+    virtual void resetColors(int, int, wxColour&, wxColour&) const
+    { /*Do nothing*/
+    }
+
+    virtual bool isTriplet() const override {return true;}
+
+    virtual wxColour verticalBorderColor(int x, int y) const;
+    virtual wxColour horizontalBorderColor(int x, int y) const;
+    
+
+    virtual IRenderer::CellStyle cellStyle(int col, int row) const;
+
+    virtual bool valid() const
+    {
+        return AncestorType::valid();
+    }
+
+    virtual Date::Precision precision()
+    {
+        return Date::hourly;
+    }
+
+protected:
+    //! Event: the study has been closed
+    virtual void onStudyClosed() override;
+    //! Event: the study has been loaded
+    virtual void onStudyLoaded() override;
+
+}; // class ATimeSeriesLevels
+
+
+
+class TimeSeriesReservoirLevels final : public ATimeSeriesLevels
+{
+public:
+    using AncestorType = Renderer::Matrix<double, int32_t>;
+
+public:
+    TimeSeriesReservoirLevels(wxWindow* control, Toolbox::InputSelector::Area* notifier) :
+     ATimeSeriesLevels(control, notifier)
+    {
+    }
+    virtual ~TimeSeriesReservoirLevels()
+    {
+        destroyBoundEvents();
+    }
+
+    virtual Date::Precision precision()
+    {
+        return Date::daily;
+    }
+
+    virtual wxString rowCaption(int rowIndx) const
+    {
+        return wxStringFromUTF8(study->calendar.text.daysYear[rowIndx]);
+    }
+
+    virtual uint maxHeightResize() const
+    {
+        return DAYS_PER_YEAR;
+    }
+
+protected:
+    virtual void internalAreaChanged(Antares::Data::Area* area)
+    {
+        matrix((area && CurrentStudyIsValid()) ? &(area->hydro.series->reservoirLevels) : NULL);
+        Renderer::ARendererArea::internalAreaChanged(area);
+    }
+};
+
+
+
+
 class ReservoirLevels final : public Renderer::Matrix<double, double, 2>,
                               public Renderer::ARendererArea
 {

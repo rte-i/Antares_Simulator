@@ -29,7 +29,6 @@
 #include "prepro.h"
 #include "dailypower.h"
 #include "levelsandvalues.h"
-#include "levels.h"
 #include "management.h"
 #include "../../toolbox/components/notebook/notebook.h"
 #include "../../toolbox/components/datagrid/component.h"
@@ -62,9 +61,6 @@ Localdatahydro::Localdatahydro(wxWindow* parent, Toolbox::InputSelector::Area* n
 
     auto* page4 = new Antares::Window::Hydro::LevelsAndValues(notebook, notifier);
     pPageFatal = notebook->add(page4, wxT("Water values"));
-
-    auto* page5 = new Antares::Window::Hydro::Levels(notebook, notifier);
-    pPageFatal = notebook->add(page5, wxT("Reservoir levels"));
 
     // Connection to the notifier
     if (pNotifier)

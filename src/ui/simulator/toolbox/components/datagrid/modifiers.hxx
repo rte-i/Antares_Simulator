@@ -353,8 +353,16 @@ struct ModifierOperatorsData<modifierDataset>
 
             if (newwidth > 0 && newwidth <= maxwidth)
             {
-                logs.info() << "Resizing the matrix to " << newwidth << " columns";
-                renderer->resizeMatrixToXColumns(newwidth);
+                if (renderer->isTriplet())
+                {
+                    logs.info() << "Resizing the matrix to " << newwidth * 3 << " columns";
+                    renderer->resizeMatrixToXColumns(newwidth * 3);
+                }
+                else
+                {
+                    logs.info() << "Resizing the matrix to " << newwidth << " columns";
+                    renderer->resizeMatrixToXColumns(newwidth);
+                }
             }
             else
             {

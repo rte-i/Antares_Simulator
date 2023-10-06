@@ -48,6 +48,7 @@ DataSeriesHydro::DataSeriesHydro() : count(0)
     // For compatibility reasons with existing studies, mingen is set to one column of zeros
     // by default
     mingen.reset(1, HOURS_PER_YEAR);
+    reservoirLevels.reset(3, HOURS_PER_YEAR);
 }
 
 bool DataSeriesHydro::saveToFolder(const AreaName& areaID, const AnyString& folder) const
@@ -66,6 +67,8 @@ bool DataSeriesHydro::saveToFolder(const AreaName& areaID, const AnyString& fold
         ret = storage.saveToCSVFile(buffer, 0) && ret;
         buffer.clear() << folder << SEP << areaID << SEP << "mingen.txt";
         ret = mingen.saveToCSVFile(buffer, 0) && ret;
+        buffer.clear() << folder << SEP << areaID << SEP << "levels.txt";
+        ret = reservoirLevels.saveToCSVFile(buffer, 0) && ret;
         return ret;
     }
     return false;
@@ -95,6 +98,18 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
         ret = mingen.loadFromCSVFile(buffer, 1, HOURS_PER_YEAR, &study.dataBuffer) && ret;
     }
 
+    if (study.header.version >= 870)
+    {
+        buffer.clear() << folder << SEP << areaID << SEP << "levels" << ".txt";
+        ret = reservoirLevels.loadFromCSVFile(buffer, 3, DAYS_PER_YEAR, &study.dataBuffer) && ret;
+    }
+    else
+    {
+        buffer.clear() << study.folderInput << SEP << "hydro" << SEP << "common" << SEP
+                       << "capacity" << SEP << "reservoir_" << areaID << ".txt";
+        ret = reservoirLevels.loadFromCSVFile(buffer, 3, DAYS_PER_YEAR, &study.dataBuffer) && ret;
+    }
+
     if (study.usedByTheSolver)
     {
         if (0 == count)
@@ -104,6 +119,7 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
             ror.reset(1, HOURS_PER_YEAR);
             storage.reset(1, DAYS_PER_YEAR);
             mingen.reset(1, HOURS_PER_YEAR);
+            reservoirLevels.reset(3, DAYS_PER_YEAR);
         }
         else
         {
@@ -147,6 +163,7 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
                 }
             }
             checkMinGenTsNumber(study, areaID);
+            checkReservoirLevelTsNumber(study, areaID);
         }
 
         if (study.parameters.derated)
@@ -154,6 +171,7 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
             ror.averageTimeseries();
             storage.averageTimeseries();
             mingen.averageTimeseries();
+
             count = 1;
         }
     }
@@ -161,6 +179,48 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
     timeseriesNumbers.clear();
 
     return ret;
+}
+
+void DataSeriesHydro::checkReservoirLevelTsNumber(Study& study, const AreaName& areaID)
+{
+    if (reservoirLevels.width / 3 != storage.width)
+    {
+        if (reservoirLevels.width > 1)
+        {
+            logs.fatal() << "Hydro: `" << areaID
+                         << "`: The matrices Minimum Generation must "
+                            "has the same number of time-series as ROR and hydro-storage.";
+            study.gotFatalError = true;
+        }
+        else
+        {
+            reservoirLevels.resizeWithoutDataLost(count * 3, reservoirLevels.height);
+            for (uint x = 1; x < count; ++x)
+            {
+                reservoirLevels.pasteToColumn(x * 3, reservoirLevels[0]);
+                reservoirLevels.pasteToColumn(x * 3 + 1, reservoirLevels[1]);
+                reservoirLevels.pasteToColumn(x * 3 + 2, reservoirLevels[2]);
+            }
+
+            Area* areaToInvalidate = study.areas.find(areaID);
+            if (areaToInvalidate)
+            {
+                areaToInvalidate->invalidateJIT = true;
+                logs.info() << "  '" << areaID
+                            << "': The hydro minimum generation data have been normalized to "
+                            << count << " timeseries";
+            }
+            else
+                logs.error() << "Impossible to find the area `" << areaID << "` to invalidate it";
+        }
+    }
+    else
+    {
+        logs.error() << "Hydro: " << areaID
+                     << " : Number of hydro reservoir triplets is  different than TS number of ror "
+                        "and hydro-storage.";
+        throw Error::ReadingStudy();
+    }
 }
 
 void DataSeriesHydro::checkMinGenTsNumber(Study& study, const AreaName& areaID)
@@ -199,6 +259,7 @@ bool DataSeriesHydro::forceReload(bool reload) const
     ret = ror.forceReload(reload) && ret;
     ret = storage.forceReload(reload) && ret;
     ret = mingen.forceReload(reload) && ret;
+    ret = reservoirLevels.forceReload(reload) && ret;
     return ret;
 }
 
@@ -207,6 +268,7 @@ void DataSeriesHydro::markAsModified() const
     ror.markAsModified();
     storage.markAsModified();
     mingen.markAsModified();
+    reservoirLevels.markAsModified();
 }
 
 void DataSeriesHydro::reset()
@@ -214,12 +276,14 @@ void DataSeriesHydro::reset()
     ror.reset(1, HOURS_PER_YEAR);
     storage.reset(1, DAYS_PER_YEAR);
     mingen.reset(1, HOURS_PER_YEAR);
+    reservoirLevels.reset(3, DAYS_PER_YEAR);
     count = 1;
 }
 
 uint64_t DataSeriesHydro::memoryUsage() const
 {
-    return sizeof(double) + ror.memoryUsage() + storage.memoryUsage() + mingen.memoryUsage();
+    return sizeof(double) + ror.memoryUsage() + storage.memoryUsage() + mingen.memoryUsage()
+           + reservoirLevels.memoryUsage();
 }
 
 unsigned int DataSeriesHydro::getIndex(unsigned int year) const

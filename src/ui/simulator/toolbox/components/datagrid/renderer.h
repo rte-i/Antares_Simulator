@@ -115,6 +115,11 @@ public:
     virtual bool valid() const = 0;
     //@}
 
+    //! \name isTriplet
+    //@{
+    virtual bool isTriplet() const { return false; }
+    //@}
+
     //! \name Sizes
     //@{
     /*!

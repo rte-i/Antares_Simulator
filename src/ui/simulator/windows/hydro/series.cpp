@@ -29,6 +29,7 @@
 #include "../../toolbox/components/notebook/notebook.h"
 #include "../../toolbox/components/datagrid/component.h"
 #include "../../toolbox/components/datagrid/renderer/area/timeseries.h"
+#include "../../toolbox/components/datagrid/renderer/area/reservoirlevels.h"
 
 using namespace Yuni;
 
@@ -56,6 +57,10 @@ Series::Series(wxWindow* parent, Toolbox::InputSelector::Area* notifier) :
     com = new Component::Datagrid::Component(notebook);
     com->renderer(new Component::Datagrid::Renderer::TimeSeriesHydroMinGen(com, notifier));
     pPageFatal = notebook->add(com, wxT("Minimum Generation"));
+
+    com = new Component::Datagrid::Component(notebook);
+    com->renderer(new Component::Datagrid::Renderer::TimeSeriesReservoirLevels(com, notifier));
+    pPageFatal = notebook->add(com, wxT("Reservoir Levels"));
 
     // Connection to the notifier
     if (pNotifier)

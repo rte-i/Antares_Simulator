@@ -37,6 +37,129 @@ namespace Datagrid
 {
 namespace Renderer
 {
+
+
+ATimeSeriesLevels::ATimeSeriesLevels(wxWindow* control, Toolbox::InputSelector::Area* notifier) :
+ AncestorType(control), Renderer::ARendererArea(control, notifier)
+{
+}
+
+ATimeSeriesLevels::~ATimeSeriesLevels()
+{
+    destroyBoundEvents();
+}
+
+void ATimeSeriesLevels::onStudyClosed()
+{
+    AncestorType::onStudyClosed();
+    Renderer::ARendererArea::onStudyClosed();
+}
+
+void ATimeSeriesLevels::onStudyLoaded()
+{
+    AncestorType::onStudyLoaded();
+    Renderer::ARendererArea::onStudyLoaded();
+}
+
+wxString ATimeSeriesLevels::cellValue(int x, int y) const
+{
+    if (x < AncestorType::width())
+        return AncestorType::cellValue(x, y);
+    return wxT("0");
+}
+
+double ATimeSeriesLevels::cellNumericValue(int x, int y) const
+{
+    if (x < AncestorType::width())
+        return AncestorType::cellNumericValue(x, y);
+    return 0.;
+}
+
+wxString ATimeSeriesLevels::columnCaption(int colIndx) const
+{//Mora se menjati
+
+    switch((1 + colIndx) % 3){
+
+        case 0:
+        {
+            return wxString() << wxT("     TS-") << ((colIndx / 3) + 1) << wxT("     \n High Level (%)");
+            break;
+        }
+        case 1:
+        {
+            return wxString() << wxT("     TS-") << ((colIndx / 3) + 1) << wxT("    \n Low Level (%)");
+            break;
+        }
+        case 2:
+        {
+            return wxString() << wxT("     TS-") << ((colIndx / 3) + 1) << wxT("    \n Avg Level (%)");
+            break;
+        }
+        default:
+        {
+            return wxT("0");
+        }
+    }
+}
+
+wxColour ATimeSeriesLevels::verticalBorderColor(int x, int y) const
+{
+    return (x == AncestorType::width() - 1) ? Default::BorderHighlightColor()
+                                            : IRenderer::verticalBorderColor(x, y);
+}
+
+wxColour ATimeSeriesLevels::horizontalBorderColor(int x, int y) const
+{
+    // Getting informations about the next hour
+    // (because the returned color is about the bottom border of the cell,
+    // so the next hour for the user)
+    if (!(!study) && y + 1 < Date::Calendar::maxHoursInYear)
+    {
+        auto& hourinfo = study->calendar.hours[y + 1];
+
+        if (hourinfo.firstHourInMonth)
+            return Default::BorderMonthSeparator();
+        if (hourinfo.firstHourInDay)
+            return Default::BorderDaySeparator();
+    }
+    return IRenderer::verticalBorderColor(x, y);
+}
+
+IRenderer::CellStyle ATimeSeriesLevels::cellStyle(int col, int row) const
+{
+    // All timeseries must have a positive value
+    double v = cellNumericValue(col, row);
+
+    
+    // Default
+    if (Math::Zero(v))
+    {
+        if (row % 2)
+            return IRenderer::cellStyleDefaultAlternateDisabled;
+        else
+            return IRenderer::cellStyleDefaultDisabled;
+    }
+    else
+    {
+        if (row % 2)
+            return IRenderer::cellStyleDefaultAlternate;
+        else
+            return IRenderer::cellStyleDefault;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 ReservoirLevels::ReservoirLevels(wxWindow* control, Toolbox::InputSelector::Area* notifier) :
  MatrixAncestorType(control), Renderer::ARendererArea(control, notifier)
 {
@@ -49,7 +172,7 @@ ReservoirLevels::~ReservoirLevels()
 
 int ReservoirLevels::width() const
 {
-    return 3;
+    return MatrixAncestorType::width();
 }
 
 int ReservoirLevels::height() const
