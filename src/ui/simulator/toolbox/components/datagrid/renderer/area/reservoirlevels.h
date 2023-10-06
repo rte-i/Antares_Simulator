@@ -40,10 +40,10 @@ namespace Datagrid
 namespace Renderer
 {
 
-class ATimeSeriesLevels : public Renderer::Matrix<double, int32_t>, public Renderer::ARendererArea
+class ATimeSeriesLevels : public Renderer::Matrix<double>, public Renderer::ARendererArea
 {
 public:
-    using AncestorType = Renderer::Matrix<double, int32_t>;
+    using AncestorType = Renderer::Matrix<double>;
 
 public:
     ATimeSeriesLevels(wxWindow* control, Toolbox::InputSelector::Area* notifier);
@@ -80,20 +80,19 @@ public:
 
     virtual double cellNumericValue(int x, int y) const;
 
-    virtual bool cellValue(int x, int y, const Yuni::String& value)
-    {
-        return AncestorType::cellValue(x, y, value);
-    }
+    virtual bool cellValue(int x, int y, const Yuni::String& value);
 
     virtual void resetColors(int, int, wxColour&, wxColour&) const
     { /*Do nothing*/
     }
 
-    virtual bool isTriplet() const override {return true;}
+    virtual bool isTriplet() const override
+    {
+        return true;
+    }
 
     virtual wxColour verticalBorderColor(int x, int y) const;
     virtual wxColour horizontalBorderColor(int x, int y) const;
-    
 
     virtual IRenderer::CellStyle cellStyle(int col, int row) const;
 
@@ -115,12 +114,10 @@ protected:
 
 }; // class ATimeSeriesLevels
 
-
-
 class TimeSeriesReservoirLevels final : public ATimeSeriesLevels
 {
 public:
-    using AncestorType = Renderer::Matrix<double, int32_t>;
+    using AncestorType = Renderer::Matrix<double>;
 
 public:
     TimeSeriesReservoirLevels(wxWindow* control, Toolbox::InputSelector::Area* notifier) :
@@ -150,76 +147,10 @@ public:
 protected:
     virtual void internalAreaChanged(Antares::Data::Area* area)
     {
-        matrix((area && CurrentStudyIsValid()) ? &(area->hydro.series->reservoirLevels) : NULL);
+        AncestorType::matrix((area && CurrentStudyIsValid()) ? &(area->hydro.series->reservoirLevels) : NULL);
         Renderer::ARendererArea::internalAreaChanged(area);
     }
-};
-
-
-
-
-class ReservoirLevels final : public Renderer::Matrix<double, double, 2>,
-                              public Renderer::ARendererArea
-{
-public:
-    using MatrixAncestorType = Renderer::Matrix<double, double, 2>;
-
-public:
-    //! \name Constructor & Destructor
-    //@{
-    /*!
-    ** \brief Constructor
-    */
-    ReservoirLevels(wxWindow* control, Toolbox::InputSelector::Area* notifier);
-    //! Destructor
-    virtual ~ReservoirLevels();
-    //@}
-
-    virtual int width() const;
-    virtual int height() const;
-
-    virtual wxString columnCaption(int colIndx) const;
-
-    virtual wxString rowCaption(int rowIndx) const;
-
-    virtual wxString cellValue(int x, int y) const;
-
-    virtual double cellNumericValue(int x, int y) const;
-
-    virtual bool cellValue(int, int, const Yuni::String&);
-
-    virtual void resetColors(int, int, wxColour&, wxColour&) const
-    { /*Do nothing*/
-    }
-
-    virtual Date::Precision precision()
-    {
-        return Date::daily;
-    }
-
-    virtual IRenderer::CellStyle cellStyle(int col, int row) const;
-
-    virtual bool valid() const;
-
-    virtual uint maxWidthResize() const
-    {
-        return 0;
-    }
-    virtual uint maxHeightResize() const
-    {
-        return 0;
-    }
-
-    // virtual bool circularShiftRowsUntilDate(MonthName month, uint daymonth);
-
-protected:
-    virtual void internalAreaChanged(Antares::Data::Area* area);
-    //! Event: the study has been closed
-    virtual void onStudyClosed() override;
-    //! Event: the study has been loaded
-    virtual void onStudyLoaded() override;
-
-}; // class InflowPattern
+};  // class TimeSeriesReservoirLevels
 
 } // namespace Renderer
 } // namespace Datagrid

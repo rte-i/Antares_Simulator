@@ -37,8 +37,6 @@ namespace Datagrid
 {
 namespace Renderer
 {
-
-
 ATimeSeriesLevels::ATimeSeriesLevels(wxWindow* control, Toolbox::InputSelector::Area* notifier) :
  AncestorType(control), Renderer::ARendererArea(control, notifier)
 {
@@ -63,42 +61,69 @@ void ATimeSeriesLevels::onStudyLoaded()
 
 wxString ATimeSeriesLevels::cellValue(int x, int y) const
 {
-    if (x < AncestorType::width())
-        return AncestorType::cellValue(x, y);
-    return wxT("0");
+    if (!pArea)
+        return wxString();
+    auto& matrix = pArea->hydro.series->reservoirLevels;
+    return ((uint)x < matrix.width && (uint)y < matrix.height)
+             ? DoubleToWxString(100. * matrix[x][y])
+             : wxString();
+}
+
+bool ATimeSeriesLevels::cellValue(int x, int y, const Yuni::String& value)
+{
+    if (!pArea)
+        return false;
+    auto& matrix = pArea->hydro.series->reservoirLevels;
+    if ((uint)x < matrix.width && (uint)y < matrix.height)
+    {
+        double v;
+        if (value.to(v))
+        {
+            v = Math::Round(v / 100., 3);
+            if (v < 0.)
+                v = 0.;
+            if (v > 1.)
+                v = 1;
+            matrix[x][y] = v;
+            matrix.markAsModified();
+            return true;
+        }
+    }
+    return false;
 }
 
 double ATimeSeriesLevels::cellNumericValue(int x, int y) const
 {
-    if (x < AncestorType::width())
-        return AncestorType::cellNumericValue(x, y);
-    return 0.;
+    if (!pArea)
+        return 0.;
+    auto& matrix = pArea->hydro.series->reservoirLevels;
+    return ((uint)x < matrix.width && (uint)y < matrix.height) ? matrix[x][y] * 100. : 0.;
 }
 
 wxString ATimeSeriesLevels::columnCaption(int colIndx) const
-{//Mora se menjati
-
-    switch((1 + colIndx) % 3){
-
-        case 0:
-        {
-            return wxString() << wxT("     TS-") << ((colIndx / 3) + 1) << wxT("     \n High Level (%)");
-            break;
-        }
-        case 1:
-        {
-            return wxString() << wxT("     TS-") << ((colIndx / 3) + 1) << wxT("    \n Low Level (%)");
-            break;
-        }
-        case 2:
-        {
-            return wxString() << wxT("     TS-") << ((colIndx / 3) + 1) << wxT("    \n Avg Level (%)");
-            break;
-        }
-        default:
-        {
-            return wxT("0");
-        }
+{
+    switch ((1 + colIndx) % 3)
+    {
+    case 0:
+    {
+        return wxString() << wxT("     TS-") << ((colIndx / 3) + 1)
+                          << wxT("     \n High Level (%)");
+        break;
+    }
+    case 1:
+    {
+        return wxString() << wxT("     TS-") << ((colIndx / 3) + 1) << wxT("    \n Low Level (%)");
+        break;
+    }
+    case 2:
+    {
+        return wxString() << wxT("     TS-") << ((colIndx / 3) + 1) << wxT("    \n Avg Level (%)");
+        break;
+    }
+    default:
+    {
+        return wxT("0");
+    }
     }
 }
 
@@ -127,199 +152,44 @@ wxColour ATimeSeriesLevels::horizontalBorderColor(int x, int y) const
 
 IRenderer::CellStyle ATimeSeriesLevels::cellStyle(int col, int row) const
 {
-    // All timeseries must have a positive value
-    double v = cellNumericValue(col, row);
-
-    
-    // Default
-    if (Math::Zero(v))
+    if (pArea)
     {
-        if (row % 2)
-            return IRenderer::cellStyleDefaultAlternateDisabled;
-        else
-            return IRenderer::cellStyleDefaultDisabled;
-    }
-    else
-    {
-        if (row % 2)
-            return IRenderer::cellStyleDefaultAlternate;
-        else
-            return IRenderer::cellStyleDefault;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-ReservoirLevels::ReservoirLevels(wxWindow* control, Toolbox::InputSelector::Area* notifier) :
- MatrixAncestorType(control), Renderer::ARendererArea(control, notifier)
-{
-}
-
-ReservoirLevels::~ReservoirLevels()
-{
-    destroyBoundEvents();
-}
-
-int ReservoirLevels::width() const
-{
-    return MatrixAncestorType::width();
-}
-
-int ReservoirLevels::height() const
-{
-    return DAYS_PER_YEAR;
-}
-
-wxString ReservoirLevels::columnCaption(int colIndx) const
-{
-    switch (colIndx)
-    {
-    case 0:
-        return wxT(" Lev Low \n (%)");
-    case 1:
-        return wxT(" Lev Avg \n (%)");
-    case 2:
-        return wxT(" Lev High \n (%)");
-    default:
-        return wxEmptyString;
-    }
-    return wxEmptyString;
-}
-
-wxString ReservoirLevels::cellValue(int x, int y) const
-{
-    if (!pArea)
-        return wxString();
-    auto& matrix = pArea->hydro.reservoirLevel;
-    return ((uint)x < matrix.width && (uint)y < matrix.height)
-             ? DoubleToWxString(100. * matrix[x][y])
-             : wxString();
-}
-
-double ReservoirLevels::cellNumericValue(int x, int y) const
-{
-    if (!pArea)
-        return 0.;
-    auto& matrix = pArea->hydro.reservoirLevel;
-    return ((uint)x < matrix.width && (uint)y < matrix.height) ? matrix[x][y] * 100. : 0.;
-}
-
-bool ReservoirLevels::cellValue(int x, int y, const String& value)
-{
-    if (!pArea)
-        return false;
-    auto& matrix = pArea->hydro.reservoirLevel;
-    if ((uint)x < matrix.width && (uint)y < matrix.height)
-    {
-        double v;
-        if (value.to(v))
+        auto& matrix = pArea->hydro.series->reservoirLevels;
+        if ((uint)row < matrix.height)
         {
-            v = Math::Round(v / 100., 3);
-            if (v < 0.)
-                v = 0.;
-            if (v > 1.)
-                v = 1;
-            matrix[x][y] = v;
-            matrix.markAsModified();
-            return true;
-        }
-    }
-    return false;
-}
-
-void ReservoirLevels::internalAreaChanged(Antares::Data::Area* area)
-{
-    // FIXME for some reasons, the variable study here is not properly initialized
-    if (area && !study)
-        study = GetCurrentStudy();
-
-    Data::PartHydro* pHydro = (area) ? &(area->hydro) : nullptr;
-    Renderer::ARendererArea::internalAreaChanged(area);
-    if (pHydro)
-    {
-        MatrixAncestorType::matrix(&pHydro->reservoirLevel);
-    }
-    else
-    {
-        MatrixAncestorType::matrix(nullptr);
-    }
-}
-
-IRenderer::CellStyle ReservoirLevels::cellStyle(int col, int row) const
-{
-    if (!pMatrix || 3 > pMatrix->width || (uint)row >= pMatrix->height)
-        return IRenderer::cellStyleWithNumericCheck(col, row);
-
-    switch (col)
-    {
-    case 0:
-    case 1:
-    case 2:
-    {
-        if (pArea)
-        {
-            auto& matrix = pArea->hydro.reservoirLevel;
-            if ((uint)row < matrix.height)
+            int minIndex = 0;
+            if (((col + 1) % 3) == 0)
             {
-                double d = matrix[col][row];
-                double min = matrix[0][row];
-                if (d < 0 || d > 1.)
-                    return IRenderer::cellStyleError;
-                if (d < min)
-                    return IRenderer::cellStyleError;
-                // We can use IRenderer::cellStyleWithNu... since this method
-                // as no mean to know data from hydro.reservoirLevel
-                return Math::Zero(d) ? ((row % 2) ? cellStyleDefaultAlternateDisabled
-                                                  : cellStyleDefaultDisabled)
-                                     : ((row % 2) ? cellStyleDefaultAlternate : cellStyleDefault);
+                minIndex = col - 2;
+            }
+            else if (((col + 1) % 3) == 2)
+            {
+                minIndex = col - 1;
+            }
+            else if (((col + 1) % 3) == 1)
+            {
+                minIndex = col;
+            }
+
+            double d = matrix[col][row];
+            double min = matrix[minIndex][row];
+            if (d < 0 || d > 1.)
+                return IRenderer::cellStyleError;
+            if (d < min)
+                return IRenderer::cellStyleError;
+            // We can use IRenderer::cellStyleWithNu... since this method
+            // as no mean to know data from hydro.reservoirLevel
+            if (Math::Zero(d))
+            {
+                return (row % 2) ? cellStyleDefaultAlternateDisabled : cellStyleDefaultDisabled;
+            }
+            else
+            {
+                return (row % 2) ? cellStyleDefaultAlternate : cellStyleDefault;
             }
         }
-        return ((row % 2) ? cellStyleDefaultAlternate : cellStyleDefault);
-    }
     }
     return IRenderer::cellStyleWithNumericCheck(col, row);
-}
-
-wxString ReservoirLevels::rowCaption(int rowIndx) const
-{
-    if (!study || rowIndx >= study->calendar.maxDaysInYear)
-        return wxEmptyString;
-    return wxStringFromUTF8(study->calendar.text.daysYear[rowIndx]);
-}
-
-bool ReservoirLevels::valid() const
-{
-    return MatrixAncestorType::valid();
-}
-
-/*bool ReservoirLevels::circularShiftRowsUntilDate(MonthName month, uint daymonth)
-{
-        if (pArea)
-                pArea->hydro.reservoirLevel.circularShiftRows(month, daymonth);
-        return MatrixAncestorType::circularShiftRowsUntilDate(month, daymonth);
-}
-*/
-
-void ReservoirLevels::onStudyClosed()
-{
-    MatrixAncestorType::onStudyClosed();
-    Renderer::ARendererArea::onStudyClosed();
-}
-
-void ReservoirLevels::onStudyLoaded()
-{
-    MatrixAncestorType::onStudyLoaded();
-    Renderer::ARendererArea::onStudyLoaded();
 }
 
 } // namespace Renderer

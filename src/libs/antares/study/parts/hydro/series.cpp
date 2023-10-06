@@ -163,7 +163,6 @@ bool DataSeriesHydro::loadFromFolder(Study& study, const AreaName& areaID, const
                 }
             }
             checkMinGenTsNumber(study, areaID);
-            checkReservoirLevelTsNumber(study, areaID);
         }
 
         if (study.parameters.derated)

@@ -133,7 +133,7 @@ public:
     */
     Matrix<double, int32_t> mingen;
 
-    Matrix<double, int32_t> reservoirLevels;
+    Matrix<double> reservoirLevels;
 
     /*!
     ** \brief The number of time-series
