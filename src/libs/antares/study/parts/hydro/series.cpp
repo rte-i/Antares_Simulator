@@ -49,6 +49,8 @@ DataSeriesHydro::DataSeriesHydro() : count(0)
     // by default
     mingen.reset(1, HOURS_PER_YEAR);
     reservoirLevels.reset(3, HOURS_PER_YEAR);
+    reservoirLevels.fillColumn(1, 0.5);
+    reservoirLevels.fillColumn(2, 1.);
 }
 
 bool DataSeriesHydro::saveToFolder(const AreaName& areaID, const AnyString& folder) const
@@ -68,7 +70,7 @@ bool DataSeriesHydro::saveToFolder(const AreaName& areaID, const AnyString& fold
         buffer.clear() << folder << SEP << areaID << SEP << "mingen.txt";
         ret = mingen.saveToCSVFile(buffer, 0) && ret;
         buffer.clear() << folder << SEP << areaID << SEP << "levels.txt";
-        ret = reservoirLevels.saveToCSVFile(buffer, 0) && ret;
+        ret = reservoirLevels.saveToCSVFile(buffer, 3) && ret;
         return ret;
     }
     return false;
@@ -276,6 +278,8 @@ void DataSeriesHydro::reset()
     storage.reset(1, DAYS_PER_YEAR);
     mingen.reset(1, HOURS_PER_YEAR);
     reservoirLevels.reset(3, DAYS_PER_YEAR);
+    reservoirLevels.fillColumn(1, 0.5);
+    reservoirLevels.fillColumn(2, 1.);
     count = 1;
 }
 
