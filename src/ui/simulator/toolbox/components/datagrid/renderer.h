@@ -122,7 +122,7 @@ public:
 
     //! \name defaultTripletValues
     //@{
-    virtual void defaultTripletValues(uint currentWidth, uint newWidth)
+    virtual void defaultTripletValues(uint /*currentWidth*/, uint /*newWidth*/)
     {
     }
     //@}
