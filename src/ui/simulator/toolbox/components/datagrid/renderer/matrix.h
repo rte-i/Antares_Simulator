@@ -143,6 +143,8 @@ public:
 
     virtual bool circularShiftRowsUntilDate(MonthName month, uint daymonth) override;
 
+    virtual void defaultTripletValues(uint currentWidth, uint newWidth) override;
+
 protected:
     //! Event: the study has been closed
     virtual void onStudyClosed() override;

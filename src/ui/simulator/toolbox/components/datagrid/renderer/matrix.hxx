@@ -235,6 +235,24 @@ void Matrix<T, ReadWriteT, PrecisionT>::resizeMatrixToXColumns(uint m)
 }
 
 template<class T, class ReadWriteT, uint PrecisionT>
+void Matrix<T, ReadWriteT, PrecisionT>::defaultTripletValues(uint currentWidth, uint newWidth)
+{
+    for (uint i = currentWidth; i < newWidth; ++i)
+    {
+        if (i % 3 == 0)
+            continue;
+        else if (i % 3 == 1)
+        {
+            pMatrix->fillColumn(i, 0.5);
+        }
+        else if (i % 3 == 2)
+        {
+            pMatrix->fillColumn(i, 1.);
+        }
+    }
+}
+
+template<class T, class ReadWriteT, uint PrecisionT>
 inline bool Matrix<T, ReadWriteT, PrecisionT>::valid() const
 {
     return (!IsGUIAboutToQuit() && !(!study) && pMatrix != NULL);

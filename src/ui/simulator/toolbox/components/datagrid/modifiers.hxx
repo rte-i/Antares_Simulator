@@ -355,8 +355,14 @@ struct ModifierOperatorsData<modifierDataset>
             {
                 if (renderer->isTriplet())
                 {
+                    int currentWidth = renderer->width();
                     logs.info() << "Resizing the matrix to " << newwidth * 3 << " columns";
                     renderer->resizeMatrixToXColumns(newwidth * 3);
+                    if(currentWidth < newwidth * 3)
+                    {
+                        renderer->defaultTripletValues(currentWidth, newwidth * 3);
+                    }
+
                 }
                 else
                 {

@@ -120,6 +120,13 @@ public:
     virtual bool isTriplet() const { return false; }
     //@}
 
+    //! \name defaultTripletValues
+    //@{
+    virtual void defaultTripletValues(uint currentWidth, uint newWidth)
+    {
+    }
+    //@}
+
     //! \name Sizes
     //@{
     /*!
