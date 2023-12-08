@@ -37,7 +37,7 @@ struct Fixture
         createFoldersAndFiles();
 
         // Instantiating neccessary studies parameters
-        study->header.version = 870;
+        study->header.version = 890;
         study->parameters.derated = false;
 
         //  Setting necessary paths
