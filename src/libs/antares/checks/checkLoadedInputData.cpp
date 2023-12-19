@@ -200,4 +200,36 @@ void checkCO2CostColumnNumber(const Antares::Data::AreaList& areas)
                              &Antares::Data::EconomicInputData::co2cost);
 }
 
+void checkMaintenancePlanningSettings(const Antares::Data::Parameters* parameters)
+{
+    const auto timeSeriesToGenerate = parameters->timeSeriesToGenerate;
+    bool aggregatedMode = parameters->renewableGeneration.isAggregated();
+
+    bool activeThermalTSGenAndMntPlanning
+      = (parameters->maintenancePlanning.isOptimized()
+         && (timeSeriesToGenerate & Antares::Data::timeSeriesThermal));
+
+    bool activeOtherTSGen
+      = ((timeSeriesToGenerate & Antares::Data::timeSeriesLoad)
+         || (timeSeriesToGenerate & Antares::Data::timeSeriesHydro)
+         || ((timeSeriesToGenerate & Antares::Data::timeSeriesWind) && aggregatedMode)
+         || ((timeSeriesToGenerate & Antares::Data::timeSeriesSolar) && aggregatedMode));
+
+    if (activeThermalTSGenAndMntPlanning && activeOtherTSGen)
+        throw Error::IncompatibleMaintenancePlanningUsage();
+}
+
+void checkMaintenancePlanningTsNum(const Antares::Data::Parameters* parameters)
+{
+    bool activeThermalTSGenAndMntPlanning
+      = (parameters->maintenancePlanning.isOptimized()
+         && (parameters->timeSeriesToGenerate & Antares::Data::timeSeriesThermal));
+
+    if (activeThermalTSGenAndMntPlanning
+        && parameters->maintenancePlanning.getScenarioLength()
+               * parameters->maintenancePlanning.getScenarioNumber()
+             != parameters->nbTimeSeriesThermal)
+        throw Error::IncompatibleMaintenancePlanningTsNum();
+}
+
 } // namespace Antares::Check

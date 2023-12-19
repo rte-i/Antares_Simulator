@@ -1,6 +1,45 @@
 project(ts-generator)
 
 #
+# Randomized-thermal-ts-generator
+#
+set(SRC_RANDOMIZEDGENERATORS
+	randomized-thermal-generator/RandomizedGenerator.h
+	randomized-thermal-generator/RandomizedGenerator.cpp
+)
+source_group("ts-generator\\randomized-thermal-generator" FILES ${SRC_RANDOMIZEDGENERATORS})
+
+#
+# Optimized-thermal-ts-generator
+#
+set(SRC_OPTIMIZEDGENERATORS
+	optimized-thermal-generator/auxillary/AuxillaryStructures.h
+	optimized-thermal-generator/auxillary/AuxillaryStructures.cpp
+	optimized-thermal-generator/auxillary/AuxillaryFreeFunctions.h
+	optimized-thermal-generator/auxillary/AuxillaryFreeFunctions.cpp
+	optimized-thermal-generator/auxillary/pre-scenario-builder.h
+	optimized-thermal-generator/auxillary/pre-scenario-builder.cpp
+	optimized-thermal-generator/main/OptimizedGenerator.h
+	optimized-thermal-generator/main/OptimizedGenerator.cpp
+	optimized-thermal-generator/parameters/OptimizationParameters.h
+	optimized-thermal-generator/parameters/CalculateParameters.cpp
+	optimized-thermal-generator/parameters/CalculateParametersPerCluster.cpp
+	optimized-thermal-generator/parameters/Getters.cpp
+	optimized-thermal-generator/optimization/CreateVariables.cpp
+	optimized-thermal-generator/optimization/SetVariableBounds.cpp
+	optimized-thermal-generator/optimization/SetProblemConstraints.cpp
+	optimized-thermal-generator/optimization/SetProblemCost.cpp
+	optimized-thermal-generator/optimization/ResetProblem.cpp
+	optimized-thermal-generator/optimization/SolveProbem.cpp
+	optimized-thermal-generator/optimization/PrintProblemVarRes.cpp
+	optimized-thermal-generator/postoptimization/PostTimeStepOptimization.cpp
+	optimized-thermal-generator/postoptimization/PostScenarioOptimization.cpp
+	optimized-thermal-generator/postoptimization/WriteResults.cpp
+
+)
+source_group("ts-generator\\optimized-thermal-generator" FILES ${SRC_OPTIMIZEDGENERATORS})
+
+#
 # Time-Series Generators
 #
 set(SRC_GENERATORS
@@ -38,6 +77,8 @@ source_group("ts-generator\\XCast" FILES ${SRC_XCAST})
 # --- Library VARIABLES ---
 #
 add_library(antares-solver-ts-generator
+				${SRC_RANDOMIZEDGENERATORS}
+				${SRC_OPTIMIZEDGENERATORS}
 				${SRC_GENERATORS}
 				${SRC_XCAST})
 
@@ -47,5 +88,6 @@ target_link_libraries(antares-solver-ts-generator
 		array
 		benchmarking
 		Antares::study
+        utils #ortools-utils, not Antares::utils
 		Antares::misc
 )

@@ -19,6 +19,7 @@ void StudyInfoCollector::toFileContent(FileContent& file_content)
     performedYearsCountToFileContent(file_content);
     enabledThermalClustersCountToFileContent(file_content);
     enabledBindingConstraintsCountToFileContent(file_content);
+    enabledMaintenanceGroupCountToFileContent(file_content);
     unitCommitmentModeToFileContent(file_content);
     maxNbYearsInParallelToFileContent(file_content);
     solverVersionToFileContent(file_content);
@@ -70,6 +71,13 @@ void StudyInfoCollector::enabledThermalClustersCountToFileContent(FileContent& f
 
     // Adding an item related to number of enabled thermal clusters to the file content
     file_content.addItemToSection("study", "enabled thermal clusters", nbEnabledThermalClusters);
+}
+
+void StudyInfoCollector::enabledMaintenanceGroupCountToFileContent(FileContent& file_content)
+{
+    auto activeMntGroups = study_.maintenanceGroups.activeMaintenanceGroups();
+    auto nbEnabledMNT = activeMntGroups.size();
+    file_content.addItemToSection("study", "enabled Maintenance Group-s", nbEnabledMNT);
 }
 
 void StudyInfoCollector::enabledBindingConstraintsCountToFileContent(FileContent& file_content)

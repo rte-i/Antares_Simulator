@@ -102,6 +102,28 @@ static bool ConvertStringToRenewableGenerationModelling(const AnyString& text,
     return false;
 }
 
+static bool ConvertStringToMaintenancePlanningModelling(const AnyString& text, MaintenancePlanningModelling& out)
+{
+    CString<24, false> s = text;
+    s.trim();
+    s.toLower();
+    if (s == "randomized")
+    {
+        out = mpRandomized;
+        return true;
+    }
+    if (s == "optimized")
+    {
+        out = mpOptimized;
+        return true;
+    }
+
+    logs.warning() << "parameters: invalid maintenance planning. Got '" << text << "'";
+    out = mpUnknown;
+
+    return false;
+}
+
 static bool ConvertCStrToResultFormat(const AnyString& text, ResultFormat& out)
 {
     CString<24, false> s = text;
@@ -302,6 +324,8 @@ void Parameters::reset()
     unitCommitment.ucMode = ucHeuristicFast;
     nbCores.ncMode = ncAvg;
     renewableGeneration.rgModelling = rgAggregated;
+    // maintenance Planning 
+    maintenancePlanning.clear();
 
     // Misc
     improveUnitsStartup = false;
@@ -639,6 +663,22 @@ static bool SGDIntLoadFamily_AdqPatch(Parameters& d,
     return d.adqPatchParams.updateFromKeyValue(key, value);
 }
 
+static bool SGDIntLoadFamily_MaintenancePlanning(Parameters& d,
+                                                 const String& key,
+                                                 const String& value,
+                                                 const String&)
+{
+    // Maintenance planning modelling
+    if (key == "maintenance-planning-modelling")
+        return ConvertStringToMaintenancePlanningModelling(value,
+                                                           d.maintenancePlanning.mpModelling);
+    if (key == "scenario-number")
+        return value.to<uint>(d.maintenancePlanning.scenarioNumber);
+    if (key == "scenario-length")
+        return value.to<uint>(d.maintenancePlanning.scenarioLength);
+    return false;
+}
+
 static bool SGDIntLoadFamily_OtherPreferences(Parameters& d,
                                               const String& key,
                                               const String& value,
@@ -970,6 +1010,7 @@ bool Parameters::loadFromINI(const IniFile& ini, uint version, const StudyLoadOp
          {"output", &SGDIntLoadFamily_Output},
          {"optimization", &SGDIntLoadFamily_Optimization},
          {"adequacy patch", &SGDIntLoadFamily_AdqPatch},
+         {"maintenance planning", &SGDIntLoadFamily_MaintenancePlanning},
          {"other preferences", &SGDIntLoadFamily_OtherPreferences},
          {"advanced parameters", &SGDIntLoadFamily_AdvancedParameters},
          {"playlist", &SGDIntLoadFamily_Playlist},
@@ -1585,6 +1626,15 @@ void Parameters::saveToINI(IniFile& ini) const
     // Adequacy patch
     adqPatchParams.saveToINI(ini);
 
+    // MaintenancePlanning
+    {
+        auto* section = ini.addSection("maintenance planning");
+        section->add("maintenance-planning-modelling",
+                     MaintenancePlanningModellingToCString(maintenancePlanning()));
+        section->add("scenario-number", maintenancePlanning.scenarioNumber);
+        section->add("scenario-length", maintenancePlanning.scenarioLength);
+    }
+
     // Other preferences
     {
         auto* section = ini.addSection("other preferences");
@@ -1778,6 +1828,58 @@ bool Parameters::RenewableGeneration::isAggregated() const
 bool Parameters::RenewableGeneration::isClusters() const
 {
     return rgModelling == Antares::Data::rgClusters;
+}
+
+MaintenancePlanningModelling Parameters::MaintenancePlanning::operator()() const
+{
+    return mpModelling;
+}
+
+void Parameters::MaintenancePlanning::toRandomized()
+{
+    mpModelling = Antares::Data::mpRandomized;
+}
+
+void Parameters::MaintenancePlanning::toOptimized()
+{
+    mpModelling = Antares::Data::mpOptimized;
+}
+
+bool Parameters::MaintenancePlanning::isRandomized() const
+{
+    return mpModelling == Antares::Data::mpRandomized;
+}
+
+bool Parameters::MaintenancePlanning::isOptimized() const
+{
+    return mpModelling == Antares::Data::mpOptimized;
+}
+
+void Parameters::MaintenancePlanning::setScenarioNumber(uint v)
+{
+    scenarioNumber = v;
+}
+
+void Parameters::MaintenancePlanning::setScenarioLength(uint v)
+{
+    scenarioLength = v;
+}
+
+uint Parameters::MaintenancePlanning::getScenarioNumber() const
+{
+    return scenarioNumber;
+}
+
+uint Parameters::MaintenancePlanning::getScenarioLength() const
+{
+    return scenarioLength;
+}
+
+void Parameters::MaintenancePlanning::clear()
+{
+    toRandomized();
+    setScenarioNumber(0);
+    setScenarioLength(0);
 }
 
 // Some variables rely on dual values & marginal costs

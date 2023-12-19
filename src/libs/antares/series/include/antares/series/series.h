@@ -88,7 +88,7 @@ public:
     void markAsModified() const;
     uint64_t memoryUsage() const;
 
-    TS timeSeries;
+    TS timeSeries; // TMP.INFO CR27: TS-s will be written here!
     numbers& timeseriesNumbers;
 
     static const std::vector<double> emptyColumn; ///< used in getColumn if timeSeries empty

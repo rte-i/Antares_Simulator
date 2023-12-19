@@ -675,6 +675,9 @@ bool AreaList::saveToFolder(const AnyString& folder) const
     buffer.clear() << folder << SEP << "input" << SEP << "bindingconstraints";
     ret = IO::Directory::Create(buffer) && ret;
 
+    buffer.clear() << folder << SEP << "input" << SEP << "maintenanceplanning";
+    ret = IO::Directory::Create(buffer) && ret;
+
     buffer.clear() << folder << SEP << "input" << SEP << "links";
     ret = IO::Directory::Create(buffer) && ret;
 
@@ -936,6 +939,7 @@ static bool AreaListLoadFromFolderSingleArea(Study& study,
         buffer.clear() << study.folderInput << SEP << "thermal" << SEP << "series";
         ret = area.thermal.list.loadDataSeriesFromFolder(study, options, buffer) && ret;
         ret = area.thermal.list.loadEconomicCosts(study, buffer) && ret;
+        ret = area.thermal.list.generateRandomDaysSinceLastMaintenance(study) && ret;
 
         // In adequacy mode, all thermal clusters must be in 'mustrun' mode
         if (study.usedByTheSolver && study.parameters.mode == SimulationMode::Adequacy)
@@ -1537,6 +1541,18 @@ ThermalCluster* AreaList::findClusterFromINIKey(const AnyString& key)
         return nullptr;
     ThermalCluster* i = parentArea->thermal.list.find(id);
     return (i != nullptr) ? i : nullptr;
+}
+
+Area* AreaList::findAreaFromINIKey(const AnyString& key)
+{
+    if (key.empty())
+        return nullptr;
+    auto offset = key.find('.');
+    if (offset == AreaName::npos || (0 == offset) || (offset == key.size() - 1))
+        return nullptr;
+    AreaName parentName(key.c_str(), offset);
+    Area* parentArea = findFromName(parentName);
+    return (parentArea != nullptr) ? parentArea : nullptr;
 }
 
 void AreaList::updateNameIDSet() const

@@ -231,6 +231,14 @@ static bool ThermalClusterLoadFromProperty(ThermalCluster& cluster, const IniFil
     if (p->key == "variableomcost")
         return p->value.to<double>(cluster.variableomcost);
 
+    // Maintenance Planning additional parameters
+    if (p->key == "optimize-maintenance")
+        return p->value.to<bool>(cluster.optimizeMaintenance);
+    if (p->key == "inter-po-period")
+        return p->value.to<int>(cluster.interPoPeriod);
+    if (p->key == "po-windows")
+        return p->value.to<int>(cluster.poWindows);
+
     //pollutant
     if (auto it = Pollutant::namesToEnum.find(p->key.c_str()); it != Pollutant::namesToEnum.end())
         return p->value.to<double> (cluster.emissions.factors[it->second]);
@@ -405,6 +413,13 @@ bool ThermalClusterList::saveToFolder(const AnyString& folder) const
             if (!Math::Zero(c.variableomcost))
                 s->add("variableomcost", Math::Round(c.variableomcost,3));
 
+            // Maintenance Planning additional parameters
+            if (!c.optimizeMaintenance)
+                s->add("optimize-maintenance", c.optimizeMaintenance);
+            if (c.interPoPeriod != 365)
+                s->add("inter-po-period", c.interPoPeriod);
+            if (!Math::Zero(c.poWindows))
+                s->add("po-windows", c.poWindows);
 
             //pollutant factor
             for (auto const& [key, val] : Pollutant::namesToEnum)
@@ -527,6 +542,30 @@ bool ThermalClusterList::loadEconomicCosts(Study& study, const AnyString& folder
         c->ComputeCostTimeSeries();
 
         ret = result && ret;
+    }
+    return ret;
+}
+
+bool ThermalClusterList::generateRandomDaysSinceLastMaintenance(Study& study)
+{
+    if (empty() || !study.parameters.maintenancePlanning.isOptimized())
+        return true;
+
+    bool ret = true;
+    MersenneTwister random[seedMax];
+
+    for (auto& [name, c] : cluster)
+    {
+        assert(c->parentArea and "cluster: invalid parent area");
+
+        if (!c->optimizeMaintenance)
+            continue;
+
+        for (uint unitIndex = 0; unitIndex < c->unitCount; ++unitIndex)
+        {
+            c->originalRandomlyGeneratedDaysSinceLastMaintenance.push_back(
+              (uint32_t)(floor(random[seedTsGenThermal].next() * c->interPoPeriod)));
+        }
     }
     return ret;
 }

@@ -221,5 +221,17 @@ public:
     IncompatibleFuelCostColumns();
 };
 
+class IncompatibleMaintenancePlanningUsage : public LoadingError
+{
+public:
+    IncompatibleMaintenancePlanningUsage();
+};
+
+class IncompatibleMaintenancePlanningTsNum : public LoadingError
+{
+public:
+    IncompatibleMaintenancePlanningTsNum();
+};
+
 } // namespace Error
 } // namespace Antares

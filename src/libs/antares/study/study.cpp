@@ -125,6 +125,9 @@ void Study::clear()
     bindingConstraintsGroups.clear();
     areas.clear();
 
+    // maintenance Group-s
+    maintenanceGroups.clear();
+
     // no folder
     ClearAndShrink(header.caption);
     ClearAndShrink(header.author);
@@ -151,6 +154,8 @@ void Study::createAsNew()
     // ... At study creation, renewable cluster is the default mode for RES (Renewable Energy
     // Source)
     parameters.renewableGeneration.rgModelling = Antares::Data::rgClusters;
+    // default mode for maintenancePlanning is Randomized 
+    parameters.maintenancePlanning.clear();
 
     parameters.yearsFilter = std::vector<bool>(1, true);
 
@@ -162,6 +167,9 @@ void Study::createAsNew()
 
     // Binding constraints
     bindingConstraints.clear();
+
+    // maintenance Group-s
+    maintenanceGroups.clear();
 
     // Areas
     areas.clear();
@@ -208,6 +216,8 @@ uint64_t Study::memoryUsage() const
            + areas.memoryUsage()
            // Binding constraints
            + bindingConstraints.memoryUsage()
+           // maintenance Group-s
+           + maintenanceGroups.memoryUsage()
            // Correlations matrices
            + preproLoadCorrelation.memoryUsage() + preproSolarCorrelation.memoryUsage()
            + preproHydroCorrelation.memoryUsage() + preproWindCorrelation.memoryUsage()
@@ -847,6 +857,8 @@ bool Study::areaDelete(Area* area)
         // Remove a single area
         // Remove all binding constraints attached to the area
         bindingConstraints.remove(area);
+        // Remove all Maintenance Group-s attached to the area
+        maintenanceGroups.remove(area);
         // Delete the area from the list
         areas.remove(area->id);
 
@@ -898,6 +910,8 @@ void Study::areaDelete(Area::Vector& arealist)
 
                 // Remove all binding constraints attached to the area
                 bindingConstraints.remove(*i);
+                // Remove all Maintenance Group-s attached to the area
+                maintenanceGroups.remove(*i);
                 // Delete the area from the list
                 areas.remove(area.id);
             }
@@ -1138,6 +1152,8 @@ void Study::destroyAllThermalTSGeneratorData()
         }
     });
 }
+
+// TODO CR27: see if we need this one for mant groups - only used in UI - so II phase
 
 void Study::ensureDataAreLoadedForAllBindingConstraints()
 {
@@ -1499,6 +1515,30 @@ bool Study::checkForFilenameLimits(bool output, const String& chfolder) const
                     logs.error()
                       << "OS Maximum path length limitation obtained with the constraint '"
                       << constraint.name() << "' (got " << filename.size() << " characters)";
+                    logs.error() << "You may experience problems while accessing to this file: "
+                                 << filename;
+                    return false;
+                }
+            }
+        }
+
+        if (not maintenanceGroups.empty())
+        {
+            auto end = maintenanceGroups.end();
+            for (auto i = maintenanceGroups.begin(); i != end; ++i)
+            {
+                // The current constraint
+                auto& mntGroup = *(*i);
+
+                filename.clear();
+                filename << studyfolder << "input" << SEP << "maintenanceplanning" << SEP;
+                filename << mntGroup.id() << ".ini";
+
+                if (filename.size() >= limit)
+                {
+                    logs.error()
+                      << "OS Maximum path length limitation obtained with the maintenance group '"
+                      << mntGroup.name() << "' (got " << filename.size() << " characters)";
                     logs.error() << "You may experience problems while accessing to this file: "
                                  << filename;
                     return false;

@@ -299,7 +299,7 @@ public:
     ** This value is a mask bits for timeSeries.
     ** \see TimeSeries
     */
-    uint timeSeriesToArchive;
+    uint timeSeriesToArchive;  //TMP.INFO CR27: archives = load, thermal etc... - adds category only if store in ouput is yes and stochastic TS status is yes
     //@}
 
     //! \name Pre-Processor
@@ -456,6 +456,26 @@ public:
     };
 
     RenewableGeneration renewableGeneration;
+
+    struct MaintenancePlanning
+    {
+        //! Maintenance Planning mode
+        MaintenancePlanningModelling mpModelling;
+        MaintenancePlanningModelling operator()() const;
+        uint scenarioNumber = 0;
+        uint scenarioLength = 0;
+        void toRandomized();
+        void toOptimized();
+        bool isRandomized() const;
+        bool isOptimized() const;
+        void setScenarioNumber(uint v);
+        void setScenarioLength(uint v);
+        uint getScenarioNumber() const;
+        uint getScenarioLength() const;
+        void clear();
+    };
+
+    MaintenancePlanning maintenancePlanning;
 
     struct
     {
