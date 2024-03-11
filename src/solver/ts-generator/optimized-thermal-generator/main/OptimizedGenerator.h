@@ -12,6 +12,9 @@
 #include "../parameters/OptimizationParameters.h"
 #include <antares/exception/AssertionError.hpp>
 
+#include <iostream>
+#include <fstream>
+
 // static const std::string mntPlSolverName = "cbc";
 static const int minNumberOfMaintenances = 2;
 static const double solverDelta = 10e-4;
@@ -174,7 +177,151 @@ public:
     // Main functions - loop per scenarios and
     // through the scenario length step by step
     // (moving window)
-    void GenerateOptimizedThermalTimeSeries();
+    void GenerateOptimizedThermalTimeSeries(Data::Study &study);
+
+    void printResidualLoad(Data::Study& study)
+    {
+        YString path = study.folderInput;
+        String buffer;
+        buffer.clear() << path << SEP << "MaintenanceData/residual_load.txt";
+        Matrix<double> residualLoad;
+        residualLoad.clear();
+        residualLoad.reset(1U, DAYS_PER_YEAR);
+
+        // File doesn't exist, so create a new one
+
+        // Check if the file is opened successfully
+
+        // Write data to the file
+        for (uint i = 0; i < DAYS_PER_YEAR; ++i)
+        {
+            residualLoad[0][i] = this->par.getResidualLoad(i);
+        }
+
+        residualLoad.saveToCSVFile(buffer, 4);
+    }
+
+    void printDaySinceLastMaintenance(Data::Study& study)
+    {
+        YString path = study.folderInput;
+        String buffer;
+        buffer.clear() << path << SEP << "MaintenanceData/days_since_last_maintenance.txt";
+        Matrix<uint> days_since_last_maintenace;
+        days_since_last_maintenace.clear();
+        // days_since_last_maintenace.reset(1U, );
+
+        // File doesn't exist, so create a new one
+
+        std::vector<uint> days_since_last_maintenace_vector = {};
+        uint numberOfAllUnits = 0;
+        for (auto& clusterEntry : this->par.clusterData)
+        {
+            auto& cluster = *(clusterEntry.first);
+            if (!(cluster.doWeGenerateTS(globalThermalTSgeneration_)
+                  && cluster.optimizeMaintenance))
+                continue;
+            for (int unit = 0; unit < cluster.unitCount; ++unit)
+            {
+                int value = this->par.getDaysSinceLastMaintenance(cluster, unit);
+                ++numberOfAllUnits;
+                days_since_last_maintenace_vector.push_back(value);
+            }
+        }
+
+        days_since_last_maintenace.reset(1U, numberOfAllUnits);
+
+        for (uint i = 0; i < numberOfAllUnits; ++i)
+        {
+            days_since_last_maintenace[0][i] = days_since_last_maintenace_vector[i];
+        }
+
+        days_since_last_maintenace.saveToCSVFile(buffer);
+    }
+
+    void printAverageMaintenanceDuration(Data::Study& study)
+    {
+        YString path = study.folderInput;
+        String buffer;
+        buffer.clear() << path << SEP << "MaintenanceData/average_maintenace_duration.txt";
+        Matrix<uint> average_maintenace_duration;
+        average_maintenace_duration.clear();
+        // days_since_last_maintenace.reset(1U, );
+
+        // File doesn't exist, so create a new one
+
+        std::vector<uint> average_maintenace_duration_vector = {};
+        uint numberOfAllUnits = 0;
+        for (auto& clusterEntry : this->par.clusterData)
+        {
+            auto& cluster = *(clusterEntry.first);
+            if (!(cluster.doWeGenerateTS(globalThermalTSgeneration_)
+                  && cluster.optimizeMaintenance))
+                continue;
+            for (int unit = 0; unit < cluster.unitCount; ++unit)
+            {
+                int value = this->par.getAverageMaintenanceDuration(cluster);
+                ++numberOfAllUnits;
+                average_maintenace_duration_vector.push_back(value);
+            }
+        }
+
+        average_maintenace_duration.reset(1U, numberOfAllUnits);
+
+        for (uint i = 0; i < numberOfAllUnits; ++i)
+        {
+            average_maintenace_duration[0][i] = average_maintenace_duration_vector[i];
+        }
+
+        average_maintenace_duration.saveToCSVFile(buffer);
+    }
+
+    void printMaintenanceSchedule()
+    {
+        uint numberOfUnits = vars.clusterUnits.size();
+        for (uint numUnits = 0; numUnits < numberOfUnits; ++numUnits)
+        {
+            uint numberOfMaintenances = vars.clusterUnits[numUnits].maintenances.size();
+            for (uint numMaintenance = 0; numMaintenance < numberOfMaintenances; ++numMaintenance)
+            {
+                Matrix<uint> data;
+                data.reset(2, this->par.timeHorizonFirstStep_);
+                for (uint i = 0; i < this->par.timeHorizonFirstStep_; ++i)
+                {
+                    data[0][i] = vars.clusterUnits[numUnits]
+                                   .maintenances[numMaintenance]
+                                   .start[i]
+                                   ->solution_value();
+                    data[1][i] = vars.clusterUnits[numUnits]
+                                   .maintenances[numMaintenance]
+                                   .end[i]
+                                   ->solution_value();
+                }
+                YString path = study.folderInput;
+                String buffer;
+                buffer.clear() << path << SEP << "MaintenanceSchedule" << SEP
+                               << "Maintenance" + std::to_string(numMaintenance + 1) + "-Unit"
+                                    + std::to_string(numUnits + 1) + ".txt";
+                data.saveToCSVFile(buffer);
+            }
+        }
+    }
+    
+    void setRes()
+    {
+        String buffer = "/home/nikola/Documents/Specialized Softwares in "
+                        "PSE/MaintenancePlanning/input/data/res.txt";
+        Matrix<double> res;
+        res.clear();
+        res.reset(1U, par.timeHorizon_);
+        Matrix<>::BufferType dataBuffer;
+
+        res.loadFromCSVFile(buffer, 1, par.timeHorizon_, &dataBuffer);
+
+        for (uint i = 0; i < par.timeHorizon_; ++i)
+        {
+            par.residualLoadDailyValues_[i] = res[0][i];
+        }
+    }
 };
 
 } // namespace Antares::Solver::TSGenerator
