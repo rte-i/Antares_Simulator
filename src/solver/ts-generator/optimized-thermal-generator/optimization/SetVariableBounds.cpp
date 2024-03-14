@@ -14,23 +14,10 @@ namespace Antares::Solver::TSGenerator
 // this will fix some start & end variable bounds to 0 or 1
 void OptimizedThermalGenerator::fixBounds()
 {
-    int e[13] = {};
-    int l[13] = {};
     // loop per units
     for (const auto& unit : vars.clusterUnits)
     {
         fixBounds(unit);
-        
-       
-    }
-    for(uint i = 0; i < 13; ++i){
-
-        int earliestStartOfFirstMaintenance
-          = par.calculateUnitEarliestStartOfFirstMaintenance(*(vars.clusterUnits[i].parentCluster), vars.clusterUnits[i].index);
-        int latestStartOfFirstMaintenance
-          = par.calculateUnitLatestStartOfFirstMaintenance(*(vars.clusterUnits[i].parentCluster), vars.clusterUnits[i].index);
-        e[i] = earliestStartOfFirstMaintenance;
-        l[i] = latestStartOfFirstMaintenance;
     }
     return;
 }

@@ -309,7 +309,7 @@ public:
     void setRes()
     {
         String buffer = "/home/nikola/Documents/Specialized Softwares in "
-                        "PSE/MaintenancePlanning/input/data/res.txt";
+                        "PSE/MaintenancePlanning/input/data/residual_load.txt";
         Matrix<double> res;
         res.clear();
         res.reset(1U, par.timeHorizon_);
@@ -320,6 +320,22 @@ public:
         for (uint i = 0; i < par.timeHorizon_; ++i)
         {
             par.residualLoadDailyValues_[i] = res[0][i];
+        }
+    }
+
+    std::vector<int> earliestStart = {};
+    std::vector<int> latestStart = {};
+
+    void printELStart()
+    {
+        for (uint i = 0; i < 13; ++i)
+        {
+            int earliestStartOfFirstMaintenance = par.calculateUnitEarliestStartOfFirstMaintenance(
+              *(vars.clusterUnits[i].parentCluster), vars.clusterUnits[i].index);
+            int latestStartOfFirstMaintenance = par.calculateUnitLatestStartOfFirstMaintenance(
+              *(vars.clusterUnits[i].parentCluster), vars.clusterUnits[i].index);
+            earliestStart.push_back(earliestStartOfFirstMaintenance);
+            latestStart.push_back(latestStartOfFirstMaintenance);
         }
     }
 };
