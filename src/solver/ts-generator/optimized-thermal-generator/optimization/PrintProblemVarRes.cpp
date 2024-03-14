@@ -38,7 +38,7 @@ void OptimizationParameters::printAllVariables(MPSolver& solver)
 
     std::cout << "total number of variables is: " << solver.NumVariables() << std::endl;
     printColumnToFile<std::string>(
-      dataToPrint, "/home/milos/Documents/RTEi/01-Antares/04-TestModels/REFACTOR-CR27-Vars.csv");
+      dataToPrint, "/home/nikola/maintenance.csv");
     return;
 }
 

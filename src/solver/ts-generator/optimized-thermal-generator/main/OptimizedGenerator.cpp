@@ -10,10 +10,14 @@
 namespace Antares::Solver::TSGenerator
 {
 // optimization problem - methods
-void OptimizedThermalGenerator::GenerateOptimizedThermalTimeSeries()
+void OptimizedThermalGenerator::GenerateOptimizedThermalTimeSeries(Data::Study &study)
 {
     allocateWhereToWriteTs();
     par.setMaintenanceGroupParameters();
+    this->printResidualLoad(study);
+    this->printDaySinceLastMaintenance(study);
+    this->printAverageMaintenanceDuration(study);
+    this->setRes();
     if (!par.checkMaintenanceGroupParameters())
         return;
 
@@ -31,6 +35,10 @@ void OptimizedThermalGenerator::GenerateOptimizedThermalTimeSeries()
             // check if the optimization was successful and exit loop otherwise
             if (!runOptimizationProblem(optSett))
                 break;
+            this->printMaintenanceSchedule();
+            MPObjective* objective = solver.MutableObjective();
+            double value = objective->Value();
+            std::exit(0);
 
             // Update the time values for the next iteration
             optSett.firstDay += par.timeStep_;

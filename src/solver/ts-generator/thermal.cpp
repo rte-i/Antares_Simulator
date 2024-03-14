@@ -88,7 +88,7 @@ bool GenerateOptimizedThermalTimeSeries(Data::Study& study,
         auto& maintenanceGroup = *(entryMaintenanceGroup.get());
         auto generator = OptimizedThermalGenerator(
           study, maintenanceGroup, year, globalThermalTSgeneration, progression, writer);
-        generator.GenerateOptimizedThermalTimeSeries();
+        generator.GenerateOptimizedThermalTimeSeries(study);
     }
 
     return true;

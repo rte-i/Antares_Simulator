@@ -11,6 +11,7 @@ bool OptimizedThermalGenerator::runOptimizationProblem(OptProblemSettings& optSe
 {
     resetProblem();
     buildProblemVariables(optSett);
+    this->printELStart();
     fixBounds();
     buildProblemConstraints(optSett);
     setProblemCost(optSett);
@@ -36,6 +37,7 @@ bool OptimizedThermalGenerator::solveProblem(OptProblemSettings& optSett)
                        << optSett.lastDay << ".Day. This scenario wont have generated timeseries";
         return false;
     }
+    par.printAllVariables(solver);
     return true;
 }
 
