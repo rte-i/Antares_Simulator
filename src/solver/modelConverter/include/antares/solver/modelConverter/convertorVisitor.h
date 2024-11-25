@@ -20,35 +20,13 @@
  */
 
 #pragma once
-#include <stdexcept>
 
+#include <ExprVisitor.h>
+
+#include <antares/solver/expressions/NodeRegistry.h>
 #include "antares/solver/modelParser/Library.h"
-
-namespace Antares
-{
-namespace Study::SystemModel
-{
-class Library;
-}
-
-namespace Solver::ModelParser
-{
-class Library;
-}
-} // namespace Antares
-
-namespace Antares::Solver::Nodes
-{
-class Node;
-}
 
 namespace Antares::Solver::ModelConverter
 {
-class UnknownTypeException: public std::runtime_error
-{
-public:
-    explicit UnknownTypeException(ModelParser::ValueType type);
-};
-
-Antares::Study::SystemModel::Library convert(const Antares::Solver::ModelParser::Library& library);
+NodeRegistry convertExpressionToNode(const std::string& exprStr, const ModelParser::Model& model);
 } // namespace Antares::Solver::ModelConverter

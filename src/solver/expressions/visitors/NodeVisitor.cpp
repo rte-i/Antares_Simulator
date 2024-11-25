@@ -18,39 +18,29 @@
 ** You should have received a copy of the Mozilla Public Licence 2.0
 ** along with Antares_Simulator. If not, see <https://opensource.org/license/mpl-2-0/>.
 */
-#pragma once
 
-#include <string>
+#include <antares/logs/logs.h>
+#include <antares/solver/expressions/visitors/NodeVisitor.h>
 
-#include <antares/solver/expressions/NodeRegistry.h>
-
-namespace Antares::Solver::Nodes
+namespace Antares::Solver::Visitors
 {
-class Node;
+static void ToYuniInfo(const std::string& msg)
+{
+    logs.info() << msg;
 }
 
-namespace Antares::Study::SystemModel
+static void ToYuniWarning(const std::string& msg)
 {
+    logs.warning() << msg;
+}
 
-class Expression
+static void ToYuniError(const std::string& msg)
 {
-public:
-    Expression() = default;
+    logs.error() << msg;
+}
 
-    explicit Expression(const std::string& value, Antares::Solver::NodeRegistry root):
-        value_(value),
-        root_(std::move(root))
-    {
-    }
-
-    const std::string& Value() const
-    {
-        return value_;
-    }
-
-private:
-    std::string value_;
-    Antares::Solver::NodeRegistry root_;
-};
-
-} // namespace Antares::Study::SystemModel
+LogSink RedirectToAntaresLogs()
+{
+    return {.info = ToYuniInfo, .warning = ToYuniWarning, .error = ToYuniError};
+}
+} // namespace Antares::Solver::Visitors
