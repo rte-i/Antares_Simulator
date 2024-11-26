@@ -235,9 +235,8 @@ var annotated_dup =
       ] ],
       [ "Data", null, [
         [ "AdequacyPatch", null, [
-          [ "AdqPatchParams", "structAntares_1_1Data_1_1AdequacyPatch_1_1AdqPatchParams.html", null ],
-          [ "CurtailmentSharing", "classAntares_1_1Data_1_1AdequacyPatch_1_1CurtailmentSharing.html", "classAntares_1_1Data_1_1AdequacyPatch_1_1CurtailmentSharing" ],
-          [ "LocalMatching", "structAntares_1_1Data_1_1AdequacyPatch_1_1LocalMatching.html", "structAntares_1_1Data_1_1AdequacyPatch_1_1LocalMatching" ]
+          [ "AdqPatchParams", "structAntares_1_1Data_1_1AdequacyPatch_1_1AdqPatchParams.html", "structAntares_1_1Data_1_1AdequacyPatch_1_1AdqPatchParams" ],
+          [ "CurtailmentSharing", "classAntares_1_1Data_1_1AdequacyPatch_1_1CurtailmentSharing.html", "classAntares_1_1Data_1_1AdequacyPatch_1_1CurtailmentSharing" ]
         ] ],
         [ "Load", null, [
           [ "Container", "classAntares_1_1Data_1_1Load_1_1Container.html", "classAntares_1_1Data_1_1Load_1_1Container" ],
@@ -311,7 +310,7 @@ var annotated_dup =
         [ "PreproAvailability", "classAntares_1_1Data_1_1PreproAvailability.html", "classAntares_1_1Data_1_1PreproAvailability" ],
         [ "PreproHydro", "classAntares_1_1Data_1_1PreproHydro.html", "classAntares_1_1Data_1_1PreproHydro" ],
         [ "RenewableCluster", "classAntares_1_1Data_1_1RenewableCluster.html", "classAntares_1_1Data_1_1RenewableCluster" ],
-        [ "RenewableClusterList", "classAntares_1_1Data_1_1RenewableClusterList.html", "classAntares_1_1Data_1_1RenewableClusterList" ],
+        [ "RenewableClusterList", "classAntares_1_1Data_1_1RenewableClusterList.html", null ],
         [ "SetHandlerAreas", "classAntares_1_1Data_1_1SetHandlerAreas.html", null ],
         [ "Sets", "classAntares_1_1Data_1_1Sets.html", "classAntares_1_1Data_1_1Sets" ],
         [ "SimulationComments", "classAntares_1_1Data_1_1SimulationComments.html", "classAntares_1_1Data_1_1SimulationComments" ],
@@ -355,7 +354,6 @@ var annotated_dup =
         [ "HourInterval", "structAntares_1_1Date_1_1HourInterval.html", "structAntares_1_1Date_1_1HourInterval" ]
       ] ],
       [ "Error", null, [
-        [ "AdqPatchDisabledLMR", "classAntares_1_1Error_1_1AdqPatchDisabledLMR.html", null ],
         [ "CommandLineArguments", "classAntares_1_1Error_1_1CommandLineArguments.html", null ],
         [ "IncompatibleCO2CostColumns", "classAntares_1_1Error_1_1IncompatibleCO2CostColumns.html", null ],
         [ "IncompatibleDailyOptHeuristicForArea", "classAntares_1_1Error_1_1IncompatibleDailyOptHeuristicForArea.html", null ],
@@ -439,9 +437,9 @@ var annotated_dup =
         [ "HydroLevel", "classAntares_1_1Optimization_1_1HydroLevel.html", null ],
         [ "HydroProduction", "classAntares_1_1Optimization_1_1HydroProduction.html", null ],
         [ "InfeasibleProblemReport", "classAntares_1_1Optimization_1_1InfeasibleProblemReport.html", null ],
-        [ "Nomenclature", "classAntares_1_1Optimization_1_1Nomenclature.html", null ],
+        [ "LegacyFiller", "classAntares_1_1Optimization_1_1LegacyFiller.html", null ],
+        [ "LegacyOrtoolsLinearProblem", "classAntares_1_1Optimization_1_1LegacyOrtoolsLinearProblem.html", null ],
         [ "PROBLEME_SIMPLEXE_NOMME", "structAntares_1_1Optimization_1_1PROBLEME__SIMPLEXE__NOMME.html", null ],
-        [ "ProblemSimplexeNommeConverter", "classAntares_1_1Optimization_1_1ProblemSimplexeNommeConverter.html", null ],
         [ "STS", "classAntares_1_1Optimization_1_1STS.html", null ],
         [ "UnfeasibilityAnalysis", "classAntares_1_1Optimization_1_1UnfeasibilityAnalysis.html", null ],
         [ "UnfeasiblePbAnalyzer", "classAntares_1_1Optimization_1_1UnfeasiblePbAnalyzer.html", null ],
@@ -483,10 +481,75 @@ var annotated_dup =
             [ "NoQueueService", "classAntares_1_1Solver_1_1Initialization_1_1Error_1_1NoQueueService.html", null ]
           ] ]
         ] ],
+        [ "ModelConverter", null, [
+          [ "ConvertorVisitor", "classAntares_1_1Solver_1_1ModelConverter_1_1ConvertorVisitor.html", "classAntares_1_1Solver_1_1ModelConverter_1_1ConvertorVisitor" ],
+          [ "NoParameterOrVariableWithThisName", "classAntares_1_1Solver_1_1ModelConverter_1_1NoParameterOrVariableWithThisName.html", null ],
+          [ "NotImplemented", "classAntares_1_1Solver_1_1ModelConverter_1_1NotImplemented.html", null ],
+          [ "UnknownTypeException", "classAntares_1_1Solver_1_1ModelConverter_1_1UnknownTypeException.html", null ]
+        ] ],
+        [ "Modeler", null, [
+          [ "Api", "namespaceAntares_1_1Solver_1_1Modeler_1_1Api.html", [
+            [ "FillContext", "structAntares_1_1Solver_1_1Modeler_1_1Api_1_1FillContext.html", null ],
+            [ "IHasBounds", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1IHasBounds.html", null ],
+            [ "IHasName", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1IHasName.html", null ],
+            [ "ILinearProblem", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1ILinearProblem.html", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1ILinearProblem" ],
+            [ "IMipConstraint", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1IMipConstraint.html", null ],
+            [ "IMipSolution", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1IMipSolution.html", null ],
+            [ "IMipVariable", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1IMipVariable.html", null ],
+            [ "LinearProblemBuilder", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1LinearProblemBuilder.html", null ],
+            [ "LinearProblemData", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1LinearProblemData.html", null ],
+            [ "LinearProblemFiller", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1LinearProblemFiller.html", null ],
+            [ "OneConstraintFiller", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1OneConstraintFiller.html", null ],
+            [ "OneVarFiller", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1OneVarFiller.html", null ],
+            [ "TwoVarsTwoConstraintsFiller", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1TwoVarsTwoConstraintsFiller.html", null ],
+            [ "VarFillerContext", "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1VarFillerContext.html", null ]
+          ] ],
+          [ "OrtoolsImpl", null, [
+            [ "ElemAlreadyExists", "classAntares_1_1Solver_1_1Modeler_1_1OrtoolsImpl_1_1ElemAlreadyExists.html", null ],
+            [ "OrtoolsLinearProblem", "classAntares_1_1Solver_1_1Modeler_1_1OrtoolsImpl_1_1OrtoolsLinearProblem.html", "classAntares_1_1Solver_1_1Modeler_1_1OrtoolsImpl_1_1OrtoolsLinearProblem" ],
+            [ "OrtoolsMipConstraint", "classAntares_1_1Solver_1_1Modeler_1_1OrtoolsImpl_1_1OrtoolsMipConstraint.html", null ],
+            [ "OrtoolsMipSolution", "classAntares_1_1Solver_1_1Modeler_1_1OrtoolsImpl_1_1OrtoolsMipSolution.html", null ],
+            [ "OrtoolsMipVariable", "classAntares_1_1Solver_1_1Modeler_1_1OrtoolsImpl_1_1OrtoolsMipVariable.html", null ]
+          ] ]
+        ] ],
+        [ "ModelParser", null, [
+          [ "Constraint", "structAntares_1_1Solver_1_1ModelParser_1_1Constraint.html", null ],
+          [ "Library", "structAntares_1_1Solver_1_1ModelParser_1_1Library.html", null ],
+          [ "Model", "structAntares_1_1Solver_1_1ModelParser_1_1Model.html", null ],
+          [ "Parameter", "structAntares_1_1Solver_1_1ModelParser_1_1Parameter.html", null ],
+          [ "Parser", "classAntares_1_1Solver_1_1ModelParser_1_1Parser.html", null ],
+          [ "Port", "structAntares_1_1Solver_1_1ModelParser_1_1Port.html", null ],
+          [ "PortFieldDefinition", "structAntares_1_1Solver_1_1ModelParser_1_1PortFieldDefinition.html", null ],
+          [ "PortType", "structAntares_1_1Solver_1_1ModelParser_1_1PortType.html", null ],
+          [ "Variable", "structAntares_1_1Solver_1_1ModelParser_1_1Variable.html", null ]
+        ] ],
+        [ "Nodes", null, [
+          [ "AST", "classAntares_1_1Solver_1_1Nodes_1_1AST.html", null ],
+          [ "ASTPreOrderIterator", "classAntares_1_1Solver_1_1Nodes_1_1ASTPreOrderIterator.html", null ],
+          [ "BinaryNode", "classAntares_1_1Solver_1_1Nodes_1_1BinaryNode.html", "classAntares_1_1Solver_1_1Nodes_1_1BinaryNode" ],
+          [ "ComparisonNode", "classAntares_1_1Solver_1_1Nodes_1_1ComparisonNode.html", "classAntares_1_1Solver_1_1Nodes_1_1ComparisonNode" ],
+          [ "ComponentNode", "classAntares_1_1Solver_1_1Nodes_1_1ComponentNode.html", "classAntares_1_1Solver_1_1Nodes_1_1ComponentNode" ],
+          [ "ComponentParameterNode", "classAntares_1_1Solver_1_1Nodes_1_1ComponentParameterNode.html", "classAntares_1_1Solver_1_1Nodes_1_1ComponentParameterNode" ],
+          [ "ComponentVariableNode", "classAntares_1_1Solver_1_1Nodes_1_1ComponentVariableNode.html", "classAntares_1_1Solver_1_1Nodes_1_1ComponentVariableNode" ],
+          [ "DivisionNode", "classAntares_1_1Solver_1_1Nodes_1_1DivisionNode.html", "classAntares_1_1Solver_1_1Nodes_1_1DivisionNode" ],
+          [ "EqualNode", "classAntares_1_1Solver_1_1Nodes_1_1EqualNode.html", null ],
+          [ "GreaterThanOrEqualNode", "classAntares_1_1Solver_1_1Nodes_1_1GreaterThanOrEqualNode.html", null ],
+          [ "Leaf", "classAntares_1_1Solver_1_1Nodes_1_1Leaf.html", "classAntares_1_1Solver_1_1Nodes_1_1Leaf" ],
+          [ "LessThanOrEqualNode", "classAntares_1_1Solver_1_1Nodes_1_1LessThanOrEqualNode.html", null ],
+          [ "LiteralNode", "classAntares_1_1Solver_1_1Nodes_1_1LiteralNode.html", null ],
+          [ "MultiplicationNode", "classAntares_1_1Solver_1_1Nodes_1_1MultiplicationNode.html", "classAntares_1_1Solver_1_1Nodes_1_1MultiplicationNode" ],
+          [ "NegationNode", "classAntares_1_1Solver_1_1Nodes_1_1NegationNode.html", "classAntares_1_1Solver_1_1Nodes_1_1NegationNode" ],
+          [ "Node", "classAntares_1_1Solver_1_1Nodes_1_1Node.html", null ],
+          [ "ParameterNode", "classAntares_1_1Solver_1_1Nodes_1_1ParameterNode.html", null ],
+          [ "PortFieldNode", "classAntares_1_1Solver_1_1Nodes_1_1PortFieldNode.html", "classAntares_1_1Solver_1_1Nodes_1_1PortFieldNode" ],
+          [ "PortFieldSumNode", "classAntares_1_1Solver_1_1Nodes_1_1PortFieldSumNode.html", "classAntares_1_1Solver_1_1Nodes_1_1PortFieldSumNode" ],
+          [ "SubtractionNode", "classAntares_1_1Solver_1_1Nodes_1_1SubtractionNode.html", "classAntares_1_1Solver_1_1Nodes_1_1SubtractionNode" ],
+          [ "SumNode", "classAntares_1_1Solver_1_1Nodes_1_1SumNode.html", "classAntares_1_1Solver_1_1Nodes_1_1SumNode" ],
+          [ "UnaryNode", "classAntares_1_1Solver_1_1Nodes_1_1UnaryNode.html", "classAntares_1_1Solver_1_1Nodes_1_1UnaryNode" ],
+          [ "VariableNode", "classAntares_1_1Solver_1_1Nodes_1_1VariableNode.html", null ]
+        ] ],
         [ "Optimization", null, [
-          [ "AdequacyPatchOptimization", "classAntares_1_1Solver_1_1Optimization_1_1AdequacyPatchOptimization.html", null ],
           [ "CsrQuadraticProblem", "classAntares_1_1Solver_1_1Optimization_1_1CsrQuadraticProblem.html", null ],
-          [ "DefaultWeeklyOptimization", "classAntares_1_1Solver_1_1Optimization_1_1DefaultWeeklyOptimization.html", null ],
           [ "OptimizationOptions", "structAntares_1_1Solver_1_1Optimization_1_1OptimizationOptions.html", "structAntares_1_1Solver_1_1Optimization_1_1OptimizationOptions" ],
           [ "WeeklyOptimization", "classAntares_1_1Solver_1_1Optimization_1_1WeeklyOptimization.html", null ]
         ] ],
@@ -590,7 +653,6 @@ var annotated_dup =
             [ "SpillageSelector", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1SpillageSelector.html", null ],
             [ "SpillageSelector< false >", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1SpillageSelector_3_01false_01_4.html", null ],
             [ "SpilledEnergy", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1SpilledEnergy.html", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1SpilledEnergy" ],
-            [ "SpilledEnergyAfterCSR", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1SpilledEnergyAfterCSR.html", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1SpilledEnergyAfterCSR" ],
             [ "STSbyGroup", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1STSbyGroup.html", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1STSbyGroup" ],
             [ "STstorageCashFlowByCluster", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1STstorageCashFlowByCluster.html", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1STstorageCashFlowByCluster" ],
             [ "STstorageInjectionByCluster", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1STstorageInjectionByCluster.html", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1STstorageInjectionByCluster" ],
@@ -602,6 +664,7 @@ var annotated_dup =
             [ "TimeSeriesValuesSolar", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1TimeSeriesValuesSolar.html", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1TimeSeriesValuesSolar" ],
             [ "TimeSeriesValuesWind", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1TimeSeriesValuesWind.html", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1TimeSeriesValuesWind" ],
             [ "UnsupliedEnergy", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1UnsupliedEnergy.html", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1UnsupliedEnergy" ],
+            [ "UnsupliedEnergyCSR", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1UnsupliedEnergyCSR.html", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1UnsupliedEnergyCSR" ],
             [ "VCardAvailableDispatchGen", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardAvailableDispatchGen.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardAvailableDispatchGen" ],
             [ "VCardBalance", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardBalance.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardBalance" ],
             [ "VCardBindingConstMarginCost", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardBindingConstMarginCost.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardBindingConstMarginCost" ],
@@ -643,7 +706,6 @@ var annotated_dup =
             [ "VCardReservoirLevel", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardReservoirLevel.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardReservoirLevel" ],
             [ "VCardRowBalance", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardRowBalance.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardRowBalance" ],
             [ "VCardSpilledEnergy", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardSpilledEnergy.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardSpilledEnergy" ],
-            [ "VCardSpilledEnergyAfterCSR", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardSpilledEnergyAfterCSR.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardSpilledEnergyAfterCSR" ],
             [ "VCardSTSbyGroup", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardSTSbyGroup.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardSTSbyGroup" ],
             [ "VCardSTstorageCashFlowByCluster", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardSTstorageCashFlowByCluster.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardSTstorageCashFlowByCluster" ],
             [ "VCardSTstorageInjectionByCluster", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardSTstorageInjectionByCluster.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardSTstorageInjectionByCluster" ],
@@ -655,6 +717,7 @@ var annotated_dup =
             [ "VCardTimeSeriesValuesSolar", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardTimeSeriesValuesSolar.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardTimeSeriesValuesSolar" ],
             [ "VCardTimeSeriesValuesWind", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardTimeSeriesValuesWind.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardTimeSeriesValuesWind" ],
             [ "VCardUnsupliedEnergy", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardUnsupliedEnergy.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardUnsupliedEnergy" ],
+            [ "VCardUnsupliedEnergyCSR", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardUnsupliedEnergyCSR.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardUnsupliedEnergyCSR" ],
             [ "VCardWaterValue", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardWaterValue.html", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardWaterValue" ],
             [ "WaterValue", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1WaterValue.html", "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1WaterValue" ]
           ] ],
@@ -717,22 +780,50 @@ var annotated_dup =
           [ "VCardAllSetsOfAreas", "structAntares_1_1Solver_1_1Variable_1_1VCardAllSetsOfAreas.html", "structAntares_1_1Solver_1_1Variable_1_1VCardAllSetsOfAreas" ],
           [ "VCardJoin", "structAntares_1_1Solver_1_1Variable_1_1VCardJoin.html", "structAntares_1_1Solver_1_1Variable_1_1VCardJoin" ]
         ] ],
+        [ "Visitors", null, [
+          [ "AstDOTStyleVisitor", "classAntares_1_1Solver_1_1Visitors_1_1AstDOTStyleVisitor.html", "classAntares_1_1Solver_1_1Visitors_1_1AstDOTStyleVisitor" ],
+          [ "BoxStyle", "structAntares_1_1Solver_1_1Visitors_1_1BoxStyle.html", "structAntares_1_1Solver_1_1Visitors_1_1BoxStyle" ],
+          [ "CloneVisitor", "classAntares_1_1Solver_1_1Visitors_1_1CloneVisitor.html", "classAntares_1_1Solver_1_1Visitors_1_1CloneVisitor" ],
+          [ "CompareVisitor", "classAntares_1_1Solver_1_1Visitors_1_1CompareVisitor.html", null ],
+          [ "EvaluationContext", "classAntares_1_1Solver_1_1Visitors_1_1EvaluationContext.html", "classAntares_1_1Solver_1_1Visitors_1_1EvaluationContext" ],
+          [ "EvalVisitor", "classAntares_1_1Solver_1_1Visitors_1_1EvalVisitor.html", "classAntares_1_1Solver_1_1Visitors_1_1EvalVisitor" ],
+          [ "EvalVisitorDivisionException", "classAntares_1_1Solver_1_1Visitors_1_1EvalVisitorDivisionException.html", null ],
+          [ "EvalVisitorNotImplemented", "classAntares_1_1Solver_1_1Visitors_1_1EvalVisitorNotImplemented.html", null ],
+          [ "InvalidNode", "classAntares_1_1Solver_1_1Visitors_1_1InvalidNode.html", null ],
+          [ "LinearityVisitor", "classAntares_1_1Solver_1_1Visitors_1_1LinearityVisitor.html", null ],
+          [ "LogSink", "structAntares_1_1Solver_1_1Visitors_1_1LogSink.html", null ],
+          [ "NodeVisitor", "classAntares_1_1Solver_1_1Visitors_1_1NodeVisitor.html", "classAntares_1_1Solver_1_1Visitors_1_1NodeVisitor" ],
+          [ "NodeVisitsProvider", "structAntares_1_1Solver_1_1Visitors_1_1NodeVisitsProvider.html", null ],
+          [ "PortFieldSubstitutionContext", "structAntares_1_1Solver_1_1Visitors_1_1PortFieldSubstitutionContext.html", null ],
+          [ "PortFieldSubstitutionVisitor", "classAntares_1_1Solver_1_1Visitors_1_1PortFieldSubstitutionVisitor.html", null ],
+          [ "PortFieldSumSubstitutionContext", "structAntares_1_1Solver_1_1Visitors_1_1PortFieldSumSubstitutionContext.html", null ],
+          [ "PortFieldSumSubstitutionVisitor", "classAntares_1_1Solver_1_1Visitors_1_1PortFieldSumSubstitutionVisitor.html", null ],
+          [ "PrintVisitor", "classAntares_1_1Solver_1_1Visitors_1_1PrintVisitor.html", null ],
+          [ "SubstitutionContext", "structAntares_1_1Solver_1_1Visitors_1_1SubstitutionContext.html", null ],
+          [ "SubstitutionVisitor", "classAntares_1_1Solver_1_1Visitors_1_1SubstitutionVisitor.html", null ],
+          [ "TimeIndexVisitor", "classAntares_1_1Solver_1_1Visitors_1_1TimeIndexVisitor.html", "classAntares_1_1Solver_1_1Visitors_1_1TimeIndexVisitor" ]
+        ] ],
         [ "Application", "classAntares_1_1Solver_1_1Application.html", "classAntares_1_1Solver_1_1Application" ],
         [ "AreaLinksTransCapaNumberOfTSretriever", "classAntares_1_1Solver_1_1AreaLinksTransCapaNumberOfTSretriever.html", null ],
         [ "AreaNumberOfTSretriever", "classAntares_1_1Solver_1_1AreaNumberOfTSretriever.html", null ],
         [ "ConstantDataFromAntares", "structAntares_1_1Solver_1_1ConstantDataFromAntares.html", null ],
         [ "EnsureQueueStartedIfNeeded", "classAntares_1_1Solver_1_1EnsureQueueStartedIfNeeded.html", null ],
         [ "FinalLevelValidator", "classAntares_1_1Solver_1_1FinalLevelValidator.html", null ],
+        [ "Hashable", "classAntares_1_1Solver_1_1Hashable.html", null ],
         [ "HebdoProblemToLpsTranslator", "classAntares_1_1Solver_1_1HebdoProblemToLpsTranslator.html", "classAntares_1_1Solver_1_1HebdoProblemToLpsTranslator" ],
         [ "HydroAreaNumberOfTSretriever", "classAntares_1_1Solver_1_1HydroAreaNumberOfTSretriever.html", null ],
         [ "ImmediateFileResultWriter", "classAntares_1_1Solver_1_1ImmediateFileResultWriter.html", "classAntares_1_1Solver_1_1ImmediateFileResultWriter" ],
+        [ "IName", "classAntares_1_1Solver_1_1IName.html", null ],
         [ "InMemoryWriter", "classAntares_1_1Solver_1_1InMemoryWriter.html", "classAntares_1_1Solver_1_1InMemoryWriter" ],
         [ "IntraModalConsistencyChecker", "classAntares_1_1Solver_1_1IntraModalConsistencyChecker.html", null ],
         [ "IResultWriter", "classAntares_1_1Solver_1_1IResultWriter.html", "classAntares_1_1Solver_1_1IResultWriter" ],
         [ "LoadAreaNumberOfTSretriever", "classAntares_1_1Solver_1_1LoadAreaNumberOfTSretriever.html", null ],
         [ "LpsFromAntares", "classAntares_1_1Solver_1_1LpsFromAntares.html", null ],
+        [ "NodeRegistry", "classAntares_1_1Solver_1_1NodeRegistry.html", null ],
         [ "NullResultWriter", "classAntares_1_1Solver_1_1NullResultWriter.html", null ],
+        [ "PortFieldHash", "structAntares_1_1Solver_1_1PortFieldHash.html", null ],
         [ "Progression", "classAntares_1_1Solver_1_1Progression.html", "classAntares_1_1Solver_1_1Progression" ],
+        [ "Registry", "classAntares_1_1Solver_1_1Registry.html", null ],
         [ "RenewClustersAreaNumberOfTSretriever", "classAntares_1_1Solver_1_1RenewClustersAreaNumberOfTSretriever.html", null ],
         [ "ScenarioBuilderOwner", "classAntares_1_1Solver_1_1ScenarioBuilderOwner.html", null ],
         [ "SolarAreaNumberOfTSretriever", "classAntares_1_1Solver_1_1SolarAreaNumberOfTSretriever.html", null ],
@@ -747,6 +838,28 @@ var annotated_dup =
       [ "Statistics", null, [
         [ "LogsDumper", "classAntares_1_1Statistics_1_1LogsDumper.html", null ],
         [ "Updater", "classAntares_1_1Statistics_1_1Updater.html", null ]
+      ] ],
+      [ "Study", null, [
+        [ "SystemModel", null, [
+          [ "Component", "classAntares_1_1Study_1_1SystemModel_1_1Component.html", null ],
+          [ "ComponentBuilder", "classAntares_1_1Study_1_1SystemModel_1_1ComponentBuilder.html", "classAntares_1_1Study_1_1SystemModel_1_1ComponentBuilder" ],
+          [ "ComponentData", "structAntares_1_1Study_1_1SystemModel_1_1ComponentData.html", null ],
+          [ "Constraint", "classAntares_1_1Study_1_1SystemModel_1_1Constraint.html", null ],
+          [ "Expression", "classAntares_1_1Study_1_1SystemModel_1_1Expression.html", null ],
+          [ "Library", "classAntares_1_1Study_1_1SystemModel_1_1Library.html", null ],
+          [ "LibraryBuilder", "classAntares_1_1Study_1_1SystemModel_1_1LibraryBuilder.html", "classAntares_1_1Study_1_1SystemModel_1_1LibraryBuilder" ],
+          [ "Model", "classAntares_1_1Study_1_1SystemModel_1_1Model.html", null ],
+          [ "ModelBuilder", "classAntares_1_1Study_1_1SystemModel_1_1ModelBuilder.html", "classAntares_1_1Study_1_1SystemModel_1_1ModelBuilder" ],
+          [ "Parameter", "classAntares_1_1Study_1_1SystemModel_1_1Parameter.html", "classAntares_1_1Study_1_1SystemModel_1_1Parameter" ],
+          [ "Port", "classAntares_1_1Study_1_1SystemModel_1_1Port.html", null ],
+          [ "PortField", "classAntares_1_1Study_1_1SystemModel_1_1PortField.html", null ],
+          [ "PortFieldDefinition", "classAntares_1_1Study_1_1SystemModel_1_1PortFieldDefinition.html", null ],
+          [ "PortType", "classAntares_1_1Study_1_1SystemModel_1_1PortType.html", null ],
+          [ "System", "classAntares_1_1Study_1_1SystemModel_1_1System.html", null ],
+          [ "SystemBuilder", "classAntares_1_1Study_1_1SystemModel_1_1SystemBuilder.html", "classAntares_1_1Study_1_1SystemModel_1_1SystemBuilder" ],
+          [ "SystemData", "structAntares_1_1Study_1_1SystemModel_1_1SystemData.html", null ],
+          [ "Variable", "classAntares_1_1Study_1_1SystemModel_1_1Variable.html", null ]
+        ] ]
       ] ],
       [ "Toolbox", null, [
         [ "Components", null, [
@@ -1129,6 +1242,10 @@ var annotated_dup =
     [ "study_modifier", null, [
       [ "study_modifier", "classstudy__modifier_1_1study__modifier.html", null ]
     ] ],
+    [ "study_output_handler", null, [
+      [ "result_type", "classstudy__output__handler_1_1result__type.html", null ],
+      [ "study_output_handler", "classstudy__output__handler_1_1study__output__handler.html", null ]
+    ] ],
     [ "study_run", null, [
       [ "study_run", "classstudy__run_1_1study__run.html", null ]
     ] ],
@@ -1149,6 +1266,15 @@ var annotated_dup =
       [ "VariableManager", "classVariableManagement_1_1VariableManager.html", null ]
     ] ],
     [ "YAML", null, [
+      [ "convert< Antares::Solver::ModelParser::Constraint >", "structYAML_1_1convert_3_01Antares_1_1Solver_1_1ModelParser_1_1Constraint_01_4.html", null ],
+      [ "convert< Antares::Solver::ModelParser::Library >", "structYAML_1_1convert_3_01Antares_1_1Solver_1_1ModelParser_1_1Library_01_4.html", null ],
+      [ "convert< Antares::Solver::ModelParser::Model >", "structYAML_1_1convert_3_01Antares_1_1Solver_1_1ModelParser_1_1Model_01_4.html", null ],
+      [ "convert< Antares::Solver::ModelParser::Parameter >", "structYAML_1_1convert_3_01Antares_1_1Solver_1_1ModelParser_1_1Parameter_01_4.html", null ],
+      [ "convert< Antares::Solver::ModelParser::Port >", "structYAML_1_1convert_3_01Antares_1_1Solver_1_1ModelParser_1_1Port_01_4.html", null ],
+      [ "convert< Antares::Solver::ModelParser::PortFieldDefinition >", "structYAML_1_1convert_3_01Antares_1_1Solver_1_1ModelParser_1_1PortFieldDefinition_01_4.html", null ],
+      [ "convert< Antares::Solver::ModelParser::PortType >", "structYAML_1_1convert_3_01Antares_1_1Solver_1_1ModelParser_1_1PortType_01_4.html", null ],
+      [ "convert< Antares::Solver::ModelParser::ValueType >", "structYAML_1_1convert_3_01Antares_1_1Solver_1_1ModelParser_1_1ValueType_01_4.html", null ],
+      [ "convert< Antares::Solver::ModelParser::Variable >", "structYAML_1_1convert_3_01Antares_1_1Solver_1_1ModelParser_1_1Variable_01_4.html", null ],
       [ "convert< Monster >", "structYAML_1_1convert_3_01Monster_01_4.html", null ],
       [ "convert< Power >", "structYAML_1_1convert_3_01Power_01_4.html", null ],
       [ "convert< Vec3 >", "structYAML_1_1convert_3_01Vec3_01_4.html", null ]
@@ -1190,6 +1316,8 @@ var annotated_dup =
     [ "BOUND_FLEX_UP_NODE", "structBOUND__FLEX__UP__NODE.html", null ],
     [ "CellColumnData", "classCellColumnData.html", "classCellColumnData" ],
     [ "commonFixture", "structcommonFixture.html", null ],
+    [ "ComparisonFixture", "structComparisonFixture.html", null ],
+    [ "ComponentBuilderCreationFixture", "structComponentBuilderCreationFixture.html", null ],
     [ "computeTimeStepLevel", "classcomputeTimeStepLevel.html", null ],
     [ "ConsistenceNumberOfDispatchableUnits", "classConsistenceNumberOfDispatchableUnits.html", "classConsistenceNumberOfDispatchableUnits" ],
     [ "ConsistenceNumberOfDispatchableUnitsGroup", "classConsistenceNumberOfDispatchableUnitsGroup.html", "classConsistenceNumberOfDispatchableUnitsGroup" ],
@@ -1226,6 +1354,7 @@ var annotated_dup =
     [ "ExchangeBalanceData", "structExchangeBalanceData.html", null ],
     [ "ExchangeBalanceGroup", "classExchangeBalanceGroup.html", null ],
     [ "ExprBaseVisitor", "classExprBaseVisitor.html", "classExprBaseVisitor" ],
+    [ "ExpressionToNodeConvertorEmptyModel", "classExpressionToNodeConvertorEmptyModel.html", null ],
     [ "ExprLexer", "classExprLexer.html", null ],
     [ "ExprParser", "classExprParser.html", "classExprParser" ],
     [ "ExprVisitor", "classExprVisitor.html", "classExprVisitor" ],
@@ -1238,7 +1367,10 @@ var annotated_dup =
     [ "FinalStockExpressionData", "structFinalStockExpressionData.html", null ],
     [ "FinalStockGroup", "classFinalStockGroup.html", null ],
     [ "Fixture", "structFixture.html", null ],
+    [ "FixtureEmptyProblem", "structFixtureEmptyProblem.html", null ],
+    [ "FixtureFeasibleProblem", "structFixtureFeasibleProblem.html", null ],
     [ "FixtureFull", "structFixtureFull.html", null ],
+    [ "FixtureInfeasibleProblem", "structFixtureInfeasibleProblem.html", null ],
     [ "FixtureMultipleTS", "classFixtureMultipleTS.html", null ],
     [ "FixtureStudyOnly", "structFixtureStudyOnly.html", null ],
     [ "FlowDissociation", "classFlowDissociation.html", "classFlowDissociation" ],
@@ -1351,6 +1483,7 @@ var annotated_dup =
     [ "SimplexResult", "structSimplexResult.html", null ],
     [ "SimulationHandler", "classSimulationHandler.html", null ],
     [ "SOLDE_MOYEN_DES_ECHANGES", "structSOLDE__MOYEN__DES__ECHANGES.html", null ],
+    [ "SparseVector", "classSparseVector.html", null ],
     [ "StartUpCostsData", "structStartUpCostsData.html", null ],
     [ "StringIsNotWellFormated", "classStringIsNotWellFormated.html", null ],
     [ "StubOptPeriodStringGenerator", "classStubOptPeriodStringGenerator.html", null ],
@@ -1360,6 +1493,9 @@ var annotated_dup =
     [ "StudyForBCTest", "structStudyForBCTest.html", null ],
     [ "StudyWithBConCluster", "structStudyWithBConCluster.html", null ],
     [ "StudyWithBConLink", "structStudyWithBConLink.html", null ],
+    [ "SubstitutionFixture", "classSubstitutionFixture.html", null ],
+    [ "SumSubstitutionFixture", "classSumSubstitutionFixture.html", null ],
+    [ "SystemBuilderCreationFixture", "structSystemBuilderCreationFixture.html", null ],
     [ "SystemMemoryLogger", "classSystemMemoryLogger.html", null ],
     [ "TargetVectorUpdater", "classTargetVectorUpdater.html", null ],
     [ "TestContext", "structTestContext.html", null ],

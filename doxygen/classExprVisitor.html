@@ -145,7 +145,8 @@ Inheritance diagram for ExprVisitor:</div>
  <div class="center">
   <img src="classExprVisitor.png" usemap="#ExprVisitor_map" alt=""/>
   <map id="ExprVisitor_map" name="ExprVisitor_map">
-<area href="classExprBaseVisitor.html" alt="ExprBaseVisitor" shape="rect" coords="0,112,220,136"/>
+<area href="classAntares_1_1Solver_1_1ModelConverter_1_1ConvertorVisitor.html" title="Visitor to convert ANTLR expressions to Antares::Solver::Nodes." alt="Antares::Solver::ModelConverter::ConvertorVisitor" shape="rect" coords="0,112,296,136"/>
+<area href="classExprBaseVisitor.html" alt="ExprBaseVisitor" shape="rect" coords="306,112,602,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -153,21 +154,33 @@ Inheritance diagram for ExprVisitor:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7911ff65674e66c4c49cd1c572985b97" id="r_a7911ff65674e66c4c49cd1c572985b97"><td class="memItemLeft" align="right" valign="top">virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExprVisitor.html#a7911ff65674e66c4c49cd1c572985b97">visitFullexpr</a> (<a class="el" href="classExprParser_1_1FullexprContext.html">ExprParser::FullexprContext</a> *context)=0</td></tr>
 <tr class="separator:a7911ff65674e66c4c49cd1c572985b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a523369f033b9caa6406ae3124299131e" id="r_a523369f033b9caa6406ae3124299131e"><td class="memItemLeft" align="right" valign="top"><a id="a523369f033b9caa6406ae3124299131e" name="a523369f033b9caa6406ae3124299131e"></a>
-virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitShift</b> (<a class="el" href="classExprParser_1_1ShiftContext.html">ExprParser::ShiftContext</a> *context)=0</td></tr>
-<tr class="separator:a523369f033b9caa6406ae3124299131e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a210fbeefac056ce76d7cfbfa5ee02b87" id="r_a210fbeefac056ce76d7cfbfa5ee02b87"><td class="memItemLeft" align="right" valign="top"><a id="a210fbeefac056ce76d7cfbfa5ee02b87" name="a210fbeefac056ce76d7cfbfa5ee02b87"></a>
-virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitIdentifier</b> (<a class="el" href="classExprParser_1_1IdentifierContext.html">ExprParser::IdentifierContext</a> *context)=0</td></tr>
-<tr class="separator:a210fbeefac056ce76d7cfbfa5ee02b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5140f60cc76dcb6c0de68e08bc8f01c" id="r_aa5140f60cc76dcb6c0de68e08bc8f01c"><td class="memItemLeft" align="right" valign="top"><a id="aa5140f60cc76dcb6c0de68e08bc8f01c" name="aa5140f60cc76dcb6c0de68e08bc8f01c"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitTimeSum</b> (<a class="el" href="classExprParser_1_1TimeSumContext.html">ExprParser::TimeSumContext</a> *context)=0</td></tr>
+<tr class="separator:aa5140f60cc76dcb6c0de68e08bc8f01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21f0fe38051ddd2eabb057edc9c4008a" id="r_a21f0fe38051ddd2eabb057edc9c4008a"><td class="memItemLeft" align="right" valign="top"><a id="a21f0fe38051ddd2eabb057edc9c4008a" name="a21f0fe38051ddd2eabb057edc9c4008a"></a>
 virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitNegation</b> (<a class="el" href="classExprParser_1_1NegationContext.html">ExprParser::NegationContext</a> *context)=0</td></tr>
 <tr class="separator:a21f0fe38051ddd2eabb057edc9c4008a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5084f71ccccee1dda21936d5b963c0d9" id="r_a5084f71ccccee1dda21936d5b963c0d9"><td class="memItemLeft" align="right" valign="top"><a id="a5084f71ccccee1dda21936d5b963c0d9" name="a5084f71ccccee1dda21936d5b963c0d9"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitUnsignedAtom</b> (<a class="el" href="classExprParser_1_1UnsignedAtomContext.html">ExprParser::UnsignedAtomContext</a> *context)=0</td></tr>
+<tr class="separator:a5084f71ccccee1dda21936d5b963c0d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0082d39127fab268b984436350f6737b" id="r_a0082d39127fab268b984436350f6737b"><td class="memItemLeft" align="right" valign="top"><a id="a0082d39127fab268b984436350f6737b" name="a0082d39127fab268b984436350f6737b"></a>
 virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitExpression</b> (<a class="el" href="classExprParser_1_1ExpressionContext.html">ExprParser::ExpressionContext</a> *context)=0</td></tr>
 <tr class="separator:a0082d39127fab268b984436350f6737b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3daddfb4685a1fd3d670b5e29edc99f5" id="r_a3daddfb4685a1fd3d670b5e29edc99f5"><td class="memItemLeft" align="right" valign="top"><a id="a3daddfb4685a1fd3d670b5e29edc99f5" name="a3daddfb4685a1fd3d670b5e29edc99f5"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitTimeIndex</b> (<a class="el" href="classExprParser_1_1TimeIndexContext.html">ExprParser::TimeIndexContext</a> *context)=0</td></tr>
+<tr class="separator:a3daddfb4685a1fd3d670b5e29edc99f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af07876253d9f4f809185908834b1d438" id="r_af07876253d9f4f809185908834b1d438"><td class="memItemLeft" align="right" valign="top"><a id="af07876253d9f4f809185908834b1d438" name="af07876253d9f4f809185908834b1d438"></a>
 virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitComparison</b> (<a class="el" href="classExprParser_1_1ComparisonContext.html">ExprParser::ComparisonContext</a> *context)=0</td></tr>
 <tr class="separator:af07876253d9f4f809185908834b1d438"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fec3c547a77a0f762b1300fbba45283" id="r_a1fec3c547a77a0f762b1300fbba45283"><td class="memItemLeft" align="right" valign="top"><a id="a1fec3c547a77a0f762b1300fbba45283" name="a1fec3c547a77a0f762b1300fbba45283"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitAllTimeSum</b> (<a class="el" href="classExprParser_1_1AllTimeSumContext.html">ExprParser::AllTimeSumContext</a> *context)=0</td></tr>
+<tr class="separator:a1fec3c547a77a0f762b1300fbba45283"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5865515876a3550a087b1f3fe58fd5b" id="r_ad5865515876a3550a087b1f3fe58fd5b"><td class="memItemLeft" align="right" valign="top"><a id="ad5865515876a3550a087b1f3fe58fd5b" name="ad5865515876a3550a087b1f3fe58fd5b"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitTimeShift</b> (<a class="el" href="classExprParser_1_1TimeShiftContext.html">ExprParser::TimeShiftContext</a> *context)=0</td></tr>
+<tr class="separator:ad5865515876a3550a087b1f3fe58fd5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a5320b978463f9e4d115c4c98eed9a5" id="r_a2a5320b978463f9e4d115c4c98eed9a5"><td class="memItemLeft" align="right" valign="top"><a id="a2a5320b978463f9e4d115c4c98eed9a5" name="a2a5320b978463f9e4d115c4c98eed9a5"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitFunction</b> (<a class="el" href="classExprParser_1_1FunctionContext.html">ExprParser::FunctionContext</a> *context)=0</td></tr>
+<tr class="separator:a2a5320b978463f9e4d115c4c98eed9a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17b02673d6c3a5d869c0b456f954492a" id="r_a17b02673d6c3a5d869c0b456f954492a"><td class="memItemLeft" align="right" valign="top"><a id="a17b02673d6c3a5d869c0b456f954492a" name="a17b02673d6c3a5d869c0b456f954492a"></a>
 virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitAddsub</b> (<a class="el" href="classExprParser_1_1AddsubContext.html">ExprParser::AddsubContext</a> *context)=0</td></tr>
 <tr class="separator:a17b02673d6c3a5d869c0b456f954492a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,21 +193,33 @@ virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitMuld
 <tr class="memitem:aa3316b55a00d6ad053e9c5270c70301a" id="r_aa3316b55a00d6ad053e9c5270c70301a"><td class="memItemLeft" align="right" valign="top"><a id="aa3316b55a00d6ad053e9c5270c70301a" name="aa3316b55a00d6ad053e9c5270c70301a"></a>
 virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitNumber</b> (<a class="el" href="classExprParser_1_1NumberContext.html">ExprParser::NumberContext</a> *context)=0</td></tr>
 <tr class="separator:aa3316b55a00d6ad053e9c5270c70301a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3daddfb4685a1fd3d670b5e29edc99f5" id="r_a3daddfb4685a1fd3d670b5e29edc99f5"><td class="memItemLeft" align="right" valign="top"><a id="a3daddfb4685a1fd3d670b5e29edc99f5" name="a3daddfb4685a1fd3d670b5e29edc99f5"></a>
-virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitTimeIndex</b> (<a class="el" href="classExprParser_1_1TimeIndexContext.html">ExprParser::TimeIndexContext</a> *context)=0</td></tr>
-<tr class="separator:a3daddfb4685a1fd3d670b5e29edc99f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5865515876a3550a087b1f3fe58fd5b" id="r_ad5865515876a3550a087b1f3fe58fd5b"><td class="memItemLeft" align="right" valign="top"><a id="ad5865515876a3550a087b1f3fe58fd5b" name="ad5865515876a3550a087b1f3fe58fd5b"></a>
-virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitTimeShift</b> (<a class="el" href="classExprParser_1_1TimeShiftContext.html">ExprParser::TimeShiftContext</a> *context)=0</td></tr>
-<tr class="separator:ad5865515876a3550a087b1f3fe58fd5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a5320b978463f9e4d115c4c98eed9a5" id="r_a2a5320b978463f9e4d115c4c98eed9a5"><td class="memItemLeft" align="right" valign="top"><a id="a2a5320b978463f9e4d115c4c98eed9a5" name="a2a5320b978463f9e4d115c4c98eed9a5"></a>
-virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitFunction</b> (<a class="el" href="classExprParser_1_1FunctionContext.html">ExprParser::FunctionContext</a> *context)=0</td></tr>
-<tr class="separator:a2a5320b978463f9e4d115c4c98eed9a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66f95dbd999ddd2c0fa44aba7d1a8e9e" id="r_a66f95dbd999ddd2c0fa44aba7d1a8e9e"><td class="memItemLeft" align="right" valign="top"><a id="a66f95dbd999ddd2c0fa44aba7d1a8e9e" name="a66f95dbd999ddd2c0fa44aba7d1a8e9e"></a>
-virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitTimeShiftRange</b> (<a class="el" href="classExprParser_1_1TimeShiftRangeContext.html">ExprParser::TimeShiftRangeContext</a> *context)=0</td></tr>
-<tr class="separator:a66f95dbd999ddd2c0fa44aba7d1a8e9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a059ab2b1bfe94dc3b4a380013987db30" id="r_a059ab2b1bfe94dc3b4a380013987db30"><td class="memItemLeft" align="right" valign="top"><a id="a059ab2b1bfe94dc3b4a380013987db30" name="a059ab2b1bfe94dc3b4a380013987db30"></a>
-virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitTimeRange</b> (<a class="el" href="classExprParser_1_1TimeRangeContext.html">ExprParser::TimeRangeContext</a> *context)=0</td></tr>
-<tr class="separator:a059ab2b1bfe94dc3b4a380013987db30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a210fbeefac056ce76d7cfbfa5ee02b87" id="r_a210fbeefac056ce76d7cfbfa5ee02b87"><td class="memItemLeft" align="right" valign="top"><a id="a210fbeefac056ce76d7cfbfa5ee02b87" name="a210fbeefac056ce76d7cfbfa5ee02b87"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitIdentifier</b> (<a class="el" href="classExprParser_1_1IdentifierContext.html">ExprParser::IdentifierContext</a> *context)=0</td></tr>
+<tr class="separator:a210fbeefac056ce76d7cfbfa5ee02b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a523369f033b9caa6406ae3124299131e" id="r_a523369f033b9caa6406ae3124299131e"><td class="memItemLeft" align="right" valign="top"><a id="a523369f033b9caa6406ae3124299131e" name="a523369f033b9caa6406ae3124299131e"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitShift</b> (<a class="el" href="classExprParser_1_1ShiftContext.html">ExprParser::ShiftContext</a> *context)=0</td></tr>
+<tr class="separator:a523369f033b9caa6406ae3124299131e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2fed60ca3bd69c4bc33bed973814ede" id="r_af2fed60ca3bd69c4bc33bed973814ede"><td class="memItemLeft" align="right" valign="top"><a id="af2fed60ca3bd69c4bc33bed973814ede" name="af2fed60ca3bd69c4bc33bed973814ede"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitSignedAtom</b> (<a class="el" href="classExprParser_1_1SignedAtomContext.html">ExprParser::SignedAtomContext</a> *context)=0</td></tr>
+<tr class="separator:af2fed60ca3bd69c4bc33bed973814ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b84bfd64846d9e95c18a91d3b827149" id="r_a4b84bfd64846d9e95c18a91d3b827149"><td class="memItemLeft" align="right" valign="top"><a id="a4b84bfd64846d9e95c18a91d3b827149" name="a4b84bfd64846d9e95c18a91d3b827149"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitSignedExpression</b> (<a class="el" href="classExprParser_1_1SignedExpressionContext.html">ExprParser::SignedExpressionContext</a> *context)=0</td></tr>
+<tr class="separator:a4b84bfd64846d9e95c18a91d3b827149"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b00b1377e7f2b00d90cd212c5e5c1c0" id="r_a0b00b1377e7f2b00d90cd212c5e5c1c0"><td class="memItemLeft" align="right" valign="top"><a id="a0b00b1377e7f2b00d90cd212c5e5c1c0" name="a0b00b1377e7f2b00d90cd212c5e5c1c0"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitShiftMuldiv</b> (<a class="el" href="classExprParser_1_1ShiftMuldivContext.html">ExprParser::ShiftMuldivContext</a> *context)=0</td></tr>
+<tr class="separator:a0b00b1377e7f2b00d90cd212c5e5c1c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e8a652f9ceb099d4ae8737b58151b03" id="r_a5e8a652f9ceb099d4ae8737b58151b03"><td class="memItemLeft" align="right" valign="top"><a id="a5e8a652f9ceb099d4ae8737b58151b03" name="a5e8a652f9ceb099d4ae8737b58151b03"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitShiftAddsub</b> (<a class="el" href="classExprParser_1_1ShiftAddsubContext.html">ExprParser::ShiftAddsubContext</a> *context)=0</td></tr>
+<tr class="separator:a5e8a652f9ceb099d4ae8737b58151b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4bd0c3e4ead8582240ac0acc1a26f0e" id="r_ae4bd0c3e4ead8582240ac0acc1a26f0e"><td class="memItemLeft" align="right" valign="top"><a id="ae4bd0c3e4ead8582240ac0acc1a26f0e" name="ae4bd0c3e4ead8582240ac0acc1a26f0e"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitRightExpression</b> (<a class="el" href="classExprParser_1_1RightExpressionContext.html">ExprParser::RightExpressionContext</a> *context)=0</td></tr>
+<tr class="separator:ae4bd0c3e4ead8582240ac0acc1a26f0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5a076c860d0c4419f72677c855ea941" id="r_af5a076c860d0c4419f72677c855ea941"><td class="memItemLeft" align="right" valign="top"><a id="af5a076c860d0c4419f72677c855ea941" name="af5a076c860d0c4419f72677c855ea941"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitRightMuldiv</b> (<a class="el" href="classExprParser_1_1RightMuldivContext.html">ExprParser::RightMuldivContext</a> *context)=0</td></tr>
+<tr class="separator:af5a076c860d0c4419f72677c855ea941"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affa0043ae56e07f86b7223ad9423e8ed" id="r_affa0043ae56e07f86b7223ad9423e8ed"><td class="memItemLeft" align="right" valign="top"><a id="affa0043ae56e07f86b7223ad9423e8ed" name="affa0043ae56e07f86b7223ad9423e8ed"></a>
+virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitRightAtom</b> (<a class="el" href="classExprParser_1_1RightAtomContext.html">ExprParser::RightAtomContext</a> *context)=0</td></tr>
+<tr class="separator:affa0043ae56e07f86b7223ad9423e8ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class defines an abstract visitor for a parse tree produced by <a class="el" href="classExprParser.html">ExprParser</a>. </p>
@@ -224,7 +249,7 @@ virtual std::any&#160;</td><td class="memItemRight" valign="bottom"><b>visitTime
 </div><div class="memdoc">
 <p>Visit parse trees produced by <a class="el" href="classExprParser.html">ExprParser</a>. </p>
 
-<p>Implemented in <a class="el" href="classExprBaseVisitor.html#a3122023ab9aac9e7d597d11343a83194">ExprBaseVisitor</a>.</p>
+<p>Implemented in <a class="el" href="classAntares_1_1Solver_1_1ModelConverter_1_1ConvertorVisitor.html#ad103bbea1d779095d87d86a7bca86a75">Antares::Solver::ModelConverter::ConvertorVisitor</a>, and <a class="el" href="classExprBaseVisitor.html#a3122023ab9aac9e7d597d11343a83194">ExprBaseVisitor</a>.</p>
 
 </div>
 </div>
