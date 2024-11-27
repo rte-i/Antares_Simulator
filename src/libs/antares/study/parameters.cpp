@@ -272,6 +272,7 @@ void Parameters::reset()
     firstWeekday = monday;
     firstMonthInYear = january;
     leapYear = false;
+    useScenarizedReservoirLevels = false;
 
     effectiveNbYears = 0;
 
@@ -448,6 +449,11 @@ static bool SGDIntLoadFamily_General(Parameters& d,
     if (key == "first.weekday")
     {
         return Date::StringToDayOfTheWeek(d.firstWeekday, value);
+    }
+
+    if (key == "use-scenarized-reservoir-levels")
+    {
+        return value.to<bool>(d.useScenarizedReservoirLevels);
     }
 
     if (key == "geographic-trimming")
