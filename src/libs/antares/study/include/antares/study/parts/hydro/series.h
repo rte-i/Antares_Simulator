@@ -132,6 +132,27 @@ public:
     */
     TimeSeries maxHourlyPumpPower;
 
+    /*!
+    ** \brief Maximum Reservoir Levels (%)
+    **
+    ** Merely a matrix of TimeSeriesCount * DAYS_PER_YEAR values
+    */
+    TimeSeries maxDailyReservoirLevels;
+
+    /*!
+    ** \brief Minimum Reservoir Levels (%)
+    **
+    ** Merely a matrix of TimeSeriesCount * DAYS_PER_YEAR values
+    */
+    TimeSeries minDailyReservoirLevels;
+
+    /*!
+    ** \brief Average Reservoir Levels (%)
+    **
+    ** Merely a matrix of TimeSeriesCount * DAYS_PER_YEAR values
+    */
+    TimeSeries avgDailyReservoirLevels;
+
     // Getters for generation (ror, storage and mingen) and
     // max power (generation and pumping) number of TS
     uint TScount() const;
