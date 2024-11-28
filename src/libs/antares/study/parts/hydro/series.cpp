@@ -72,13 +72,19 @@ DataSeriesHydro::DataSeriesHydro():
     storage(timeseriesNumbers),
     mingen(timeseriesNumbers),
     maxHourlyGenPower(timeseriesNumbers),
-    maxHourlyPumpPower(timeseriesNumbers)
+    maxHourlyPumpPower(timeseriesNumbers),
+    maxDailyReservoirLevels(timeseriesNumbers),
+    minDailyReservoirLevels(timeseriesNumbers),
+    avgDailyReservoirLevels(timeseriesNumbers)
 {
     timeseriesNumbers.registerSeries(&ror, "ror");
     timeseriesNumbers.registerSeries(&storage, "storage");
     timeseriesNumbers.registerSeries(&mingen, "mingen");
     timeseriesNumbers.registerSeries(&maxHourlyGenPower, "max-geneneration-power");
     timeseriesNumbers.registerSeries(&maxHourlyPumpPower, "max-pumping-power");
+    timeseriesNumbers.registerSeries(&maxDailyReservoirLevels, "max-reservoir-level");
+    timeseriesNumbers.registerSeries(&minDailyReservoirLevels, "min-reservoir-level");
+    timeseriesNumbers.registerSeries(&avgDailyReservoirLevels, "avg-reservoir-level");
 
     // Pmin was introduced in v8.6
     // The previous behavior was Pmin=0
@@ -87,6 +93,12 @@ DataSeriesHydro::DataSeriesHydro():
     mingen.reset();
     maxHourlyGenPower.reset();
     maxHourlyPumpPower.reset();
+    maxDailyReservoirLevels.reset(1L, DAYS_PER_YEAR);
+    maxDailyReservoirLevels.fill(1.0);
+    avgDailyReservoirLevels.reset(1L, DAYS_PER_YEAR);
+    avgDailyReservoirLevels.fill(0.0);
+    minDailyReservoirLevels.reset(1L, DAYS_PER_YEAR);
+    minDailyReservoirLevels.fill(0.5);
 }
 
 void DataSeriesHydro::copyGenerationTS(const DataSeriesHydro& source)
@@ -128,6 +140,9 @@ bool DataSeriesHydro::forceReload(bool reload) const
     ret = mingen.forceReload(reload) && ret;
     ret = maxHourlyGenPower.forceReload(reload) && ret;
     ret = maxHourlyPumpPower.forceReload(reload) && ret;
+    ret = maxDailyReservoirLevels.forceReload(reload) && ret;
+    ret = avgDailyReservoirLevels.forceReload(reload) && ret;
+    ret = minDailyReservoirLevels.forceReload(reload) && ret;
     return ret;
 }
 
@@ -138,6 +153,9 @@ void DataSeriesHydro::markAsModified() const
     mingen.markAsModified();
     maxHourlyGenPower.markAsModified();
     maxHourlyPumpPower.markAsModified();
+    maxDailyReservoirLevels.markAsModified();
+    avgDailyReservoirLevels.markAsModified();
+    minDailyReservoirLevels.markAsModified();
 }
 
 bool DataSeriesHydro::loadGenerationTS(const AreaName& areaID,
@@ -244,10 +262,14 @@ void DataSeriesHydro::resizeTSinDeratedMode(bool derated,
         mingen.averageTimeseries();
 
         if (studyVersion >= StudyVersion(9, 1))
-        {
+        {   // Check: Maybe we don't need check for 9.1 version, since we have conversion
+            // This two objects will be created regardless of the version
             maxHourlyGenPower.averageTimeseries();
             maxHourlyPumpPower.averageTimeseries();
         }
     }
+    maxDailyReservoirLevels.averageTimeseries();
+    avgDailyReservoirLevels.averageTimeseries();
+    minDailyReservoirLevels.averageTimeseries();
 }
 } // namespace Antares::Data
