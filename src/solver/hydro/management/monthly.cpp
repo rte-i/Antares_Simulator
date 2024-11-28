@@ -152,7 +152,7 @@ void HydroManagement::prepareMonthlyOptimalGenerations(const double* random_rese
       {
           auto& data = area.hydro.managementData[y];
           auto& hydro_specific = hydro_specific_map[&area];
-
+            // Use new objects for reservoir levels
           auto& minLvl = area.hydro.reservoirLevel[Data::PartHydro::minimum];
           auto& maxLvl = area.hydro.reservoirLevel[Data::PartHydro::maximum];
 
@@ -235,7 +235,8 @@ void HydroManagement::prepareMonthlyOptimalGenerations(const double* random_rese
           }
 
           else
-          {
+          {     
+            // Use new objects for reservoir leves, here we dont need reservoir levels since we are not using reservoir management
               auto& reservoirLevel = area.hydro.reservoirLevel[Data::PartHydro::average];
 
               for (uint realmonth = 0; realmonth != MONTHS_PER_YEAR; ++realmonth)

@@ -520,7 +520,7 @@ void SIM_RenseignementProblemeHebdo(const Study& study,
             {
                 if (area.hydro.hardBoundsOnRuleCurves
                     && problem.CaracteristiquesHydrauliques[k].SuiviNiveauHoraire)
-                {
+                {   // use new objects for reservoir levels
                     auto& minLvl = area.hydro.reservoirLevel[Data::PartHydro::minimum];
                     auto& maxLvl = area.hydro.reservoirLevel[Data::PartHydro::maximum];
 
@@ -794,6 +794,7 @@ void SIM_RenseignementProblemeHebdo(const Study& study,
                                 const uint nextWeekFirstDay = study.calendar
                                                                 .hours[PasDeTempsDebut + 7 * 24]
                                                                 .dayYear;
+                                // Use new object for reservoir levels
                                 auto& minLvl = area.hydro.reservoirLevel[Data::PartHydro::minimum];
                                 double V = std::max(0., WSL - minLvl[nextWeekFirstDay] * rc + WNI);
 
@@ -946,6 +947,7 @@ void SIM_RenseignementProblemeHebdo(const Study& study,
                                     const uint nextWeekFirstDay = study.calendar
                                                                     .hours[PasDeTempsDebut + 7 * 24]
                                                                     .dayYear;
+                                    // Use new object for reservoir levels                             
                                     auto& maxLvl = area.hydro
                                                      .reservoirLevel[Data::PartHydro::maximum];
 

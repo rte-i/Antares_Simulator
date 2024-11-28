@@ -694,6 +694,7 @@ void ISimulation<ImplementationType>::computeRandomNumbers(
             Data::Area& area)
           {
               // looking for the initial reservoir level (begining of the year)
+              // Use new object for reservoir levels
               auto& min = area.hydro.reservoirLevel[Data::PartHydro::minimum];
               auto& avg = area.hydro.reservoirLevel[Data::PartHydro::average];
               auto& max = area.hydro.reservoirLevel[Data::PartHydro::maximum];

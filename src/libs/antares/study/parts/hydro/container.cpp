@@ -72,6 +72,7 @@ void PartHydro::reset()
 
     inflowPattern.reset(1, DAYS_PER_YEAR, true);
     inflowPattern.fillColumn(0, 1.0);
+    // Remove reservoirLevel from Constructor
     reservoirLevel.reset(3, DAYS_PER_YEAR, true);
     reservoirLevel.fillColumn(average, 0.5);
     reservoirLevel.fillColumn(maximum, 1.);
@@ -200,7 +201,8 @@ bool PartHydro::LoadFromFolder(Study& study, const fs::path& folder)
                                                             Matrix<>::optFixedSize,
                                                             &study.dataBuffer)
                 && ret;
-
+        
+            // Loading of the reservoir levels will be moved into the list.cpp file
           std::string reservoirId = "reservoir_" + area.id + ".txt";
           fs::path reservoirPath = capacityPath / reservoirId;
           ret = area.hydro.reservoirLevel.loadFromCSVFile(reservoirPath.string(),
@@ -348,6 +350,7 @@ bool PartHydro::checkReservoirLevels(const Study& study)
                 ret = false;
             }
         }
+        // This check should be moved in the HydroInputCheck class in solver part
         bool errorLevels = false;
         auto& colMin = area->hydro.reservoirLevel[minimum];
         auto& colAvg = area->hydro.reservoirLevel[average];
@@ -582,7 +585,7 @@ bool PartHydro::SaveToFolder(const AreaList& areas, const AnyString& folder)
           buffer.clear() << folder << SEP << "common" << SEP << "capacity" << SEP
                          << "inflowPattern_" << area.id << ".txt";
           ret = area.hydro.inflowPattern.saveToCSVFile(buffer, /*decimal*/ 3) && ret;
-          // reservoir
+          // reservoir, consult with RTE about UI
           buffer.clear() << folder << SEP << "common" << SEP << "capacity" << SEP << "reservoir_"
                          << area.id << ".txt";
           ret = area.hydro.reservoirLevel.saveToCSVFile(buffer, /*decimal*/ 3) && ret;
@@ -601,6 +604,7 @@ bool PartHydro::forceReload(bool reload) const
     bool ret = true;
     ret = creditModulation.forceReload(reload) && ret;
     ret = inflowPattern.forceReload(reload) && ret;
+    // This object is going to be deprecated
     ret = reservoirLevel.forceReload(reload) && ret;
     ret = waterValues.forceReload(reload) && ret;
     ret = dailyNbHoursAtGenPmax.forceReload(reload) && ret;
@@ -621,6 +625,7 @@ bool PartHydro::forceReload(bool reload) const
 void PartHydro::markAsModified() const
 {
     inflowPattern.markAsModified();
+    // This object is going to be removed
     reservoirLevel.markAsModified();
     waterValues.markAsModified();
     creditModulation.markAsModified();
@@ -651,7 +656,7 @@ void PartHydro::copyFrom(const PartHydro& rhs)
         inflowPattern.unloadFromMemory();
         rhs.inflowPattern.unloadFromMemory();
     }
-    // reservoir levels
+    // reservoir levels, this is going to be deprecated
     {
         reservoirLevel = rhs.reservoirLevel;
         reservoirLevel.unloadFromMemory();

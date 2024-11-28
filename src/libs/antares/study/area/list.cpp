@@ -962,6 +962,9 @@ static bool AreaListLoadFromFolderSingleArea(Study& study,
             ret = area.hydro.series->LoadMaxPower(area.id, hydroSeries) && ret;
         }
 
+        // Here add function call for loading reservoir level TS, from new and old files
+        // Also here add function call to validate reservoir levels
+
         area.hydro.series->resizeTSinDeratedMode(study.parameters.derated,
                                                  studyVersion,
                                                  study.usedByTheSolver);

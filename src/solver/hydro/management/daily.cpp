@@ -234,6 +234,7 @@ inline void HydroManagement::prepareDailyOptimalGenerations(
 
     double reservoirCapacity = area.hydro.reservoirCapacity;
 
+    // This is going to be deprecated in favor of new object for the reservoir level
     auto& lowLevel = area.hydro.reservoirLevel[Data::PartHydro::minimum];
 
     double dailyTargetGen[12 * maxDailyTargetGen];
