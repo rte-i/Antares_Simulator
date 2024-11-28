@@ -262,7 +262,7 @@ void DataSeriesHydro::resizeTSinDeratedMode(bool derated,
         mingen.averageTimeseries();
 
         if (studyVersion >= StudyVersion(9, 1))
-        {   // Check: Maybe we don't need check for 9.1 version, since we have conversion
+        { // Check: Maybe we don't need check for 9.1 version, since we have conversion
             // This two objects will be created regardless of the version
             maxHourlyGenPower.averageTimeseries();
             maxHourlyPumpPower.averageTimeseries();
