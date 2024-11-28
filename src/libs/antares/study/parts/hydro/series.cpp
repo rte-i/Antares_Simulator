@@ -96,9 +96,8 @@ DataSeriesHydro::DataSeriesHydro():
     maxDailyReservoirLevels.reset(1L, DAYS_PER_YEAR);
     maxDailyReservoirLevels.fill(1.0);
     avgDailyReservoirLevels.reset(1L, DAYS_PER_YEAR);
-    avgDailyReservoirLevels.fill(0.0);
+    avgDailyReservoirLevels.fill(0.5);
     minDailyReservoirLevels.reset(1L, DAYS_PER_YEAR);
-    minDailyReservoirLevels.fill(0.5);
 }
 
 void DataSeriesHydro::copyGenerationTS(const DataSeriesHydro& source)
@@ -194,6 +193,30 @@ bool DataSeriesHydro::LoadMaxPower(const std::string& areaID, const fs::path& fo
           && ret;
 
     return ret;
+}
+
+bool DataSeriesHydro::loadReservoirLevels(const std::string& areaID, const fs::path& folder)
+{
+    bool ret = true;
+
+    ret = loadTSfromFile(maxDailyReservoirLevels.timeSeries,
+                         areaID,
+                         folder,
+                         "maxDailyReservoirLevels.txt",
+                         DAYS_PER_YEAR)
+          && ret;
+    ret = loadTSfromFile(minDailyReservoirLevels.timeSeries,
+                         areaID,
+                         folder,
+                         "minDailyReservoirLevels.txt",
+                         DAYS_PER_YEAR)
+          && ret;
+    ret = loadTSfromFile(avgDailyReservoirLevels.timeSeries,
+                         areaID,
+                         folder,
+                         "avgDailyReservoirLevels.txt",
+                         DAYS_PER_YEAR)
+          && ret;
 }
 
 void DataSeriesHydro::buildHourlyMaxPowerFromDailyTS(
