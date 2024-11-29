@@ -523,10 +523,18 @@ void SIM_RenseignementProblemeHebdo(const Study& study,
                 { // use new objects for reservoir levels
                     // auto& minLvl = area.hydro.reservoirLevel[Data::PartHydro::minimum];
                     // auto& maxLvl = area.hydro.reservoirLevel[Data::PartHydro::maximum];
-                    const auto& minLvl = area.hydro.series->minDailyReservoirLevels.getColumn(
-                      problem.year);
-                    const auto& maxLvl = area.hydro.series->maxDailyReservoirLevels.getColumn(
-                      problem.year);
+                    uint32_t seriesIndexMin = area.hydro.series->minDailyReservoirLevels
+                                                .getSeriesIndex(problem.year);
+                    uint32_t seriesIndexMax = area.hydro.series->maxDailyReservoirLevels
+                                                .getSeriesIndex(problem.year);
+                    const auto& minLvl = area.hydro.series->minDailyReservoirLevels
+                                           .timeSeries[seriesIndexMin];
+                    const auto& maxLvl = area.hydro.series->maxDailyReservoirLevels
+                                           .timeSeries[seriesIndexMax];
+                    // const auto& minLvl = area.hydro.series->minDailyReservoirLevels.getColumn(
+                    // problem.year);
+                    // const auto& maxLvl = area.hydro.series->maxDailyReservoirLevels.getColumn(
+                    // problem.year);
 
                     for (int day = 0; day < 7; day++)
                     {
@@ -801,8 +809,12 @@ void SIM_RenseignementProblemeHebdo(const Study& study,
                                 // Use new object for reservoir levels
                                 // auto& minLvl =
                                 // area.hydro.reservoirLevel[Data::PartHydro::minimum];
+                                uint32_t seriesIndexMin = area.hydro.series->minDailyReservoirLevels
+                                                            .getSeriesIndex(problem.year);
                                 const auto& minLvl = area.hydro.series->minDailyReservoirLevels
-                                                       .getColumn(problem.year);
+                                                       .timeSeries[seriesIndexMin];
+                                // const auto& minLvl = area.hydro.series->minDailyReservoirLevels
+                                //                      .getColumn(problem.year);
                                 double V = std::max(0., WSL - minLvl[nextWeekFirstDay] * rc + WNI);
 
                                 if (Utils::isZero(WGU))
@@ -957,8 +969,14 @@ void SIM_RenseignementProblemeHebdo(const Study& study,
                                     // Use new object for reservoir levels
                                     // auto& maxLvl =
                                     // area.hydro.reservoirLevel[Data::PartHydro::maximum];
+                                    // const auto& maxLvl =
+                                    // area.hydro.series->maxDailyReservoirLevels
+                                    //                     .getColumn(problem.year);
+                                    uint32_t seriesIndexMax = area.hydro.series
+                                                                ->maxDailyReservoirLevels
+                                                                .getSeriesIndex(problem.year);
                                     const auto& maxLvl = area.hydro.series->maxDailyReservoirLevels
-                                                           .getColumn(problem.year);
+                                                           .timeSeries[seriesIndexMax];
                                     double V = std::max(0.,
                                                         maxLvl[nextWeekFirstDay] * rc
                                                           - (WNI + WSL));
