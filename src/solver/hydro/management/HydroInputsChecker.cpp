@@ -114,7 +114,7 @@ bool HydroInputsChecker::checkReservoirLevels(uint year)
                   || avgReservoirLevels[day] > maxReservoirLevels[day]
                   || maxReservoirLevels[day] > 100)
               {
-                // Add more information in logs
+                  // Add more information in logs
                   logs.error() << area.id << ": invalid reservoir level value";
 
                   ret = false;
