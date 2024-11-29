@@ -130,7 +130,8 @@ var NAVTREEINDEX0 =
 "STStorageLevelsByCluster_8h_source.html":[10,0,0,4,15,0,0,0,0,2,35],
 "STStorageWithdrawalByCluster_8h_source.html":[10,0,0,4,15,0,0,0,0,2,36],
 "ScenarioBuilderOwner_8h_source.html":[10,0,0,4,0,0,0,0,1],
-"ShortTermStorageLevel_8h_source.html":[10,0,0,4,10,0,0,0,0,1,42],
+"ShortTermStorageCostVariation_8h_source.html":[10,0,0,4,10,0,0,0,0,1,42],
+"ShortTermStorageLevel_8h_source.html":[10,0,0,4,10,0,0,0,0,1,43],
 "SimulationObserver_8h_source.html":[10,0,0,1,1,1],
 "SimulationResults_8h_source.html":[10,0,0,1,0,0,0,0],
 "SparseVector_8hxx_source.html":[10,0,0,4,10,0,0,0,0,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classAntares_1_1API_1_1SimulationObserver.html#af6224b550ed1c7f63e1aa92205cbb99d":[9,0,0,1,2,1],
 "classAntares_1_1ATSP.html":[9,0,0,23],
 "classAntares_1_1ATSP.html#a50b71aaaf1e9e05bc9ff32a7bad7cd66":[9,0,0,23,1],
-"classAntares_1_1ATSP.html#a6c9d2186673b1051d61a1b48f4db6875":[9,0,0,23,2],
-"classAntares_1_1ATSP.html#ae2c6aa315bdf1d171c0412aa09a071b8":[9,0,0,23,4]
+"classAntares_1_1ATSP.html#a6c9d2186673b1051d61a1b48f4db6875":[9,0,0,23,2]
 };

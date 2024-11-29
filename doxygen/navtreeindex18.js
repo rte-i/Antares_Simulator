@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"classAntares_1_1Window_1_1StartupWizard.html#af0586d7b6bf8ff22dcf62d6fabf151c6":[9,0,0,19,52,1],
 "classAntares_1_1Window_1_1StudyLogs.html":[9,0,0,19,53],
 "classAntares_1_1Window_1_1StudyLogs.html#ae87fe99636196fa028687657e3a53c43":[9,0,0,19,53,1],
 "classAntares_1_1Window_1_1StudyLogs.html#af15b31d897bb0ef292f484f057f64eb9":[9,0,0,19,53,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "classIntoUTF8ArgsTranslator.html":[9,0,132],
 "classJIT.html":[9,0,134],
 "classJIT_1_1Informations.html":[9,0,134,0],
-"classJIT_1_1Informations.html#a0008cfdb31ed223ee90759a949a03245":[9,0,134,0,10],
-"classJIT_1_1Informations.html#a099cbe47c83c8ca89d0ca0e2685494ca":[9,0,134,0,0]
+"classJIT_1_1Informations.html#a0008cfdb31ed223ee90759a949a03245":[9,0,134,0,10]
 };

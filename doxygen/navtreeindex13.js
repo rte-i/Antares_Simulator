@@ -1,5 +1,6 @@
 var NAVTREEINDEX13 =
 {
+"classAntares_1_1Solver_1_1Modeler_1_1Api_1_1ILinearProblem.html#ab2328e768e699d9f45d4c5eadfb1b936":[9,0,0,13,2,0,3,3],
 "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1ILinearProblem.html#ac44e14b79cdbc584efc0d3f665cb7f95":[9,0,0,13,2,0,3,7],
 "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1ILinearProblem.html#ac4f3b2cc47bf7afc50ce6cd45a7926ea":[9,0,0,13,2,0,3,5],
 "classAntares_1_1Solver_1_1Modeler_1_1Api_1_1IMipConstraint.html":[9,0,0,13,2,0,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX13 =
 "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1FlowLinear.html#a69bce610e893b4c230dafcf53be4da15":[9,0,0,13,8,4,10,4],
 "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1FlowLinear.html#a7b6daa98b58e50f769e12fafb1adf23f":[9,0,0,13,8,4,10,1],
 "classAntares_1_1Solver_1_1Variable_1_1Economy_1_1FlowLinear.html#aa3514a8a0b395000bcb148b9874610db":[9,0,0,13,8,4,10,2],
-"classAntares_1_1Solver_1_1Variable_1_1Economy_1_1FlowLinear.html#ae8bebd78f15b7c483289775a6f13f5b3":[9,0,0,13,8,4,10,3],
-"classAntares_1_1Solver_1_1Variable_1_1Economy_1_1FlowLinearAbs.html":[9,0,0,13,8,4,11]
+"classAntares_1_1Solver_1_1Variable_1_1Economy_1_1FlowLinear.html#ae8bebd78f15b7c483289775a6f13f5b3":[9,0,0,13,8,4,10,3]
 };

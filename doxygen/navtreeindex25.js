@@ -1,5 +1,10 @@
 var NAVTREEINDEX25 =
 {
+"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardMiscGenMinusRowPSP.html#a500884d4187ee64804dbf8835b13be8a":[9,0,0,13,8,4,78,0],
+"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardMiscGenMinusRowPSP.html#adaae28064d39ab12fab29342d81a36f6":[9,0,0,13,8,4,78,1],
+"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardNbOfDispatchedUnits.html":[9,0,0,13,8,4,79],
+"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardNbOfDispatchedUnits.html#a13927a7a04deae617f2c28475c91eec9":[9,0,0,13,8,4,79,0],
+"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardNbOfDispatchedUnits.html#adac8cac1e5bce050938e56eb22c5f8a6":[9,0,0,13,8,4,79,1],
 "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardNbOfDispatchedUnitsByPlant.html":[9,0,0,13,8,4,80],
 "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardNbOfDispatchedUnitsByPlant.html#a780167a642bf5aa2c6300dfade007828":[9,0,0,13,8,4,80,1],
 "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardNbOfDispatchedUnitsByPlant.html#a9a598b2dfa52b0e1ea9c2bdfd77a86f9":[9,0,0,13,8,4,80,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX25 =
 "structAntares_1_1Window_1_1Inspector_1_1PStudyYearByYear.html":[9,0,0,19,1,73],
 "structAntares_1_1Window_1_1Inspector_1_1PStudyYears.html":[9,0,0,19,1,74],
 "structAntares_1_1Window_1_1Inspector_1_1Unique.html":[9,0,0,19,1,76],
-"structAntares_1_1Window_1_1SortColor.html":[9,0,0,19,50],
-"structAntares_1_1Window_1_1StudyLogs_1_1LogFilenameInfo_1_1ltstr.html":[9,0,0,19,53,0,0],
-"structAntares_1_1linkInfo_1_1addpWeight.html":[9,0,0,36,0],
-"structAntares_1_1linkInfo_1_1addpWeightWithImpedance.html":[9,0,0,36,1],
-"structAntares_1_1linkInfo_1_1comparepWeight.html":[9,0,0,36,2],
-"structAntares_1_1linkInfo_1_1comparepWeightWithImpedance.html":[9,0,0,36,3]
+"structAntares_1_1Window_1_1SortColor.html":[9,0,0,19,50]
 };

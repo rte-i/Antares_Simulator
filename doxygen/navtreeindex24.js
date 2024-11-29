@@ -1,5 +1,11 @@
 var NAVTREEINDEX24 =
 {
+"structAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1CheckMinUpDownTime.html":[9,0,0,2,0,0,10],
+"structAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1CheckUnitCount.html":[9,0,0,2,0,0,11],
+"structAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1NoCheck.html":[9,0,0,2,0,0,48],
+"structAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1RefeshInspector.html":[9,0,0,2,0,0,54],
+"structAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1RefeshInspectorAndMarkAsModified.html":[9,0,0,2,0,0,55],
+"structAntares_1_1Component_1_1HTMLListbox_1_1Datasource_1_1SortAlphaOrder.html":[9,0,0,2,2,0,5],
 "structAntares_1_1Component_1_1HTMLListbox_1_1Datasource_1_1SortAlphaReverseOrder.html":[9,0,0,2,2,0,6],
 "structAntares_1_1Data_1_1AdequacyPatch_1_1AdqPatchParams.html":[9,0,0,4,0,0],
 "structAntares_1_1Data_1_1AdequacyPatch_1_1AdqPatchParams.html#afd5e5c9b27ebca21863963a6fac44732":[9,0,0,4,0,0,0],
@@ -101,7 +107,6 @@ var NAVTREEINDEX24 =
 "structAntares_1_1Solver_1_1Modeler_1_1Api_1_1FillContext.html":[9,0,0,13,2,0,0],
 "structAntares_1_1Solver_1_1Optimization_1_1OptimizationOptions.html":[9,0,0,13,5,1],
 "structAntares_1_1Solver_1_1Optimization_1_1OptimizationOptions.html#a1b3d66ae8211fc0a17e451bbfd09d854":[9,0,0,13,5,1,0],
-"structAntares_1_1Solver_1_1Optimization_1_1OptimizationOptions.html#aa53e538badc0a91056f4378579854d7a":[9,0,0,13,5,1,1],
 "structAntares_1_1Solver_1_1PortFieldHash.html":[9,0,0,13,28],
 "structAntares_1_1Solver_1_1Simulation_1_1compareHydroCostsNoises.html":[9,0,0,13,7,5],
 "structAntares_1_1Solver_1_1Simulation_1_1optRuntimeData.html":[9,0,0,13,7,21],
@@ -244,10 +249,5 @@ var NAVTREEINDEX24 =
 "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardMARGE.html#aa2bc74a0fdda4c40ab632cbcc7e68126":[9,0,0,13,8,4,76,0],
 "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardMarginalCost.html":[9,0,0,13,8,4,77],
 "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardMarginalCost.html#aced4e0865cb18c815e20390897886ff5":[9,0,0,13,8,4,77,0],
-"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardMiscGenMinusRowPSP.html":[9,0,0,13,8,4,78],
-"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardMiscGenMinusRowPSP.html#a500884d4187ee64804dbf8835b13be8a":[9,0,0,13,8,4,78,0],
-"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardMiscGenMinusRowPSP.html#adaae28064d39ab12fab29342d81a36f6":[9,0,0,13,8,4,78,1],
-"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardNbOfDispatchedUnits.html":[9,0,0,13,8,4,79],
-"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardNbOfDispatchedUnits.html#a13927a7a04deae617f2c28475c91eec9":[9,0,0,13,8,4,79,0],
-"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardNbOfDispatchedUnits.html#adac8cac1e5bce050938e56eb22c5f8a6":[9,0,0,13,8,4,79,1]
+"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardMiscGenMinusRowPSP.html":[9,0,0,13,8,4,78]
 };

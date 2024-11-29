@@ -42,5 +42,6 @@ var dir_673a42b4d32adff6df2ecb8198a5dc4a =
     [ "PMaxDispatchableGeneration.h", "PMaxDispatchableGeneration_8h_source.html", null ],
     [ "PMinDispatchableGeneration.h", "PMinDispatchableGeneration_8h_source.html", null ],
     [ "PMinMaxDispatchableGenerationGroup.h", "PMinMaxDispatchableGenerationGroup_8h_source.html", null ],
+    [ "ShortTermStorageCostVariation.h", "ShortTermStorageCostVariation_8h_source.html", null ],
     [ "ShortTermStorageLevel.h", "ShortTermStorageLevel_8h_source.html", null ]
 ];

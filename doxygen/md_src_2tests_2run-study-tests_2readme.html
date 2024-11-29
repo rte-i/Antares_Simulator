@@ -141,8 +141,12 @@ Introduction</h1>
 <p>This program performs the following :</p><ol type="1">
 <li>Searches for all studies in a given directory</li>
 <li>From each study, retrieves the specifications to make checks on the simulation results of that study (see items below)</li>
-<li>Runs a simlulation on each study</li>
-<li>Given the results of the simulation on a study, makes the checks retrieved at step 2 on these results (for instance : make sure current results and reference resuts are identical, check for existence or content of output files,...)</li>
+<li>Runs a simulation on each study</li>
+<li>Given the results of the simulation on a study, makes the checks retrieved at step 2 on these results. Examples :<ul>
+<li>make sure current results and reference resuts are identical</li>
+<li>check for existence or even content of output files</li>
+</ul>
+</li>
 </ol>
 <p>Note that each study found is supposed to contain the definition of checks performed by scripts after the simulation on the study is completed. So, each study is supposed to contain a file <b>check-config.json</b> for that purpose. This file is build manually for each study.</p>
 <h1><a class="anchor" id="autotoc_md17"></a>
@@ -167,7 +171,7 @@ File test_from_json.py</h1>
 <p><b>Line 1</b> : Following tests are marked as a collection, that is belonging to the same category</p>
 <h1><a class="anchor" id="autotoc_md19"></a>
 Fixtures</h1>
-<p><b>pytest</b> comes with the notion of <b>fixture</b>. Fixtures allow executing a piece of code just before a test runs. To take bebefit of a fixture, a test needs to be given this fixture as argument. <a class="el" href="structFixture.html">Fixture</a> themselves can also be given arguments, we'll see how we do it (in the context of the current testing system) when we talk about <b>parametrization</b>. Fixtures return a result to be used in the test. Let's look at a simple test : </p><div class="fragment"><div class="line"><span class="preprocessor">@pytest.fixture</span></div>
+<p><b>pytest</b> comes with the notion of <b>fixture</b>. Fixtures allow executing a piece of code just before a test runs. To take benefit of a fixture, a test needs to be given this fixture as argument. <a class="el" href="structFixture.html">Fixture</a> themselves can also be given arguments, we'll see how we do it (in the context of the current testing system) when we talk about <b>parametrization</b>. Fixtures return a result to be used in the test. Let's look at a simple test : </p><div class="fragment"><div class="line"><span class="preprocessor">@pytest.fixture</span></div>
 <div class="line"><span class="keyword">def </span>my_fixture():</div>
 <div class="line">    <span class="comment"># Define the result some_result to be returned (can be a variable or constant of any kind)</span></div>
 <div class="line">    <span class="keywordflow">return</span> some_result</div>

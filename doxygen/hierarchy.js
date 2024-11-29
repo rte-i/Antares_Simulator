@@ -179,6 +179,12 @@ var hierarchy =
       [ "NbUnitsOutageLessThanNbUnitsStop", "classNbUnitsOutageLessThanNbUnitsStop.html", null ],
       [ "PMaxDispatchableGeneration", "classPMaxDispatchableGeneration.html", null ],
       [ "PMinDispatchableGeneration", "classPMinDispatchableGeneration.html", null ],
+      [ "ShortTermStorageCostVariation", "classShortTermStorageCostVariation.html", [
+        [ "ShortTermStorageCostVariationInjectionBackward", "classShortTermStorageCostVariationInjectionBackward.html", null ],
+        [ "ShortTermStorageCostVariationInjectionForward", "classShortTermStorageCostVariationInjectionForward.html", null ],
+        [ "ShortTermStorageCostVariationWithdrawalBackward", "classShortTermStorageCostVariationWithdrawalBackward.html", null ],
+        [ "ShortTermStorageCostVariationWithdrawalForward", "classShortTermStorageCostVariationWithdrawalForward.html", null ]
+      ] ],
       [ "ShortTermStorageLevel", "classShortTermStorageLevel.html", null ]
     ] ],
     [ "ConstraintGroup", "classConstraintGroup.html", [
@@ -1289,7 +1295,7 @@ var hierarchy =
     [ "Antares::Map::Settings", "classAntares_1_1Map_1_1Settings.html", null ],
     [ "Antares::TSGenerator::Settings", "structAntares_1_1TSGenerator_1_1Settings.html", null ],
     [ "Settings", "classSettings.html", null ],
-    [ "ShortTermStorageLevelData", "structShortTermStorageLevelData.html", null ],
+    [ "ShortTermStorageData", "structShortTermStorageData.html", null ],
     [ "SimplexResult", "structSimplexResult.html", null ],
     [ "Antares::Data::SimulationComments", "classAntares_1_1Data_1_1SimulationComments.html", null ],
     [ "SimulationHandler", "classSimulationHandler.html", null ],
