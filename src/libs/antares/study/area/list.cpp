@@ -965,7 +965,7 @@ static bool AreaListLoadFromFolderSingleArea(Study& study,
         // Here add function call for loading reservoir level TS, from new and old files
         // Also here add function call to validate reservoir levels
 
-        if(!study.parameters.useScenarizedReservoirLevels && study.usedByTheSolver)
+        if (!study.parameters.useScenarizedReservoirLevels && study.usedByTheSolver)
         {
             fs::path reservoirLevelPath = study.folderInput / "hydro" / "common" / "capacity";
             ret = area.hydro.series->loadReservoirLevels(area.id, reservoirLevelPath);
