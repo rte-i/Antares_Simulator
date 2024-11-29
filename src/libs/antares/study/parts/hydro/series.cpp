@@ -195,7 +195,8 @@ bool DataSeriesHydro::LoadMaxPower(const std::string& areaID, const fs::path& fo
     return ret;
 }
 
-bool DataSeriesHydro::loadReservoirLevels(const std::string& areaID, const fs::path& folder)
+bool DataSeriesHydro::loadScenarizedReservoirLevels(const std::string& areaID,
+                                                    const fs::path& folder)
 {
     bool ret = true;
 
@@ -217,6 +218,31 @@ bool DataSeriesHydro::loadReservoirLevels(const std::string& areaID, const fs::p
                          "avgDailyReservoirLevels.txt",
                          DAYS_PER_YEAR)
           && ret;
+
+    return ret;
+}
+
+bool DataSeriesHydro::loadReservoirLevels(const std::string& areaID,
+                                          const std::filesystem::path& folder)
+{
+    bool ret = true;
+    Matrix<>::BufferType fileContent;
+    Matrix<double> reservoirLevelDataBuffer;
+    fs::path filePath = folder / std::string("reservoir_" + areaID + ".txt");
+    reservoirLevelDataBuffer.reset(3, DAYS_PER_YEAR, true);
+    ret = reservoirLevelDataBuffer.loadFromCSVFile(filePath.string(),
+                                                   3,
+                                                   DAYS_PER_YEAR,
+                                                   &fileContent);
+
+    minDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
+    minDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[0]);
+    avgDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
+    avgDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[1]);
+    maxDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
+    maxDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[2]);
+
+    return ret;
 }
 
 void DataSeriesHydro::buildHourlyMaxPowerFromDailyTS(
