@@ -46,6 +46,7 @@ void HydroInputsChecker::Execute(uint year)
 {
     prepareInflows_.Run(year);
     minGenerationScaling_.Run(year);
+    checkReservoirLevels(year);
     if (!checksOnGenerationPowerBounds(year))
     {
         logs.error() << "hydro inputs checks: invalid minimum generation in year " << year;
@@ -89,6 +90,35 @@ bool HydroInputsChecker::checkMinGeneration(uint year)
           else
           {
               ret = checkMonthlyMinGeneration(year, area) && ret;
+          }
+      });
+    return ret;
+}
+
+bool HydroInputsChecker::checkReservoirLevels(uint year)
+{
+    bool ret = true;
+    areas_.each(
+      [this, &ret, &year](const Data::Area& area)
+      {
+          const auto& minReservoirLevels = area.hydro.series->minDailyReservoirLevels.getColumn(
+            year);
+          const auto& avgReservoirLevels = area.hydro.series->avgDailyReservoirLevels.getColumn(
+            year);
+          const auto& maxReservoirLevels = area.hydro.series->maxDailyReservoirLevels.getColumn(
+            year);
+
+          for (unsigned int day = 0; day < DAYS_PER_YEAR; day++)
+          {
+              if (0 > minReservoirLevels[day] || minReservoirLevels[day] > avgReservoirLevels[day]
+                  || avgReservoirLevels[day] > maxReservoirLevels[day]
+                  || maxReservoirLevels[day] > 100)
+              {
+                // Add more information in logs
+                  logs.error() << area.id << ": invalid reservoir level value";
+
+                  ret = false;
+              }
           }
       });
     return ret;
