@@ -50,9 +50,15 @@ struct Fixture
         area_1->hydro.reservoirLevel[PartHydro::minimum][DAYS_PER_YEAR - 1] = 2.4;
         area_1->hydro.reservoirLevel[PartHydro::maximum][DAYS_PER_YEAR - 1] = 6.5;
 
+        area_1->hydro.series->minDailyReservoirLevels[0][DAYS_PER_YEAR - 1] = 2.4;
+        area_1->hydro.series->maxDailyReservoirLevels[0][DAYS_PER_YEAR - 1] = 6.5;
+
         area_2->hydro.reservoirLevel.resize(3, DAYS_PER_YEAR);
         area_2->hydro.reservoirLevel[PartHydro::minimum][DAYS_PER_YEAR - 1] = 2.7;
         area_2->hydro.reservoirLevel[PartHydro::maximum][DAYS_PER_YEAR - 1] = 6.4;
+
+        area_2->hydro.series->minDailyReservoirLevels[0][DAYS_PER_YEAR - 1] = 2.7;
+        area_2->hydro.series->maxDailyReservoirLevels[0][DAYS_PER_YEAR - 1] = 6.4;
 
         // Resize vector final levels delta with initial levels
         area_1->hydro.deltaBetweenFinalAndInitialLevels.resize(nbYears);
