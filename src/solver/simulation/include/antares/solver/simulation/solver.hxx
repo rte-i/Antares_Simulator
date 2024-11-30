@@ -694,28 +694,6 @@ void ISimulation<ImplementationType>::computeRandomNumbers(
             Data::Area& area)
           {
               // looking for the initial reservoir level (begining of the year)
-              // Use new object for reservoir levels
-              // auto& min = area.hydro.reservoirLevel[Data::PartHydro::minimum];
-              // auto& avg = area.hydro.reservoirLevel[Data::PartHydro::average];
-              // auto& max = area.hydro.reservoirLevel[Data::PartHydro::maximum];
-
-              // uint32_t seriesIndexMin =
-              // area.hydro.series->minDailyReservoirLevels.getSeriesIndex( y);
-              // const auto& min = area.hydro.series->minDailyReservoirLevels
-              //                   .timeSeries[seriesIndexMin];
-
-              // uint32_t seriesIndexMax =
-              // area.hydro.series->maxDailyReservoirLevels.getSeriesIndex(
-              //  y);
-              // const auto& max = area.hydro.series->maxDailyReservoirLevels
-              //                   .timeSeries[seriesIndexMax];
-
-              // uint32_t seriesIndexAvg =
-              // area.hydro.series->avgDailyReservoirLevels.getSeriesIndex(
-              //  y);
-              // const auto& avg = area.hydro.series->avgDailyReservoirLevels
-              //                     .timeSeries[seriesIndexAvg];
-
               const auto& min = area.hydro.series->minDailyReservoirLevels.getColumn(y);
               const auto& avg = area.hydro.series->avgDailyReservoirLevels.getColumn(y);
               const auto& max = area.hydro.series->maxDailyReservoirLevels.getColumn(y);

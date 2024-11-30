@@ -152,15 +152,6 @@ void HydroManagement::prepareMonthlyOptimalGenerations(const double* random_rese
       {
           auto& data = area.hydro.managementData[y];
           auto& hydro_specific = hydro_specific_map[&area];
-          // Use new objects for reservoir levels
-          // uint32_t seriesIndexmin = area.hydro.series->minDailyReservoirLevels.getSeriesIndex(y);
-          // uint32_t seriesIndexmax = area.hydro.series->maxDailyReservoirLevels.getSeriesIndex(y);
-          // auto& minLvl = area.hydro.reservoirLevel[Data::PartHydro::minimum];
-          // auto& maxLvl = area.hydro.reservoirLevel[Data::PartHydro::maximum];
-          // const auto& minLvl = area.hydro.series->minDailyReservoirLevels
-          //                     .timeSeries[seriesIndexmin];
-          // const auto& maxLvl = area.hydro.series->maxDailyReservoirLevels
-          //                      .timeSeries[seriesIndexmax];
 
           const auto& minLvl = area.hydro.series->minDailyReservoirLevels.getColumn(y);
           const auto& maxLvl = area.hydro.series->maxDailyReservoirLevels.getColumn(y);
@@ -244,13 +235,6 @@ void HydroManagement::prepareMonthlyOptimalGenerations(const double* random_rese
 
           else
           {
-              // Use new objects for reservoir leves, here we dont need reservoir levels since we
-              // are not using reservoir management
-              uint32_t seriesIndexAvg = area.hydro.series->maxDailyReservoirLevels.getSeriesIndex(
-                y);
-              // auto& reservoirLevel = area.hydro.reservoirLevel[Data::PartHydro::average];
-              // const auto& reservoirLevel = area.hydro.series->avgDailyReservoirLevels
-              //                             .timeSeries[seriesIndexAvg];
               const auto& reservoirLevel = area.hydro.series->avgDailyReservoirLevels.getColumn(y);
 
               for (uint realmonth = 0; realmonth != MONTHS_PER_YEAR; ++realmonth)
