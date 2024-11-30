@@ -111,7 +111,7 @@ bool HydroInputsChecker::checkReservoirLevels(uint year)
 
           for (unsigned int day = 0; day < DAYS_PER_YEAR; day++)
           {
-              if (errorLevels
+              if (!errorLevels
                   && (minReservoirLevels[day] < 0 || avgReservoirLevels[day] < 0
                       || minReservoirLevels[day] > maxReservoirLevels[day]
                       || avgReservoirLevels[day] > 100 || maxReservoirLevels[day] > 100))
