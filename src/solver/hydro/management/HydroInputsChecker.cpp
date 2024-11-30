@@ -101,6 +101,7 @@ bool HydroInputsChecker::checkReservoirLevels(uint year)
     areas_.each(
       [this, &ret, &year](const Data::Area& area)
       {
+          bool errorLevels = false;
           const auto& minReservoirLevels = area.hydro.series->minDailyReservoirLevels.getColumn(
             year);
           const auto& avgReservoirLevels = area.hydro.series->avgDailyReservoirLevels.getColumn(
@@ -110,13 +111,14 @@ bool HydroInputsChecker::checkReservoirLevels(uint year)
 
           for (unsigned int day = 0; day < DAYS_PER_YEAR; day++)
           {
-              if (0 > minReservoirLevels[day] || minReservoirLevels[day] > avgReservoirLevels[day]
-                  || avgReservoirLevels[day] > maxReservoirLevels[day]
-                  || maxReservoirLevels[day] > 100)
+              if (errorLevels
+                  && (minReservoirLevels[day] < 0 || avgReservoirLevels[day] < 0
+                      || minReservoirLevels[day] > maxReservoirLevels[day]
+                      || avgReservoirLevels[day] > 100 || maxReservoirLevels[day] > 100))
               {
                   // Add more information in logs
                   logs.error() << area.id << ": invalid reservoir level value";
-
+                  errorLevels = true;
                   ret = false;
               }
           }
