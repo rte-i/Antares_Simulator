@@ -111,15 +111,15 @@ bool HydroInputsChecker::checkReservoirLevels(uint year)
 
           for (unsigned int day = 0; day < DAYS_PER_YEAR; day++)
           {
-              if (!errorLevels
-                  && (minReservoirLevels[day] < 0 || avgReservoirLevels[day] < 0
-                      || minReservoirLevels[day] > maxReservoirLevels[day]
-                      || avgReservoirLevels[day] > 100 || maxReservoirLevels[day] > 100))
+              if (minReservoirLevels[day] < 0 || avgReservoirLevels[day] < 0
+                  || minReservoirLevels[day] > maxReservoirLevels[day]
+                  || avgReservoirLevels[day] > 100 || maxReservoirLevels[day] > 100)
               {
                   // Add more information in logs
-                  logs.error() << area.id << ": invalid reservoir level value";
-                  errorLevels = true;
+                  logs.error() << "Reservoir levels in area " << area.id << " are invalid on day "
+                               << day + 1;
                   ret = false;
+                  break;
               }
           }
       });
