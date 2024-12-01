@@ -1799,9 +1799,8 @@ void Parameters::saveToINI(IniFile& ini) const
         // Readonly
         section->add("readonly", readonly);
 
-        //Scenarized Hydro Reservoir Levels
+        // Scenarized Hydro Reservoir Levels
         section->add("use-scenarized-reservoir-levels", useScenarizedReservoirLevels);
-
     }
 
     // input
