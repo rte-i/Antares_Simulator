@@ -101,7 +101,6 @@ bool HydroInputsChecker::checkReservoirLevels(uint year)
     areas_.each(
       [this, &ret, &year](const Data::Area& area)
       {
-          bool errorLevels = false;
           const auto& minReservoirLevels = area.hydro.series->minDailyReservoirLevels.getColumn(
             year);
           const auto& avgReservoirLevels = area.hydro.series->avgDailyReservoirLevels.getColumn(
@@ -109,14 +108,30 @@ bool HydroInputsChecker::checkReservoirLevels(uint year)
           const auto& maxReservoirLevels = area.hydro.series->maxDailyReservoirLevels.getColumn(
             year);
 
+          const auto& tsIndexMin = area.hydro.series->minDailyReservoirLevels.getSeriesIndex(year);
+          const auto& tsIndexAvg = area.hydro.series->avgDailyReservoirLevels.getSeriesIndex(year);
+          const auto& tsIndexMax = area.hydro.series->maxDailyReservoirLevels.getSeriesIndex(year);
+
+          uint32_t tsIndex = 0;
+
+          if ((tsIndexMin == tsIndexAvg) && (tsIndexAvg == tsIndexMax))
+          {
+              tsIndex = tsIndexMin;
+          }
+          else
+          {
+              logs.error() << "Reservoir levels Time-Series indexes in area: " << area.id
+                           << " for year: " << year << " are not equal. Something went wrong!";
+          }
+
           for (unsigned int day = 0; day < DAYS_PER_YEAR; day++)
           {
               if (minReservoirLevels[day] < 0 || avgReservoirLevels[day] < 0
                   || minReservoirLevels[day] > maxReservoirLevels[day]
                   || avgReservoirLevels[day] > 100 || maxReservoirLevels[day] > 100)
               {
-                  // Add more information in logs
-                  logs.error() << "Reservoir levels in area " << area.id << " are invalid on day "
+                  logs.error() << "Reservoir levels in area " << area.id
+                               << " for Time-Serie index:" << tsIndex + 1 << " are invalid on day "
                                << day + 1;
                   ret = false;
                   break;
