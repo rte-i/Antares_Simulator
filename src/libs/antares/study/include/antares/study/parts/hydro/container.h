@@ -226,7 +226,7 @@ public:
     std::vector<std::optional<double>> deltaBetweenFinalAndInitialLevels;
 
 private:
-    static bool checkReservoirLevels(const Study& study);
+    static bool checkInflowPatternAndCredModul(const Study& study);
     static bool checkProperties(Study& study);
 
 }; // class PartHydro

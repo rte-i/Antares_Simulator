@@ -328,7 +328,7 @@ bool PartHydro::LoadFromFolder(Study& study, const fs::path& folder)
     return ret;
 }
 
-bool PartHydro::checkReservoirLevels(const Study& study)
+bool PartHydro::checkInflowPatternAndCredModul(const Study& study)
 {
     bool ret = true;
 
@@ -350,22 +350,6 @@ bool PartHydro::checkReservoirLevels(const Study& study)
                 ret = false;
             }
         }
-        // This check should be moved in the HydroInputCheck class in solver part
-        // bool errorLevels = false;
-        // auto& colMin = area->hydro.reservoirLevel[minimum];
-        // auto& colAvg = area->hydro.reservoirLevel[average];
-        // auto& colMax = area->hydro.reservoirLevel[maximum];
-        // for (unsigned int day = 0; day < DAYS_PER_YEAR; day++)
-        // {
-        //     if (!errorLevels
-        //         && (0 > colMin[day] || colMin[day] > colAvg[day] || colAvg[day] > colMax[day]
-        //             || colMax[day] > 100))
-        //     {
-        //         logs.error() << areaName << ": invalid reservoir level value";
-        //         errorLevels = true;
-        //         ret = false;
-        //     }
-        // }
 
         for (int i = 0; i < 101; i++)
         {
@@ -463,7 +447,7 @@ bool PartHydro::checkProperties(Study& study)
 
 bool PartHydro::validate(Study& study)
 {
-    bool ret = checkReservoirLevels(study);
+    bool ret = checkInflowPatternAndCredModul(study);
     return checkProperties(study) && ret;
 }
 
