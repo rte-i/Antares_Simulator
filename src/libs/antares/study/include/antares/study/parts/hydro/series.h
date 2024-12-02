@@ -78,12 +78,16 @@ public:
     // Loading hydro max generation and mqx pumping TS's
     bool LoadMaxPower(const std::string& areaID, const std::filesystem::path& folder);
 
-    bool loadScenarizedReservoirLevels(const std::string& areaID,
-                                       const std::filesystem::path& folder);
-    bool loadReservoirLevels(const std::string& areaID, const std::filesystem::path& folder);
-
     void buildHourlyMaxPowerFromDailyTS(const Matrix<double>::ColumnType& DailyMaxGenPower,
                                         const Matrix<double>::ColumnType& DailyMaxPumpPower);
+
+    // Loading hydro reservoir levels
+    bool loadScenarizedReservoirLevels(const std::string& areaID,
+                                       const std::filesystem::path& folder,
+                                       bool usedBySolver);
+    bool loadReservoirLevels(const std::string& areaID,
+                             const std::filesystem::path& folder,
+                             bool usedBySolver);
 
     /*!
     ** \brief Save data series for hydro into a folder (`input/hydro/series`)

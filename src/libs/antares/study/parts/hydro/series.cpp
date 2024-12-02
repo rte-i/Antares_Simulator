@@ -196,8 +196,14 @@ bool DataSeriesHydro::LoadMaxPower(const std::string& areaID, const fs::path& fo
 }
 
 bool DataSeriesHydro::loadScenarizedReservoirLevels(const std::string& areaID,
-                                                    const fs::path& folder)
+                                                    const fs::path& folder,
+                                                    bool usedBySolver)
 {
+    if (!usedBySolver)
+    {
+        return true;
+    }
+
     bool ret = true;
 
     ret = loadTSfromFile(maxDailyReservoirLevels.timeSeries,
@@ -223,8 +229,14 @@ bool DataSeriesHydro::loadScenarizedReservoirLevels(const std::string& areaID,
 }
 
 bool DataSeriesHydro::loadReservoirLevels(const std::string& areaID,
-                                          const std::filesystem::path& folder)
+                                          const std::filesystem::path& folder,
+                                          bool usedBySolver)
 {
+    if (!usedBySolver)
+    {
+        return true;
+    }
+
     bool ret = true;
     Matrix<>::BufferType fileContent;
     Matrix<double> reservoirLevelDataBuffer;
