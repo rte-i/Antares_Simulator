@@ -170,12 +170,12 @@ $(document).ready(function(){initNavTree('post__process__commands_8h_source.html
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <a class="code hl_class" href="classAntares_1_1Solver_1_1Simulation_1_1DispatchableMarginPostProcessCmd.html">DispatchableMarginPostProcessCmd</a>(<a class="code hl_struct" href="structPROBLEME__HEBDO.html">PROBLEME_HEBDO</a>* problemeHebdo,</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                                     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> thread_number,</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                                     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSpace,</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                                     <a class="code hl_class" href="classAntares_1_1Data_1_1AreaList.html">AreaList</a>&amp; areas);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> execute(<span class="keyword">const</span> <a class="code hl_struct" href="structAntares_1_1Solver_1_1Simulation_1_1optRuntimeData.html">optRuntimeData</a>&amp; opt_runtime_data) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> thread_number_ = 0;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSpace_ = 0;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">const</span> <a class="code hl_class" href="classAntares_1_1Data_1_1AreaList.html">AreaList</a>&amp; area_list_;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>};</div>
 </div>
@@ -205,12 +205,12 @@ $(document).ready(function(){initNavTree('post__process__commands_8h_source.html
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                             <a class="code hl_class" href="classAntares_1_1Data_1_1AreaList.html">AreaList</a>&amp; areas,</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                             SheddingPolicy sheddingPolicy,</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                             SimplexOptimization simplexOptimization,</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                             <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> thread_number);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                             <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSpace);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordtype">void</span> execute(<span class="keyword">const</span> <a class="code hl_struct" href="structAntares_1_1Solver_1_1Simulation_1_1optRuntimeData.html">optRuntimeData</a>&amp; opt_runtime_data) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keyword">const</span> <a class="code hl_class" href="classAntares_1_1Data_1_1AreaList.html">AreaList</a>&amp; area_list_;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> thread_number_ = 0;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSpace_ = 0;</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    SheddingPolicy shedding_policy_;</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    SimplexOptimization splx_optimization_;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>};</div>
@@ -224,13 +224,13 @@ $(document).ready(function(){initNavTree('post__process__commands_8h_source.html
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <a class="code hl_class" href="classAntares_1_1Solver_1_1Simulation_1_1DTGmarginForAdqPatchPostProcessCmd.html">DTGmarginForAdqPatchPostProcessCmd</a>(<a class="code hl_struct" href="structPROBLEME__HEBDO.html">PROBLEME_HEBDO</a>* problemeHebdo,</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                                       <a class="code hl_class" href="classAntares_1_1Data_1_1AreaList.html">AreaList</a>&amp; areas,</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> thread_number);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSpace);</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classAntares_1_1Solver_1_1Simulation_1_1DTGmarginForAdqPatchPostProcessCmd.html#a514838708ebf0122085df4122b8ccb91">execute</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structAntares_1_1Solver_1_1Simulation_1_1optRuntimeData.html">optRuntimeData</a>&amp; opt_runtime_data) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keyword">const</span> <a class="code hl_class" href="classAntares_1_1Data_1_1AreaList.html">AreaList</a>&amp; area_list_;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> thread_number_ = 0;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSpace_ = 0;</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>};</div>
 </div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
@@ -272,7 +272,7 @@ $(document).ready(function(){initNavTree('post__process__commands_8h_source.html
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <a class="code hl_class" href="classAntares_1_1Solver_1_1Simulation_1_1CurtailmentSharingPostProcessCmd.html">CurtailmentSharingPostProcessCmd</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structAntares_1_1Data_1_1AdequacyPatch_1_1AdqPatchParams.html">AdqPatchParams</a>&amp; adqPatchParams,</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                                     <a class="code hl_struct" href="structPROBLEME__HEBDO.html">PROBLEME_HEBDO</a>* problemeHebdo,</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                                     <a class="code hl_class" href="classAntares_1_1Data_1_1AreaList.html">AreaList</a>&amp; areas,</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                                     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> thread_number);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                                     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSpace);</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordtype">void</span> execute(<span class="keyword">const</span> <a class="code hl_struct" href="structAntares_1_1Solver_1_1Simulation_1_1optRuntimeData.html">optRuntimeData</a>&amp; opt_runtime_data) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
@@ -284,7 +284,7 @@ $(document).ready(function(){initNavTree('post__process__commands_8h_source.html
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keyword">const</span> <a class="code hl_class" href="classAntares_1_1Data_1_1AreaList.html">AreaList</a>&amp; area_list_;</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keyword">const</span> <a class="code hl_struct" href="structAntares_1_1Data_1_1AdequacyPatch_1_1AdqPatchParams.html">AdqPatchParams</a>&amp; adqPatchParams_;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> thread_number_ = 0;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSpace_ = 0;</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>};</div>
 </div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
