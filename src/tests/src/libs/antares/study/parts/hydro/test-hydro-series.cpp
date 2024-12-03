@@ -35,9 +35,7 @@
 using namespace Antares::Data;
 namespace fs = std::filesystem;
 
-void fillTimeSeriesWithSpecialEnds(Matrix<double>& timeSeries,
-                                                  double start,
-                                                  double end)
+void fillTimeSeriesWithSpecialEnds(Matrix<double>& timeSeries, double start, double end)
 {
     for (uint ts = 0; ts < timeSeries.width; ts++)
     {
