@@ -35,12 +35,14 @@
 using namespace Antares::Data;
 namespace fs = std::filesystem;
 
-void fillTimeSeriesWithSpecialEnds(Matrix<double>& timeSeries, double value)
+void fillTimeSeriesWithSpecialEnds(Matrix<double>& timeSeries,
+                                                  double start,
+                                                  double end)
 {
     for (uint ts = 0; ts < timeSeries.width; ts++)
     {
-        timeSeries[ts][0] = value + 1;
-        timeSeries[ts][timeSeries.height - 1] = value + 2;
+        timeSeries[ts][0] = start;
+        timeSeries[ts][timeSeries.height - 1] = end;
     }
 }
 
@@ -71,6 +73,21 @@ struct Fixture
         pathToMaxHourlyPumpPower_file = base_folder + SEP + series_folder + SEP + area_1->id.c_str()
                                         + SEP + maxHourlyPumpPower_file;
 
+        pathToMaxDailyReservoirLevels_file.clear();
+        pathToMaxDailyReservoirLevels_file = base_folder + SEP + series_folder + SEP
+                                             + area_1->id.c_str() + SEP
+                                             + maxDailyReservoirLevels_file;
+
+        pathToMinDailyReservoirLevels_file.clear();
+        pathToMinDailyReservoirLevels_file = base_folder + SEP + series_folder + SEP
+                                             + area_1->id.c_str() + SEP
+                                             + minDailyReservoirLevels_file;
+
+        pathToAvgDailyReservoirLevels_file.clear();
+        pathToAvgDailyReservoirLevels_file = base_folder + SEP + series_folder + SEP
+                                             + area_1->id.c_str() + SEP
+                                             + avgDailyReservoirLevels_file;
+
         pathToSeriesFolder.clear();
         pathToSeriesFolder = base_folder + SEP + series_folder;
     }
@@ -92,6 +109,9 @@ struct Fixture
         buffer = base_folder + SEP + series_folder + SEP + area1_folder;
         createFile(buffer, maxHourlyGenPower_file);
         createFile(buffer, maxHourlyPumpPower_file);
+        createFile(buffer, maxDailyReservoirLevels_file);
+        createFile(buffer, minDailyReservoirLevels_file);
+        createFile(buffer, avgDailyReservoirLevels_file);
     }
 
     std::shared_ptr<Study> study;
@@ -100,8 +120,14 @@ struct Fixture
     std::string series_folder = "series";
     std::string maxHourlyGenPower_file = "maxHourlyGenPower.txt";
     std::string maxHourlyPumpPower_file = "maxHourlyPumpPower.txt";
+    std::string maxDailyReservoirLevels_file = "maxDailyReservoirLevels.txt";
+    std::string minDailyReservoirLevels_file = "minDailyReservoirLevels.txt";
+    std::string avgDailyReservoirLevels_file = "avgDailyReservoirLevels.txt";
     std::string pathToMaxHourlyGenPower_file;
     std::string pathToMaxHourlyPumpPower_file;
+    std::string pathToMaxDailyReservoirLevels_file;
+    std::string pathToMinDailyReservoirLevels_file;
+    std::string pathToAvgDailyReservoirLevels_file;
     std::string pathToSeriesFolder;
 
     ~Fixture()
@@ -121,8 +147,8 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_power_credits_matrices_equal_width, Fixture
     maxHourlyGenPower.reset(3, HOURS_PER_YEAR);
     maxHourlyPumpPower.reset(3, HOURS_PER_YEAR);
 
-    fillTimeSeriesWithSpecialEnds(maxHourlyGenPower, 400.);
-    fillTimeSeriesWithSpecialEnds(maxHourlyPumpPower, 200.);
+    fillTimeSeriesWithSpecialEnds(maxHourlyGenPower, 401., 402.);
+    fillTimeSeriesWithSpecialEnds(maxHourlyPumpPower, 201., 202.);
 
     ret = maxHourlyGenPower.saveToCSVFile(pathToMaxHourlyGenPower_file, 0) && ret;
     ret = maxHourlyPumpPower.saveToCSVFile(pathToMaxHourlyPumpPower_file, 0) && ret;
@@ -146,8 +172,8 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_power_credits_both_matrix_equal_width_and_d
     maxHourlyGenPower.reset(3, HOURS_PER_YEAR);
     maxHourlyPumpPower.reset(3, HOURS_PER_YEAR);
 
-    fillTimeSeriesWithSpecialEnds(maxHourlyGenPower, 400.);
-    fillTimeSeriesWithSpecialEnds(maxHourlyPumpPower, 200.);
+    fillTimeSeriesWithSpecialEnds(maxHourlyGenPower, 401., 402.);
+    fillTimeSeriesWithSpecialEnds(maxHourlyPumpPower, 201., 202.);
 
     ret = maxHourlyGenPower.saveToCSVFile(pathToMaxHourlyGenPower_file, 0) && ret;
     ret = maxHourlyPumpPower.saveToCSVFile(pathToMaxHourlyPumpPower_file, 0) && ret;
@@ -168,8 +194,8 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_power_credits_matrices_different_width_case
     maxHourlyGenPower.reset(3, HOURS_PER_YEAR);
     maxHourlyPumpPower.reset(2, HOURS_PER_YEAR);
 
-    fillTimeSeriesWithSpecialEnds(maxHourlyGenPower, 400.);
-    fillTimeSeriesWithSpecialEnds(maxHourlyPumpPower, 200.);
+    fillTimeSeriesWithSpecialEnds(maxHourlyGenPower, 401., 402.);
+    fillTimeSeriesWithSpecialEnds(maxHourlyPumpPower, 201., 202.);
 
     ret = maxHourlyGenPower.saveToCSVFile(pathToMaxHourlyGenPower_file, 0) && ret;
     ret = maxHourlyPumpPower.saveToCSVFile(pathToMaxHourlyPumpPower_file, 0) && ret;
@@ -190,8 +216,8 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_power_credits_different_width_case_1, Fixtu
     maxHourlyGenPower.reset(1, HOURS_PER_YEAR);
     maxHourlyPumpPower.reset(3, HOURS_PER_YEAR);
 
-    fillTimeSeriesWithSpecialEnds(maxHourlyGenPower, 400.);
-    fillTimeSeriesWithSpecialEnds(maxHourlyPumpPower, 200.);
+    fillTimeSeriesWithSpecialEnds(maxHourlyGenPower, 401., 402.);
+    fillTimeSeriesWithSpecialEnds(maxHourlyPumpPower, 201., 202.);
 
     ret = maxHourlyGenPower.saveToCSVFile(pathToMaxHourlyGenPower_file, 0) && ret;
     ret = maxHourlyPumpPower.saveToCSVFile(pathToMaxHourlyPumpPower_file, 0) && ret;
@@ -212,8 +238,8 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_power_credits_different_width_case_2, Fixtu
     maxHourlyGenPower.reset(4, HOURS_PER_YEAR);
     maxHourlyPumpPower.reset(1, HOURS_PER_YEAR);
 
-    fillTimeSeriesWithSpecialEnds(maxHourlyGenPower, 400.);
-    fillTimeSeriesWithSpecialEnds(maxHourlyPumpPower, 200.);
+    fillTimeSeriesWithSpecialEnds(maxHourlyGenPower, 401., 402.);
+    fillTimeSeriesWithSpecialEnds(maxHourlyPumpPower, 201., 202.);
 
     ret = maxHourlyGenPower.saveToCSVFile(pathToMaxHourlyGenPower_file, 0) && ret;
     ret = maxHourlyPumpPower.saveToCSVFile(pathToMaxHourlyPumpPower_file, 0) && ret;
@@ -234,8 +260,8 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_power_credits_both_zeros, Fixture)
     maxHourlyGenPower.reset(4, HOURS_PER_YEAR);
     maxHourlyPumpPower.reset(1, HOURS_PER_YEAR);
 
-    fillTimeSeriesWithSpecialEnds(maxHourlyGenPower, 400.);
-    fillTimeSeriesWithSpecialEnds(maxHourlyPumpPower, 200.);
+    fillTimeSeriesWithSpecialEnds(maxHourlyGenPower, 401., 402.);
+    fillTimeSeriesWithSpecialEnds(maxHourlyPumpPower, 201., 202.);
 
     ret = maxHourlyGenPower.saveToCSVFile(pathToMaxHourlyGenPower_file, 0) && ret;
     ret = maxHourlyPumpPower.saveToCSVFile(pathToMaxHourlyPumpPower_file, 0) && ret;
@@ -244,6 +270,37 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_power_credits_both_zeros, Fixture)
     maxHourlyPumpPower.reset(1, HOURS_PER_YEAR);
 
     ret = area_1->hydro.series->LoadMaxPower(area_1->id, pathToSeriesFolder) && ret;
+    BOOST_CHECK(ret);
+}
+
+BOOST_FIXTURE_TEST_CASE(Testing_load_reservoir_levels_matrices_equal_width, Fixture)
+{
+    bool ret = true;
+
+    auto& maxDailyReservoirLevels = area_1->hydro.series->maxDailyReservoirLevels.timeSeries;
+    auto& minDailyReservoirLevels = area_1->hydro.series->minDailyReservoirLevels.timeSeries;
+    auto& avgDailyReservoirLevels = area_1->hydro.series->avgDailyReservoirLevels.timeSeries;
+
+    maxDailyReservoirLevels.reset(3, DAYS_PER_YEAR);
+    minDailyReservoirLevels.reset(3, DAYS_PER_YEAR);
+    avgDailyReservoirLevels.reset(3, DAYS_PER_YEAR);
+
+    fillTimeSeriesWithSpecialEnds(maxDailyReservoirLevels, 0.8, 0.7);
+    fillTimeSeriesWithSpecialEnds(minDailyReservoirLevels, 0.5, 0.6);
+    fillTimeSeriesWithSpecialEnds(avgDailyReservoirLevels, 0.3, 0.4);
+
+    ret = maxDailyReservoirLevels.saveToCSVFile(pathToMaxDailyReservoirLevels_file, 2) && ret;
+    ret = minDailyReservoirLevels.saveToCSVFile(pathToMinDailyReservoirLevels_file, 2) && ret;
+    ret = avgDailyReservoirLevels.saveToCSVFile(pathToAvgDailyReservoirLevels_file, 2) && ret;
+
+    maxDailyReservoirLevels.reset(3, DAYS_PER_YEAR);
+    minDailyReservoirLevels.reset(3, DAYS_PER_YEAR);
+    avgDailyReservoirLevels.reset(3, DAYS_PER_YEAR);
+
+    ret = area_1->hydro.series->loadScenarizedReservoirLevels(area_1->id,
+                                                              pathToSeriesFolder,
+                                                              study->usedByTheSolver)
+          && ret;
     BOOST_CHECK(ret);
 }
 
