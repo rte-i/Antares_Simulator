@@ -38,6 +38,16 @@ namespace Data
 class DataSeriesHydro
 {
 public:
+    enum
+    {
+        //! The minimum value
+        minimum = 0,
+        //! The average value
+        average,
+        //! The maximum value
+        maximum,
+    };
+
     //! \name Constructor
     //@{
     /*!
@@ -160,6 +170,9 @@ public:
     ** Merely a matrix of TimeSeriesCount * DAYS_PER_YEAR values
     */
     TimeSeries avgDailyReservoirLevels;
+
+    //! Need it for UI and loading data from old file
+    Matrix<double> reservoirLevel;
 
     // Getters for generation (ror, storage and mingen) and
     // max power (generation and pumping) number of TS

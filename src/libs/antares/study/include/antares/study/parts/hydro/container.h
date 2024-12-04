@@ -90,16 +90,6 @@ struct AreaDependantHydroManagementData
 class PartHydro
 {
 public:
-    enum
-    {
-        //! The minimum value
-        minimum = 0,
-        //! The average value
-        average,
-        //! The maximum value
-        maximum,
-    };
-
     enum weeklyHydroMod
     {
         //! Weekly generating modulation

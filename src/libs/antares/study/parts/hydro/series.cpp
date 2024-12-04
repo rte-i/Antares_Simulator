@@ -98,6 +98,9 @@ DataSeriesHydro::DataSeriesHydro():
     avgDailyReservoirLevels.reset(1L, DAYS_PER_YEAR);
     avgDailyReservoirLevels.fill(0.5);
     minDailyReservoirLevels.reset(1L, DAYS_PER_YEAR);
+    reservoirLevel.reset(3, DAYS_PER_YEAR, true);
+    reservoirLevel.fillColumn(DataSeriesHydro::average, 0.5);
+    reservoirLevel.fillColumn(DataSeriesHydro::maximum, 1.);
 }
 
 void DataSeriesHydro::copyGenerationTS(const DataSeriesHydro& source)
@@ -105,10 +108,12 @@ void DataSeriesHydro::copyGenerationTS(const DataSeriesHydro& source)
     ror.timeSeries = source.ror.timeSeries;
     storage.timeSeries = source.storage.timeSeries;
     mingen.timeSeries = source.mingen.timeSeries;
+    reservoirLevel = source.reservoirLevel;
 
     source.ror.unloadFromMemory();
     source.storage.unloadFromMemory();
     source.mingen.unloadFromMemory();
+    reservoirLevel.unloadFromMemory();
 }
 
 void DataSeriesHydro::copyMaxPowerTS(const DataSeriesHydro& source)
@@ -142,6 +147,7 @@ bool DataSeriesHydro::forceReload(bool reload) const
     ret = maxDailyReservoirLevels.forceReload(reload) && ret;
     ret = avgDailyReservoirLevels.forceReload(reload) && ret;
     ret = minDailyReservoirLevels.forceReload(reload) && ret;
+    ret = reservoirLevel.forceReload(reload) && ret;
     return ret;
 }
 
@@ -155,6 +161,7 @@ void DataSeriesHydro::markAsModified() const
     maxDailyReservoirLevels.markAsModified();
     avgDailyReservoirLevels.markAsModified();
     minDailyReservoirLevels.markAsModified();
+    reservoirLevel.markAsModified();
 }
 
 bool DataSeriesHydro::loadGenerationTS(const AreaName& areaID,
@@ -239,20 +246,18 @@ bool DataSeriesHydro::loadReservoirLevels(const std::string& areaID,
 
     bool ret = true;
     Matrix<>::BufferType fileContent;
-    Matrix<double> reservoirLevelDataBuffer;
+
     fs::path filePath = folder / std::string("reservoir_" + areaID + ".txt");
-    reservoirLevelDataBuffer.reset(3, DAYS_PER_YEAR, true);
-    ret = reservoirLevelDataBuffer.loadFromCSVFile(filePath.string(),
-                                                   3,
-                                                   DAYS_PER_YEAR,
-                                                   &fileContent);
+
+    reservoirLevel.reset(3, DAYS_PER_YEAR, true);
+    ret = reservoirLevel.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
 
     minDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-    minDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[0]);
+    minDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevel[DataSeriesHydro::minimum]);
     avgDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-    avgDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[1]);
+    avgDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevel[DataSeriesHydro::average]);
     maxDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-    maxDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[2]);
+    maxDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevel[DataSeriesHydro::maximum]);
 
     return ret;
 }
@@ -273,27 +278,36 @@ void DataSeriesHydro::buildHourlyMaxPowerFromDailyTS(
 bool DataSeriesHydro::saveToFolder(const AreaName& areaID, const AnyString& folder) const
 {
     String buffer;
-    buffer.clear() << folder << SEP << areaID;
+    bool ret = true;
+    buffer.clear() << folder << SEP << "series" << SEP << areaID;
     /* Make sure the folder is created */
     if (IO::Directory::Create(buffer))
     {
-        bool ret = true;
-
         // Saving data
-        buffer.clear() << folder << SEP << areaID << SEP << "ror.txt";
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP << "ror.txt";
         ret = ror.timeSeries.saveToCSVFile(buffer, 0) && ret;
-        buffer.clear() << folder << SEP << areaID << SEP << "mod.txt";
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP << "mod.txt";
         ret = storage.timeSeries.saveToCSVFile(buffer, 0) && ret;
-        buffer.clear() << folder << SEP << areaID << SEP << "mingen.txt";
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP << "mingen.txt";
         ret = mingen.timeSeries.saveToCSVFile(buffer, 0) && ret;
-        buffer.clear() << folder << SEP << areaID << SEP << "maxHourlyGenPower.txt";
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP
+                       << "maxHourlyGenPower.txt";
         ret = maxHourlyGenPower.timeSeries.saveToCSVFile(buffer, 0) && ret;
-        buffer.clear() << folder << SEP << areaID << SEP << "maxHourlyPumpPower.txt";
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP
+                       << "maxHourlyPumpPower.txt";
         ret = maxHourlyPumpPower.timeSeries.saveToCSVFile(buffer, 0) && ret;
-
-        return ret;
     }
-    return false;
+
+    buffer.clear() << folder << SEP << "common" << SEP << "capacity";
+
+    if (IO::Directory::Create(buffer))
+    {
+        buffer.clear() << folder << SEP << "common" << SEP << "capacity" << SEP << "reservoir_"
+                       << areaID << ".txt";
+        ret = reservoirLevel.saveToCSVFile(buffer, 3) && ret;
+    }
+
+    return ret;
 }
 
 uint DataSeriesHydro::TScount() const
