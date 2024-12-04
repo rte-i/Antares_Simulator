@@ -132,7 +132,7 @@ bool HydroInputsChecker::checkReservoirLevels(uint year)
           {
               if (minReservoirLevels[day] < 0 || avgReservoirLevels[day] < 0
                   || minReservoirLevels[day] > maxReservoirLevels[day]
-                  || avgReservoirLevels[day] > 100 || maxReservoirLevels[day] > 100)
+                  || avgReservoirLevels[day] > 1. || maxReservoirLevels[day] > 1.)
               {
                   errorCollector_(area.name)
                     << "Reservoir levels in area " << area.id
