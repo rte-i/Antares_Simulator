@@ -46,7 +46,10 @@ void HydroInputsChecker::Execute(uint year)
 {
     prepareInflows_.Run(year);
     minGenerationScaling_.Run(year);
-    checkReservoirLevels(year);
+    if (!checkReservoirLevels(year))
+    {
+        logs.error() << "hydro inputs checks: invalid reservoir levels in year " << year;
+    }
     if (!checksOnGenerationPowerBounds(year))
     {
         logs.error() << "hydro inputs checks: invalid minimum generation in year " << year;
@@ -120,8 +123,9 @@ bool HydroInputsChecker::checkReservoirLevels(uint year)
           }
           else
           {
-              logs.error() << "Reservoir levels Time-Series indexes in area: " << area.id
-                           << " for year: " << year << " are not equal. Something went wrong!";
+              errorCollector_(area.name)
+                << "Reservoir levels Time-Series indexes in area: " << area.id
+                << " for year: " << year << " are not equal. Something went wrong!";
           }
 
           for (unsigned int day = 0; day < DAYS_PER_YEAR; day++)
@@ -130,9 +134,9 @@ bool HydroInputsChecker::checkReservoirLevels(uint year)
                   || minReservoirLevels[day] > maxReservoirLevels[day]
                   || avgReservoirLevels[day] > 100 || maxReservoirLevels[day] > 100)
               {
-                  logs.error() << "Reservoir levels in area " << area.id
-                               << " for Time-Serie index:" << tsIndex + 1 << " are invalid on day "
-                               << day + 1;
+                  errorCollector_(area.name)
+                    << "Reservoir levels in area " << area.id
+                    << " for Time-Serie index:" << tsIndex + 1 << " are invalid on day " << day + 1;
                   ret = false;
                   break;
               }
