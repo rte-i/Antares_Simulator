@@ -9,8 +9,8 @@
 #include <antares/study/study.h>
 #include "antares/solver/hydro/management/HydroErrorsCollector.h"
 #include "antares/solver/hydro/management/HydroInputsChecker.h"
-#include "fatal-error.h"
 
+#include "fatal-error.h"
 
 using namespace Antares::Solver;
 using namespace Antares::Data;
