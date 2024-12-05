@@ -290,6 +290,13 @@ bool DataSeriesHydro::saveToFolder(const AreaName& areaID, const AnyString& fold
         ret = maxHourlyGenPower.timeSeries.saveToCSVFile(buffer, 0) && ret;
         buffer.clear() << folder << SEP << areaID << SEP << "maxHourlyPumpPower.txt";
         ret = maxHourlyPumpPower.timeSeries.saveToCSVFile(buffer, 0) && ret;
+        buffer.clear() << folder << SEP << areaID << SEP << "maxDailyReservoirLevels.txt";
+        ret = maxDailyReservoirLevels.timeSeries.saveToCSVFile(buffer, 2) && ret;
+        buffer.clear() << folder << SEP << areaID << SEP << "avgDailyReservoirLevels.txt";
+        ret = avgDailyReservoirLevels.timeSeries.saveToCSVFile(buffer, 2) && ret;
+        buffer.clear() << folder << SEP << areaID << SEP << "minDailyReservoirLevels.txt";
+        ret = minDailyReservoirLevels.timeSeries.saveToCSVFile(buffer, 2, false, true) && ret;
+        
 
         return ret;
     }
