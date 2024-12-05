@@ -239,25 +239,43 @@ bool DataSeriesHydro::loadReservoirLevels(const std::string& areaID,
                                           const std::filesystem::path& folder,
                                           bool usedBySolver)
 {
-    if (!usedBySolver)
-    {
-        return true;
-    }
-
     bool ret = true;
     Matrix<>::BufferType fileContent;
 
     fs::path filePath = folder / std::string("reservoir_" + areaID + ".txt");
 
     reservoirLevel.reset(3, DAYS_PER_YEAR, true);
-    ret = reservoirLevel.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
 
-    minDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-    minDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevel[DataSeriesHydro::minimum]);
-    avgDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-    avgDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevel[DataSeriesHydro::average]);
-    maxDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-    maxDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevel[DataSeriesHydro::maximum]);
+    if (!usedBySolver)
+    {
+        bool enabledModeIsChanged = false;
+        if (JIT::enabled)
+        {
+            JIT::enabled = false; // Allowing to read the area's daily max power
+            enabledModeIsChanged = true;
+        }
+
+        ret = reservoirLevel.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
+
+        if (enabledModeIsChanged)
+        {
+            JIT::enabled = true; // Back to the previous loading mode.
+        }
+    }
+    else
+    {
+        ret = reservoirLevel.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
+
+        minDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
+        minDailyReservoirLevels.timeSeries.pasteToColumn(0,
+                                                         reservoirLevel[DataSeriesHydro::minimum]);
+        avgDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
+        avgDailyReservoirLevels.timeSeries.pasteToColumn(0,
+                                                         reservoirLevel[DataSeriesHydro::average]);
+        maxDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
+        maxDailyReservoirLevels.timeSeries.pasteToColumn(0,
+                                                         reservoirLevel[DataSeriesHydro::maximum]);
+    }
 
     return ret;
 }
@@ -296,6 +314,15 @@ bool DataSeriesHydro::saveToFolder(const AreaName& areaID, const AnyString& fold
         buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP
                        << "maxHourlyPumpPower.txt";
         ret = maxHourlyPumpPower.timeSeries.saveToCSVFile(buffer, 0) && ret;
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP
+                       << "maxDailyReservoirLevels.txt";
+        ret = maxDailyReservoirLevels.timeSeries.saveToCSVFile(buffer, 2) && ret;
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP
+                       << "minDailyReservoirLevels.txt";
+        ret = minDailyReservoirLevels.timeSeries.saveToCSVFile(buffer, 2, false, true) && ret;
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP
+                       << "avgDailyReservoirLevels.txt";
+        ret = avgDailyReservoirLevels.timeSeries.saveToCSVFile(buffer, 2) && ret;
     }
 
     buffer.clear() << folder << SEP << "common" << SEP << "capacity";
