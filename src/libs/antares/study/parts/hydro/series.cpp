@@ -248,11 +248,11 @@ bool DataSeriesHydro::loadReservoirLevels(const std::string& areaID,
                                                    &fileContent);
 
     minDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-    minDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[0]);
+    minDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[PartHydro::minimum]);
     avgDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-    avgDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[1]);
+    avgDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[PartHydro::average]);
     maxDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-    maxDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[2]);
+    maxDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[PartHydro::maximum]);
 
     return ret;
 }
