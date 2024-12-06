@@ -38,6 +38,16 @@ namespace Data
 class DataSeriesHydro
 {
 public:
+    enum
+    {
+        //! The minimum value
+        minimum = 0,
+        //! The average value
+        average,
+        //! The maximum value
+        maximum,
+    };
+
     //! \name Constructor
     //@{
     /*!
@@ -80,6 +90,14 @@ public:
 
     void buildHourlyMaxPowerFromDailyTS(const Matrix<double>::ColumnType& DailyMaxGenPower,
                                         const Matrix<double>::ColumnType& DailyMaxPumpPower);
+
+    // Loading hydro reservoir levels
+    bool loadScenarizedReservoirLevels(const std::string& areaID,
+                                       const std::filesystem::path& folder,
+                                       bool usedBySolver);
+    bool loadReservoirLevels(const std::string& areaID,
+                             const std::filesystem::path& folder,
+                             bool usedBySolver);
 
     /*!
     ** \brief Save data series for hydro into a folder (`input/hydro/series`)
@@ -131,6 +149,30 @@ public:
     ** Merely a matrix of TimeSeriesCount * HOURS_PER_YEAR values
     */
     TimeSeries maxHourlyPumpPower;
+
+    /*!
+    ** \brief Maximum Reservoir Levels (%)
+    **
+    ** Merely a matrix of TimeSeriesCount * DAYS_PER_YEAR values
+    */
+    TimeSeries maxDailyReservoirLevels;
+
+    /*!
+    ** \brief Minimum Reservoir Levels (%)
+    **
+    ** Merely a matrix of TimeSeriesCount * DAYS_PER_YEAR values
+    */
+    TimeSeries minDailyReservoirLevels;
+
+    /*!
+    ** \brief Average Reservoir Levels (%)
+    **
+    ** Merely a matrix of TimeSeriesCount * DAYS_PER_YEAR values
+    */
+    TimeSeries avgDailyReservoirLevels;
+
+    //! Need it for UI and loading data from old file
+    Matrix<double> reservoirLevel;
 
     // Getters for generation (ror, storage and mingen) and
     // max power (generation and pumping) number of TS

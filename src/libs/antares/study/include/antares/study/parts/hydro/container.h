@@ -90,16 +90,6 @@ struct AreaDependantHydroManagementData
 class PartHydro
 {
 public:
-    enum
-    {
-        //! The minimum value
-        minimum = 0,
-        //! The average value
-        average,
-        //! The maximum value
-        maximum,
-    };
-
     enum weeklyHydroMod
     {
         //! Weekly generating modulation
@@ -202,6 +192,7 @@ public:
     Matrix<double> inflowPattern;
 
     //! Daily reservoir level ({min,avg,max}x365)
+    // This object is going to be deprecated, dont delete it, unit test will fail and UI will break
     Matrix<double> reservoirLevel;
 
     //! Daily water value ({0,1,2%...100%}x365)
@@ -225,7 +216,7 @@ public:
     std::vector<std::optional<double>> deltaBetweenFinalAndInitialLevels;
 
 private:
-    static bool checkReservoirLevels(const Study& study);
+    static bool checkInflowPatternAndCredModul(const Study& study);
     static bool checkProperties(Study& study);
 
 }; // class PartHydro

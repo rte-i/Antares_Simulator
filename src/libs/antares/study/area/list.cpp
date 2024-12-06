@@ -272,7 +272,7 @@ static bool AreaListSaveToFolderSingleArea(const Area& area, Clob& buffer, const
         }
         if (area.hydro.series) // Series
         {
-            buffer.clear() << folder << SEP << "input" << SEP << "hydro" << SEP << "series";
+            buffer.clear() << folder << SEP << "input" << SEP << "hydro";
             ret = area.hydro.series->saveToFolder(area.id, buffer) && ret;
         }
     }
@@ -960,6 +960,24 @@ static bool AreaListLoadFromFolderSingleArea(Study& study,
         else
         {
             ret = area.hydro.series->LoadMaxPower(area.id, hydroSeries) && ret;
+        }
+
+        // Here add function call for loading reservoir level TS, from new and old files
+        // Also here add function call to validate reservoir levels
+
+        if (!study.parameters.useScenarizedReservoirLevels)
+        {
+            fs::path reservoirLevelPath = study.folderInput / "hydro" / "common" / "capacity";
+            ret = area.hydro.series->loadReservoirLevels(area.id,
+                                                         reservoirLevelPath,
+                                                         study.usedByTheSolver);
+        }
+        else
+        {
+            ret = area.hydro.series->loadScenarizedReservoirLevels(area.id,
+                                                                   hydroSeries,
+                                                                   study.usedByTheSolver)
+                  && ret;
         }
 
         area.hydro.series->resizeTSinDeratedMode(study.parameters.derated,

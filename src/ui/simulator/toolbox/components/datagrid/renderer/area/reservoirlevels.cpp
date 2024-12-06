@@ -71,7 +71,7 @@ wxString ReservoirLevels::cellValue(int x, int y) const
 {
     if (!pArea)
         return wxString();
-    auto& matrix = pArea->hydro.reservoirLevel;
+    auto& matrix = pArea->hydro.series->reservoirLevel;
     return ((uint)x < matrix.width && (uint)y < matrix.height)
              ? DoubleToWxString(100. * matrix[x][y])
              : wxString();
@@ -81,7 +81,7 @@ double ReservoirLevels::cellNumericValue(int x, int y) const
 {
     if (!pArea)
         return 0.;
-    auto& matrix = pArea->hydro.reservoirLevel;
+    auto& matrix = pArea->hydro.series->reservoirLevel;
     return ((uint)x < matrix.width && (uint)y < matrix.height) ? matrix[x][y] * 100. : 0.;
 }
 
@@ -89,7 +89,7 @@ bool ReservoirLevels::cellValue(int x, int y, const String& value)
 {
     if (!pArea)
         return false;
-    auto& matrix = pArea->hydro.reservoirLevel;
+    auto& matrix = pArea->hydro.series->reservoirLevel;
     if ((uint)x < matrix.width && (uint)y < matrix.height)
     {
         double v;
@@ -118,7 +118,7 @@ void ReservoirLevels::internalAreaChanged(Antares::Data::Area* area)
     Renderer::ARendererArea::internalAreaChanged(area);
     if (pHydro)
     {
-        MatrixAncestorType::matrix(&pHydro->reservoirLevel);
+        MatrixAncestorType::matrix(&pHydro->series->reservoirLevel);
     }
     else
     {
@@ -139,7 +139,7 @@ IRenderer::CellStyle ReservoirLevels::cellStyle(int col, int row) const
     {
         if (pArea)
         {
-            auto& matrix = pArea->hydro.reservoirLevel;
+            auto& matrix = pArea->hydro.series->reservoirLevel;
             if ((uint)row < matrix.height)
             {
                 double d = matrix[col][row];

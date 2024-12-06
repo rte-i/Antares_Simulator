@@ -72,13 +72,19 @@ DataSeriesHydro::DataSeriesHydro():
     storage(timeseriesNumbers),
     mingen(timeseriesNumbers),
     maxHourlyGenPower(timeseriesNumbers),
-    maxHourlyPumpPower(timeseriesNumbers)
+    maxHourlyPumpPower(timeseriesNumbers),
+    maxDailyReservoirLevels(timeseriesNumbers),
+    minDailyReservoirLevels(timeseriesNumbers),
+    avgDailyReservoirLevels(timeseriesNumbers)
 {
     timeseriesNumbers.registerSeries(&ror, "ror");
     timeseriesNumbers.registerSeries(&storage, "storage");
     timeseriesNumbers.registerSeries(&mingen, "mingen");
     timeseriesNumbers.registerSeries(&maxHourlyGenPower, "max-geneneration-power");
     timeseriesNumbers.registerSeries(&maxHourlyPumpPower, "max-pumping-power");
+    timeseriesNumbers.registerSeries(&maxDailyReservoirLevels, "max-reservoir-level");
+    timeseriesNumbers.registerSeries(&minDailyReservoirLevels, "min-reservoir-level");
+    timeseriesNumbers.registerSeries(&avgDailyReservoirLevels, "avg-reservoir-level");
 
     // Pmin was introduced in v8.6
     // The previous behavior was Pmin=0
@@ -87,6 +93,14 @@ DataSeriesHydro::DataSeriesHydro():
     mingen.reset();
     maxHourlyGenPower.reset();
     maxHourlyPumpPower.reset();
+    maxDailyReservoirLevels.reset(1L, DAYS_PER_YEAR);
+    maxDailyReservoirLevels.fill(1.0);
+    avgDailyReservoirLevels.reset(1L, DAYS_PER_YEAR);
+    avgDailyReservoirLevels.fill(0.5);
+    minDailyReservoirLevels.reset(1L, DAYS_PER_YEAR);
+    reservoirLevel.reset(3, DAYS_PER_YEAR, true);
+    reservoirLevel.fillColumn(DataSeriesHydro::average, 0.5);
+    reservoirLevel.fillColumn(DataSeriesHydro::maximum, 1.);
 }
 
 void DataSeriesHydro::copyGenerationTS(const DataSeriesHydro& source)
@@ -94,10 +108,12 @@ void DataSeriesHydro::copyGenerationTS(const DataSeriesHydro& source)
     ror.timeSeries = source.ror.timeSeries;
     storage.timeSeries = source.storage.timeSeries;
     mingen.timeSeries = source.mingen.timeSeries;
+    reservoirLevel = source.reservoirLevel;
 
     source.ror.unloadFromMemory();
     source.storage.unloadFromMemory();
     source.mingen.unloadFromMemory();
+    reservoirLevel.unloadFromMemory();
 }
 
 void DataSeriesHydro::copyMaxPowerTS(const DataSeriesHydro& source)
@@ -128,6 +144,10 @@ bool DataSeriesHydro::forceReload(bool reload) const
     ret = mingen.forceReload(reload) && ret;
     ret = maxHourlyGenPower.forceReload(reload) && ret;
     ret = maxHourlyPumpPower.forceReload(reload) && ret;
+    ret = maxDailyReservoirLevels.forceReload(reload) && ret;
+    ret = avgDailyReservoirLevels.forceReload(reload) && ret;
+    ret = minDailyReservoirLevels.forceReload(reload) && ret;
+    ret = reservoirLevel.forceReload(reload) && ret;
     return ret;
 }
 
@@ -138,6 +158,10 @@ void DataSeriesHydro::markAsModified() const
     mingen.markAsModified();
     maxHourlyGenPower.markAsModified();
     maxHourlyPumpPower.markAsModified();
+    maxDailyReservoirLevels.markAsModified();
+    avgDailyReservoirLevels.markAsModified();
+    minDailyReservoirLevels.markAsModified();
+    reservoirLevel.markAsModified();
 }
 
 bool DataSeriesHydro::loadGenerationTS(const AreaName& areaID,
@@ -178,6 +202,84 @@ bool DataSeriesHydro::LoadMaxPower(const std::string& areaID, const fs::path& fo
     return ret;
 }
 
+bool DataSeriesHydro::loadScenarizedReservoirLevels(const std::string& areaID,
+                                                    const fs::path& folder,
+                                                    bool usedBySolver)
+{
+    if (!usedBySolver)
+    {
+        return true;
+    }
+
+    bool ret = true;
+
+    ret = loadTSfromFile(maxDailyReservoirLevels.timeSeries,
+                         areaID,
+                         folder,
+                         "maxDailyReservoirLevels.txt",
+                         DAYS_PER_YEAR)
+          && ret;
+    ret = loadTSfromFile(minDailyReservoirLevels.timeSeries,
+                         areaID,
+                         folder,
+                         "minDailyReservoirLevels.txt",
+                         DAYS_PER_YEAR)
+          && ret;
+    ret = loadTSfromFile(avgDailyReservoirLevels.timeSeries,
+                         areaID,
+                         folder,
+                         "avgDailyReservoirLevels.txt",
+                         DAYS_PER_YEAR)
+          && ret;
+
+    return ret;
+}
+
+bool DataSeriesHydro::loadReservoirLevels(const std::string& areaID,
+                                          const std::filesystem::path& folder,
+                                          bool usedBySolver)
+{
+    bool ret = true;
+    Matrix<>::BufferType fileContent;
+
+    fs::path filePath = folder / std::string("reservoir_" + areaID + ".txt");
+
+    reservoirLevel.reset(3, DAYS_PER_YEAR, true);
+
+    if (!usedBySolver)
+    {
+        bool enabledModeIsChanged = false;
+        if (JIT::enabled)
+        {
+            JIT::enabled = false; // Allowing to read the area's daily max power
+            enabledModeIsChanged = true;
+        }
+
+        ret = reservoirLevel.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
+
+        if (enabledModeIsChanged)
+        {
+            JIT::enabled = true; // Back to the previous loading mode.
+        }
+    }
+    else
+    {
+        ret = reservoirLevel.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
+
+        minDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
+        minDailyReservoirLevels.timeSeries.pasteToColumn(0,
+                                                         reservoirLevel[DataSeriesHydro::minimum]);
+        avgDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
+        avgDailyReservoirLevels.timeSeries.pasteToColumn(0,
+                                                         reservoirLevel[DataSeriesHydro::average]);
+        maxDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
+        maxDailyReservoirLevels.timeSeries.pasteToColumn(0,
+                                                         reservoirLevel[DataSeriesHydro::maximum]);
+    }
+
+    return ret;
+}
+
 void DataSeriesHydro::buildHourlyMaxPowerFromDailyTS(
   const Matrix<double>::ColumnType& DailyMaxGenPower,
   const Matrix<double>::ColumnType& DailyMaxPumpPower)
@@ -194,27 +296,45 @@ void DataSeriesHydro::buildHourlyMaxPowerFromDailyTS(
 bool DataSeriesHydro::saveToFolder(const AreaName& areaID, const AnyString& folder) const
 {
     String buffer;
-    buffer.clear() << folder << SEP << areaID;
+    bool ret = true;
+    buffer.clear() << folder << SEP << "series" << SEP << areaID;
     /* Make sure the folder is created */
     if (IO::Directory::Create(buffer))
     {
-        bool ret = true;
-
         // Saving data
-        buffer.clear() << folder << SEP << areaID << SEP << "ror.txt";
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP << "ror.txt";
         ret = ror.timeSeries.saveToCSVFile(buffer, 0) && ret;
-        buffer.clear() << folder << SEP << areaID << SEP << "mod.txt";
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP << "mod.txt";
         ret = storage.timeSeries.saveToCSVFile(buffer, 0) && ret;
-        buffer.clear() << folder << SEP << areaID << SEP << "mingen.txt";
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP << "mingen.txt";
         ret = mingen.timeSeries.saveToCSVFile(buffer, 0) && ret;
-        buffer.clear() << folder << SEP << areaID << SEP << "maxHourlyGenPower.txt";
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP
+                       << "maxHourlyGenPower.txt";
         ret = maxHourlyGenPower.timeSeries.saveToCSVFile(buffer, 0) && ret;
-        buffer.clear() << folder << SEP << areaID << SEP << "maxHourlyPumpPower.txt";
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP
+                       << "maxHourlyPumpPower.txt";
         ret = maxHourlyPumpPower.timeSeries.saveToCSVFile(buffer, 0) && ret;
-
-        return ret;
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP
+                       << "maxDailyReservoirLevels.txt";
+        ret = maxDailyReservoirLevels.timeSeries.saveToCSVFile(buffer, 2) && ret;
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP
+                       << "minDailyReservoirLevels.txt";
+        ret = minDailyReservoirLevels.timeSeries.saveToCSVFile(buffer, 2, false, true) && ret;
+        buffer.clear() << folder << SEP << "series" << SEP << areaID << SEP
+                       << "avgDailyReservoirLevels.txt";
+        ret = avgDailyReservoirLevels.timeSeries.saveToCSVFile(buffer, 2) && ret;
     }
-    return false;
+
+    buffer.clear() << folder << SEP << "common" << SEP << "capacity";
+
+    if (IO::Directory::Create(buffer))
+    {
+        buffer.clear() << folder << SEP << "common" << SEP << "capacity" << SEP << "reservoir_"
+                       << areaID << ".txt";
+        ret = reservoirLevel.saveToCSVFile(buffer, 3) && ret;
+    }
+
+    return ret;
 }
 
 uint DataSeriesHydro::TScount() const
@@ -223,7 +343,10 @@ uint DataSeriesHydro::TScount() const
                                            ror.numberOfColumns(),
                                            mingen.numberOfColumns(),
                                            maxHourlyGenPower.numberOfColumns(),
-                                           maxHourlyPumpPower.numberOfColumns()});
+                                           maxHourlyPumpPower.numberOfColumns(),
+                                           maxDailyReservoirLevels.numberOfColumns(),
+                                           minDailyReservoirLevels.numberOfColumns(),
+                                           avgDailyReservoirLevels.numberOfColumns()});
 
     return *std::max_element(nbColumns.begin(), nbColumns.end());
 }
@@ -244,10 +367,14 @@ void DataSeriesHydro::resizeTSinDeratedMode(bool derated,
         mingen.averageTimeseries();
 
         if (studyVersion >= StudyVersion(9, 1))
-        {
+        { // Check: Maybe we don't need check for 9.1 version, since we have conversion
+            // This two objects will be created regardless of the version
             maxHourlyGenPower.averageTimeseries();
             maxHourlyPumpPower.averageTimeseries();
         }
     }
+    maxDailyReservoirLevels.averageTimeseries();
+    avgDailyReservoirLevels.averageTimeseries();
+    minDailyReservoirLevels.averageTimeseries();
 }
 } // namespace Antares::Data

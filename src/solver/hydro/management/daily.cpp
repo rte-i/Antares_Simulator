@@ -234,7 +234,8 @@ inline void HydroManagement::prepareDailyOptimalGenerations(
 
     double reservoirCapacity = area.hydro.reservoirCapacity;
 
-    auto& lowLevel = area.hydro.reservoirLevel[Data::PartHydro::minimum];
+    uint32_t seriesIndex = area.hydro.series->minDailyReservoirLevels.getSeriesIndex(y);
+    const auto& lowLevel = area.hydro.series->minDailyReservoirLevels.timeSeries[seriesIndex];
 
     double dailyTargetGen[12 * maxDailyTargetGen];
 

@@ -59,6 +59,8 @@ private:
     bool checksOnGenerationPowerBounds(uint year);
     //! check minimum generation is lower than available inflows
     bool checkMinGeneration(uint year);
+    //! check reservoir levels
+    bool checkReservoirLevels(uint year);
 };
 
 } // namespace Antares
