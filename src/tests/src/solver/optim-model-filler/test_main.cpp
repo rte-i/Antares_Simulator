@@ -19,41 +19,8 @@
  * along with Antares_Simulator. If not, see <https://opensource.org/license/mpl-2-0/>.
  */
 
-#pragma once
+#define BOOST_TEST_MODULE test modeler impl
 
-#include <antares/solver/modeler/api/mipVariable.h>
+#define WIN32_LEAN_AND_MEAN
 
-namespace operations_research
-{
-class MPVariable; // forward declaration
-}
-
-namespace Antares::Solver::Modeler::OrtoolsImpl
-{
-
-class OrtoolsMipVariable final: public Api::IMipVariable
-{
-public:
-    void setLb(double lb) override;
-    void setUb(double ub) override;
-
-    void setBounds(double lb, double ub) override;
-
-    double getLb() const override;
-    double getUb() const override;
-
-    const std::string& getName() const override;
-
-    bool isInteger() const override;
-
-    const operations_research::MPVariable* getMpVar() const;
-
-    ~OrtoolsMipVariable() override = default;
-
-    explicit OrtoolsMipVariable(operations_research::MPVariable*);
-
-private:
-    operations_research::MPVariable* mpVar_;
-};
-
-} // namespace Antares::Solver::Modeler::OrtoolsImpl
+#include <boost/test/unit_test.hpp>
