@@ -309,7 +309,10 @@ uint DataSeriesHydro::TScount() const
                                            ror.numberOfColumns(),
                                            mingen.numberOfColumns(),
                                            maxHourlyGenPower.numberOfColumns(),
-                                           maxHourlyPumpPower.numberOfColumns()});
+                                           maxHourlyPumpPower.numberOfColumns(),
+                                           maxDailyReservoirLevels.numberOfColumns(),
+                                           minDailyReservoirLevels.numberOfColumns(),
+                                           avgDailyReservoirLevels.numberOfColumns()});
 
     return *std::max_element(nbColumns.begin(), nbColumns.end());
 }
