@@ -82,11 +82,11 @@ bool ReservoirLevels::loadScenarizedReservoirLevels(const std::string& areaID,
 
     bool ret = true;
 
-    fs::path filePath = folder / "series" / areaID / "maxDailyReservoirLevels.txt";
+    fs::path filePath = folder / areaID / "maxDailyReservoirLevels.txt";
     ret = max.timeSeries.loadFromCSVFile(filePath.string(), 1, DAYS_PER_YEAR, &fileContent) && ret;
-    filePath = folder / "series" / areaID / "minDailyReservoirLevels.txt";
+    filePath = folder / areaID / "minDailyReservoirLevels.txt";
     ret = min.timeSeries.loadFromCSVFile(filePath.string(), 1, DAYS_PER_YEAR, &fileContent) && ret;
-    filePath = folder / "series" / areaID / "avgDailyReservoirLevels.txt";
+    filePath = folder / areaID / "avgDailyReservoirLevels.txt";
     ret = avg.timeSeries.loadFromCSVFile(filePath.string(), 1, DAYS_PER_YEAR, &fileContent) && ret;
 
     return ret;
