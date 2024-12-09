@@ -970,13 +970,21 @@ static bool AreaListLoadFromFolderSingleArea(Study& study,
             fs::path reservoirLevelPath = study.folderInput / "hydro" / "common" / "capacity";
             ret = area.hydro.series->loadReservoirLevels(area.id,
                                                          reservoirLevelPath,
-                                                         study.usedByTheSolver);
+                                                         study.usedByTheSolver)
+                  && ret;
+            ret = area.hydro.series->reservoirLevels.loadReservoirLevels(area.id,
+                                                                         reservoirLevelPath,
+                                                                         study.usedByTheSolver)
+                  && ret;
         }
         else
         {
             ret = area.hydro.series->loadScenarizedReservoirLevels(area.id,
                                                                    hydroSeries,
                                                                    study.usedByTheSolver)
+                  && ret;
+            ret = area.hydro.series->reservoirLevels
+                    .loadScenarizedReservoirLevels(area.id, pathHydro, study.usedByTheSolver)
                   && ret;
         }
 

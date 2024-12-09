@@ -44,7 +44,7 @@ ReservoirLevels::ReservoirLevels(TimeSeriesNumbers& timeseriesNumbers):
     timeseriesNumbers.registerSeries(&max, "max-reservoir-level");
     timeseriesNumbers.registerSeries(&min, "min-reservoir-level");
     timeseriesNumbers.registerSeries(&avg, "avg-reservoir-level");
-    
+
     max.reset(1L, DAYS_PER_YEAR);
     max.fill(1.0);
     avg.reset(1L, DAYS_PER_YEAR);
@@ -142,6 +142,13 @@ bool ReservoirLevels::saveToFolder(const std::string& areaID,
     ret = reservoirLevelsUI.saveToCSVFile(pathFile.string(), /*decimal*/ 3) && ret;
 
     return ret;
+}
+
+void ReservoirLevels::averageTimeSeries()
+{
+    max.averageTimeseries();
+    min.averageTimeseries();
+    avg.averageTimeseries();
 }
 
 } // namespace Antares::Data

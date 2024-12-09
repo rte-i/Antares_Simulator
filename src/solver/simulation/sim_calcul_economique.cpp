@@ -523,9 +523,13 @@ void SIM_RenseignementProblemeHebdo(const Study& study,
                 if (area.hydro.hardBoundsOnRuleCurves
                     && problem.CaracteristiquesHydrauliques[k].SuiviNiveauHoraire)
                 {
-                    const auto& minLvl = area.hydro.series->minDailyReservoirLevels.getColumn(
+                    // const auto& minLvl = area.hydro.series->minDailyReservoirLevels.getColumn(
+                    //   problem.year);
+                    // const auto& maxLvl = area.hydro.series->maxDailyReservoirLevels.getColumn(
+                    //   problem.year);
+                    const auto& minLvl = area.hydro.series->reservoirLevels.min.getColumn(
                       problem.year);
-                    const auto& maxLvl = area.hydro.series->maxDailyReservoirLevels.getColumn(
+                    const auto& maxLvl = area.hydro.series->reservoirLevels.max.getColumn(
                       problem.year);
 
                     for (int day = 0; day < 7; day++)
@@ -799,7 +803,9 @@ void SIM_RenseignementProblemeHebdo(const Study& study,
                                                                 .hours[PasDeTempsDebut + 7 * 24]
                                                                 .dayYear;
 
-                                const auto& minLvl = area.hydro.series->minDailyReservoirLevels
+                                // const auto& minLvl = area.hydro.series->minDailyReservoirLevels
+                                //                        .getColumn(problem.year);
+                                const auto& minLvl = area.hydro.series->reservoirLevels.min
                                                        .getColumn(problem.year);
                                 double V = std::max(0., WSL - minLvl[nextWeekFirstDay] * rc + WNI);
 
@@ -953,7 +959,10 @@ void SIM_RenseignementProblemeHebdo(const Study& study,
                                                                     .hours[PasDeTempsDebut + 7 * 24]
                                                                     .dayYear;
 
-                                    const auto& maxLvl = area.hydro.series->maxDailyReservoirLevels
+                                    // const auto& maxLvl =
+                                    // area.hydro.series->maxDailyReservoirLevels
+                                    //                        .getColumn(problem.year);
+                                    const auto& maxLvl = area.hydro.series->reservoirLevels.max
                                                            .getColumn(problem.year);
 
                                     double V = std::max(0.,

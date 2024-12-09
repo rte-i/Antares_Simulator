@@ -69,7 +69,9 @@ public:
     void markAsModified() const;
 
     bool saveToFolder(const std::string& areaID, const std::filesystem::path& folder) const;
-    
+
+    void averageTimeSeries();
+
     /*!
      ** \brief Maximum Reservoir Levels (%)
      **

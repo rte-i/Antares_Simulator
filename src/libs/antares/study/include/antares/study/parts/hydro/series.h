@@ -26,6 +26,7 @@
 #include <antares/study/version.h>
 
 #include "../../fwd.h"
+#include "hydroreservoirlevels.h"
 
 namespace Antares
 {
@@ -160,6 +161,8 @@ public:
     ** Merely a matrix of TimeSeriesCount * DAYS_PER_YEAR values
     */
     TimeSeries avgDailyReservoirLevels;
+
+    ReservoirLevels reservoirLevels;
 
     // Getters for generation (ror, storage and mingen) and
     // max power (generation and pumping) number of TS

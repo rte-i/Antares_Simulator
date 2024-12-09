@@ -75,7 +75,8 @@ DataSeriesHydro::DataSeriesHydro():
     maxHourlyPumpPower(timeseriesNumbers),
     maxDailyReservoirLevels(timeseriesNumbers),
     minDailyReservoirLevels(timeseriesNumbers),
-    avgDailyReservoirLevels(timeseriesNumbers)
+    avgDailyReservoirLevels(timeseriesNumbers),
+    reservoirLevels(timeseriesNumbers)
 {
     timeseriesNumbers.registerSeries(&ror, "ror");
     timeseriesNumbers.registerSeries(&storage, "storage");
@@ -105,10 +106,12 @@ void DataSeriesHydro::copyGenerationTS(const DataSeriesHydro& source)
     ror.timeSeries = source.ror.timeSeries;
     storage.timeSeries = source.storage.timeSeries;
     mingen.timeSeries = source.mingen.timeSeries;
+    reservoirLevels.reservoirLevelsUI = source.reservoirLevels.reservoirLevelsUI;
 
     source.ror.unloadFromMemory();
     source.storage.unloadFromMemory();
     source.mingen.unloadFromMemory();
+    source.reservoirLevels.reservoirLevelsUI.unloadFromMemory();
 }
 
 void DataSeriesHydro::copyMaxPowerTS(const DataSeriesHydro& source)
@@ -142,6 +145,7 @@ bool DataSeriesHydro::forceReload(bool reload) const
     ret = maxDailyReservoirLevels.forceReload(reload) && ret;
     ret = avgDailyReservoirLevels.forceReload(reload) && ret;
     ret = minDailyReservoirLevels.forceReload(reload) && ret;
+    ret = reservoirLevels.forceReload(reload) && ret;
     return ret;
 }
 
@@ -155,6 +159,7 @@ void DataSeriesHydro::markAsModified() const
     maxDailyReservoirLevels.markAsModified();
     avgDailyReservoirLevels.markAsModified();
     minDailyReservoirLevels.markAsModified();
+    reservoirLevels.markAsModified();
 }
 
 bool DataSeriesHydro::loadGenerationTS(const AreaName& areaID,
@@ -248,11 +253,14 @@ bool DataSeriesHydro::loadReservoirLevels(const std::string& areaID,
                                                    &fileContent);
 
     minDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-    minDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[PartHydro::minimum]);
+    minDailyReservoirLevels.timeSeries.pasteToColumn(0,
+                                                     reservoirLevelDataBuffer[PartHydro::minimum]);
     avgDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-    avgDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[PartHydro::average]);
+    avgDailyReservoirLevels.timeSeries.pasteToColumn(0,
+                                                     reservoirLevelDataBuffer[PartHydro::average]);
     maxDailyReservoirLevels.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-    maxDailyReservoirLevels.timeSeries.pasteToColumn(0, reservoirLevelDataBuffer[PartHydro::maximum]);
+    maxDailyReservoirLevels.timeSeries.pasteToColumn(0,
+                                                     reservoirLevelDataBuffer[PartHydro::maximum]);
 
     return ret;
 }
@@ -296,7 +304,6 @@ bool DataSeriesHydro::saveToFolder(const AreaName& areaID, const AnyString& fold
         ret = avgDailyReservoirLevels.timeSeries.saveToCSVFile(buffer, 2) && ret;
         buffer.clear() << folder << SEP << areaID << SEP << "minDailyReservoirLevels.txt";
         ret = minDailyReservoirLevels.timeSeries.saveToCSVFile(buffer, 2, false, true) && ret;
-        
 
         return ret;
     }
@@ -312,7 +319,10 @@ uint DataSeriesHydro::TScount() const
                                            maxHourlyPumpPower.numberOfColumns(),
                                            maxDailyReservoirLevels.numberOfColumns(),
                                            minDailyReservoirLevels.numberOfColumns(),
-                                           avgDailyReservoirLevels.numberOfColumns()});
+                                           avgDailyReservoirLevels.numberOfColumns(),
+                                           reservoirLevels.max.numberOfColumns(),
+                                           reservoirLevels.min.numberOfColumns(),
+                                           reservoirLevels.avg.numberOfColumns()});
 
     return *std::max_element(nbColumns.begin(), nbColumns.end());
 }
@@ -342,5 +352,6 @@ void DataSeriesHydro::resizeTSinDeratedMode(bool derated,
     maxDailyReservoirLevels.averageTimeseries();
     avgDailyReservoirLevels.averageTimeseries();
     minDailyReservoirLevels.averageTimeseries();
+    reservoirLevels.averageTimeSeries();
 }
 } // namespace Antares::Data
