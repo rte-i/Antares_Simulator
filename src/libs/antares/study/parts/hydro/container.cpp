@@ -72,7 +72,7 @@ void PartHydro::reset()
 
     inflowPattern.reset(1, DAYS_PER_YEAR, true);
     inflowPattern.fillColumn(0, 1.0);
-    // Remove reservoirLevel from Constructor
+    // Remove reservoirLevel from reset function
     reservoirLevel.reset(3, DAYS_PER_YEAR, true);
     reservoirLevel.fillColumn(average, 0.5);
     reservoirLevel.fillColumn(maximum, 1.);
@@ -569,7 +569,7 @@ bool PartHydro::SaveToFolder(const AreaList& areas, const AnyString& folder)
           buffer.clear() << folder << SEP << "common" << SEP << "capacity" << SEP
                          << "inflowPattern_" << area.id << ".txt";
           ret = area.hydro.inflowPattern.saveToCSVFile(buffer, /*decimal*/ 3) && ret;
-          // reservoir, consult with RTE about UI
+          // reservoir, this is moved in the ReservoirLevels class
           buffer.clear() << folder << SEP << "common" << SEP << "capacity" << SEP << "reservoir_"
                          << area.id << ".txt";
           ret = area.hydro.reservoirLevel.saveToCSVFile(buffer, /*decimal*/ 3) && ret;

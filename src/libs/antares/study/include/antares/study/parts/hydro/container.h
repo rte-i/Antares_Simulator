@@ -202,7 +202,7 @@ public:
     Matrix<double> inflowPattern;
 
     //! Daily reservoir level ({min,avg,max}x365)
-    // This object is going to be deprecated, dont delete it, unit test will fail and UI will break
+    // This object is going to be deprecated, it is moved in the ReservoirLevels class
     Matrix<double> reservoirLevel;
 
     //! Daily water value ({0,1,2%...100%}x365)
