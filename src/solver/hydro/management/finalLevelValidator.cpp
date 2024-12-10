@@ -153,10 +153,6 @@ double FinalLevelValidator::calculateTotalInflows() const
 
 bool FinalLevelValidator::isBetweenRuleCurves() const
 {
-    // double lowLevelLastDay = hydro_.series->minDailyReservoirLevels.getColumn(
-    //   year_)[DAYS_PER_YEAR - 1];
-    // double highLevelLastDay = hydro_.series->maxDailyReservoirLevels.getColumn(
-    //   year_)[DAYS_PER_YEAR - 1];
     double lowLevelLastDay = hydro_.series->reservoirLevels.min.getColumn(year_)[DAYS_PER_YEAR - 1];
     double highLevelLastDay = hydro_.series->reservoirLevels.max.getColumn(
       year_)[DAYS_PER_YEAR - 1];

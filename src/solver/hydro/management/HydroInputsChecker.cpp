@@ -104,23 +104,9 @@ bool HydroInputsChecker::checkReservoirLevels(uint year)
     areas_.each(
       [this, &ret, &year](const Data::Area& area)
       {
-          //   const auto& minReservoirLevels =
-          //   area.hydro.series->minDailyReservoirLevels.getColumn(
-          //     year);
-          //   const auto& avgReservoirLevels =
-          //   area.hydro.series->avgDailyReservoirLevels.getColumn(
-          //     year);
-          //   const auto& maxReservoirLevels =
-          //   area.hydro.series->maxDailyReservoirLevels.getColumn(
-          //     year);
           const auto& minReservoirLevels = area.hydro.series->reservoirLevels.min.getColumn(year);
           const auto& avgReservoirLevels = area.hydro.series->reservoirLevels.avg.getColumn(year);
           const auto& maxReservoirLevels = area.hydro.series->reservoirLevels.max.getColumn(year);
-
-          //   const auto& tsIndexMin =
-          //   area.hydro.series->minDailyReservoirLevels.getSeriesIndex(year); const auto&
-          //   tsIndexAvg = area.hydro.series->avgDailyReservoirLevels.getSeriesIndex(year); const
-          //   auto& tsIndexMax = area.hydro.series->maxDailyReservoirLevels.getSeriesIndex(year);
 
           const auto& tsIndexMin = area.hydro.series->reservoirLevels.min.getSeriesIndex(year);
           const auto& tsIndexAvg = area.hydro.series->reservoirLevels.avg.getSeriesIndex(year);
