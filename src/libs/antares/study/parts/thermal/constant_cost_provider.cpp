@@ -18,16 +18,30 @@
  * You should have received a copy of the Mozilla Public Licence 2.0
  * along with Antares_Simulator. If not, see <https://opensource.org/license/mpl-2-0/>.
  */
-#ifndef __ANTARES_LIBS_STUDY_PARTS_THERMAL_DEFINES_H__
-#define __ANTARES_LIBS_STUDY_PARTS_THERMAL_DEFINES_H__
+#include "antares/study/parts/thermal/cluster.h"
 
 namespace Antares::Data
 {
-// Forward declaration
-class ThermalCluster;
-class ThermalClusterList;
-class PreproAvailability;
+ConstantCostProvider::ConstantCostProvider(const ThermalCluster& cluster):
+    cluster(cluster)
+{
+}
 
+double ConstantCostProvider::getOperatingCost(uint serieIndex, uint hourInTheYear) const
+{
+    const auto* modCost = cluster.modulation[thermalModulationCost];
+    return cluster.marginalCost * modCost[hourInTheYear];
+}
+
+double ConstantCostProvider::getMarginalCost(uint serieIndex, uint hourInTheYear) const
+{
+    const double mod = cluster.modulation[Data::thermalModulationCost][hourInTheYear];
+    return cluster.marginalCost * mod;
+}
+
+double ConstantCostProvider::getMarketBidCost(uint hourInTheYear, uint year) const
+{
+    const double mod = cluster.modulation[thermalModulationMarketBid][hourInTheYear];
+    return cluster.marketBidCost * mod;
+}
 } // namespace Antares::Data
-
-#endif // __ANTARES_LIBS_STUDY_PARTS_THERMAL_DEFINES_H__
