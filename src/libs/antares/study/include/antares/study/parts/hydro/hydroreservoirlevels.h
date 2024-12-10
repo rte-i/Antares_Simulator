@@ -72,6 +72,8 @@ public:
 
     void averageTimeSeries();
 
+    void copyReservoirLevelsFromBuffer();
+
     /*!
      ** \brief Maximum Reservoir Levels (%)
      **
@@ -98,7 +100,11 @@ public:
     **
     ** Merely a matrix of 3 * DAYS_PER_YEAR values
     */
+
+    // The buffer facilitates communication with the UI.
+    // This functionality will no longer be required once the UI is fully deprecated.
     Matrix<double> Buffer;
+
     TimeSeriesNumbers& timeseriesNumbers;
 };
 } // namespace Data

@@ -123,12 +123,7 @@ bool ReservoirLevels::loadReservoirLevels(const std::string& areaID,
     {
         ret = Buffer.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
 
-        min.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-        min.timeSeries.pasteToColumn(0, Buffer[ReservoirLevels::minimum]);
-        avg.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-        avg.timeSeries.pasteToColumn(0, Buffer[ReservoirLevels::average]);
-        max.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-        max.timeSeries.pasteToColumn(0, Buffer[ReservoirLevels::maximum]);
+        copyReservoirLevelsFromBuffer();
     }
 
     return ret;
@@ -150,6 +145,16 @@ void ReservoirLevels::averageTimeSeries()
     max.averageTimeseries();
     min.averageTimeseries();
     avg.averageTimeseries();
+}
+
+void ReservoirLevels::copyReservoirLevelsFromBuffer()
+{
+    min.timeSeries.reset(1U, DAYS_PER_YEAR, true);
+    min.timeSeries.pasteToColumn(0, Buffer[ReservoirLevels::minimum]);
+    avg.timeSeries.reset(1U, DAYS_PER_YEAR, true);
+    avg.timeSeries.pasteToColumn(0, Buffer[ReservoirLevels::average]);
+    max.timeSeries.reset(1U, DAYS_PER_YEAR, true);
+    max.timeSeries.pasteToColumn(0, Buffer[ReservoirLevels::maximum]);
 }
 
 } // namespace Antares::Data
