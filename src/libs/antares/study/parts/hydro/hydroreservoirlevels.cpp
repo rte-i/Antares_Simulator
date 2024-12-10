@@ -101,7 +101,7 @@ bool ReservoirLevels::loadReservoirLevels(const std::string& areaID,
 
     fs::path filePath = folder / std::string("reservoir_" + areaID + ".txt");
 
-    reservoirLevelsUI.reset(3, DAYS_PER_YEAR, true);
+    Buffer.reset(3, DAYS_PER_YEAR, true);
 
     if (!usedBySolver)
     {
@@ -112,7 +112,7 @@ bool ReservoirLevels::loadReservoirLevels(const std::string& areaID,
             enabledModeIsChanged = true;
         }
 
-        ret = reservoirLevelsUI.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
+        ret = Buffer.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
 
         if (enabledModeIsChanged)
         {
@@ -121,25 +121,26 @@ bool ReservoirLevels::loadReservoirLevels(const std::string& areaID,
     }
     else
     {
-        ret = reservoirLevelsUI.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
+        ret = Buffer.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
 
         min.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-        min.timeSeries.pasteToColumn(0, reservoirLevelsUI[ReservoirLevels::minimum]);
+        min.timeSeries.pasteToColumn(0, Buffer[ReservoirLevels::minimum]);
         avg.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-        avg.timeSeries.pasteToColumn(0, reservoirLevelsUI[ReservoirLevels::average]);
+        avg.timeSeries.pasteToColumn(0, Buffer[ReservoirLevels::average]);
         max.timeSeries.reset(1U, DAYS_PER_YEAR, true);
-        max.timeSeries.pasteToColumn(0, reservoirLevelsUI[ReservoirLevels::maximum]);
+        max.timeSeries.pasteToColumn(0, Buffer[ReservoirLevels::maximum]);
     }
 
     return ret;
 }
 
-bool ReservoirLevels::saveToFolder(const std::string& areaID,
-                                   const std::filesystem::path& folder) const
+bool ReservoirLevels::saveToFolder(const std::string& areaID, const std::string& folder) const
 {
     bool ret = true;
-    fs::path pathFile = folder / "common" / "capacity" / "reservoir_" / areaID / ".txt";
-    ret = reservoirLevelsUI.saveToCSVFile(pathFile.string(), /*decimal*/ 3) && ret;
+    std::string buffer;
+    buffer = folder + "/" + "common" + "/" + "capacity" + "/" + "reservoir_" + areaID + ".txt";
+
+    ret = Buffer.saveToCSVFile(buffer, /*decimal*/ 3) && ret;
 
     return ret;
 }

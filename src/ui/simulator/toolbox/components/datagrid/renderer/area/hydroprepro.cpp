@@ -212,7 +212,7 @@ bool HydroPrepro::valid() const
 bool HydroPrepro::circularShiftRowsUntilDate(MonthName month, uint daymonth)
 {
     if (pArea)
-        pArea->hydro.reservoirLevel.circularShiftRows(month);
+        pArea->hydro.series->reservoirLevels.Buffer.circularShiftRows(month);
     return MatrixAncestorType::circularShiftRowsUntilDate(month, daymonth);
 }
 

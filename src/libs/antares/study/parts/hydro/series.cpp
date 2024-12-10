@@ -95,12 +95,12 @@ void DataSeriesHydro::copyGenerationTS(const DataSeriesHydro& source)
     ror.timeSeries = source.ror.timeSeries;
     storage.timeSeries = source.storage.timeSeries;
     mingen.timeSeries = source.mingen.timeSeries;
-    reservoirLevels.reservoirLevelsUI = source.reservoirLevels.reservoirLevelsUI;
+    reservoirLevels.Buffer = source.reservoirLevels.Buffer;
 
     source.ror.unloadFromMemory();
     source.storage.unloadFromMemory();
     source.mingen.unloadFromMemory();
-    source.reservoirLevels.reservoirLevelsUI.unloadFromMemory();
+    source.reservoirLevels.Buffer.unloadFromMemory();
 }
 
 void DataSeriesHydro::copyMaxPowerTS(const DataSeriesHydro& source)

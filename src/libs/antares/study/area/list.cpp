@@ -274,6 +274,8 @@ static bool AreaListSaveToFolderSingleArea(const Area& area, Clob& buffer, const
         {
             buffer.clear() << folder << SEP << "input" << SEP << "hydro" << SEP << "series";
             ret = area.hydro.series->saveToFolder(area.id, buffer) && ret;
+            buffer.clear() << folder << SEP << "input" << SEP << "hydro";
+            ret = area.hydro.series->reservoirLevels.saveToFolder(area.id, buffer) && ret;
         }
     }
 

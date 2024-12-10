@@ -68,7 +68,7 @@ public:
 
     void markAsModified() const;
 
-    bool saveToFolder(const std::string& areaID, const std::filesystem::path& folder) const;
+    bool saveToFolder(const std::string& areaID, const std::string& folder) const;
 
     void averageTimeSeries();
 
@@ -98,7 +98,7 @@ public:
     **
     ** Merely a matrix of 3 * DAYS_PER_YEAR values
     */
-    Matrix<double> reservoirLevelsUI;
+    Matrix<double> Buffer;
     TimeSeriesNumbers& timeseriesNumbers;
 };
 } // namespace Data
