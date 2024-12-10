@@ -86,14 +86,14 @@ struct Fixture
                                              + area_1->id.c_str() + SEP
                                              + avgDailyReservoirLevels_file;
         pathToReservoirLevels_file.clear();
-        pathToReservoirLevels_file = base_folder + SEP + common_capacity_folder + SEP + "reservoir_"
-                                     + area_1->id + ".txt";
+        pathToReservoirLevels_file = base_folder + SEP + common_folder + SEP + capacity_folder + SEP
+                                     + "reservoir_" + area_1->id + ".txt";
 
         pathToSeriesFolder.clear();
         pathToSeriesFolder = base_folder + SEP + series_folder;
 
         pathToCommonCapacityFolder.clear();
-        pathToCommonCapacityFolder = base_folder + SEP + common_capacity_folder;
+        pathToCommonCapacityFolder = base_folder + SEP + common_folder + SEP + capacity_folder;
     }
 
     void createFoldersAndFiles()
@@ -102,8 +102,13 @@ struct Fixture
         std::string buffer;
         createFolder(base_folder, series_folder);
 
-        // common/capacity folder
-        createFolder(base_folder, common_capacity_folder);
+        // common folder
+        createFolder(base_folder, common_folder);
+
+        // capacity folder
+        buffer.clear();
+        buffer = base_folder + SEP + common_folder;
+        createFolder(buffer, capacity_folder);
 
         // area folder
         std::string area1_folder = area_1->id.c_str();
@@ -121,7 +126,7 @@ struct Fixture
         createFile(buffer, avgDailyReservoirLevels_file);
 
         buffer.clear();
-        buffer = base_folder + SEP + common_capacity_folder;
+        buffer = base_folder + SEP + common_folder + SEP + capacity_folder;
         std::string file_name = "reservoir_" + area_1->id + ".txt";
         createFile(buffer, file_name);
     }
@@ -130,7 +135,8 @@ struct Fixture
     Area* area_1;
     std::string base_folder = fs::temp_directory_path().string();
     std::string series_folder = "series";
-    std::string common_capacity_folder = "common/capacity";
+    std::string common_folder = "common";
+    std::string capacity_folder = "capacity";
     std::string maxHourlyGenPower_file = "maxHourlyGenPower.txt";
     std::string maxHourlyPumpPower_file = "maxHourlyPumpPower.txt";
     std::string maxDailyReservoirLevels_file = "maxDailyReservoirLevels.txt";
