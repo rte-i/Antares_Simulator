@@ -301,8 +301,8 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_reservoir_levels_matrices_equal_width, Fixt
     avgDailyReservoirLevels.reset(3, DAYS_PER_YEAR);
 
     fillTimeSeriesWithSpecialEnds(maxDailyReservoirLevels, 0.8, 0.7);
-    fillTimeSeriesWithSpecialEnds(minDailyReservoirLevels, 0.5, 0.6);
-    fillTimeSeriesWithSpecialEnds(avgDailyReservoirLevels, 0.3, 0.4);
+    fillTimeSeriesWithSpecialEnds(minDailyReservoirLevels, 0.3, 0.4);
+    fillTimeSeriesWithSpecialEnds(avgDailyReservoirLevels, 0.5, 0.6);
 
     ret = maxDailyReservoirLevels.saveToCSVFile(pathToMaxDailyReservoirLevels_file, 2) && ret;
     ret = minDailyReservoirLevels.saveToCSVFile(pathToMinDailyReservoirLevels_file, 2) && ret;
@@ -316,6 +316,17 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_reservoir_levels_matrices_equal_width, Fixt
             .loadScenarizedReservoirLevels(area_1->id, pathToSeriesFolder, study->usedByTheSolver)
           && ret;
     BOOST_CHECK(ret);
+    for (size_t i = 0; i < 3; ++i)
+    {
+        BOOST_CHECK(maxDailyReservoirLevels[i][0] == 0.8);
+        BOOST_CHECK(maxDailyReservoirLevels[i][DAYS_PER_YEAR - 1] == 0.7);
+
+        BOOST_CHECK(minDailyReservoirLevels[i][0] == 0.3);
+        BOOST_CHECK(minDailyReservoirLevels[i][DAYS_PER_YEAR - 1] == 0.4);
+
+        BOOST_CHECK(avgDailyReservoirLevels[i][0] == 0.5);
+        BOOST_CHECK(avgDailyReservoirLevels[i][DAYS_PER_YEAR - 1] == 0.6);
+    }
 }
 
 BOOST_FIXTURE_TEST_CASE(Testing_load_reservoir_levels_from_common_capacity_folder, Fixture)
