@@ -203,14 +203,14 @@ bool PartHydro::LoadFromFolder(Study& study, const fs::path& folder)
                 && ret;
 
           // Loading of the reservoir levels will be moved into the list.cpp file
-        //   std::string reservoirId = "reservoir_" + area.id + ".txt";
-        //   fs::path reservoirPath = capacityPath / reservoirId;
-        //   ret = area.hydro.reservoirLevel.loadFromCSVFile(reservoirPath.string(),
-        //                                                   3,
-        //                                                   DAYS_PER_YEAR,
-        //                                                   Matrix<>::optFixedSize,
-        //                                                   &study.dataBuffer)
-        //         && ret;
+          //   std::string reservoirId = "reservoir_" + area.id + ".txt";
+          //   fs::path reservoirPath = capacityPath / reservoirId;
+          //   ret = area.hydro.reservoirLevel.loadFromCSVFile(reservoirPath.string(),
+          //                                                   3,
+          //                                                   DAYS_PER_YEAR,
+          //                                                   Matrix<>::optFixedSize,
+          //                                                   &study.dataBuffer)
+          //         && ret;
 
           std::string waterValueId = "waterValues_" + area.id + ".txt";
           fs::path waterValuePath = capacityPath / waterValueId;
@@ -570,9 +570,10 @@ bool PartHydro::SaveToFolder(const AreaList& areas, const AnyString& folder)
                          << "inflowPattern_" << area.id << ".txt";
           ret = area.hydro.inflowPattern.saveToCSVFile(buffer, /*decimal*/ 3) && ret;
           // reservoir, this is moved in the ReservoirLevels class
-        //   buffer.clear() << folder << SEP << "common" << SEP << "capacity" << SEP << "reservoir_"
-        //                  << area.id << ".txt";
-        //   ret = area.hydro.reservoirLevel.saveToCSVFile(buffer, /*decimal*/ 3) && ret;
+          //   buffer.clear() << folder << SEP << "common" << SEP << "capacity" << SEP <<
+          //   "reservoir_"
+          //                  << area.id << ".txt";
+          //   ret = area.hydro.reservoirLevel.saveToCSVFile(buffer, /*decimal*/ 3) && ret;
           buffer.clear() << folder << SEP << "common" << SEP << "capacity" << SEP << "waterValues_"
                          << area.id << ".txt";
           ret = area.hydro.waterValues.saveToCSVFile(buffer, /*decimal*/ 2) && ret;
