@@ -57,12 +57,12 @@ public:
     ReservoirLevels(TimeSeriesNumbers& timeseriesNumbers);
 
     // Loading hydro reservoir levels
-    bool loadScenarizedReservoirLevels(const std::string& areaID,
-                                       const std::filesystem::path& folder,
-                                       bool usedBySolver);
+    bool loadScenarizedReservoirLevels(const std::filesystem::path& folder);
+
     bool loadReservoirLevels(const std::string& areaID,
                              const std::filesystem::path& folder,
-                             bool usedBySolver);
+                             bool usedBySolver,
+                             bool useScenarizedResevoirLevels);
 
     bool forceReload(bool reload = false) const;
 

@@ -964,23 +964,12 @@ static bool AreaListLoadFromFolderSingleArea(Study& study,
             ret = area.hydro.series->LoadMaxPower(area.id, hydroSeries) && ret;
         }
 
-        // Here add function call for loading reservoir level TS, from new and old files
-        // Also here add function call to validate reservoir levels
-
-        if (!study.parameters.useScenarizedReservoirLevels)
-        {
-            fs::path reservoirLevelPath = study.folderInput / "hydro" / "common" / "capacity";
-            ret = area.hydro.series->reservoirLevels.loadReservoirLevels(area.id,
-                                                                         reservoirLevelPath,
-                                                                         study.usedByTheSolver)
-                  && ret;
-        }
-        else
-        {
-            ret = area.hydro.series->reservoirLevels
-                    .loadScenarizedReservoirLevels(area.id, hydroSeries, study.usedByTheSolver)
-                  && ret;
-        }
+        ret = area.hydro.series->reservoirLevels.loadReservoirLevels(
+                area.id,
+                pathHydro,
+                study.usedByTheSolver,
+                study.parameters.useScenarizedReservoirLevels)
+              && ret;
 
         area.hydro.series->resizeTSinDeratedMode(study.parameters.derated,
                                                  studyVersion,

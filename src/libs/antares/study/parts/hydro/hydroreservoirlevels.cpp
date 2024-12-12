@@ -50,6 +50,9 @@ ReservoirLevels::ReservoirLevels(TimeSeriesNumbers& timeseriesNumbers):
     avg.reset(1L, DAYS_PER_YEAR);
     avg.fill(0.5);
     min.reset(1L, DAYS_PER_YEAR);
+    Buffer.reset(3L, DAYS_PER_YEAR, true);
+    Buffer.fillColumn(ReservoirLevels::maximum, 1.);
+    Buffer.fillColumn(ReservoirLevels::average, 0.5);
 }
 
 bool ReservoirLevels::forceReload(bool reload) const
@@ -69,24 +72,17 @@ void ReservoirLevels::markAsModified() const
     avg.markAsModified();
 }
 
-bool ReservoirLevels::loadScenarizedReservoirLevels(const std::string& areaID,
-                                                    const fs::path& folder,
-                                                    bool usedBySolver)
+bool ReservoirLevels::loadScenarizedReservoirLevels(const fs::path& folder)
 {
-    if (!usedBySolver)
-    {
-        return true;
-    }
-
     Matrix<>::BufferType fileContent;
 
     bool ret = true;
 
-    fs::path filePath = folder / areaID / "maxDailyReservoirLevels.txt";
+    fs::path filePath = folder / "maxDailyReservoirLevels.txt";
     ret = max.timeSeries.loadFromCSVFile(filePath.string(), 1, DAYS_PER_YEAR, &fileContent) && ret;
-    filePath = folder / areaID / "minDailyReservoirLevels.txt";
+    filePath = folder / "minDailyReservoirLevels.txt";
     ret = min.timeSeries.loadFromCSVFile(filePath.string(), 1, DAYS_PER_YEAR, &fileContent) && ret;
-    filePath = folder / areaID / "avgDailyReservoirLevels.txt";
+    filePath = folder / "avgDailyReservoirLevels.txt";
     ret = avg.timeSeries.loadFromCSVFile(filePath.string(), 1, DAYS_PER_YEAR, &fileContent) && ret;
 
     return ret;
@@ -94,12 +90,14 @@ bool ReservoirLevels::loadScenarizedReservoirLevels(const std::string& areaID,
 
 bool ReservoirLevels::loadReservoirLevels(const std::string& areaID,
                                           const std::filesystem::path& folder,
-                                          bool usedBySolver)
+                                          bool usedBySolver,
+                                          bool useScenarizedResevoirLevels)
 {
     bool ret = true;
     Matrix<>::BufferType fileContent;
 
-    fs::path filePath = folder / std::string("reservoir_" + areaID + ".txt");
+    fs::path filePath = folder / "common" / "capacity"
+                        / std::string("reservoir_" + areaID + ".txt");
 
     Buffer.reset(3, DAYS_PER_YEAR, true);
 
@@ -108,22 +106,28 @@ bool ReservoirLevels::loadReservoirLevels(const std::string& areaID,
         bool enabledModeIsChanged = false;
         if (JIT::enabled)
         {
-            JIT::enabled = false; // Allowing to read the area's daily max power
+            JIT::enabled = false;
             enabledModeIsChanged = true;
         }
 
-        ret = Buffer.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
+        ret = Buffer.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent) && ret;
 
         if (enabledModeIsChanged)
         {
             JIT::enabled = true; // Back to the previous loading mode.
         }
     }
-    else
+    else if (!useScenarizedResevoirLevels)
     {
-        ret = Buffer.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent);
+        ret = Buffer.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent) && ret;
 
         copyReservoirLevelsFromBuffer();
+    }
+    else
+    {
+        filePath.clear();
+        filePath = folder / "series" / areaID;
+        ret = loadScenarizedReservoirLevels(filePath) && ret;
     }
 
     return ret;
