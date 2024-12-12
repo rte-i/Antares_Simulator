@@ -298,6 +298,8 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_reservoir_levels_matrices_equal_width, Fixt
 {
     bool ret = true;
 
+    study->parameters.useCustomScenario = true;
+
     auto& maxDailyReservoirLevels = area_1->hydro.series->reservoirLevels.max.timeSeries;
     auto& minDailyReservoirLevels = area_1->hydro.series->reservoirLevels.min.timeSeries;
     auto& avgDailyReservoirLevels = area_1->hydro.series->reservoirLevels.avg.timeSeries;
@@ -318,9 +320,13 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_reservoir_levels_matrices_equal_width, Fixt
     minDailyReservoirLevels.reset(3, DAYS_PER_YEAR);
     avgDailyReservoirLevels.reset(3, DAYS_PER_YEAR);
 
-    ret = area_1->hydro.series->reservoirLevels
-            .loadScenarizedReservoirLevels(area_1->id, pathToSeriesFolder, study->usedByTheSolver)
+    ret = area_1->hydro.series->reservoirLevels.loadReservoirLevels(
+            area_1->id,
+            base_folder,
+            study->usedByTheSolver,
+            study->parameters.useCustomScenario)
           && ret;
+
     BOOST_CHECK(ret);
     for (size_t i = 0; i < 3; ++i)
     {
@@ -338,6 +344,8 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_reservoir_levels_matrices_equal_width, Fixt
 BOOST_FIXTURE_TEST_CASE(Testing_load_reservoir_levels_from_common_capacity_folder, Fixture)
 {
     bool ret = true;
+
+    study->parameters.useCustomScenario = false;
 
     auto& maxDailyReservoirLevels = area_1->hydro.series->reservoirLevels.max.timeSeries;
     auto& minDailyReservoirLevels = area_1->hydro.series->reservoirLevels.min.timeSeries;
@@ -362,10 +370,13 @@ BOOST_FIXTURE_TEST_CASE(Testing_load_reservoir_levels_from_common_capacity_folde
 
     reservoirLevels.reset(3, DAYS_PER_YEAR, true);
 
-    ret = area_1->hydro.series->reservoirLevels.loadReservoirLevels(area_1->id,
-                                                                    pathToCommonCapacityFolder,
-                                                                    study->usedByTheSolver)
+    ret = area_1->hydro.series->reservoirLevels.loadReservoirLevels(
+            area_1->id,
+            base_folder,
+            study->usedByTheSolver,
+            study->parameters.useCustomScenario)
           && ret;
+
     BOOST_CHECK(ret);
     BOOST_CHECK(maxDailyReservoirLevels[0][0] == 0.9
                 && maxDailyReservoirLevels[0][DAYS_PER_YEAR - 1] == 0.8);
