@@ -46,6 +46,10 @@ void HydroInputsChecker::Execute(uint year)
 {
     prepareInflows_.Run(year);
     minGenerationScaling_.Run(year);
+    if (!checkReservoirLevels(year))
+    {
+        logs.error() << "hydro inputs checks: invalid reservoir levels in year " << year;
+    }
     if (!checksOnGenerationPowerBounds(year))
     {
         logs.error() << "hydro inputs checks: invalid minimum generation in year " << year;
@@ -89,6 +93,50 @@ bool HydroInputsChecker::checkMinGeneration(uint year)
           else
           {
               ret = checkMonthlyMinGeneration(year, area) && ret;
+          }
+      });
+    return ret;
+}
+
+bool HydroInputsChecker::checkReservoirLevels(uint year)
+{
+    bool ret = true;
+    areas_.each(
+      [this, &ret, &year](const Data::Area& area)
+      {
+          const auto& minReservoirLevels = area.hydro.series->reservoirLevels.min.getColumn(year);
+          const auto& avgReservoirLevels = area.hydro.series->reservoirLevels.avg.getColumn(year);
+          const auto& maxReservoirLevels = area.hydro.series->reservoirLevels.max.getColumn(year);
+
+          const auto& tsIndexMin = area.hydro.series->reservoirLevels.min.getSeriesIndex(year);
+          const auto& tsIndexAvg = area.hydro.series->reservoirLevels.avg.getSeriesIndex(year);
+          const auto& tsIndexMax = area.hydro.series->reservoirLevels.max.getSeriesIndex(year);
+
+          uint32_t tsIndex = 0;
+
+          if ((tsIndexMin == tsIndexAvg) && (tsIndexAvg == tsIndexMax))
+          {
+              tsIndex = tsIndexMin;
+          }
+          else
+          {
+              errorCollector_(area.name)
+                << "Reservoir levels Time-Series indexes in area: " << area.id
+                << " for year: " << year << " are not equal. Something went wrong!";
+          }
+
+          for (unsigned int day = 0; day < DAYS_PER_YEAR; day++)
+          {
+              if (minReservoirLevels[day] < 0 || avgReservoirLevels[day] < 0
+                  || minReservoirLevels[day] > maxReservoirLevels[day]
+                  || avgReservoirLevels[day] > 1. || maxReservoirLevels[day] > 1.)
+              {
+                  errorCollector_(area.name)
+                    << "Reservoir levels in area " << area.id
+                    << " for Time-Serie index:" << tsIndex + 1 << " are invalid on day " << day + 1;
+                  ret = false;
+                  break;
+              }
           }
       });
     return ret;

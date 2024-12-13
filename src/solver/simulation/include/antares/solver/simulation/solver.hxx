@@ -694,9 +694,9 @@ void ISimulation<ImplementationType>::computeRandomNumbers(
             Data::Area& area)
           {
               // looking for the initial reservoir level (begining of the year)
-              auto& min = area.hydro.reservoirLevel[Data::PartHydro::minimum];
-              auto& avg = area.hydro.reservoirLevel[Data::PartHydro::average];
-              auto& max = area.hydro.reservoirLevel[Data::PartHydro::maximum];
+              const auto& min = area.hydro.series->reservoirLevels.min.getColumn(y);
+              const auto& avg = area.hydro.series->reservoirLevels.avg.getColumn(y);
+              const auto& max = area.hydro.series->reservoirLevels.max.getColumn(y);
 
               // Month the reservoir level is initialized according to.
               // This month number is given in the civil calendar, from january to december (0 is

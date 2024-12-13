@@ -274,6 +274,8 @@ static bool AreaListSaveToFolderSingleArea(const Area& area, Clob& buffer, const
         {
             buffer.clear() << folder << SEP << "input" << SEP << "hydro" << SEP << "series";
             ret = area.hydro.series->saveToFolder(area.id, buffer) && ret;
+            buffer.clear() << folder << SEP << "input" << SEP << "hydro";
+            ret = area.hydro.series->reservoirLevels.saveToFolder(area.id, buffer) && ret;
         }
     }
 
@@ -961,6 +963,13 @@ static bool AreaListLoadFromFolderSingleArea(Study& study,
         {
             ret = area.hydro.series->LoadMaxPower(area.id, hydroSeries) && ret;
         }
+
+        ret = area.hydro.series->reservoirLevels.loadReservoirLevels(
+                area.id,
+                pathHydro,
+                study.usedByTheSolver,
+                study.parameters.useScenarizedReservoirLevels)
+              && ret;
 
         area.hydro.series->resizeTSinDeratedMode(study.parameters.derated,
                                                  studyVersion,

@@ -72,7 +72,8 @@ DataSeriesHydro::DataSeriesHydro():
     storage(timeseriesNumbers),
     mingen(timeseriesNumbers),
     maxHourlyGenPower(timeseriesNumbers),
-    maxHourlyPumpPower(timeseriesNumbers)
+    maxHourlyPumpPower(timeseriesNumbers),
+    reservoirLevels(timeseriesNumbers)
 {
     timeseriesNumbers.registerSeries(&ror, "ror");
     timeseriesNumbers.registerSeries(&storage, "storage");
@@ -94,10 +95,12 @@ void DataSeriesHydro::copyGenerationTS(const DataSeriesHydro& source)
     ror.timeSeries = source.ror.timeSeries;
     storage.timeSeries = source.storage.timeSeries;
     mingen.timeSeries = source.mingen.timeSeries;
+    reservoirLevels.Buffer = source.reservoirLevels.Buffer;
 
     source.ror.unloadFromMemory();
     source.storage.unloadFromMemory();
     source.mingen.unloadFromMemory();
+    source.reservoirLevels.Buffer.unloadFromMemory();
 }
 
 void DataSeriesHydro::copyMaxPowerTS(const DataSeriesHydro& source)
@@ -128,6 +131,7 @@ bool DataSeriesHydro::forceReload(bool reload) const
     ret = mingen.forceReload(reload) && ret;
     ret = maxHourlyGenPower.forceReload(reload) && ret;
     ret = maxHourlyPumpPower.forceReload(reload) && ret;
+    ret = reservoirLevels.forceReload(reload) && ret;
     return ret;
 }
 
@@ -138,6 +142,7 @@ void DataSeriesHydro::markAsModified() const
     mingen.markAsModified();
     maxHourlyGenPower.markAsModified();
     maxHourlyPumpPower.markAsModified();
+    reservoirLevels.markAsModified();
 }
 
 bool DataSeriesHydro::loadGenerationTS(const AreaName& areaID,
@@ -223,7 +228,10 @@ uint DataSeriesHydro::TScount() const
                                            ror.numberOfColumns(),
                                            mingen.numberOfColumns(),
                                            maxHourlyGenPower.numberOfColumns(),
-                                           maxHourlyPumpPower.numberOfColumns()});
+                                           maxHourlyPumpPower.numberOfColumns(),
+                                           reservoirLevels.max.numberOfColumns(),
+                                           reservoirLevels.min.numberOfColumns(),
+                                           reservoirLevels.avg.numberOfColumns()});
 
     return *std::max_element(nbColumns.begin(), nbColumns.end());
 }
@@ -244,10 +252,13 @@ void DataSeriesHydro::resizeTSinDeratedMode(bool derated,
         mingen.averageTimeseries();
 
         if (studyVersion >= StudyVersion(9, 1))
-        {
+        { // Check: Maybe we don't need check for 9.1 version, since we have conversion
+            // This two objects will be created regardless of the version
             maxHourlyGenPower.averageTimeseries();
             maxHourlyPumpPower.averageTimeseries();
         }
     }
+
+    reservoirLevels.averageTimeSeries();
 }
 } // namespace Antares::Data

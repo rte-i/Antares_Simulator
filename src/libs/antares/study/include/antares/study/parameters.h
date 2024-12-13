@@ -490,6 +490,9 @@ public:
     // Naming constraints and variables in problems
     bool namedProblems;
 
+    // Use reservoir levels Time-Series
+    bool useScenarizedReservoirLevels;
+
     // All options related to optimization
     Antares::Solver::Optimization::OptimizationOptions optOptions;
 
