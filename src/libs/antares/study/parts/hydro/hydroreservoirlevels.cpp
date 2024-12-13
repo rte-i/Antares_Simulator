@@ -61,6 +61,7 @@ bool ReservoirLevels::forceReload(bool reload) const
     ret = max.forceReload(reload) && ret;
     ret = min.forceReload(reload) && ret;
     ret = avg.forceReload(reload) && ret;
+    ret = Buffer.forceReload(reload) && ret;
 
     return ret;
 }
@@ -70,6 +71,7 @@ void ReservoirLevels::markAsModified() const
     max.markAsModified();
     min.markAsModified();
     avg.markAsModified();
+    Buffer.markAsModified();
 }
 
 bool ReservoirLevels::loadScenarizedReservoirLevels(const fs::path& folder)
@@ -110,7 +112,12 @@ bool ReservoirLevels::loadReservoirLevels(const std::string& areaID,
             enabledModeIsChanged = true;
         }
 
-        ret = Buffer.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent) && ret;
+        ret = Buffer.loadFromCSVFile(filePath.string(),
+                                     3,
+                                     DAYS_PER_YEAR,
+                                     Matrix<>::optFixedSize,
+                                     &fileContent)
+              && ret;
 
         if (enabledModeIsChanged)
         {
@@ -119,7 +126,12 @@ bool ReservoirLevels::loadReservoirLevels(const std::string& areaID,
     }
     else if (!useScenarizedResevoirLevels)
     {
-        ret = Buffer.loadFromCSVFile(filePath.string(), 3, DAYS_PER_YEAR, &fileContent) && ret;
+        ret = Buffer.loadFromCSVFile(filePath.string(),
+                                     3,
+                                     DAYS_PER_YEAR,
+                                     Matrix<>::optFixedSize,
+                                     &fileContent)
+              && ret;
 
         copyReservoirLevelsFromBuffer();
     }
