@@ -20,27 +20,20 @@
  */
 
 #pragma once
-#include "AreaBalance.h"
-#include "BindingConstraintHour.h"
-#include "ConstraintGroup.h"
-#include "FictitiousLoad.h"
-#include "FlowDissociation.h"
-#include "ShortTermStorageLevel.h"
+#include "ConstraintBuilder.h"
 
-class Group1: public ConstraintGroup
+class ShortTermStorageCumulation: ConstraintFactory
 {
 public:
-    using ConstraintGroup::ConstraintGroup;
+    ShortTermStorageCumulation(ConstraintBuilder& builder,
+                               ShortTermStorageCumulativeConstraintData& data):
+        ConstraintFactory(builder),
+        data(data)
+    {
+    }
 
-    void BuildConstraints() override;
+    void add(int pays);
 
 private:
-    AreaBalanceData GetAreaBalanceData();
-    FictitiousLoadData GetFictitiousLoadData();
-    ShortTermStorageData GetShortTermStorageData();
-
-    ShortTermStorageCumulativeConstraintData GetShortTermStorageCumulativeConstraintData();
-
-    FlowDissociationData GetFlowDissociationData();
-    BindingConstraintHourData GetBindingConstraintHourData();
+    ShortTermStorageCumulativeConstraintData& data;
 };

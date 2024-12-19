@@ -20,27 +20,34 @@
  */
 
 #pragma once
-#include "AreaBalance.h"
-#include "BindingConstraintHour.h"
-#include "ConstraintGroup.h"
-#include "FictitiousLoad.h"
-#include "FlowDissociation.h"
-#include "ShortTermStorageLevel.h"
+#include <set>
+#include <string>
 
-class Group1: public ConstraintGroup
+namespace Antares::Data::ShortTermStorage
 {
-public:
-    using ConstraintGroup::ConstraintGroup;
 
-    void BuildConstraints() override;
+struct AdditionalConstraint
+{
+    std::string name;
+    std::string cluster_id;
+    std::string variable;
+    std::string operatorType;
+    std::set<int> hours;
+    double rhs;
+
+    unsigned int globalIndex = 0;
+
+    struct ValidateResult
+    {
+        bool ok;
+        std::string error_msg;
+    };
+
+    ValidateResult validate() const;
 
 private:
-    AreaBalanceData GetAreaBalanceData();
-    FictitiousLoadData GetFictitiousLoadData();
-    ShortTermStorageData GetShortTermStorageData();
-
-    ShortTermStorageCumulativeConstraintData GetShortTermStorageCumulativeConstraintData();
-
-    FlowDissociationData GetFlowDissociationData();
-    BindingConstraintHourData GetBindingConstraintHourData();
+    bool isValidVariable() const;
+    bool isValidOperatorType() const;
+    bool isValidHoursRange() const;
 };
+} // namespace Antares::Data::ShortTermStorage
