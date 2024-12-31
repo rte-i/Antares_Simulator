@@ -19,20 +19,36 @@
  * along with Antares_Simulator. If not, see <https://opensource.org/license/mpl-2-0/>.
  */
 
+#pragma once
+
 #include <filesystem>
+#include <vector>
+#include <yaml-cpp/yaml.h>
 
-#include <antares/io/file.h>
-#include <antares/solver/modeler/parameters/parseModelerParameters.h>
-
-#include "encoder.hxx"
+#include <antares/solver/modeler/parameters/modelerParameters.h>
+#include <antares/study/system-model/library.h>
+#include <antares/study/system-model/system.h>
 
 namespace Antares::Solver::LoadFiles
 {
 
-ModelerParameters parseModelerParameters(const std::string& content)
+ModelerParameters loadParameters(const std::filesystem::path& studyPath);
+
+std::vector<Study::SystemModel::Library> loadLibraries(const std::filesystem::path& studyPath);
+
+Study::SystemModel::System loadSystem(const std::filesystem::path& studyPath,
+                                      const std::vector<Study::SystemModel::Library>& libraries);
+
+void handleYamlError(const YAML::Exception& e, const std::string& context);
+
+/// Generic error class for all loading errors to catch in the main
+class ErrorLoadingYaml: public std::runtime_error
 {
-    YAML::Node root = YAML::Load(content);
-    return root.as<ModelerParameters>();
-}
+public:
+    explicit ErrorLoadingYaml(const std::string& s):
+        runtime_error(s)
+    {
+    }
+};
 
 } // namespace Antares::Solver::LoadFiles

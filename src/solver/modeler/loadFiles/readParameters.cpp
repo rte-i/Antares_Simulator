@@ -19,20 +19,41 @@
  * along with Antares_Simulator. If not, see <https://opensource.org/license/mpl-2-0/>.
  */
 
-#include <filesystem>
+#include <yaml-cpp/yaml.h>
 
 #include <antares/io/file.h>
-#include <antares/solver/modeler/parameters/parseModelerParameters.h>
+#include <antares/logs/logs.h>
+#include "antares/solver/modeler/loadFiles/loadFiles.h"
+#include "antares/solver/modeler/parameters/parseModelerParameters.h"
 
-#include "encoder.hxx"
+namespace fs = std::filesystem;
 
 namespace Antares::Solver::LoadFiles
 {
 
-ModelerParameters parseModelerParameters(const std::string& content)
+ModelerParameters loadParameters(const fs::path& studyPath)
 {
-    YAML::Node root = YAML::Load(content);
-    return root.as<ModelerParameters>();
+    std::string filename = "parameters.yml";
+    std::string paramStr;
+    try
+    {
+        paramStr = IO::readFile(studyPath / filename);
+    }
+    catch (const std::runtime_error& e)
+    {
+        logs.error() << "Error while trying to read file parameters.yml";
+        throw ErrorLoadingYaml(e.what());
+    }
+
+    try
+    {
+        return parseModelerParameters(paramStr);
+    }
+    catch (const YAML::Exception& e)
+    {
+        handleYamlError(e, filename);
+        throw ErrorLoadingYaml(e.what());
+    }
 }
 
 } // namespace Antares::Solver::LoadFiles
