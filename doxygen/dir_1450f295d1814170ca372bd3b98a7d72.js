@@ -10,5 +10,6 @@ var dir_1450f295d1814170ca372bd3b98a7d72 =
     [ "modifiers.hxx", "modifiers_8hxx_source.html", null ],
     [ "renderer.h", "renderer_8h_source.html", null ],
     [ "renderer.hxx", "renderer_8hxx_source.html", null ],
+    [ "selectionoperation.h", "selectionoperation_8h_source.html", null ],
     [ "wxgrid-renderer.h", "wxgrid-renderer_8h_source.html", null ]
 ];

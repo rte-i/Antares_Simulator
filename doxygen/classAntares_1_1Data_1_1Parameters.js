@@ -1,5 +1,6 @@
 var classAntares_1_1Data_1_1Parameters =
 [
+    [ "Compatibility", "structAntares_1_1Data_1_1Parameters_1_1Compatibility.html", null ],
     [ "IncludeOptions", "structAntares_1_1Data_1_1Parameters_1_1IncludeOptions.html", "structAntares_1_1Data_1_1Parameters_1_1IncludeOptions" ],
     [ "RenewableGeneration", "structAntares_1_1Data_1_1Parameters_1_1RenewableGeneration.html", "structAntares_1_1Data_1_1Parameters_1_1RenewableGeneration" ],
     [ "UCMode", "structAntares_1_1Data_1_1Parameters_1_1UCMode.html", "structAntares_1_1Data_1_1Parameters_1_1UCMode" ],

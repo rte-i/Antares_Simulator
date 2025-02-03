@@ -13,6 +13,7 @@ var searchData=
   ['unsignedatomcontext_10',['UnsignedAtomContext',['../classExprParser_1_1UnsignedAtomContext.html',1,'ExprParser']]],
   ['unsupliedenergy_11',['UnsupliedEnergy',['../classAntares_1_1Solver_1_1Variable_1_1Economy_1_1UnsupliedEnergy.html',1,'Antares::Solver::Variable::Economy']]],
   ['unsupliedenergycsr_12',['UnsupliedEnergyCSR',['../classAntares_1_1Solver_1_1Variable_1_1Economy_1_1UnsupliedEnergyCSR.html',1,'Antares::Solver::Variable::Economy']]],
-  ['updater_13',['Updater',['../classAntares_1_1Statistics_1_1Updater.html',1,'Antares::Statistics']]],
-  ['userdata_14',['UserData',['../classUserData.html',1,'']]]
+  ['updatemrgpriceaftercsrcmd_13',['UpdateMrgPriceAfterCSRcmd',['../classAntares_1_1Solver_1_1Simulation_1_1UpdateMrgPriceAfterCSRcmd.html',1,'Antares::Solver::Simulation']]],
+  ['updater_14',['Updater',['../classAntares_1_1Statistics_1_1Updater.html',1,'Antares::Statistics']]],
+  ['userdata_15',['UserData',['../classUserData.html',1,'']]]
 ];
