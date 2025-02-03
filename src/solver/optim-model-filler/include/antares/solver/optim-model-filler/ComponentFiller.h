@@ -54,7 +54,7 @@ public:
     explicit ComponentFiller(const Study::SystemModel::Component& component);
 
     void addVariables(Solver::Modeler::Api::ILinearProblem& pb,
-                      Solver::Modeler::Api::LinearProblemData& data,
+                      Solver::Modeler::Api::ILinearProblemData& data,
                       Solver::Modeler::Api::FillContext& ctx) override;
 
     void addStaticConstraint(Solver::Modeler::Api::ILinearProblem& pb,
@@ -67,10 +67,10 @@ public:
                                      unsigned int nb_cstr) const;
 
     void addConstraints(Solver::Modeler::Api::ILinearProblem& pb,
-                        Solver::Modeler::Api::LinearProblemData& data,
+                        Solver::Modeler::Api::ILinearProblemData& data,
                         Solver::Modeler::Api::FillContext& ctx) override;
     void addObjective(Solver::Modeler::Api::ILinearProblem& pb,
-                      Solver::Modeler::Api::LinearProblemData& data,
+                      Solver::Modeler::Api::ILinearProblemData& data,
                       Solver::Modeler::Api::FillContext& ctx) override;
 
 private:

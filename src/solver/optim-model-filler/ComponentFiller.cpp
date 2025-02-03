@@ -45,7 +45,7 @@ bool checkTimeSteps(Solver::Modeler::Api::FillContext& ctx)
 }
 
 void ComponentFiller::addVariables(Solver::Modeler::Api::ILinearProblem& pb,
-                                   Solver::Modeler::Api::LinearProblemData& data,
+                                   Solver::Modeler::Api::ILinearProblemData& data,
                                    Solver::Modeler::Api::FillContext& ctx)
 {
     if (!checkTimeSteps(ctx))
@@ -120,7 +120,7 @@ void ComponentFiller::addTimeDependentConstraints(Solver::Modeler::Api::ILinearP
 }
 
 void ComponentFiller::addConstraints(Solver::Modeler::Api::ILinearProblem& pb,
-                                     Solver::Modeler::Api::LinearProblemData& data,
+                                     Solver::Modeler::Api::ILinearProblemData& data,
                                      Solver::Modeler::Api::FillContext& ctx)
 {
     ReadLinearConstraintVisitor visitor(evaluationContext_);
@@ -148,7 +148,7 @@ void ComponentFiller::addConstraints(Solver::Modeler::Api::ILinearProblem& pb,
 }
 
 void ComponentFiller::addObjective(Solver::Modeler::Api::ILinearProblem& pb,
-                                   Solver::Modeler::Api::LinearProblemData& data,
+                                   Solver::Modeler::Api::ILinearProblemData& data,
                                    Solver::Modeler::Api::FillContext& ctx)
 {
     auto model = component_.getModel();

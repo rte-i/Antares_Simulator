@@ -23,20 +23,13 @@
 
 #include <antares/logs/logs.h>
 #include <antares/solver/modeler/api/linearProblemBuilder.h>
+#include <antares/solver/modeler/dataSeries/linearProblemData.h>
 #include <antares/solver/modeler/loadFiles/loadFiles.h>
 #include <antares/solver/modeler/ortoolsImpl/linearProblem.h>
 #include <antares/solver/modeler/parameters/parseModelerParameters.h>
 #include <antares/solver/optim-model-filler/ComponentFiller.h>
 
-#include "../optimisation/include/antares/solver/optimisation/LegacyFiller.h"
 #include "api/include/antares/solver/modeler/api/linearProblem.h"
-
-namespace Antares::Solver::Modeler::Api
-{
-struct FillContext;
-class LinearProblemData;
-class ILinearProblem;
-} // namespace Antares::Solver::Modeler::Api
 
 using namespace Antares::Solver::Modeler::OrtoolsImpl;
 using namespace Antares;
@@ -68,7 +61,7 @@ public:
         }
 
         LinearProblemBuilder linear_problem_builder(fillers_ptr);
-        LinearProblemData dummy_data;
+        Modeler::DataSeries::LinearProblemData dummy_data;
         FillContext dummy_time_scenario_ctx = {parameters.firstTimeStep, parameters.lastTimeStep};
         linear_problem_builder.build(pb, dummy_data, dummy_time_scenario_ctx);
     }
