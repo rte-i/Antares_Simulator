@@ -1,9 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"classAntares_1_1Data_1_1BindingConstraint.html#a8a266f863b6263ef372955710ec358a8":[9,0,0,4,14,30],
-"classAntares_1_1Data_1_1BindingConstraint.html#a8d08a1750c57b02bd95ad632d010dbec":[9,0,0,4,14,23],
-"classAntares_1_1Data_1_1BindingConstraint.html#a9320c2e7e9ff05c37b224bd2026f5407":[9,0,0,4,14,33],
-"classAntares_1_1Data_1_1BindingConstraint.html#a9768ce28b90e0d6ed1820baf5ab058f8":[9,0,0,4,14,40],
 "classAntares_1_1Data_1_1BindingConstraint.html#a9b1f24709a163b586ef674ea06457bc2":[9,0,0,4,14,4],
 "classAntares_1_1Data_1_1BindingConstraint.html#aa6e1711f3e0dac4e4cff3f4fe3d46575":[9,0,0,4,14,3],
 "classAntares_1_1Data_1_1BindingConstraint.html#aa74d5c2231c04052a1b3ad6353a76853":[9,0,0,4,14,9],
@@ -99,11 +95,11 @@ var NAVTREEINDEX8 =
 "classAntares_1_1Data_1_1DataSeriesHydro.html#a20242c15ed354fc694cee9d0f393be20":[9,0,0,4,31,6],
 "classAntares_1_1Data_1_1DataSeriesHydro.html#a3abe93b1e9efea9d7b499e5c72c3f790":[9,0,0,4,31,0],
 "classAntares_1_1Data_1_1DataSeriesHydro.html#a4bf8ff859c00e267dc3a871701dd5325":[9,0,0,4,31,7],
+"classAntares_1_1Data_1_1DataSeriesHydro.html#a5ab15d36fd0a050b8f358197178c7d9f":[9,0,0,4,31,3],
 "classAntares_1_1Data_1_1DataSeriesHydro.html#a6d199bab434a74b243a750ab35d3b452":[9,0,0,4,31,1],
 "classAntares_1_1Data_1_1DataSeriesHydro.html#a8b0f2bb769e0e067377916614b0f65ed":[9,0,0,4,31,8],
 "classAntares_1_1Data_1_1DataSeriesHydro.html#a99d584445157a6e0de16f55d063f2519":[9,0,0,4,31,4],
 "classAntares_1_1Data_1_1DataSeriesHydro.html#a9f6974064f28b7366db5b602b7d82d2e":[9,0,0,4,31,5],
-"classAntares_1_1Data_1_1DataSeriesHydro.html#aacfee212cf8a11c60021f5e60fe903f2":[9,0,0,4,31,3],
 "classAntares_1_1Data_1_1DataSeriesHydro.html#aea8f189d6acbbb0466c7486ae273d5cd":[9,0,0,4,31,2],
 "classAntares_1_1Data_1_1EconomicInputData.html":[9,0,0,4,32],
 "classAntares_1_1Data_1_1EconomicInputData.html#a299a683be38db51dd10316aa09476e31":[9,0,0,4,32,3],
@@ -249,5 +245,9 @@ var NAVTREEINDEX8 =
 "classAntares_1_1Data_1_1Parameters.html#ae74580d04e1dfe5622419a21207c6a86":[9,0,0,4,39,38],
 "classAntares_1_1Data_1_1Parameters.html#aeeedda0cb5d5615ea0ba3b13634fb553":[9,0,0,4,39,49],
 "classAntares_1_1Data_1_1Parameters.html#aefe09481bdf826b2829344d0289efd0f":[9,0,0,4,39,4],
-"classAntares_1_1Data_1_1Parameters.html#afd5b783afaaee5a8706c7fd2d01147ff":[9,0,0,4,39,46]
+"classAntares_1_1Data_1_1Parameters.html#afd5b783afaaee5a8706c7fd2d01147ff":[9,0,0,4,39,46],
+"classAntares_1_1Data_1_1Parameters.html#afeefe1610f75f63c01180b8a2d215eed":[9,0,0,4,39,8],
+"classAntares_1_1Data_1_1PartHydro.html":[9,0,0,4,40],
+"classAntares_1_1Data_1_1PartHydro.html#a027739891684b9cf423aadc83da1c9ae":[9,0,0,4,40,8],
+"classAntares_1_1Data_1_1PartHydro.html#a0434867ec92f530701a690a1b729be77":[9,0,0,4,40,21]
 };
