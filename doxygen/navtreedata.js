@@ -87,42 +87,43 @@ var NAVTREE =
     ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ]
-    ] ]
+    ] ],
+    [ "Examples", "examples.html", "examples" ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
 "API_8h_source.html",
-"classAntares_1_1ATSP.html",
-"classAntares_1_1Action_1_1AntaresStudy_1_1ThermalCluster_1_1RootNode.html#afb26181790f639dee147400955fa49a9",
-"classAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1ATimeSeries.html#ab7d9ad6c318033be6da4d1beb19290ca",
-"classAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1InflowPattern.html#a5a5aeeed642f9a02b83b797c0acfe98c",
-"classAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1TimeSeriesCluster.html#aca341eef22bdee1dbf1686ea0aa7268d",
-"classAntares_1_1Component_1_1HTMLListbox_1_1Component.html#ab240a9e87eb9a86d27de4c0c0ec40c5e",
-"classAntares_1_1Component_1_1Spotlight_1_1IItem.html#a9273c93eaff735dab1b49d158406f002",
-"classAntares_1_1Data_1_1BindingConstraint.html#a9b1f24709a163b586ef674ea06457bc2",
-"classAntares_1_1Data_1_1PartHydro.html#a04d548a70f2829cc320ea34d473f3f02",
-"classAntares_1_1Data_1_1Study.html#a24abc348d810c423a622796e34afe476",
-"classAntares_1_1Data_1_1XCast.html#a45cf83d40b900b21cdc7184a8c503e69",
-"classAntares_1_1Forms_1_1ApplWnd.html#affe5737c7b9bc45a909ce7b08edb8d7e",
-"classAntares_1_1Map_1_1Manager.html#a81a9b23334e591adce3cdb2bf0382801",
-"classAntares_1_1Optimisation_1_1LinearProblemApi_1_1ILinearProblem.html#a25dfff44a3d369c82cf2b507b34f5b87",
-"classAntares_1_1Solver_1_1Optimization_1_1WeeklyOptimization.html",
-"classAntares_1_1Solver_1_1Variable_1_1Economy_1_1MiscGenMinusRowPSP.html#a6d7484e8db43847a00bc90dae8ae14ce",
-"classAntares_1_1Solver_1_1Variable_1_1R_1_1AllYears_1_1RawData.html#a3922838022f051023e92a12d5a37aa5e",
-"classAntares_1_1Toolbox_1_1Filter_1_1Week.html#aa9ec200d85b077fd977ec11c0bf64d7f",
-"classAntares_1_1Window_1_1Message.html#afda9ab9d40e3986ea47e4a15103556e7a3f9f42880db6c09e31222d122d5c2a30",
-"classExprParser.html",
-"classPMinMaxDispatchableGenerationGroup.html#ae2b413b2ff78d8568f20bbe2aafcb763",
-"dir_1b5d0521e8155fd5356782a86d8acc95.html",
-"dir_b9bf6eda63046244e43e0b7d97d54c27.html",
-"functions_vars_s.html",
-"namespaceAntares_1_1Dispatcher.html#a26124bfe4ee373c437d539438277c9ef",
-"structAntares_1_1Data_1_1CompareAreaName.html",
-"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardLOLD__CSR.html#a1ea9dbb09ca765da4ac100e8076fbee9",
-"structAntares_1_1Window_1_1Inspector_1_1PStudyCalBegin.html",
-"ui_2simulator_2windows_2inspector_2constants_8h_source.html"
+"classAntaresStudy.html#a6caee79a802e8be7616bc9cc8a0f19d9",
+"classAntares_1_1Action_1_1AntaresStudy_1_1ThermalCluster_1_1Create.html#a3b161b45d30643f9c5b33bd32554009c",
+"classAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1ARendererArea.html#afa7bfc7a779968092ab68e643f45c0fb",
+"classAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1IRenderer.html#ac8611b95de14c70992135c5654219726",
+"classAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1TimeSeriesCluster.html#a0546bb4abe613326d8a7d536296a4e1f",
+"classAntares_1_1Component_1_1HTMLListbox_1_1Component.html",
+"classAntares_1_1Component_1_1Spotlight_1_1IItem.html#a54c046cd097dda379e8e7380a1389afa",
+"classAntares_1_1Data_1_1BindingConstraint.html#a684a8d7529c2f34fcdd710b512f4bd48",
+"classAntares_1_1Data_1_1Parameters.html#ae74580d04e1dfe5622419a21207c6a86",
+"classAntares_1_1Data_1_1Study.html#a00b28d976a7a0c044601385aa12269d3",
+"classAntares_1_1Data_1_1Wind_1_1Prepro.html#a5428dac3c08d4d7c20dee19f807db944",
+"classAntares_1_1Forms_1_1ApplWnd.html#aa639d4efb5e61bb7004fcc6006e8296e",
+"classAntares_1_1Map_1_1Item.html#aaf766323f37d2c898e7f0c41e7f2473d",
+"classAntares_1_1MemoryFlushLocker.html",
+"classAntares_1_1Private_1_1OutputViewerData_1_1Panel.html#a9f0b9653f644df93895fb56a375b52d0",
+"classAntares_1_1Solver_1_1Variable_1_1Economy_1_1LOLD.html",
+"classAntares_1_1Solver_1_1Variable_1_1IntermediateValues.html#a3bccbfef726bf4ad2697f352e7341b57",
+"classAntares_1_1Toolbox_1_1Filter_1_1Input.html#a81269e44eb21ed5370aab0ec5b73d23d",
+"classAntares_1_1Window_1_1Inspector_1_1ClusterUpdaterThermal.html",
+"classAreaHydroLevelGroup.html",
+"classMinDownTime.html",
+"converter_8h_source.html",
+"dir_94dcabc595e827ef4d15deb1bf2453bd.html",
+"functions_func_f.html",
+"lolpCsr_8h_source.html",
+"simulator_2windows_2inspector_2frame_8h_source.html",
+"structAntares_1_1Solver_1_1Variable_1_1Economy_1_1MiscGenMinusRowPSP_1_1Statistics.html",
+"structAntares_1_1Solver_1_1Variable_1_1VCardAllLinks.html#a3fb862fe2eabfef1fd6705a593943529",
+"study_2system-model_2include_2antares_2study_2system-model_2constraint_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
