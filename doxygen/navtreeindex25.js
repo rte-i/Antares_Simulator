@@ -1,6 +1,5 @@
 var NAVTREEINDEX25 =
 {
-"lolpCsr_8h_source.html":[10,0,0,8,12,0,0,0,0,2,17],
 "lolp_8h_source.html":[10,0,0,8,12,0,0,0,0,2,16],
 "loopFlow_8h_source.html":[10,0,0,8,12,0,0,0,0,2,1,7],
 "main_2main_8h_source.html":[10,0,0,12,2,0,0,6],
@@ -88,7 +87,7 @@ var NAVTREEINDEX25 =
 "namespaceAntares_1_1IO_1_1Inputs_1_1DataSeriesCsvImporter.html":[7,0,0,1,0,0],
 "namespaceAntares_1_1Optimisation_1_1LinearProblemApi.html":[7,0,0,2,0],
 "namespaceAntares_1_1Optimization.html":[7,0,0,3],
-"namespaceAntares_1_1Optimization.html#a7190f8e021109840878686b5bf2f2ded":[7,0,0,3,36],
+"namespaceAntares_1_1Optimization.html#a7190f8e021109840878686b5bf2f2ded":[7,0,0,3,35],
 "namespaceAntares_1_1WIP.html":[7,0,0,4],
 "namespaceAntares_1_1WIP.html#a5d019198babc35a52835e1aba563721f":[7,0,0,4,2],
 "namespaceAntares_1_1WIP.html#a64916a3bc8c14f79984b879747e719be":[7,0,0,4,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX25 =
 "simulator_2toolbox_2create_8h_source.html":[10,0,0,12,2,1,9],
 "simulator_2toolbox_2create_8hxx_source.html":[10,0,0,12,2,1,10],
 "simulator_2toolbox_2wx-wrapper_8h_source.html":[10,0,0,12,2,1,16],
-"simulator_2windows_2inspector_2data_8hxx_source.html":[10,0,0,12,2,2,7,3]
+"simulator_2windows_2inspector_2data_8hxx_source.html":[10,0,0,12,2,2,7,3],
+"simulator_2windows_2inspector_2frame_8h_source.html":[10,0,0,12,2,2,7,5]
 };

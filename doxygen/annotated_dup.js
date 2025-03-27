@@ -571,7 +571,6 @@ var annotated_dup =
           [ "TimeSeriesSet", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1TimeSeriesSet.html", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1TimeSeriesSet" ]
         ] ],
         [ "LinearProblemMpsolverImpl", null, [
-          [ "ElemAlreadyExists", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1ElemAlreadyExists.html", null ],
           [ "OrtoolsLinearProblem", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsLinearProblem.html", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsLinearProblem" ],
           [ "OrtoolsMipConstraint", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsMipConstraint.html", null ],
           [ "OrtoolsMipSolution", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsMipSolution.html", null ],
@@ -592,7 +591,6 @@ var annotated_dup =
         [ "HourlyBC", "classAntares_1_1Optimization_1_1HourlyBC.html", null ],
         [ "HydroLevel", "classAntares_1_1Optimization_1_1HydroLevel.html", null ],
         [ "HydroProduction", "classAntares_1_1Optimization_1_1HydroProduction.html", null ],
-        [ "IdentityFunction", "structAntares_1_1Optimization_1_1IdentityFunction.html", null ],
         [ "InfeasibleProblemReport", "classAntares_1_1Optimization_1_1InfeasibleProblemReport.html", null ],
         [ "IntegerInterval", "structAntares_1_1Optimization_1_1IntegerInterval.html", "structAntares_1_1Optimization_1_1IntegerInterval" ],
         [ "LegacyFiller", "classAntares_1_1Optimization_1_1LegacyFiller.html", null ],
