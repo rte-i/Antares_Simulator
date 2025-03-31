@@ -170,7 +170,7 @@ double* TimeSeries::operator[](uint32_t index)
     }
     return timeSeries[index];
 }
-
+// comment
 void TimeSeries::reset()
 {
     timeSeries.reset(1, HOURS_PER_YEAR);
