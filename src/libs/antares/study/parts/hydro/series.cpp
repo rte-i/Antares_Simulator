@@ -72,7 +72,8 @@ DataSeriesHydro::DataSeriesHydro():
     storage(timeseriesNumbers),
     mingen(timeseriesNumbers),
     maxHourlyGenPower(timeseriesNumbers),
-    maxHourlyPumpPower(timeseriesNumbers)
+    maxHourlyPumpPower(timeseriesNumbers),
+    ruleCurves(timeseriesNumbers)
 {
     timeseriesNumbers.registerSeries(&ror, "ror");
     timeseriesNumbers.registerSeries(&storage, "storage");
@@ -94,10 +95,12 @@ void DataSeriesHydro::copyGenerationTS(const DataSeriesHydro& source)
     ror.timeSeries = source.ror.timeSeries;
     storage.timeSeries = source.storage.timeSeries;
     mingen.timeSeries = source.mingen.timeSeries;
+    ruleCurves.standardRuleCurvesGUI = source.ruleCurves.standardRuleCurvesGUI;
 
     source.ror.unloadFromMemory();
     source.storage.unloadFromMemory();
     source.mingen.unloadFromMemory();
+    source.ruleCurves.standardRuleCurvesGUI.unloadFromMemory();
 }
 
 void DataSeriesHydro::copyMaxPowerTS(const DataSeriesHydro& source)
@@ -128,6 +131,7 @@ bool DataSeriesHydro::forceReload(bool reload) const
     ret = mingen.forceReload(reload) && ret;
     ret = maxHourlyGenPower.forceReload(reload) && ret;
     ret = maxHourlyPumpPower.forceReload(reload) && ret;
+    ret = ruleCurves.forceReload(reload) && ret;
     return ret;
 }
 
@@ -138,6 +142,7 @@ void DataSeriesHydro::markAsModified() const
     mingen.markAsModified();
     maxHourlyGenPower.markAsModified();
     maxHourlyPumpPower.markAsModified();
+    ruleCurves.markAsModified();
 }
 
 bool DataSeriesHydro::loadGenerationTS(const AreaName& areaID,
@@ -229,7 +234,10 @@ uint DataSeriesHydro::TScount() const
                                            ror.numberOfColumns(),
                                            mingen.numberOfColumns(),
                                            maxHourlyGenPower.numberOfColumns(),
-                                           maxHourlyPumpPower.numberOfColumns()});
+                                           maxHourlyPumpPower.numberOfColumns(),
+                                           ruleCurves.max.numberOfColumns(),
+                                           ruleCurves.min.numberOfColumns(),
+                                           ruleCurves.avg.numberOfColumns()});
 
     return *std::max_element(nbColumns.begin(), nbColumns.end());
 }
@@ -256,5 +264,7 @@ void DataSeriesHydro::resizeTSinDeratedMode(bool derated,
             maxHourlyPumpPower.averageTimeseries();
         }
     }
+
+    ruleCurves.averageTimeSeries();
 }
 } // namespace Antares::Data

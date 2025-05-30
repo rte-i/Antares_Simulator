@@ -241,6 +241,40 @@ bool StringToCompatibilityHydroPmax(Parameters::Compatibility::HydroPmax& mode,
     return false;
 }
 
+const char* CompatibilityHydroRuleCurvesToCString(
+  const Parameters::Compatibility::HydroRuleCurves mode)
+{
+    switch (mode)
+    {
+    case Parameters::Compatibility::HydroRuleCurves::Single:
+        return "single";
+    case Parameters::Compatibility::HydroRuleCurves::Scenarized:
+        return "scenarized";
+    default:
+        return "Unknown";
+    }
+}
+
+bool StringToCompatibilityHydroRuleCurves(Parameters::Compatibility::HydroRuleCurves& mode,
+                                          const std::string& text)
+{
+    if (text.empty())
+    {
+        return false;
+    }
+    if (text == "single")
+    {
+        mode = Parameters::Compatibility::HydroRuleCurves::Single;
+        return true;
+    }
+    if (text == "scenarized")
+    {
+        mode = Parameters::Compatibility::HydroRuleCurves::Scenarized;
+        return true;
+    }
+    return false;
+}
+
 bool Parameters::economy() const
 {
     return mode == SimulationMode::Economy;
@@ -1097,6 +1131,11 @@ static bool SGDIntLoadFamily_Compatibility(Parameters& d,
     if (key == "hydro-pmax")
     {
         return StringToCompatibilityHydroPmax(d.compatibility.hydroPmax, value);
+    }
+
+    if (key == "hydro-rule-curves")
+    {
+        return StringToCompatibilityHydroRuleCurves(d.compatibility.hydroRuleCurves, value);
     }
 
     return false;
@@ -2012,6 +2051,8 @@ void Parameters::saveToINI(IniFile& ini) const
     {
         auto* section = ini.addSection("compatibility");
         section->add("hydro-pmax", CompatibilityHydroPmaxToCString(compatibility.hydroPmax));
+        section->add("hydro-rule-curves",
+                     CompatibilityHydroRuleCurvesToCString(compatibility.hydroRuleCurves));
     }
 }
 

@@ -181,9 +181,8 @@ void HydroManagement::prepareMonthlyOptimalGenerations(const double* random_rese
           auto& data = area.hydro.managementData[y];
           auto& hydro_specific = hydro_specific_map[&area];
 
-          auto& minLvl = area.hydro.reservoirLevel[Data::PartHydro::minimum];
-          auto& maxLvl = area.hydro.reservoirLevel[Data::PartHydro::maximum];
-
+          const auto& minLvl = area.hydro.series->ruleCurves.min.getColumn(y);
+          const auto& maxLvl = area.hydro.series->ruleCurves.max.getColumn(y);
           int initReservoirLvlMonth = area.hydro.initializeReservoirLevelDate;
 
           double lvi = -1.;
@@ -276,12 +275,12 @@ void HydroManagement::prepareMonthlyOptimalGenerations(const double* random_rese
 
           else
           {
-              auto& reservoirLevel = area.hydro.reservoirLevel[Data::PartHydro::average];
+              const auto& ruleCurves = area.hydro.series->ruleCurves.avg.getColumn(y);
 
               for (uint realmonth = 0; realmonth != MONTHS_PER_YEAR; ++realmonth)
               {
                   hydro_specific.monthly[realmonth].MOG = data.inflows[realmonth];
-                  hydro_specific.monthly[realmonth].MOL = reservoirLevel[realmonth];
+                  hydro_specific.monthly[realmonth].MOL = ruleCurves[realmonth];
               }
           }
 

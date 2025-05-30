@@ -277,6 +277,9 @@ static bool AreaListSaveToFolderSingleArea(const Area& area,
         {
             buffer.clear() << folder << SEP << "input" << SEP << "hydro" << SEP << "series";
             ret = area.hydro.series->saveToFolder(area.id, buffer, hydroPmax) && ret;
+
+            buffer.clear() << folder << SEP << "input" << SEP << "hydro";
+            ret = area.hydro.series->ruleCurves.saveToFolder(area.id, buffer) && ret;
         }
     }
 
@@ -971,6 +974,14 @@ static bool AreaListLoadFromFolderSingleArea(Study& study,
             throw std::invalid_argument(
               "Value not supported for study.parameters.compatibility.hydroPmax");
         }
+
+        RuleCurvesLoaderService ruleCurvesLoaderService(area.hydro.series->ruleCurves);
+
+        ret = ruleCurvesLoaderService.LoadFromFolder(area.id,
+                                                     pathHydro,
+                                                     study.usedByTheSolver,
+                                                     study.parameters.compatibility.hydroRuleCurves)
+              && ret;
 
         area.hydro.series->resizeTSinDeratedMode(study.parameters.derated,
                                                  studyVersion,
