@@ -1,7 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"classAntares_1_1Action_1_1AntaresStudy_1_1Area_1_1Color.html#a934641b516d036977e46aebfb4cfd6bb":[8,0,0,0,0,0,2,2],
-"classAntares_1_1Action_1_1AntaresStudy_1_1Area_1_1Color.html#a987bec650741ea104d9026c2e42049e4":[8,0,0,0,0,0,2,0],
 "classAntares_1_1Action_1_1AntaresStudy_1_1Area_1_1Color.html#aa9bded3f90f1c543e318e9bfb61f1ab7":[8,0,0,0,0,0,2,3],
 "classAntares_1_1Action_1_1AntaresStudy_1_1Area_1_1Color.html#acb082b61d4e62a62c823a7b6f02a47f1":[8,0,0,0,0,0,2,4],
 "classAntares_1_1Action_1_1AntaresStudy_1_1Area_1_1Correlation.html":[8,0,0,0,0,0,4],
@@ -249,5 +247,7 @@ var NAVTREEINDEX2 =
 "classAntares_1_1Action_1_1Context.html#a84025282d0f019f5c552429ffdc8aa13":[8,0,0,0,3,28],
 "classAntares_1_1Action_1_1Context.html#a86d8f2df8a81fd5d6391c9ae6f5d4538":[8,0,0,0,3,19],
 "classAntares_1_1Action_1_1Context.html#a8dd485f0e999e18804e2ed96be71a022":[8,0,0,0,3,5],
-"classAntares_1_1Action_1_1Context.html#a98bfcb37fd729a14f99bc09921163768":[8,0,0,0,3,2]
+"classAntares_1_1Action_1_1Context.html#a98bfcb37fd729a14f99bc09921163768":[8,0,0,0,3,2],
+"classAntares_1_1Action_1_1Context.html#a9de130478c8682666819cddf5360e554":[8,0,0,0,3,11],
+"classAntares_1_1Action_1_1Context.html#a9f39d55302e8651c4f42281ebb6a6932":[8,0,0,0,3,24]
 };

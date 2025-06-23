@@ -1,13 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"classAntares_1_1Data_1_1ScenarioBuilder_1_1thermalTSNumberData.html#a4810f8c974a62f569e8c8614b1cca6ca":[8,0,0,4,2,12,2],
-"classAntares_1_1Data_1_1ScenarioBuilder_1_1thermalTSNumberData.html#a4ae06822ed7404c36f001aec072e7a35":[8,0,0,4,2,12,1],
-"classAntares_1_1Data_1_1ScenarioBuilder_1_1thermalTSNumberData.html#aa036f95f60531266cbcba514734b75c5":[8,0,0,4,2,12,9],
-"classAntares_1_1Data_1_1ScenarioBuilder_1_1windTSNumberData.html":[8,0,0,4,2,14],
-"classAntares_1_1Data_1_1ScenarioBuilder_1_1windTSNumberData.html#a1f0d8b4935cd7ad839317d283522aac5":[8,0,0,4,2,14,0],
-"classAntares_1_1Data_1_1ScenarioBuilder_1_1windTSNumberData.html#a5382df978b688bc7d2209a3ab8f4efd2":[8,0,0,4,2,14,1],
-"classAntares_1_1Data_1_1ScenarioBuilder_1_1windTSNumberData.html#a5a723a4630a4cf5a1c9f97a0a96a22ca":[8,0,0,4,2,14,2],
-"classAntares_1_1Data_1_1ScenarizedCostProvider.html":[8,0,0,4,62],
 "classAntares_1_1Data_1_1ScenarizedCostProvider.html#a0b94f4e471053e6a08e1484021eb1ca4":[8,0,0,4,62,4],
 "classAntares_1_1Data_1_1ScenarizedCostProvider.html#a15d239308b353d46b3cabeaed9558f1c":[8,0,0,4,62,3],
 "classAntares_1_1Data_1_1ScenarizedCostProvider.html#a27c850dd017d651c78699241d6b9630e":[8,0,0,4,62,1],
@@ -249,5 +241,13 @@ var NAVTREEINDEX15 =
 "classAntares_1_1Data_1_1Study.html#aab54ffdf4fbc75b5d4e5461d4f649750":[8,0,0,4,70,4],
 "classAntares_1_1Data_1_1Study.html#aac4f66f52619d344e9aeec6e9a058f1a":[8,0,0,4,70,9],
 "classAntares_1_1Data_1_1Study.html#aaf996a639ab75c54a0c7fea79690904c":[8,0,0,4,70,83],
-"classAntares_1_1Data_1_1Study.html#aafab7af0c8042fbd55303e8cd8ad0380":[8,0,0,4,70,76]
+"classAntares_1_1Data_1_1Study.html#aafab7af0c8042fbd55303e8cd8ad0380":[8,0,0,4,70,76],
+"classAntares_1_1Data_1_1Study.html#ab38f6175f709dd6eb830dab471b5ec16":[8,0,0,4,70,90],
+"classAntares_1_1Data_1_1Study.html#ab79f4691a33e445f73d06782389a8a2c":[8,0,0,4,70,91],
+"classAntares_1_1Data_1_1Study.html#abab3ba2d3eaea32c649e29c06517c7b8":[8,0,0,4,70,71],
+"classAntares_1_1Data_1_1Study.html#ac281be788c497684c273acbdfc6c20ba":[8,0,0,4,70,64],
+"classAntares_1_1Data_1_1Study.html#ac4e3cfbfb697c707b7456409e4913ea4":[8,0,0,4,70,82],
+"classAntares_1_1Data_1_1Study.html#ac6269048ec4bd69e5ea9c6c1d64da2d3":[8,0,0,4,70,42],
+"classAntares_1_1Data_1_1Study.html#ac649f129a5739fc31fb6e02b2c04a160":[8,0,0,4,70,80],
+"classAntares_1_1Data_1_1Study.html#ac76d729e043a3580117922529e3320e6":[8,0,0,4,70,77]
 };

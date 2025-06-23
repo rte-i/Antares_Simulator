@@ -1,13 +1,5 @@
 var NAVTREEINDEX20 =
 {
-"classAntares_1_1IniFile_1_1Section.html#a8ae401359fd485910c7150c412f67f37":[8,0,0,37,1,19],
-"classAntares_1_1IniFile_1_1Section.html#a99694bf2982a9ef0799b4d2d59c7f018":[8,0,0,37,1,15],
-"classAntares_1_1IniFile_1_1Section.html#aa13a790c06d73d5b992963b0b08f7f44":[8,0,0,37,1,13],
-"classAntares_1_1IniFile_1_1Section.html#aa43c5b43d6dfce578462d631a822aa0f":[8,0,0,37,1,1],
-"classAntares_1_1IniFile_1_1Section.html#aa86ebaa8abf1b711eb79b5506207e27b":[8,0,0,37,1,5],
-"classAntares_1_1IniFile_1_1Section.html#aa9d770e6f754435e0ead5c822afd29f1":[8,0,0,37,1,0],
-"classAntares_1_1IniFile_1_1Section.html#ac9bf5c1ce938e0f3a109ae6ef56e3b82":[8,0,0,37,1,11],
-"classAntares_1_1IniFile_1_1Section.html#ad6fdf380c6ce24e4d108fdf3918f04e3":[8,0,0,37,1,2],
 "classAntares_1_1IniFile_1_1Section.html#addede6fa50b82321e2c6e19155ea37d2":[8,0,0,37,1,3],
 "classAntares_1_1IniFile_1_1Section.html#ae43145ba970edef3de5e2805a463887f":[8,0,0,37,1,9],
 "classAntares_1_1IniFile_1_1Section.html#ae71a72a6519d4002471332b781cd58a3":[8,0,0,37,1,10],
@@ -249,5 +241,13 @@ var NAVTREEINDEX20 =
 "classAntares_1_1Map_1_1Manager.html#a68f8c37a80dc19e8b708a7bc395a2824":[8,0,0,12,7,19],
 "classAntares_1_1Map_1_1Manager.html#a6d3dbcb7170a87b21b7caf1077480cfe":[8,0,0,12,7,14],
 "classAntares_1_1Map_1_1Manager.html#a707552ee79e9af7f066d09d56a2fc05c":[8,0,0,12,7,27],
-"classAntares_1_1Map_1_1Manager.html#a796310f6d35ec2ca032c32eebf1c0b90":[8,0,0,12,7,13]
+"classAntares_1_1Map_1_1Manager.html#a796310f6d35ec2ca032c32eebf1c0b90":[8,0,0,12,7,13],
+"classAntares_1_1Map_1_1Manager.html#a7a4a3ac4b650695d9bcd0547b7ba2a9e":[8,0,0,12,7,6],
+"classAntares_1_1Map_1_1Manager.html#a7d73ea7ce54525207b2c9caaf807e52c":[8,0,0,12,7,37],
+"classAntares_1_1Map_1_1Manager.html#a81a9b23334e591adce3cdb2bf0382801":[8,0,0,12,7,29],
+"classAntares_1_1Map_1_1Manager.html#a84463752a33ec7bbfe6654f3a46fbf46":[8,0,0,12,7,25],
+"classAntares_1_1Map_1_1Manager.html#a90654e89f9d7a4735a866a2fd158f46c":[8,0,0,12,7,54],
+"classAntares_1_1Map_1_1Manager.html#a924e385b31e301602bc1a69ccfbe6ba0":[8,0,0,12,7,45],
+"classAntares_1_1Map_1_1Manager.html#a9586076a9ee16c2ccc3b56f9922734fc":[8,0,0,12,7,43],
+"classAntares_1_1Map_1_1Manager.html#aa49f89e00a3b29c5fb786c1e7941470e":[8,0,0,12,7,12]
 };

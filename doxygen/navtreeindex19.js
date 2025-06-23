@@ -1,13 +1,5 @@
 var NAVTREEINDEX19 =
 {
-"classAntares_1_1Forms_1_1ApplWnd.html#a789f0c47fe0bee6e96d04a86b9368715":[8,0,0,9,6,34],
-"classAntares_1_1Forms_1_1ApplWnd.html#a7e41ca164b0f08aa8276d3035d7393be":[8,0,0,9,6,4],
-"classAntares_1_1Forms_1_1ApplWnd.html#a7f2e2ff7d889377944e628e95ada602e":[8,0,0,9,6,53],
-"classAntares_1_1Forms_1_1ApplWnd.html#a8cda9c8b288cf6e2824b4492de745615":[8,0,0,9,6,48],
-"classAntares_1_1Forms_1_1ApplWnd.html#a8e7249ccf12b2fcd6070bf4014b1038c":[8,0,0,9,6,26],
-"classAntares_1_1Forms_1_1ApplWnd.html#a8efb16ec76fabef3ca4f65b1554bef91":[8,0,0,9,6,1],
-"classAntares_1_1Forms_1_1ApplWnd.html#a925f3498d67415ff229108bce96548dd":[8,0,0,9,6,61],
-"classAntares_1_1Forms_1_1ApplWnd.html#a930bda7f693bbc8e62854b209f18a019":[8,0,0,9,6,30],
 "classAntares_1_1Forms_1_1ApplWnd.html#a9584446978a4772a352e0f8de8451d04":[8,0,0,9,6,10],
 "classAntares_1_1Forms_1_1ApplWnd.html#aa14275a3c17ba673caf528d0772989ce":[8,0,0,9,6,5],
 "classAntares_1_1Forms_1_1ApplWnd.html#aa73159b1773e700abff334e55978a1c9":[8,0,0,9,6,6],
@@ -249,5 +241,13 @@ var NAVTREEINDEX19 =
 "classAntares_1_1IniFile_1_1Section.html#a3b38738baf99158eef782b3223c89977":[8,0,0,37,1,4],
 "classAntares_1_1IniFile_1_1Section.html#a54a9cef58b511847e5305eb914d4244f":[8,0,0,37,1,16],
 "classAntares_1_1IniFile_1_1Section.html#a5940360d0701066ef1bf17071f7cf8da":[8,0,0,37,1,8],
-"classAntares_1_1IniFile_1_1Section.html#a653478129f4dce684dd2e2858cf49387":[8,0,0,37,1,12]
+"classAntares_1_1IniFile_1_1Section.html#a653478129f4dce684dd2e2858cf49387":[8,0,0,37,1,12],
+"classAntares_1_1IniFile_1_1Section.html#a8ae401359fd485910c7150c412f67f37":[8,0,0,37,1,19],
+"classAntares_1_1IniFile_1_1Section.html#a99694bf2982a9ef0799b4d2d59c7f018":[8,0,0,37,1,15],
+"classAntares_1_1IniFile_1_1Section.html#aa13a790c06d73d5b992963b0b08f7f44":[8,0,0,37,1,13],
+"classAntares_1_1IniFile_1_1Section.html#aa43c5b43d6dfce578462d631a822aa0f":[8,0,0,37,1,1],
+"classAntares_1_1IniFile_1_1Section.html#aa86ebaa8abf1b711eb79b5506207e27b":[8,0,0,37,1,5],
+"classAntares_1_1IniFile_1_1Section.html#aa9d770e6f754435e0ead5c822afd29f1":[8,0,0,37,1,0],
+"classAntares_1_1IniFile_1_1Section.html#ac9bf5c1ce938e0f3a109ae6ef56e3b82":[8,0,0,37,1,11],
+"classAntares_1_1IniFile_1_1Section.html#ad6fdf380c6ce24e4d108fdf3918f04e3":[8,0,0,37,1,2]
 };

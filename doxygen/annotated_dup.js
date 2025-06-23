@@ -630,6 +630,7 @@ var annotated_dup =
         [ "HydroLevel", "classAntares_1_1Optimization_1_1HydroLevel.html", "classAntares_1_1Optimization_1_1HydroLevel" ],
         [ "STS", "classAntares_1_1Optimization_1_1STS.html", "classAntares_1_1Optimization_1_1STS" ],
         [ "HydroProduction", "classAntares_1_1Optimization_1_1HydroProduction.html", "classAntares_1_1Optimization_1_1HydroProduction" ],
+        [ "STSAdditionalConstraint", "classAntares_1_1Optimization_1_1STSAdditionalConstraint.html", "classAntares_1_1Optimization_1_1STSAdditionalConstraint" ],
         [ "ConstraintsFactory", "classAntares_1_1Optimization_1_1ConstraintsFactory.html", "classAntares_1_1Optimization_1_1ConstraintsFactory" ],
         [ "ComponentFiller", "classAntares_1_1Optimization_1_1ComponentFiller.html", "classAntares_1_1Optimization_1_1ComponentFiller" ],
         [ "VariablesBulkAddition", "classAntares_1_1Optimization_1_1VariablesBulkAddition.html", "classAntares_1_1Optimization_1_1VariablesBulkAddition" ],
@@ -694,11 +695,6 @@ var annotated_dup =
           [ "OptimizationOptions", "classAntares_1_1Solver_1_1Optimization_1_1OptimizationOptions.html", "classAntares_1_1Solver_1_1Optimization_1_1OptimizationOptions" ],
           [ "CsrQuadraticProblem", "classAntares_1_1Solver_1_1Optimization_1_1CsrQuadraticProblem.html", "classAntares_1_1Solver_1_1Optimization_1_1CsrQuadraticProblem" ],
           [ "WeeklyOptimization", "classAntares_1_1Solver_1_1Optimization_1_1WeeklyOptimization.html", "classAntares_1_1Solver_1_1Optimization_1_1WeeklyOptimization" ]
-        ] ],
-        [ "Private", null, [
-          [ "Simulation", null, [
-            [ "CacheData", "classAntares_1_1Solver_1_1Private_1_1Simulation_1_1CacheData.html", "classAntares_1_1Solver_1_1Private_1_1Simulation_1_1CacheData" ]
-          ] ]
         ] ],
         [ "Simulation", null, [
           [ "AdqPatchPostProcessList", "classAntares_1_1Solver_1_1Simulation_1_1AdqPatchPostProcessList.html", "classAntares_1_1Solver_1_1Simulation_1_1AdqPatchPostProcessList" ],
@@ -937,7 +933,9 @@ var annotated_dup =
           [ "IntermediateValues", "classAntares_1_1Solver_1_1Variable_1_1IntermediateValues.html", "classAntares_1_1Solver_1_1Variable_1_1IntermediateValues" ],
           [ "Results", "classAntares_1_1Solver_1_1Variable_1_1Results.html", "classAntares_1_1Solver_1_1Variable_1_1Results" ],
           [ "SurveyResults", "classAntares_1_1Solver_1_1Variable_1_1SurveyResults.html", "classAntares_1_1Solver_1_1Variable_1_1SurveyResults" ],
-          [ "IVariable", "classAntares_1_1Solver_1_1Variable_1_1IVariable.html", "classAntares_1_1Solver_1_1Variable_1_1IVariable" ]
+          [ "IVariable", "classAntares_1_1Solver_1_1Variable_1_1IVariable.html", "classAntares_1_1Solver_1_1Variable_1_1IVariable" ],
+          [ "VCardDummyVariable", "structAntares_1_1Solver_1_1Variable_1_1VCardDummyVariable.html", "structAntares_1_1Solver_1_1Variable_1_1VCardDummyVariable" ],
+          [ "DummyVariable", "classAntares_1_1Solver_1_1Variable_1_1DummyVariable.html", "classAntares_1_1Solver_1_1Variable_1_1DummyVariable" ]
         ] ],
         [ "Progression", "classAntares_1_1Solver_1_1Progression.html", "classAntares_1_1Solver_1_1Progression" ],
         [ "IResultWriter", "classAntares_1_1Solver_1_1IResultWriter.html", "classAntares_1_1Solver_1_1IResultWriter" ],
@@ -1461,14 +1459,15 @@ var annotated_dup =
     [ "BOUND_FLEX_UP_NODE", "structBOUND__FLEX__UP__NODE.html", "structBOUND__FLEX__UP__NODE" ],
     [ "CellColumnData", "classCellColumnData.html", "classCellColumnData" ],
     [ "CmdLineOptionsFixture", "structCmdLineOptionsFixture.html", "structCmdLineOptionsFixture" ],
-    [ "commonFixture", "structcommonFixture.html", "structcommonFixture" ],
     [ "CommonFixture", "structCommonFixture.html", "structCommonFixture" ],
+    [ "commonFixture", "structcommonFixture.html", "structcommonFixture" ],
     [ "ComparisonFixture", "structComparisonFixture.html", "structComparisonFixture" ],
     [ "ComponentBuilderCreationFixture", "structComponentBuilderCreationFixture.html", "structComponentBuilderCreationFixture" ],
     [ "ComponentToAreaConnectionFillerFixture", "structComponentToAreaConnectionFillerFixture.html", "structComponentToAreaConnectionFillerFixture" ],
     [ "ConsistenceNumberOfDispatchableUnits", "classConsistenceNumberOfDispatchableUnits.html", "classConsistenceNumberOfDispatchableUnits" ],
     [ "ConsistenceNumberOfDispatchableUnitsGroup", "classConsistenceNumberOfDispatchableUnitsGroup.html", "classConsistenceNumberOfDispatchableUnitsGroup" ],
     [ "CONSOMMATIONS_ABATTUES", "structCONSOMMATIONS__ABATTUES.html", "structCONSOMMATIONS__ABATTUES" ],
+    [ "ConstantOverScenarios", "classConstantOverScenarios.html", "classConstantOverScenarios" ],
     [ "ConstraintBuilder", "classConstraintBuilder.html", "classConstraintBuilder" ],
     [ "ConstraintBuilderData", "classConstraintBuilderData.html", "classConstraintBuilderData" ],
     [ "ConstraintData", "structConstraintData.html", "structConstraintData" ],
@@ -1556,6 +1555,7 @@ var annotated_dup =
     [ "IProvider", "classIProvider.html", "classIProvider" ],
     [ "JIT", "classJIT.html", "classJIT" ],
     [ "JobFileReader", "classJobFileReader.html", "classJobFileReader" ],
+    [ "LargeValues", "classLargeValues.html", "classLargeValues" ],
     [ "LEVEL_FLEX_DOWN_NODE", "structLEVEL__FLEX__DOWN__NODE.html", "structLEVEL__FLEX__DOWN__NODE" ],
     [ "LEVEL_FLEX_UP_NODE", "structLEVEL__FLEX__UP__NODE.html", "structLEVEL__FLEX__UP__NODE" ],
     [ "LibererProbleme", "structLibererProbleme.html", "structLibererProbleme" ],
