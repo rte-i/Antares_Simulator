@@ -12,7 +12,7 @@ var searchData=
   ['gridcellattrprovider_3809',['GridCellAttrProvider',['../classAntares_1_1Component_1_1Datagrid_1_1GridCellAttrProvider.html',1,'Antares::Component::Datagrid']]],
   ['group_3810',['Group',['../classAntares_1_1Component_1_1HTMLListbox_1_1Item_1_1Group.html',1,'Antares::Component::HTMLListbox::Item']]],
   ['group1_3811',['Group1',['../classGroup1.html',1,'']]],
-  ['groupcontext_3812',['GroupContext',['../classHoursFieldParser_1_1GroupContext.html',1,'HoursFieldParser']]],
+  ['groupcontext_3812',['GroupContext',['../classHoursFieldParser_1_1GroupContext.html',1,'HoursFieldParser::GroupContext'],['../classScenarioBuilderParser_1_1GroupContext.html',1,'ScenarioBuilderParser::GroupContext']]],
   ['groupshours_3813',['GroupsHours',['../classAntares_1_1Data_1_1ShortTermStorage_1_1GroupsHours.html',1,'Antares::Data::ShortTermStorage']]],
   ['guilocker_3814',['GUILocker',['../classAntares_1_1GUILocker.html',1,'Antares']]]
 ];

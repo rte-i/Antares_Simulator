@@ -164,26 +164,26 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af78b0d69d93e854f1a5542806176d54a"><td class="memItemLeft" align="right" valign="top"><a id="af78b0d69d93e854f1a5542806176d54a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>variableCount</b> () const override</td></tr>
 <tr class="separator:af78b0d69d93e854f1a5542806176d54a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a898a16c9dd63e12002dc0888c8f129d6"><td class="memItemLeft" align="right" valign="top"><a id="a898a16c9dd63e12002dc0888c8f129d6"></a>
-<a class="el" href="classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipConstraint.html">IMipConstraint</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMockLinearProblem.html#a898a16c9dd63e12002dc0888c8f129d6">addConstraint</a> (double lb, double ub, const std::string &amp;name) override</td></tr>
-<tr class="memdesc:a898a16c9dd63e12002dc0888c8f129d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a bounded constraint to the problem. <br /></td></tr>
-<tr class="separator:a898a16c9dd63e12002dc0888c8f129d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f585c93a93fe4245d582e20c4fb0d90"><td class="memItemLeft" align="right" valign="top"><a id="a8f585c93a93fe4245d582e20c4fb0d90"></a>
-<a class="el" href="classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipConstraint.html">IMipConstraint</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>lookupConstraint</b> (const std::string &amp;name) const override</td></tr>
-<tr class="separator:a8f585c93a93fe4245d582e20c4fb0d90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4451c97ad588818b1120ef4a26b5d78c"><td class="memItemLeft" align="right" valign="top"><a id="a4451c97ad588818b1120ef4a26b5d78c"></a>
-<a class="el" href="classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipConstraint.html">IMipConstraint</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getConstraint</b> (std::size_t idx) const override</td></tr>
-<tr class="separator:a4451c97ad588818b1120ef4a26b5d78c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00f9abc99d9b72a216483ba478c28563"><td class="memItemLeft" align="right" valign="top"><a id="a00f9abc99d9b72a216483ba478c28563"></a>
+<a class="el" href="classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipConstraint.html">IMipConstraint</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMockLinearProblem.html#a00f9abc99d9b72a216483ba478c28563">addConstraint</a> (double, double, const std::string &amp;) override</td></tr>
+<tr class="memdesc:a00f9abc99d9b72a216483ba478c28563"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a bounded constraint to the problem. <br /></td></tr>
+<tr class="separator:a00f9abc99d9b72a216483ba478c28563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af38b6c46c98aa9ecebddac99f27514b8"><td class="memItemLeft" align="right" valign="top"><a id="af38b6c46c98aa9ecebddac99f27514b8"></a>
+<a class="el" href="classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipConstraint.html">IMipConstraint</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>lookupConstraint</b> (const std::string &amp;) const override</td></tr>
+<tr class="separator:af38b6c46c98aa9ecebddac99f27514b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06d37374ee03257d5db7a5e9bcc9793f"><td class="memItemLeft" align="right" valign="top"><a id="a06d37374ee03257d5db7a5e9bcc9793f"></a>
+<a class="el" href="classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipConstraint.html">IMipConstraint</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getConstraint</b> (std::size_t) const override</td></tr>
+<tr class="separator:a06d37374ee03257d5db7a5e9bcc9793f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8995cf8176cf34aeccdea065ae3b7b4"><td class="memItemLeft" align="right" valign="top"><a id="ac8995cf8176cf34aeccdea065ae3b7b4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>constraintCount</b> () const override</td></tr>
 <tr class="separator:ac8995cf8176cf34aeccdea065ae3b7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab32764781bd16b42c06ab43a0069c131"><td class="memItemLeft" align="right" valign="top"><a id="ab32764781bd16b42c06ab43a0069c131"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMockLinearProblem.html#ab32764781bd16b42c06ab43a0069c131">setObjectiveCoefficient</a> (<a class="el" href="classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipVariable.html">IMipVariable</a> *var, double coefficient) override</td></tr>
-<tr class="memdesc:ab32764781bd16b42c06ab43a0069c131"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective coefficient for a given variable. <br /></td></tr>
-<tr class="separator:ab32764781bd16b42c06ab43a0069c131"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5417beedd3599858582e3bcce76681b0"><td class="memItemLeft" align="right" valign="top"><a id="a5417beedd3599858582e3bcce76681b0"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>getObjectiveCoefficient</b> (const <a class="el" href="classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipVariable.html">IMipVariable</a> *var) const override</td></tr>
-<tr class="separator:a5417beedd3599858582e3bcce76681b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2c863b15a6b07aa93af2b25de8124e5"><td class="memItemLeft" align="right" valign="top"><a id="ac2c863b15a6b07aa93af2b25de8124e5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMockLinearProblem.html#ac2c863b15a6b07aa93af2b25de8124e5">setObjectiveCoefficient</a> (<a class="el" href="classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipVariable.html">IMipVariable</a> *, double) override</td></tr>
+<tr class="memdesc:ac2c863b15a6b07aa93af2b25de8124e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective coefficient for a given variable. <br /></td></tr>
+<tr class="separator:ac2c863b15a6b07aa93af2b25de8124e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ab6127c6f7674040e8dab8c805bf31a"><td class="memItemLeft" align="right" valign="top"><a id="a4ab6127c6f7674040e8dab8c805bf31a"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>getObjectiveCoefficient</b> (const <a class="el" href="classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipVariable.html">IMipVariable</a> *) const override</td></tr>
+<tr class="separator:a4ab6127c6f7674040e8dab8c805bf31a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a278425f71e237e9bdf318631d60543fc"><td class="memItemLeft" align="right" valign="top"><a id="a278425f71e237e9bdf318631d60543fc"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMockLinearProblem.html#a278425f71e237e9bdf318631d60543fc">setMinimization</a> () override</td></tr>
 <tr class="memdesc:a278425f71e237e9bdf318631d60543fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the optimization direction to minimize. <br /></td></tr>
@@ -198,13 +198,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isMinimization</b> ()
 <tr class="memitem:a4f7df22e90eb7a081b25bb861b669588"><td class="memItemLeft" align="right" valign="top"><a id="a4f7df22e90eb7a081b25bb861b669588"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isMaximization</b> () const override</td></tr>
 <tr class="separator:a4f7df22e90eb7a081b25bb861b669588"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9a34eeb9f490b2b53e1525dfde46e75"><td class="memItemLeft" align="right" valign="top"><a id="ad9a34eeb9f490b2b53e1525dfde46e75"></a>
-<a class="el" href="classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipSolution.html">IMipSolution</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMockLinearProblem.html#ad9a34eeb9f490b2b53e1525dfde46e75">solve</a> (bool verboseSolver) override</td></tr>
-<tr class="memdesc:ad9a34eeb9f490b2b53e1525dfde46e75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve the problem, returns a IMipSolution. <br /></td></tr>
-<tr class="separator:ad9a34eeb9f490b2b53e1525dfde46e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22de937cb360e86e8b52ad8b35e440a2"><td class="memItemLeft" align="right" valign="top"><a id="a22de937cb360e86e8b52ad8b35e440a2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>WriteLP</b> (const std::string &amp;filename) const override</td></tr>
-<tr class="separator:a22de937cb360e86e8b52ad8b35e440a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8537f266ecbbcb9e1f7719497e0a157a"><td class="memItemLeft" align="right" valign="top"><a id="a8537f266ecbbcb9e1f7719497e0a157a"></a>
+<a class="el" href="classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipSolution.html">IMipSolution</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMockLinearProblem.html#a8537f266ecbbcb9e1f7719497e0a157a">solve</a> (bool) override</td></tr>
+<tr class="memdesc:a8537f266ecbbcb9e1f7719497e0a157a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve the problem, returns a IMipSolution. <br /></td></tr>
+<tr class="separator:a8537f266ecbbcb9e1f7719497e0a157a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18bdd1810ea90971f3a4ae3283aa1892"><td class="memItemLeft" align="right" valign="top"><a id="a18bdd1810ea90971f3a4ae3283aa1892"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>WriteLP</b> (const std::string &amp;) const override</td></tr>
+<tr class="separator:a18bdd1810ea90971f3a4ae3283aa1892"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76d75747090e5286e43be590d0eb05ba"><td class="memItemLeft" align="right" valign="top"><a id="a76d75747090e5286e43be590d0eb05ba"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>infinity</b> () const override</td></tr>
 <tr class="separator:a76d75747090e5286e43be590d0eb05ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
