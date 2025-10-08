@@ -142,8 +142,8 @@ var hierarchy =
       [ "Antares::Component::Datagrid::Renderer::thermalColumn", "classAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1thermalColumn.html", null ]
     ] ],
     [ "ColumnBasedStorage", "classColumnBasedStorage.html", null ],
-    [ "CommonFixture", "structCommonFixture.html", null ],
     [ "commonFixture", "structcommonFixture.html", null ],
+    [ "CommonFixture", "structCommonFixture.html", null ],
     [ "Antares::Data::CompareAreaName", "structAntares_1_1Data_1_1CompareAreaName.html", null ],
     [ "Antares::Data::CompareBindingConstraintName", "structAntares_1_1Data_1_1CompareBindingConstraintName.html", null ],
     [ "Antares::Forms::CompareBySimulationMode", "structAntares_1_1Forms_1_1CompareBySimulationMode.html", null ],
@@ -235,7 +235,6 @@ var hierarchy =
     [ "Antares::Optimization::ConstraintsFactory", "classAntares_1_1Optimization_1_1ConstraintsFactory.html", null ],
     [ "Antares::Data::Solar::Container", "classAntares_1_1Data_1_1Solar_1_1Container.html", null ],
     [ "Antares::Data::Wind::Container", "classAntares_1_1Data_1_1Wind_1_1Container.html", null ],
-    [ "container_of_helpful_data_for_unit_tests", "structcontainer__of__helpful__data__for__unit__tests.html", null ],
     [ "Antares::Private::OutputViewerData::Content", "classAntares_1_1Private_1_1OutputViewerData_1_1Content.html", null ],
     [ "Antares::Action::Context", "classAntares_1_1Action_1_1Context.html", null ],
     [ "CONTRAINTES_COUPLANTES", "structCONTRAINTES__COUPLANTES.html", null ],
@@ -285,6 +284,7 @@ var hierarchy =
     [ "CumulationConstraint", "structCumulationConstraint.html", null ],
     [ "Antares::Data::AdequacyPatch::CurtailmentSharing", "classAntares_1_1Data_1_1AdequacyPatch_1_1CurtailmentSharing.html", null ],
     [ "Antares::Cycle", "classAntares_1_1Cycle.html", null ],
+    [ "Antares::Solver::Simulation::CyclicIterator< T >", "classAntares_1_1Solver_1_1Simulation_1_1CyclicIterator.html", null ],
     [ "Antares::Data::DailyDemand", "structAntares_1_1Data_1_1DailyDemand.html", null ],
     [ "Antares::Modeler::Data", "structAntares_1_1Modeler_1_1Data.html", null ],
     [ "Antares::Solver::Variable::R::AllYears::Average< NextT, FileFilter >::Data", "structAntares_1_1Solver_1_1Variable_1_1R_1_1AllYears_1_1Average_1_1Data.html", null ],
@@ -321,7 +321,7 @@ var hierarchy =
     [ "DEMAND_FLEX_DOWN_POOL", "structDEMAND__FLEX__DOWN__POOL.html", null ],
     [ "DEMAND_FLEX_UP_POOL", "structDEMAND__FLEX__UP__POOL.html", null ],
     [ "DEMAND_MARKET_POOL", "structDEMAND__MARKET__POOL.html", null ],
-    [ "Antares::Optimization::Dimensions", "classAntares_1_1Optimization_1_1Dimensions.html", null ],
+    [ "Antares::Optimisation::Dimensions", "classAntares_1_1Optimisation_1_1Dimensions.html", null ],
     [ "Antares::Forms::Disabler< WindowT >", "classAntares_1_1Forms_1_1Disabler.html", null ],
     [ "Antares::Forms::Disabler< ApplWnd >", "classAntares_1_1Forms_1_1Disabler_3_01ApplWnd_01_4.html", null ],
     [ "Antares::Data::ThermalCluster::DivModulation", "structAntares_1_1Data_1_1ThermalCluster_1_1DivModulation.html", null ],
@@ -545,9 +545,9 @@ var hierarchy =
     [ "Antares::Data::BindingConstraintSaver::EnvForSaving", "classAntares_1_1Data_1_1BindingConstraintSaver_1_1EnvForSaving.html", null ],
     [ "Antares::API::Error", "structAntares_1_1API_1_1Error.html", null ],
     [ "json_collector.error", "classjson__collector_1_1error.html", null ],
-    [ "Antares::Expressions::Visitors::EvaluationContext", "classAntares_1_1Expressions_1_1Visitors_1_1EvaluationContext.html", null ],
-    [ "Antares::Optimisation::EvaluationContextProvider", "classAntares_1_1Optimisation_1_1EvaluationContextProvider.html", null ],
+    [ "Antares::Optimisation::EvaluationContext", "classAntares_1_1Optimisation_1_1EvaluationContext.html", null ],
     [ "Antares::Expressions::Visitors::EvaluationResult", "classAntares_1_1Expressions_1_1Visitors_1_1EvaluationResult.html", null ],
+    [ "Antares::Solver::Simulation::Exchange", "structAntares_1_1Solver_1_1Simulation_1_1Exchange.html", null ],
     [ "ExchangeBalanceData", "structExchangeBalanceData.html", null ],
     [ "Antares::Toolbox::Process::Execute", "classAntares_1_1Toolbox_1_1Process_1_1Execute.html", null ],
     [ "ExpectedResult", "structExpectedResult.html", null ],
@@ -580,8 +580,6 @@ var hierarchy =
     [ "FixtureStudyOnly", "structFixtureStudyOnly.html", null ],
     [ "FlowDissociationData", "structFlowDissociationData.html", null ],
     [ "Antares::Component::FrameShowData", "classAntares_1_1Component_1_1FrameShowData.html", null ],
-    [ "Antares::Optimization::FullKey", "classAntares_1_1Optimization_1_1FullKey.html", null ],
-    [ "Antares::Optimization::FullKeyHash", "classAntares_1_1Optimization_1_1FullKeyHash.html", null ],
     [ "Antares::Concurrency::FutureSet", "classAntares_1_1Concurrency_1_1FutureSet.html", null ],
     [ "Antares::Solver::Variable::Economy::GenerationTraits< Tag >", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1GenerationTraits.html", null ],
     [ "global_JIT_manager", "classglobal__JIT__manager.html", null ],
@@ -589,11 +587,6 @@ var hierarchy =
     [ "Antares::Graph::Grid< Antares::Data::Area >", "classAntares_1_1Graph_1_1Grid.html", null ],
     [ "Antares::Data::ShortTermStorage::GroupsHours", "classAntares_1_1Data_1_1ShortTermStorage_1_1GroupsHours.html", null ],
     [ "Antares::GUILocker", "classAntares_1_1GUILocker.html", null ],
-    [ "boost::hash< Antares::Optimization::PartialKey >", "structboost_1_1hash_3_01Antares_1_1Optimization_1_1PartialKey_01_4.html", null ],
-    [ "Antares::Expressions::Hashable", "classAntares_1_1Expressions_1_1Hashable.html", [
-      [ "Antares::Expressions::Nodes::PortFieldNode", "classAntares_1_1Expressions_1_1Nodes_1_1PortFieldNode.html", null ],
-      [ "Antares::Expressions::Nodes::PortFieldSumNode", "classAntares_1_1Expressions_1_1Nodes_1_1PortFieldSumNode.html", null ]
-    ] ],
     [ "Antares::Solver::HebdoProblemToLpsTranslator", "classAntares_1_1Solver_1_1HebdoProblemToLpsTranslator.html", null ],
     [ "Antares::Date::HourInterval", "structAntares_1_1Date_1_1HourInterval.html", null ],
     [ "HourlyCSRProblem", "classHourlyCSRProblem.html", null ],
@@ -637,6 +630,9 @@ var hierarchy =
           [ "Antares::Component::HTMLListbox::Datasource::ThermalClustersByAlphaReverseOrder", "classAntares_1_1Component_1_1HTMLListbox_1_1Datasource_1_1ThermalClustersByAlphaReverseOrder.html", null ]
         ] ]
       ] ]
+    ] ],
+    [ "Expressions::IEvaluationContextProvider", null, [
+      [ "Antares::Optimisation::EvaluationContextProvider", "classAntares_1_1Optimisation_1_1EvaluationContextProvider.html", null ]
     ] ],
     [ "Yuni::IEventObserver", null, [
       [ "Antares::Component::Datagrid::Component", "classAntares_1_1Component_1_1Datagrid_1_1Component.html", null ],
@@ -838,10 +834,10 @@ var hierarchy =
     ] ],
     [ "Antares::Optimisation::LinearProblemApi::IHasBounds", "classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IHasBounds.html", [
       [ "Antares::Optimisation::LinearProblemApi::IMipConstraint", "classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipConstraint.html", [
-        [ "Antares::Optimisation::LinearProblemMpsolverImpl::OrtoolsMipConstraint", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsMipConstraint.html", null ]
+        [ "Antares::Optimisation::LinearProblemMpsolverImpl::OrtoolsMipConstraint", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsMipConstraint.html", null ],
+        [ "MockMipConstraint", "classMockMipConstraint.html", null ]
       ] ],
       [ "Antares::Optimisation::LinearProblemApi::IMipVariable", "classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipVariable.html", [
-        [ "MockMipVariable", "classMockMipVariable.html", null ],
         [ "Antares::Optimisation::LinearProblemMpsolverImpl::OrtoolsMipVariable", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsMipVariable.html", null ],
         [ "MockMipVariable", "classMockMipVariable.html", null ]
       ] ]
@@ -898,24 +894,29 @@ var hierarchy =
       [ "Antares::Optimisation::LinearProblemMpsolverImpl::OrtoolsLinearProblem", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsLinearProblem.html", [
         [ "Antares::Optimization::LegacyOrtoolsLinearProblem", "classAntares_1_1Optimization_1_1LegacyOrtoolsLinearProblem.html", null ]
       ] ],
-      [ "MockLinearProblem", "classMockLinearProblem.html", null ],
+      [ "MockLinearProblem", "classMockLinearProblem.html", [
+        [ "PredfinedSolutionLinearProblemMock", "structPredfinedSolutionLinearProblemMock.html", null ]
+      ] ],
       [ "MockLinearProblem", "classMockLinearProblem.html", null ]
     ] ],
     [ "Antares::Optimisation::LinearProblemApi::ILinearProblemData", "classAntares_1_1Optimisation_1_1LinearProblemApi_1_1ILinearProblemData.html", [
       [ "Antares::Optimisation::LinearProblemDataImpl::LinearProblemData", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1LinearProblemData.html", null ],
-      [ "ConstantDataSeries", "classConstantDataSeries.html", [
-        [ "EmptyDataSeries", "classEmptyDataSeries.html", null ]
-      ] ],
-      [ "MockLinearProblemData", "structMockLinearProblemData.html", null ],
+      [ "ConstantDataSeries", "classConstantDataSeries.html", null ],
       [ "MockLinearProblemData", "structMockLinearProblemData.html", null ]
     ] ],
     [ "Antares::Solver::ILoader", "classAntares_1_1Solver_1_1ILoader.html", [
       [ "Antares::Solver::LoadFiles::FileLoader", "classAntares_1_1Solver_1_1LoadFiles_1_1FileLoader.html", null ],
       [ "InMemoryLoader< Fixture >", "classInMemoryLoader.html", null ]
     ] ],
+    [ "IMipConstraint", null, [
+      [ "MockMipConstraint", "classMockMipConstraint.html", null ]
+    ] ],
     [ "Antares::Optimisation::LinearProblemApi::IMipSolution", "classAntares_1_1Optimisation_1_1LinearProblemApi_1_1IMipSolution.html", [
       [ "Antares::Optimisation::LinearProblemMpsolverImpl::OrtoolsMipSolution", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsMipSolution.html", null ],
       [ "MockMipSolution", "structMockMipSolution.html", null ]
+    ] ],
+    [ "IMipVariable", null, [
+      [ "MockMipVariable", "classMockMipVariable.html", null ]
     ] ],
     [ "Impl", null, [
       [ "Antares::Solver::Simulation::ISimulation< Impl >", "classAntares_1_1Solver_1_1Simulation_1_1ISimulation.html", null ]
@@ -927,17 +928,17 @@ var hierarchy =
       [ "Antares::Expressions::Visitors::NodeVisitor< std::string >", "classAntares_1_1Expressions_1_1Visitors_1_1NodeVisitor.html", [
         [ "Antares::Expressions::Visitors::PrintVisitor", "classAntares_1_1Expressions_1_1Visitors_1_1PrintVisitor.html", null ]
       ] ],
-      [ "Antares::Expressions::Visitors::NodeVisitor< TimeIndex >", "classAntares_1_1Expressions_1_1Visitors_1_1NodeVisitor.html", [
-        [ "Antares::Expressions::Visitors::TimeIndexVisitor", "classAntares_1_1Expressions_1_1Visitors_1_1TimeIndexVisitor.html", null ]
-      ] ],
-      [ "Antares::Expressions::Visitors::NodeVisitor< TimeDependentLinearExpression >", "classAntares_1_1Expressions_1_1Visitors_1_1NodeVisitor.html", [
-        [ "Antares::Optimization::ReadLinearExpressionVisitor", "classAntares_1_1Optimization_1_1ReadLinearExpressionVisitor.html", null ]
-      ] ],
       [ "Antares::Expressions::Visitors::NodeVisitor< bool, const Nodes::Node * >", "classAntares_1_1Expressions_1_1Visitors_1_1NodeVisitor.html", [
         [ "Antares::Expressions::Visitors::CompareVisitor", "classAntares_1_1Expressions_1_1Visitors_1_1CompareVisitor.html", null ]
       ] ],
+      [ "Antares::Expressions::Visitors::NodeVisitor< LinearConstraint >", "classAntares_1_1Expressions_1_1Visitors_1_1NodeVisitor.html", [
+        [ "Antares::Optimisation::ReadLinearConstraintVisitor", "classAntares_1_1Optimisation_1_1ReadLinearConstraintVisitor.html", null ]
+      ] ],
       [ "Antares::Expressions::Visitors::NodeVisitor< Nodes::Node * >", "classAntares_1_1Expressions_1_1Visitors_1_1NodeVisitor.html", [
         [ "Antares::Expressions::Visitors::CloneVisitor", "classAntares_1_1Expressions_1_1Visitors_1_1CloneVisitor.html", null ]
+      ] ],
+      [ "Antares::Expressions::Visitors::NodeVisitor< Antares::Optimization::TimeDependentLinearExpression >", "classAntares_1_1Expressions_1_1Visitors_1_1NodeVisitor.html", [
+        [ "Antares::Optimisation::ReadLinearExpressionVisitor", "classAntares_1_1Optimisation_1_1ReadLinearExpressionVisitor.html", null ]
       ] ],
       [ "Antares::Expressions::Visitors::NodeVisitor< EvaluationResult >", "classAntares_1_1Expressions_1_1Visitors_1_1NodeVisitor.html", [
         [ "Antares::Expressions::Visitors::EvalVisitor", "classAntares_1_1Expressions_1_1Visitors_1_1EvalVisitor.html", null ]
@@ -945,8 +946,8 @@ var hierarchy =
       [ "Antares::Expressions::Visitors::NodeVisitor< void, std::ostream & >", "classAntares_1_1Expressions_1_1Visitors_1_1NodeVisitor.html", [
         [ "Antares::Expressions::Visitors::AstDOTStyleVisitor", "classAntares_1_1Expressions_1_1Visitors_1_1AstDOTStyleVisitor.html", null ]
       ] ],
-      [ "Antares::Expressions::Visitors::NodeVisitor< std::vector< LinearConstraint > >", "classAntares_1_1Expressions_1_1Visitors_1_1NodeVisitor.html", [
-        [ "Antares::Optimization::ReadLinearConstraintVisitor", "classAntares_1_1Optimization_1_1ReadLinearConstraintVisitor.html", null ]
+      [ "Antares::Expressions::Visitors::NodeVisitor< Optimisation::TimeIndex >", "classAntares_1_1Expressions_1_1Visitors_1_1NodeVisitor.html", [
+        [ "Antares::Expressions::Visitors::TimeIndexVisitor", "classAntares_1_1Expressions_1_1Visitors_1_1TimeIndexVisitor.html", null ]
       ] ],
       [ "Antares::Expressions::Nodes::Node", "classAntares_1_1Expressions_1_1Nodes_1_1Node.html", [
         [ "Antares::Expressions::Nodes::Leaf< double >", "classAntares_1_1Expressions_1_1Nodes_1_1Leaf.html", [
@@ -989,7 +990,7 @@ var hierarchy =
     [ "InputFixture< size >", "structInputFixture.html", null ],
     [ "Antares::Window::Inspector::InspectorData", "classAntares_1_1Window_1_1Inspector_1_1InspectorData.html", null ],
     [ "IntegerIndex< TSData >", "classIntegerIndex.html", null ],
-    [ "Antares::Optimization::IntegerInterval", "structAntares_1_1Optimization_1_1IntegerInterval.html", null ],
+    [ "Antares::Optimisation::IntegerInterval", "structAntares_1_1Optimisation_1_1IntegerInterval.html", null ],
     [ "Antares::Solver::Simulation::interfacePostProcessList", "classAntares_1_1Solver_1_1Simulation_1_1interfacePostProcessList.html", [
       [ "Antares::Solver::Simulation::AdqPatchPostProcessList", "classAntares_1_1Solver_1_1Simulation_1_1AdqPatchPostProcessList.html", null ],
       [ "Antares::Solver::Simulation::OptPostProcessList", "classAntares_1_1Solver_1_1Simulation_1_1OptPostProcessList.html", null ]
@@ -1066,6 +1067,12 @@ var hierarchy =
         [ "SimulationTableCsvFile", "classSimulationTableCsvFile.html", null ]
       ] ]
     ] ],
+    [ "Antares::Solver::Simulation::IStorageForRemix", "classAntares_1_1Solver_1_1Simulation_1_1IStorageForRemix.html", [
+      [ "Antares::Solver::Simulation::StorageForRemixNoLevels", "classAntares_1_1Solver_1_1Simulation_1_1StorageForRemixNoLevels.html", [
+        [ "Antares::Solver::Simulation::StorageForRemixWithLevels", "classAntares_1_1Solver_1_1Simulation_1_1StorageForRemixWithLevels.html", null ]
+      ] ],
+      [ "StorageMock", "classStorageMock.html", null ]
+    ] ],
     [ "Antares::IStudyLoader", "classAntares_1_1IStudyLoader.html", [
       [ "Antares::FileTreeStudyLoader", "classAntares_1_1FileTreeStudyLoader.html", null ],
       [ "InMemoryStudyLoader", "classInMemoryStudyLoader.html", null ]
@@ -1075,7 +1082,7 @@ var hierarchy =
       [ "Antares::Map::Connection", "classAntares_1_1Map_1_1Connection.html", null ],
       [ "Antares::Map::Node", "classAntares_1_1Map_1_1Node.html", null ]
     ] ],
-    [ "Antares::Optimization::IntegerInterval::Iterator", "classAntares_1_1Optimization_1_1IntegerInterval_1_1Iterator.html", null ],
+    [ "Antares::Optimisation::IntegerInterval::Iterator", "classAntares_1_1Optimisation_1_1IntegerInterval_1_1Iterator.html", null ],
     [ "Yuni::Thread::IThread", null, [
       [ "Antares::Toolbox::Jobs::JobThread", "classAntares_1_1Toolbox_1_1Jobs_1_1JobThread.html", null ],
       [ "Antares::Window::ThreadUpdater", "classAntares_1_1Window_1_1ThreadUpdater.html", null ]
@@ -1113,7 +1120,7 @@ var hierarchy =
     [ "Antares::ModelerStudy::SystemModel::LibraryBuilder", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1LibraryBuilder.html", null ],
     [ "LibraryObjects", "structLibraryObjects.html", null ],
     [ "Antares::ScenarioGroupParser::Line", "structAntares_1_1ScenarioGroupParser_1_1Line.html", null ],
-    [ "Antares::Optimization::LinearConstraint", "structAntares_1_1Optimization_1_1LinearConstraint.html", null ],
+    [ "Antares::Optimisation::LinearConstraint", "structAntares_1_1Optimisation_1_1LinearConstraint.html", null ],
     [ "Antares::Optimization::LinearExpression", "classAntares_1_1Optimization_1_1LinearExpression.html", null ],
     [ "Antares::Optimisation::LinearProblemApi::LinearProblemBuilder", "classAntares_1_1Optimisation_1_1LinearProblemApi_1_1LinearProblemBuilder.html", null ],
     [ "Test::Modeler::LinearProblemBuildingFixture", "structTest_1_1Modeler_1_1LinearProblemBuildingFixture.html", [
@@ -1267,6 +1274,8 @@ var hierarchy =
       [ "ThermalClusterStudy", "structThermalClusterStudy.html", null ]
     ] ],
     [ "Benchmarking::DurationCollector::OperationTimer", "structBenchmarking_1_1DurationCollector_1_1OperationTimer.html", null ],
+    [ "Antares::Optimisation::OptimComponent", "structAntares_1_1Optimisation_1_1OptimComponent.html", null ],
+    [ "Antares::Optimisation::OptimEntityContainer", "classAntares_1_1Optimisation_1_1OptimEntityContainer.html", null ],
     [ "OptimisationsSimulationTable", "classOptimisationsSimulationTable.html", null ],
     [ "Benchmarking::OptimizationInfo", "structBenchmarking_1_1OptimizationInfo.html", null ],
     [ "Antares::Solver::Optimization::OptimizationOptions", "classAntares_1_1Solver_1_1Optimization_1_1OptimizationOptions.html", null ],
@@ -1295,7 +1304,7 @@ var hierarchy =
     [ "Antares::IO::Inputs::YmlSystem::Parameter", "structAntares_1_1IO_1_1Inputs_1_1YmlSystem_1_1Parameter.html", null ],
     [ "Antares::ModelerStudy::SystemModel::Parameter", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1Parameter.html", null ],
     [ "Antares::Data::Parameters", "classAntares_1_1Data_1_1Parameters.html", null ],
-    [ "Antares::Expressions::Visitors::ParameterTypeAndValue", "structAntares_1_1Expressions_1_1Visitors_1_1ParameterTypeAndValue.html", null ],
+    [ "Antares::ModelerStudy::SystemModel::ParameterTypeAndValue", "structAntares_1_1ModelerStudy_1_1SystemModel_1_1ParameterTypeAndValue.html", null ],
     [ "Antares::Window::Inspector::PAreaColor", "structAntares_1_1Window_1_1Inspector_1_1PAreaColor.html", null ],
     [ "Antares::Window::Inspector::PAreaFiltering< SynthesisT, F >", "structAntares_1_1Window_1_1Inspector_1_1PAreaFiltering.html", null ],
     [ "Antares::Window::Inspector::PAreaResortStatus< O >", "structAntares_1_1Window_1_1Inspector_1_1PAreaResortStatus.html", null ],
@@ -1355,8 +1364,6 @@ var hierarchy =
     ] ],
     [ "Antares::Toolbox::Jobs::Part", "classAntares_1_1Toolbox_1_1Jobs_1_1Part.html", null ],
     [ "Antares::Data::PartHydro", "classAntares_1_1Data_1_1PartHydro.html", null ],
-    [ "Antares::Optimization::PartialKey", "classAntares_1_1Optimization_1_1PartialKey.html", null ],
-    [ "Antares::Optimization::PartialKeyHash", "classAntares_1_1Optimization_1_1PartialKeyHash.html", null ],
     [ "Antares::Data::PartRenewable", "classAntares_1_1Data_1_1PartRenewable.html", null ],
     [ "Antares::Data::PartThermal", "classAntares_1_1Data_1_1PartThermal.html", null ],
     [ "PathList", "classPathList.html", null ],
@@ -1410,7 +1417,6 @@ var hierarchy =
     [ "Antares::ModelerStudy::SystemModel::PortField", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1PortField.html", null ],
     [ "Antares::IO::Inputs::YmlModel::PortFieldDefinition", "structAntares_1_1IO_1_1Inputs_1_1YmlModel_1_1PortFieldDefinition.html", null ],
     [ "Antares::ModelerStudy::SystemModel::PortFieldDefinition", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1PortFieldDefinition.html", null ],
-    [ "Antares::Expressions::PortFieldHash", "structAntares_1_1Expressions_1_1PortFieldHash.html", null ],
     [ "Antares::ModelerStudy::SystemModel::PortFieldKey", "structAntares_1_1ModelerStudy_1_1SystemModel_1_1PortFieldKey.html", null ],
     [ "Antares::ModelerStudy::SystemModel::PortFieldKeyHash", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1PortFieldKeyHash.html", null ],
     [ "Antares::IO::Inputs::YmlModel::PortType", "structAntares_1_1IO_1_1Inputs_1_1YmlModel_1_1PortType.html", null ],
@@ -1485,12 +1491,10 @@ var hierarchy =
     [ "Antares::Component::Datagrid::Renderer::RefeshInspector", "structAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1RefeshInspector.html", null ],
     [ "Antares::Component::Datagrid::Renderer::RefeshInspectorAndMarkAsModified", "structAntares_1_1Component_1_1Datagrid_1_1Renderer_1_1RefeshInspectorAndMarkAsModified.html", null ],
     [ "Antares::Expressions::Registry< Base >", "classAntares_1_1Expressions_1_1Registry.html", null ],
-    [ "Antares::Expressions::Registry< Antares::Expressions::Nodes::Node >", "classAntares_1_1Expressions_1_1Registry.html", null ],
+    [ "Antares::Expressions::Registry< Antares::Expressions::Nodes::Node >", "classAntares_1_1Expressions_1_1Registry.html", [
+      [ "MyDummyFixture", "structMyDummyFixture.html", null ]
+    ] ],
     [ "Antares::Expressions::Registry< Node >", "classAntares_1_1Expressions_1_1Registry.html", [
-      [ "BasicFixture", "structBasicFixture.html", null ],
-      [ "CreateVisitorFixture", "structCreateVisitorFixture.html", null ],
-      [ "MyDummyFixture", "structMyDummyFixture.html", null ],
-      [ "MyDummyFixture", "structMyDummyFixture.html", null ],
       [ "MyDummyFixture", "structMyDummyFixture.html", null ]
     ] ],
     [ "Antares::Map::RemovalToolPredicate", "classAntares_1_1Map_1_1RemovalToolPredicate.html", null ],
@@ -1617,6 +1621,7 @@ var hierarchy =
     [ "Antares::Component::HTMLListbox::Datasource::SortAlphaOrder", "structAntares_1_1Component_1_1HTMLListbox_1_1Datasource_1_1SortAlphaOrder.html", null ],
     [ "Antares::Component::HTMLListbox::Datasource::SortAlphaReverseOrder", "structAntares_1_1Component_1_1HTMLListbox_1_1Datasource_1_1SortAlphaReverseOrder.html", null ],
     [ "Antares::Window::SortColor", "structAntares_1_1Window_1_1SortColor.html", null ],
+    [ "SortingStorageFixture", "structSortingStorageFixture.html", null ],
     [ "Antares::Solver::Variable::SpatialAggregateOperation< Allowed, OperationT, VCardT >", "structAntares_1_1Solver_1_1Variable_1_1SpatialAggregateOperation.html", null ],
     [ "Antares::Solver::Variable::SpatialAggregateOperation< true, Category::spatialAggregateAverage, VCardT >", "structAntares_1_1Solver_1_1Variable_1_1SpatialAggregateOperation_3_01true_00_01Category_1_1spatib45dc589c9aad1010829c4d00b555bd9.html", null ],
     [ "Antares::Solver::Variable::SpatialAggregateOperation< true, Category::spatialAggregateMax, VCardT >", "structAntares_1_1Solver_1_1Variable_1_1SpatialAggregateOperation_3_01true_00_01Category_1_1spatialAggregateMax_00_01VCardT_01_4.html", null ],
@@ -1766,11 +1771,11 @@ var hierarchy =
     [ "Antares::Solver::Variable::Storage< VCardUnsupliedEnergy >", "structAntares_1_1Solver_1_1Variable_1_1Storage.html", null ],
     [ "Antares::Solver::Variable::Storage< VCardUnsupliedEnergyCSR >", "structAntares_1_1Solver_1_1Variable_1_1Storage.html", null ],
     [ "Antares::Solver::Variable::Storage< VCardWaterValue >", "structAntares_1_1Solver_1_1Variable_1_1Storage.html", null ],
-    [ "Antares::Solver::Simulation::StorageForRemix", "classAntares_1_1Solver_1_1Simulation_1_1StorageForRemix.html", [
-      [ "Antares::Solver::Simulation::HydroForRemix", "classAntares_1_1Solver_1_1Simulation_1_1HydroForRemix.html", [
-        [ "Antares::Solver::Simulation::HydroForRemixWithLevels", "classAntares_1_1Solver_1_1Simulation_1_1HydroForRemixWithLevels.html", null ]
-      ] ]
+    [ "StorageFixture< size >", "structStorageFixture.html", [
+      [ "ComputeExchangeFixture< size >", "structComputeExchangeFixture.html", null ],
+      [ "FindExchangeFixture< size >", "structFindExchangeFixture.html", null ]
     ] ],
+    [ "Antares::Solver::Simulation::StorageListSort", "classAntares_1_1Solver_1_1Simulation_1_1StorageListSort.html", null ],
     [ "Antares::Memory::Stored< T >", "structAntares_1_1Memory_1_1Stored.html", null ],
     [ "Antares::Memory::Stored< CellData >", "structAntares_1_1Memory_1_1Stored.html", null ],
     [ "Antares::Memory::Stored< double >", "structAntares_1_1Memory_1_1Stored.html", null ],
@@ -1794,6 +1799,7 @@ var hierarchy =
     [ "StructureIndex< thermalTSNumberData, const ThermalCluster * >", "classStructureIndex.html", [
       [ "Fixture::Thermal", "structFixture_1_1Thermal.html", null ]
     ] ],
+    [ "STS_holder< nb_hours >", "structSTS__holder.html", null ],
     [ "Antares::Data::ShortTermStorage::STStorageCluster", "classAntares_1_1Data_1_1ShortTermStorage_1_1STStorageCluster.html", null ],
     [ "Antares::Data::ShortTermStorage::STStorageInput", "classAntares_1_1Data_1_1ShortTermStorage_1_1STStorageInput.html", null ],
     [ "study_input_handler.study_input_handler", "classstudy__input__handler_1_1study__input__handler.html", null ],
@@ -1830,7 +1836,7 @@ var hierarchy =
     [ "SystemBuilderCreationFixture", "structSystemBuilderCreationFixture.html", null ],
     [ "Antares::Solver::SystemLinearProblemBuilder", "classAntares_1_1Solver_1_1SystemLinearProblemBuilder.html", null ],
     [ "T", null, [
-      [ "Antares::Expressions::Visitors::EvaluationContext::CouldNotEvaluateConstantParameter< T >", "structAntares_1_1Expressions_1_1Visitors_1_1EvaluationContext_1_1CouldNotEvaluateConstantParameter.html", null ]
+      [ "Antares::Optimisation::EvaluationContext::CouldNotEvaluateConstantParameter< T >", "structAntares_1_1Optimisation_1_1EvaluationContext_1_1CouldNotEvaluateConstantParameter.html", null ]
     ] ],
     [ "IItem::Tag", "classIItem_1_1Tag.html", null ],
     [ "TargetVectorUpdater", "classTargetVectorUpdater.html", null ],
@@ -1846,7 +1852,7 @@ var hierarchy =
     ] ],
     [ "Antares::Solver::Variable::ThermalState", "classAntares_1_1Solver_1_1Variable_1_1ThermalState.html", null ],
     [ "TIME_MEASURE", "structTIME__MEASURE.html", null ],
-    [ "TimeBlock", "structTimeBlock.html", null ],
+    [ "Antares::IO::TimeBlock", "structAntares_1_1IO_1_1TimeBlock.html", null ],
     [ "Antares::Data::TimeDependantHydroManagementData", "structAntares_1_1Data_1_1TimeDependantHydroManagementData.html", null ],
     [ "Antares::Optimization::TimeDependentLinearExpression", "classAntares_1_1Optimization_1_1TimeDependentLinearExpression.html", null ],
     [ "Antares::Utils::TimeMeasurement", "classAntares_1_1Utils_1_1TimeMeasurement.html", null ],
@@ -1872,7 +1878,6 @@ var hierarchy =
     [ "Antares::Solver::Variable::Economy::TimeSeriesTraits< TraitsType >", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1TimeSeriesTraits.html", [
       [ "Antares::Solver::Variable::Economy::VCardTimeSeriesBase< TraitsType >", "structAntares_1_1Solver_1_1Variable_1_1Economy_1_1VCardTimeSeriesBase.html", null ]
     ] ],
-    [ "TimeTestCase", "structTimeTestCase.html", null ],
     [ "tolerances.Tolerances", "classtolerances_1_1Tolerances.html", [
       [ "tolerances.Linux_tolerances", "classtolerances_1_1Linux__tolerances.html", null ],
       [ "tolerances.Win_tolerances", "classtolerances_1_1Win__tolerances.html", null ]
@@ -1954,7 +1959,6 @@ var hierarchy =
     [ "Antares::Optimization::VariableBounds", "structAntares_1_1Optimization_1_1VariableBounds.html", null ],
     [ "Antares::Window::OutputViewer::Provider::VariableCollector", "classAntares_1_1Window_1_1OutputViewer_1_1Provider_1_1VariableCollector.html", null ],
     [ "Test::Modeler::VariableData", "structTest_1_1Modeler_1_1VariableData.html", null ],
-    [ "Antares::Optimization::VariableDictionary", "classAntares_1_1Optimization_1_1VariableDictionary.html", null ],
     [ "VariableManagement::VariableManager", "classVariableManagement_1_1VariableManager.html", null ],
     [ "Antares::Data::VariablePrintInfo", "classAntares_1_1Data_1_1VariablePrintInfo.html", null ],
     [ "Antares::Data::variablePrintInfoCollector", "classAntares_1_1Data_1_1variablePrintInfoCollector.html", null ],

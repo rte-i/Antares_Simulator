@@ -865,7 +865,6 @@ var namespaces_dup =
         [ "LoadingError", "classAntares_1_1Error_1_1LoadingError.html", null ],
         [ "StudyFolderDoesNotExist", "classAntares_1_1Error_1_1StudyFolderDoesNotExist.html", "classAntares_1_1Error_1_1StudyFolderDoesNotExist" ],
         [ "StudyFolderContainsNonASCIIchars", "classAntares_1_1Error_1_1StudyFolderContainsNonASCIIchars.html", "classAntares_1_1Error_1_1StudyFolderContainsNonASCIIchars" ],
-        [ "ReadingStudy", "classAntares_1_1Error_1_1ReadingStudy.html", "classAntares_1_1Error_1_1ReadingStudy" ],
         [ "NoAreas", "classAntares_1_1Error_1_1NoAreas.html", "classAntares_1_1Error_1_1NoAreas" ],
         [ "Duplicates", "classAntares_1_1Error_1_1Duplicates.html", "classAntares_1_1Error_1_1Duplicates" ],
         [ "InvalidFileName", "classAntares_1_1Error_1_1InvalidFileName.html", "classAntares_1_1Error_1_1InvalidFileName" ],
@@ -887,13 +886,14 @@ var namespaces_dup =
         [ "IncompatibleDailyOptHeuristicForArea", "classAntares_1_1Error_1_1IncompatibleDailyOptHeuristicForArea.html", "classAntares_1_1Error_1_1IncompatibleDailyOptHeuristicForArea" ],
         [ "InvalidParametersForThermalClusters", "classAntares_1_1Error_1_1InvalidParametersForThermalClusters.html", "classAntares_1_1Error_1_1InvalidParametersForThermalClusters" ],
         [ "CommandLineArguments", "classAntares_1_1Error_1_1CommandLineArguments.html", "classAntares_1_1Error_1_1CommandLineArguments" ],
-        [ "IncompatibleSimulationModeForAdqPatch", "classAntares_1_1Error_1_1IncompatibleSimulationModeForAdqPatch.html", "classAntares_1_1Error_1_1IncompatibleSimulationModeForAdqPatch" ],
-        [ "NoAreaInsideAdqPatchMode", "classAntares_1_1Error_1_1NoAreaInsideAdqPatchMode.html", "classAntares_1_1Error_1_1NoAreaInsideAdqPatchMode" ],
-        [ "IncompatibleHurdleCostCSR", "classAntares_1_1Error_1_1IncompatibleHurdleCostCSR.html", "classAntares_1_1Error_1_1IncompatibleHurdleCostCSR" ],
         [ "IncompatibleOutputOptions", "classAntares_1_1Error_1_1IncompatibleOutputOptions.html", "classAntares_1_1Error_1_1IncompatibleOutputOptions" ],
         [ "IncompatibleCO2CostColumns", "classAntares_1_1Error_1_1IncompatibleCO2CostColumns.html", "classAntares_1_1Error_1_1IncompatibleCO2CostColumns" ],
         [ "IncompatibleFuelCostColumns", "classAntares_1_1Error_1_1IncompatibleFuelCostColumns.html", "classAntares_1_1Error_1_1IncompatibleFuelCostColumns" ],
-        [ "RuntimeError", "classAntares_1_1Error_1_1RuntimeError.html", null ]
+        [ "RuntimeError", "classAntares_1_1Error_1_1RuntimeError.html", null ],
+        [ "ReadingStudy", "classAntares_1_1Error_1_1ReadingStudy.html", "classAntares_1_1Error_1_1ReadingStudy" ],
+        [ "NoAreaInsideAdqPatchMode", "classAntares_1_1Error_1_1NoAreaInsideAdqPatchMode.html", "classAntares_1_1Error_1_1NoAreaInsideAdqPatchMode" ],
+        [ "IncompatibleHurdleCostCSR", "classAntares_1_1Error_1_1IncompatibleHurdleCostCSR.html", "classAntares_1_1Error_1_1IncompatibleHurdleCostCSR" ],
+        [ "IncompatibleSimulationModeForAdqPatch", "classAntares_1_1Error_1_1IncompatibleSimulationModeForAdqPatch.html", "classAntares_1_1Error_1_1IncompatibleSimulationModeForAdqPatch" ]
       ] ],
       [ "Expressions", null, [
         [ "Nodes", null, [
@@ -930,8 +930,6 @@ var namespaces_dup =
           [ "AstDOTStyleVisitor", "classAntares_1_1Expressions_1_1Visitors_1_1AstDOTStyleVisitor.html", "classAntares_1_1Expressions_1_1Visitors_1_1AstDOTStyleVisitor" ],
           [ "CloneVisitor", "classAntares_1_1Expressions_1_1Visitors_1_1CloneVisitor.html", "classAntares_1_1Expressions_1_1Visitors_1_1CloneVisitor" ],
           [ "CompareVisitor", "classAntares_1_1Expressions_1_1Visitors_1_1CompareVisitor.html", "classAntares_1_1Expressions_1_1Visitors_1_1CompareVisitor" ],
-          [ "ParameterTypeAndValue", "structAntares_1_1Expressions_1_1Visitors_1_1ParameterTypeAndValue.html", "structAntares_1_1Expressions_1_1Visitors_1_1ParameterTypeAndValue" ],
-          [ "EvaluationContext", "classAntares_1_1Expressions_1_1Visitors_1_1EvaluationContext.html", "classAntares_1_1Expressions_1_1Visitors_1_1EvaluationContext" ],
           [ "EvalVisitorDivisionException", "classAntares_1_1Expressions_1_1Visitors_1_1EvalVisitorDivisionException.html", "classAntares_1_1Expressions_1_1Visitors_1_1EvalVisitorDivisionException" ],
           [ "EvalVisitorNotImplemented", "classAntares_1_1Expressions_1_1Visitors_1_1EvalVisitorNotImplemented.html", "classAntares_1_1Expressions_1_1Visitors_1_1EvalVisitorNotImplemented" ],
           [ "EvaluationResult", "classAntares_1_1Expressions_1_1Visitors_1_1EvaluationResult.html", "classAntares_1_1Expressions_1_1Visitors_1_1EvaluationResult" ],
@@ -948,16 +946,6 @@ var namespaces_dup =
             [ "LINEAR", "LinearStatus_8h.html#af50e1b25870322fcafecb056c48bef0daaac544aacc3615aada24897a215f5046", null ],
             [ "NON_LINEAR", "LinearStatus_8h.html#af50e1b25870322fcafecb056c48bef0da1ff39f0ee280d1c9e03bdcb64531f815", null ]
           ] ],
-          [ "ParameterType", "EvaluationContext_8h.html#a8fd6a8d5da3887749e0d01f006900805", [
-            [ "CONSTANT", "EvaluationContext_8h.html#a8fd6a8d5da3887749e0d01f006900805a8d6b5cada83510220f59e00ce86d4d92", null ],
-            [ "TIMESERIE", "EvaluationContext_8h.html#a8fd6a8d5da3887749e0d01f006900805afbf3aba0c9e7398d988d2e3f73effce3", null ]
-          ] ],
-          [ "TimeIndex", "TimeIndex_8h.html#a9f9cbf121addbcb208d307f6482cfe15", [
-            [ "CONSTANT_IN_TIME_AND_SCENARIO", "TimeIndex_8h.html#a9f9cbf121addbcb208d307f6482cfe15af345732ff2a78575909e4a8e03a21bda", null ],
-            [ "VARYING_IN_TIME_ONLY", "TimeIndex_8h.html#a9f9cbf121addbcb208d307f6482cfe15af22c09d6a3d286c13601c93951b6bae8", null ],
-            [ "VARYING_IN_SCENARIO_ONLY", "TimeIndex_8h.html#a9f9cbf121addbcb208d307f6482cfe15a091abf8282e083e408851c8f94a9404d", null ],
-            [ "VARYING_IN_TIME_AND_SCENARIO", "TimeIndex_8h.html#a9f9cbf121addbcb208d307f6482cfe15af96b5b73f8ffe3bc24d33d212791b794", null ]
-          ] ],
           [ "AddFiliation", "AstDOTStyleVisitor_8cpp.html#a771cabc3d909e50c5226a58a08bc85d1", null ],
           [ "computeBinaryOperation", "EvalVisitor_8h.html#a32a96753eb3165b517fb1d3a2b4a13fd", null ],
           [ "computeBinaryOperation", "EvalVisitor_8h.html#a52257c6673cca2d5798e885f0bd7460b", null ],
@@ -972,13 +960,10 @@ var namespaces_dup =
           [ "operator-", "LinearStatus_8h.html#afd6fbaf8fbb07ee1a5a8763b87b8becd", null ],
           [ "operator-", "LinearStatus_8h.html#af71df5e028efb45b1f5e93fd269bf058", null ],
           [ "operator/", "LinearStatus_8h.html#a2107c367587a1b8952c3d2015b64e955", null ],
-          [ "operator|", "TimeIndex_8h.html#a3ae3c84f2387d22e85ab218aea08a5bd", null ],
           [ "pair", "LinearStatus_8h.html#aa8b1e3f8d2f183e7432dde28d9bb3515", null ],
           [ "ProcessElementLegend", "AstDOTStyleVisitor_8cpp.html#a11bbd5b1795cb8de53364f93836932bf", null ],
           [ "tryVisit", "NodeVisitor_8h.html#a1223b5e8ad3c7f529adba9a8c80778d2", null ]
         ] ],
-        [ "Hashable", "classAntares_1_1Expressions_1_1Hashable.html", "classAntares_1_1Expressions_1_1Hashable" ],
-        [ "PortFieldHash", "structAntares_1_1Expressions_1_1PortFieldHash.html", "structAntares_1_1Expressions_1_1PortFieldHash" ],
         [ "IName", "classAntares_1_1Expressions_1_1IName.html", "classAntares_1_1Expressions_1_1IName" ],
         [ "NodeRegistry", "classAntares_1_1Expressions_1_1NodeRegistry.html", "classAntares_1_1Expressions_1_1NodeRegistry" ],
         [ "Registry", "classAntares_1_1Expressions_1_1Registry.html", "classAntares_1_1Expressions_1_1Registry" ]
@@ -1154,7 +1139,8 @@ var namespaces_dup =
             [ "convertPorts", "modelConverter_8cpp.html#a7599275f007d83a35dfcd5f949f6c346", null ],
             [ "convertType", "modelConverter_8cpp.html#a0f47ce41f17f6160bf36c67d08e545c9", null ],
             [ "convertTypes", "modelConverter_8cpp.html#a1088a8c1790ed3bb470dff1151b76cbe", null ],
-            [ "convertVariables", "modelConverter_8cpp.html#a54ffbf422f4e51558629fbc0c06be0a3", null ]
+            [ "convertVariables", "modelConverter_8cpp.html#a54ffbf422f4e51558629fbc0c06be0a3", null ],
+            [ "extractSumOperands", "convertorVisitor_8cpp.html#afa5c8a0bd8efdf755de9122b85b0d7b9", null ]
           ] ],
           [ "SystemConverter", null, [
             [ "ErrorWhileSplittingLibraryAndModel", "classAntares_1_1IO_1_1Inputs_1_1SystemConverter_1_1ErrorWhileSplittingLibraryAndModel.html", "classAntares_1_1IO_1_1Inputs_1_1SystemConverter_1_1ErrorWhileSplittingLibraryAndModel" ],
@@ -1194,9 +1180,26 @@ var namespaces_dup =
             [ "System", "structAntares_1_1IO_1_1Inputs_1_1YmlSystem_1_1System.html", "structAntares_1_1IO_1_1Inputs_1_1YmlSystem_1_1System" ]
           ] ]
         ] ],
+        [ "TimeBlock", "structAntares_1_1IO_1_1TimeBlock.html", "structAntares_1_1IO_1_1TimeBlock" ],
+        [ "TimeConversionMode", "SimulationTableGenerator_8h.html#a28fe3ed828eaf40c027319968f512d0f", [
+          [ "SingleBlock", "SimulationTableGenerator_8h.html#a28fe3ed828eaf40c027319968f512d0fa95e3727fd5f0aede28af2086f421b699", null ],
+          [ "DailyBlocks", "SimulationTableGenerator_8h.html#a28fe3ed828eaf40c027319968f512d0fadd38c1a30e05c3a66419dc5abed2771b", null ],
+          [ "WeeklyBlocks", "SimulationTableGenerator_8h.html#a28fe3ed828eaf40c027319968f512d0fa5ae68a535ceaa166cf8c89637789763c", null ]
+        ] ],
+        [ "addConstraintEntries", "SimulationTableGenerator_8h.html#a4fec0d8f814234d5f336f07ea15c2356", null ],
+        [ "addEntriesForNode", "SimulationTableGenerator_8h.html#a729cafa07950393460b0d22ce7f2e271", null ],
+        [ "addExtraOutputEntries", "SimulationTableGenerator_8h.html#a68c51d1b10fc196c84c6ff6cf3811c0e", null ],
+        [ "addObjectiveValue", "SimulationTableGenerator_8cpp.html#a6a09bc6729ee732fb083e691a8da93e6", null ],
+        [ "addPortEntries", "SimulationTableGenerator_8h.html#a0f568bba12b15f1e2ceb1c1c348336e7", null ],
+        [ "addVariableEntries", "SimulationTableGenerator_8h.html#a79530b4326989da386fb9e50d234efe9", null ],
+        [ "BuildModelerConstraintName", "SimulationTableGenerator_8h.html#a7e1b7596867efae20fff5220a1fedff7", null ],
+        [ "convertBlockTimeStepToAbsoluteTimeStep", "SimulationTableGenerator_8h.html#ac4f09654961d16c7fc066f96508d2fa9", null ],
         [ "fileSetContent", "file_8cpp.html#a2d0c92d569f739fb52bbf5e0b1b4fef2", null ],
+        [ "FillSimulationTable", "SimulationTableGenerator_8h.html#ac8aaf36a5d773dd9807dea543068b3a1", null ],
+        [ "handleDependingOnTimeIndex", "SimulationTableGenerator_8cpp.html#a07e471bb2974c2c58f7f5889af002064", null ],
         [ "readFile", "file_8cpp.html#a752414a7e2eb33d25b41deeb4167d3c9", null ],
-        [ "readFile", "file_8h.html#a29b940cfba7d5fda23c8d4ec4e5bffb0", null ]
+        [ "readFile", "file_8h.html#a29b940cfba7d5fda23c8d4ec4e5bffb0", null ],
+        [ "updateTimeIndexIfShouldForceScenario", "SimulationTableGenerator_8h.html#a5662d3beaa8cfb122c80892510a133fd", null ]
       ] ],
       [ "Locale", null, [
         [ "Init", "locales_8cpp.html#a79feb0ae930c8cd7de7b3c1380c71809", null ],
@@ -1247,6 +1250,7 @@ var namespaces_dup =
       [ "ModelerStudy", null, [
         [ "SystemModel", null, [
           [ "Expression", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1Expression.html", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1Expression" ],
+          [ "ParameterTypeAndValue", "structAntares_1_1ModelerStudy_1_1SystemModel_1_1ParameterTypeAndValue.html", "structAntares_1_1ModelerStudy_1_1SystemModel_1_1ParameterTypeAndValue" ],
           [ "ComponentData", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1ComponentData.html", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1ComponentData" ],
           [ "Component", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1Component.html", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1Component" ],
           [ "ComponentBuilder", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1ComponentBuilder.html", "classAntares_1_1ModelerStudy_1_1SystemModel_1_1ComponentBuilder" ],
@@ -1274,6 +1278,10 @@ var namespaces_dup =
             [ "Sender", "study_2system-model_2include_2antares_2study_2system-model_2connection_8h.html#a30dcd9191930b1afa420e123a7234456a8aace3ec18d83874d22850b7eee93c7d", null ],
             [ "Receiver", "study_2system-model_2include_2antares_2study_2system-model_2connection_8h.html#a30dcd9191930b1afa420e123a7234456aa9d093d11bc6e98b0c8e586ffa545c85", null ]
           ] ],
+          [ "ParameterType", "study_2system-model_2include_2antares_2study_2system-model_2component_8h.html#a620a0eceac0574c76cf43bf9ec593f31", [
+            [ "CONSTANT", "study_2system-model_2include_2antares_2study_2system-model_2component_8h.html#a620a0eceac0574c76cf43bf9ec593f31a8d6b5cada83510220f59e00ce86d4d92", null ],
+            [ "TIMESERIE", "study_2system-model_2include_2antares_2study_2system-model_2component_8h.html#a620a0eceac0574c76cf43bf9ec593f31afbf3aba0c9e7398d988d2e3f73effce3", null ]
+          ] ],
           [ "ScenarioDependent", "timeAndScenarioType_8h.html#a9fcb90f553c0df726b365defc71d4d2b", [
             [ "NO", "timeAndScenarioType_8h.html#a9fcb90f553c0df726b365defc71d4d2bac2f3f489a00553e7a01d369c103c7251", null ],
             [ "YES", "timeAndScenarioType_8h.html#a9fcb90f553c0df726b365defc71d4d2ba7469a286259799e5b37e5db9296f00b3", null ]
@@ -1293,30 +1301,48 @@ var namespaces_dup =
           [ "operator<<", "enum__operators_8h.html#a5b42803d363465d2075144cd54313270", null ]
         ] ]
       ] ],
-      [ "Optimisation", null, [
-        [ "LinearProblemApi", "namespaceAntares_1_1Optimisation_1_1LinearProblemApi.html", "namespaceAntares_1_1Optimisation_1_1LinearProblemApi" ],
-        [ "LinearProblemDataImpl", null, [
-          [ "IDataSeries", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1IDataSeries.html", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1IDataSeries" ],
-          [ "DataSeriesRepository", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1DataSeriesRepository.html", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1DataSeriesRepository" ],
-          [ "LinearProblemData", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1LinearProblemData.html", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1LinearProblemData" ],
-          [ "Scenario", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1Scenario.html", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1Scenario" ],
-          [ "TimeSeriesSet", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1TimeSeriesSet.html", "classAntares_1_1Optimisation_1_1LinearProblemDataImpl_1_1TimeSeriesSet" ]
-        ] ],
-        [ "LinearProblemMpsolverImpl", null, [
-          [ "OrtoolsLinearProblem", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsLinearProblem.html", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsLinearProblem" ],
-          [ "OrtoolsMipConstraint", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsMipConstraint.html", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsMipConstraint" ],
-          [ "OrtoolsMipSolution", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsMipSolution.html", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsMipSolution" ],
-          [ "OrtoolsMipVariable", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsMipVariable.html", "classAntares_1_1Optimisation_1_1LinearProblemMpsolverImpl_1_1OrtoolsMipVariable" ],
-          [ "convertOrtoolsBasisStatus", "convertOrtoolsBasisStatus_8cpp.html#a82d1e8a5093f3f009bf7c358f7ec432f", null ]
-        ] ],
-        [ "ComponentFiller", "classAntares_1_1Optimisation_1_1ComponentFiller.html", "classAntares_1_1Optimisation_1_1ComponentFiller" ],
-        [ "VariablesBulkAddition", "classAntares_1_1Optimisation_1_1VariablesBulkAddition.html", "classAntares_1_1Optimisation_1_1VariablesBulkAddition" ],
-        [ "EvaluationContextProvider", "classAntares_1_1Optimisation_1_1EvaluationContextProvider.html", "classAntares_1_1Optimisation_1_1EvaluationContextProvider" ],
-        [ "ScenarioGroupRepository", "classAntares_1_1Optimisation_1_1ScenarioGroupRepository.html", "classAntares_1_1Optimisation_1_1ScenarioGroupRepository" ],
-        [ "DefaultScenario", "classAntares_1_1Optimisation_1_1DefaultScenario.html", "classAntares_1_1Optimisation_1_1DefaultScenario" ],
-        [ "checkTimeSteps", "ComponentFiller_8cpp.html#aee2ef02561622b13f427d04402309514", null ]
+      [ "Optimisation", "namespaceAntares_1_1Optimisation.html", "namespaceAntares_1_1Optimisation" ],
+      [ "Optimization", null, [
+        [ "ConstraintSlackAnalysis", "classAntares_1_1Optimization_1_1ConstraintSlackAnalysis.html", "classAntares_1_1Optimization_1_1ConstraintSlackAnalysis" ],
+        [ "InfeasibleProblemReport", "classAntares_1_1Optimization_1_1InfeasibleProblemReport.html", "classAntares_1_1Optimization_1_1InfeasibleProblemReport" ],
+        [ "UnfeasibilityAnalysis", "classAntares_1_1Optimization_1_1UnfeasibilityAnalysis.html", "classAntares_1_1Optimization_1_1UnfeasibilityAnalysis" ],
+        [ "UnfeasiblePbAnalyzer", "classAntares_1_1Optimization_1_1UnfeasiblePbAnalyzer.html", "classAntares_1_1Optimization_1_1UnfeasiblePbAnalyzer" ],
+        [ "VariableBounds", "structAntares_1_1Optimization_1_1VariableBounds.html", "structAntares_1_1Optimization_1_1VariableBounds" ],
+        [ "VariablesBoundsConsistency", "classAntares_1_1Optimization_1_1VariablesBoundsConsistency.html", "classAntares_1_1Optimization_1_1VariablesBoundsConsistency" ],
+        [ "WatchedConstraint", "classAntares_1_1Optimization_1_1WatchedConstraint.html", "classAntares_1_1Optimization_1_1WatchedConstraint" ],
+        [ "HourlyBC", "classAntares_1_1Optimization_1_1HourlyBC.html", "classAntares_1_1Optimization_1_1HourlyBC" ],
+        [ "DailyBC", "classAntares_1_1Optimization_1_1DailyBC.html", "classAntares_1_1Optimization_1_1DailyBC" ],
+        [ "WeeklyBC", "classAntares_1_1Optimization_1_1WeeklyBC.html", "classAntares_1_1Optimization_1_1WeeklyBC" ],
+        [ "FictitiousLoad", "classAntares_1_1Optimization_1_1FictitiousLoad.html", "classAntares_1_1Optimization_1_1FictitiousLoad" ],
+        [ "HydroLevel", "classAntares_1_1Optimization_1_1HydroLevel.html", "classAntares_1_1Optimization_1_1HydroLevel" ],
+        [ "STS", "classAntares_1_1Optimization_1_1STS.html", "classAntares_1_1Optimization_1_1STS" ],
+        [ "HydroProduction", "classAntares_1_1Optimization_1_1HydroProduction.html", "classAntares_1_1Optimization_1_1HydroProduction" ],
+        [ "STSAdditionalConstraint", "classAntares_1_1Optimization_1_1STSAdditionalConstraint.html", "classAntares_1_1Optimization_1_1STSAdditionalConstraint" ],
+        [ "ConstraintsFactory", "classAntares_1_1Optimization_1_1ConstraintsFactory.html", "classAntares_1_1Optimization_1_1ConstraintsFactory" ],
+        [ "LinearExpression", "classAntares_1_1Optimization_1_1LinearExpression.html", "classAntares_1_1Optimization_1_1LinearExpression" ],
+        [ "TimeDependentLinearExpression", "classAntares_1_1Optimization_1_1TimeDependentLinearExpression.html", "classAntares_1_1Optimization_1_1TimeDependentLinearExpression" ],
+        [ "MCYearAndTime", "structAntares_1_1Optimization_1_1MCYearAndTime.html", "structAntares_1_1Optimization_1_1MCYearAndTime" ],
+        [ "DefaultScenario", "classAntares_1_1Optimization_1_1DefaultScenario.html", "classAntares_1_1Optimization_1_1DefaultScenario" ],
+        [ "ComponentToAreaConnectionFiller", "classAntares_1_1Optimization_1_1ComponentToAreaConnectionFiller.html", "classAntares_1_1Optimization_1_1ComponentToAreaConnectionFiller" ],
+        [ "LegacyFiller", "classAntares_1_1Optimization_1_1LegacyFiller.html", "classAntares_1_1Optimization_1_1LegacyFiller" ],
+        [ "LegacyOrtoolsLinearProblem", "classAntares_1_1Optimization_1_1LegacyOrtoolsLinearProblem.html", "classAntares_1_1Optimization_1_1LegacyOrtoolsLinearProblem" ],
+        [ "BasisStatusImpl", "classAntares_1_1Optimization_1_1BasisStatusImpl.html", "classAntares_1_1Optimization_1_1BasisStatusImpl" ],
+        [ "BasisStatus", "classAntares_1_1Optimization_1_1BasisStatus.html", "classAntares_1_1Optimization_1_1BasisStatus" ],
+        [ "STSInjectionSum", "watched-constraints_8h.html#a512aba669c091827c6b436d0b3408192", null ],
+        [ "STSNettingSum", "watched-constraints_8h.html#a92ecfd5cfe8111fcc5761687e57227fa", null ],
+        [ "STSWithdrawalSum", "watched-constraints_8h.html#aac13d5895b888127d4d62045556476ba", null ],
+        [ "format_as", "MCYearAndTime_8h.html#a42bbf89c2f89bc518949ad86f6818be4", null ],
+        [ "greaterValue", "report_8cpp.html#afca59b8c35ac2975defa738d1098f969", null ],
+        [ "Helper", "watched-constraints_8cpp.html#a9957d3cc982e75341f07ae9e56c1e0e5", null ],
+        [ "lessTypeName", "report_8cpp.html#a91c4c1f08ecb72c6075e60eeda6aa3f3", null ],
+        [ "makeUnfeasiblePbAnalyzer", "unfeasible-pb-analyzer_8h.html#a14f36c0006d50ed493aa40606b57bb4b", null ],
+        [ "operator<<", "MCYearAndTime_8h.html#a4acd8157dc362e4991f60f2436acc4f4", null ],
+        [ "operator<<", "MCYearAndTime_8h.html#a577631761643b7e0a0785e4a82b75f34", null ],
+        [ "sameType", "report_8cpp.html#a1418a64099521dabe8235df401f4f0cc", null ],
+        [ "INJECTION", "watched-constraints_8h.html#a520b3b8184f58d9c8cb41588b5514d8c", null ],
+        [ "NETTING", "watched-constraints_8h.html#a5afa496b079694f802024e34366de8a7", null ],
+        [ "WITHDRAWAL", "watched-constraints_8h.html#a49826da5a72d4e5d0264543dea5727c0", null ]
       ] ],
-      [ "Optimization", "namespaceAntares_1_1Optimization.html", "namespaceAntares_1_1Optimization" ],
       [ "Private", null, [
         [ "Component", null, [
           [ "CustomWxButton", "classAntares_1_1Private_1_1Component_1_1CustomWxButton.html", "classAntares_1_1Private_1_1Component_1_1CustomWxButton" ]
@@ -1425,12 +1451,16 @@ var namespaces_dup =
           [ "interfacePostProcessList", "classAntares_1_1Solver_1_1Simulation_1_1interfacePostProcessList.html", "classAntares_1_1Solver_1_1Simulation_1_1interfacePostProcessList" ],
           [ "BindingConstraintsTimeSeriesNumbersWriter", "classAntares_1_1Solver_1_1Simulation_1_1BindingConstraintsTimeSeriesNumbersWriter.html", "classAntares_1_1Solver_1_1Simulation_1_1BindingConstraintsTimeSeriesNumbersWriter" ],
           [ "Economy", "classAntares_1_1Solver_1_1Simulation_1_1Economy.html", "classAntares_1_1Solver_1_1Simulation_1_1Economy" ],
-          [ "HydroForRemix", "classAntares_1_1Solver_1_1Simulation_1_1HydroForRemix.html", "classAntares_1_1Solver_1_1Simulation_1_1HydroForRemix" ],
-          [ "HydroForRemixWithLevels", "classAntares_1_1Solver_1_1Simulation_1_1HydroForRemixWithLevels.html", "classAntares_1_1Solver_1_1Simulation_1_1HydroForRemixWithLevels" ],
           [ "ISimulationObserver", "classAntares_1_1Solver_1_1Simulation_1_1ISimulationObserver.html", "classAntares_1_1Solver_1_1Simulation_1_1ISimulationObserver" ],
           [ "NullSimulationObserver", "classAntares_1_1Solver_1_1Simulation_1_1NullSimulationObserver.html", "classAntares_1_1Solver_1_1Simulation_1_1NullSimulationObserver" ],
           [ "ITimeSeriesNumbersWriter", "classAntares_1_1Solver_1_1Simulation_1_1ITimeSeriesNumbersWriter.html", "classAntares_1_1Solver_1_1Simulation_1_1ITimeSeriesNumbersWriter" ],
           [ "NumSpaceManager", "classAntares_1_1Solver_1_1Simulation_1_1NumSpaceManager.html", "classAntares_1_1Solver_1_1Simulation_1_1NumSpaceManager" ],
+          [ "CyclicIterator", "classAntares_1_1Solver_1_1Simulation_1_1CyclicIterator.html", "classAntares_1_1Solver_1_1Simulation_1_1CyclicIterator" ],
+          [ "Exchange", "structAntares_1_1Solver_1_1Simulation_1_1Exchange.html", "structAntares_1_1Solver_1_1Simulation_1_1Exchange" ],
+          [ "IStorageForRemix", "classAntares_1_1Solver_1_1Simulation_1_1IStorageForRemix.html", "classAntares_1_1Solver_1_1Simulation_1_1IStorageForRemix" ],
+          [ "StorageListSort", "classAntares_1_1Solver_1_1Simulation_1_1StorageListSort.html", "classAntares_1_1Solver_1_1Simulation_1_1StorageListSort" ],
+          [ "StorageForRemixNoLevels", "classAntares_1_1Solver_1_1Simulation_1_1StorageForRemixNoLevels.html", "classAntares_1_1Solver_1_1Simulation_1_1StorageForRemixNoLevels" ],
+          [ "StorageForRemixWithLevels", "classAntares_1_1Solver_1_1Simulation_1_1StorageForRemixWithLevels.html", "classAntares_1_1Solver_1_1Simulation_1_1StorageForRemixWithLevels" ],
           [ "yearJob", "classAntares_1_1Solver_1_1Simulation_1_1yearJob.html", "classAntares_1_1Solver_1_1Simulation_1_1yearJob" ],
           [ "ISimulation", "classAntares_1_1Solver_1_1Simulation_1_1ISimulation.html", "classAntares_1_1Solver_1_1Simulation_1_1ISimulation" ],
           [ "setOfParallelYears", "structAntares_1_1Solver_1_1Simulation_1_1setOfParallelYears.html", "structAntares_1_1Solver_1_1Simulation_1_1setOfParallelYears" ],
@@ -1440,18 +1470,31 @@ var namespaces_dup =
           [ "randomNumbers", "classAntares_1_1Solver_1_1Simulation_1_1randomNumbers.html", "classAntares_1_1Solver_1_1Simulation_1_1randomNumbers" ],
           [ "hydroCostNoise", "classAntares_1_1Solver_1_1Simulation_1_1hydroCostNoise.html", "classAntares_1_1Solver_1_1Simulation_1_1hydroCostNoise" ],
           [ "compareHydroCostsNoises", "structAntares_1_1Solver_1_1Simulation_1_1compareHydroCostsNoises.html", "structAntares_1_1Solver_1_1Simulation_1_1compareHydroCostsNoises" ],
-          [ "StorageForRemix", "classAntares_1_1Solver_1_1Simulation_1_1StorageForRemix.html", "classAntares_1_1Solver_1_1Simulation_1_1StorageForRemix" ],
           [ "AvgExchangeResults", "common-eco-adq_8h.html#aeee36dc5935ddf77aa0506bd8bf2fce8", null ],
           [ "AvgExchangeVCardBalance", "common-eco-adq_8h.html#a03f83cef439caae74b1af3abbf37b064", null ],
+          [ "ListStorageForRemix", "storage-for-remix-interface_8h.html#ada39ded35ada218f53885a46c2263cf1", null ],
           [ "BuildThermalPartOfWeeklyProblem", "common-eco-adq_8cpp.html#aa1d5010a4bd506a7c02c781ec03d031d", null ],
-          [ "checkInput", "shave-peaks-by-remix-storage-gen_8h.html#a163004ffb1f3cdaee57c9285c89522a7", null ],
-          [ "ComputeFlowQuad", "common-eco-adq_8cpp.html#a1c6f41f21bfd89d4a641d245a59acc06", null ],
-          [ "ComputeFlowQuad", "common-eco-adq_8h.html#a9a473e903fe087b8f0a85ab9ee83e560", null ],
-          [ "extractHydroPmin", "common-hydro-remix_8cpp.html#ae655a881f86cb20dbb0e8b22f189675f", null ],
-          [ "extractLoadForCurrentWeek", "common-hydro-remix_8cpp.html#a3ed2d0cad36894073e1a9fb8c8bcac75", null ],
+          [ "checkInput", "shave-peaks-by-remix-storage-gen_8h.html#a586c540400f03bb38022fe5f5f450164", null ],
+          [ "computeExchange", "shave-peaks-by-remix-help_8h.html#a0dca85fdb36f5289211a7723ba109b2d", null ],
+          [ "ComputeFlowQuad", "common-eco-adq_8cpp.html#a95d4ee7d313da8fda265079d92413916", null ],
+          [ "ComputeFlowQuad", "common-eco-adq_8h.html#a2e52203941a89d09c9149d8a8d0a8543", null ],
+          [ "delete_current", "remix-utils_8h.html#ad44c90d126d9b80e753449936936e2f7", null ],
+          [ "extractDTG_MRG", "common-hydro-remix_8cpp.html#a5b9d20cd994318cd146010c215a395a7", null ],
+          [ "extractHydroForRemix", "common-hydro-remix_8cpp.html#a6df78e0f1a93e092c55bf712f08a42a2", null ],
+          [ "extractHydroPmin", "common-hydro-remix_8cpp.html#a7837801e4603fc2115287c87482e16a6", null ],
+          [ "extractListSTSforRemix", "common-hydro-remix_8cpp.html#a0237a57eea5fb6fda988b5c6798b825b", null ],
+          [ "extractLoadForCurrentWeek", "common-hydro-remix_8cpp.html#af7fdc6bc56af13a0c3236b60dc9e5738", null ],
+          [ "extractSTSforRemix", "common-hydro-remix_8cpp.html#aca4ae031bccefe00cbd6fd74b6bc173e", null ],
+          [ "extractSTSinflows", "common-hydro-remix_8cpp.html#a30826a79b4f7f20b4d22a8d913fb9785", null ],
+          [ "extractSTSlowRuleCurve", "common-hydro-remix_8cpp.html#a8f78edca78638d2880ae79bd1dd39f68", null ],
+          [ "extractSTSpmax", "common-hydro-remix_8cpp.html#a42526cb4bc31f5ee8eb1aa16e3a96624", null ],
+          [ "extractSTSupRuleCurve", "common-hydro-remix_8cpp.html#a92e80be845f9bad4f0ebcc8dc8951c86", null ],
           [ "finalizeOptimizationStatistics", "common-eco-adq_8cpp.html#a11dfb84267c82f2f802941ba9861c8a3", null ],
           [ "interpolateWaterValue", "common-hydro-levels_8cpp.html#a771c320a359d85099c258f03801f797a", null ],
-          [ "makeHydroForRemix", "hydro-for-remix_8cpp.html#a08bab2ee9e52198128038274b5c1cccf", null ],
+          [ "makeHydroForRemix", "create-storage-for-remix_8h.html#adf5ed6f3b380a2a48eb7ae7ea80812a0", null ],
+          [ "makeSTSforRemix", "create-storage-for-remix_8h.html#ac7362ff3cf3d9ec28f7424fd446e3047", null ],
+          [ "min_on_subrange", "remix-utils_8h.html#a92ad7706cca8395dbff04130ad54a1a3", null ],
+          [ "operator*", "remix-utils_8h.html#a663c1619ee1272553978fe45e2171bcd", null ],
           [ "operator+", "remix-utils_8h.html#a2c03b7d6d5a344406bfd2c9cce9cca64", null ],
           [ "operator+", "remix-utils_8h.html#a1e5272a769a7a4326775480873834b6f", null ],
           [ "operator-", "remix-utils_8h.html#adf771eac0d7252380a0f7f4c525c4417", null ],
@@ -1460,15 +1503,22 @@ var namespaces_dup =
           [ "operator<=", "remix-utils_8h.html#a5a6560fe2d6cf303b79fa394f9555e4c", null ],
           [ "operator>=", "remix-utils_8h.html#afc277ce775d2105dbe1e8cb38f37db56", null ],
           [ "PrepareRandomNumbers", "common-eco-adq_8cpp.html#acf7a9024f8a18f667ceff51d36c9e74a", null ],
-          [ "RemixHydroForAllAreas", "common-hydro-remix_8cpp.html#a563dc031c97a6b1c1f724aeb33bb1245", null ],
+          [ "RemixHydroForAllAreas", "common-hydro-remix_8cpp.html#aca97579cee91661b6133b470d464aa47", null ],
           [ "retrieveAverageNTC", "common-eco-adq_8cpp.html#a77ba3d4e4fb8887d4812f2b39869fa31", null ],
+          [ "searchForExhange", "shave-peaks-by-remix-help_8h.html#af8d74f9a2276d5691612bc3a19099e6e", null ],
           [ "SetInitialHydroLevel", "common-eco-adq_8cpp.html#ac3dc98869aac05b3bc90b8b22d33ec32", null ],
-          [ "shavePeaksByRemixingStorageGen", "shave-peaks-by-remix-storage-gen_8h.html#a848eafe88fe3707aefce6325838676bb", null ],
+          [ "shavePeaksByRemixingStorageGen", "shave-peaks-by-remix-storage-gen_8h.html#ac37f410feb6e5d1569ddaed3eb46957a", null ],
           [ "ShouldUseQuadraticOptimisation", "common-eco-adq_8cpp.html#a35eb8d7c7225b8b691c248e6778317e5", null ],
+          [ "update", "shave-peaks-by-remix-help_8h.html#a1ce7f2520ce4e57370b5a56f0e861710", null ],
+          [ "updateValidHours", "shave-peaks-by-remix-help_8h.html#a6030c96de573a2966ac86c71d0bf601f", null ],
           [ "updatingWeeklyFinalHydroLevel", "common-hydro-levels_8cpp.html#a4274c3f8be2e2c89c0fc3fe07230f87a", null ],
+          [ "ValidHours", "shave-peaks-by-remix-help_8h.html#a194416baeb9057cc4e1803e5b6f5a1cf", null ],
+          [ "weekSubRange", "common-hydro-remix_8cpp.html#a21efa3f481f33c82fb5a5b136aa06ece", null ],
+          [ "error_msg_start", "storage-for-remix-no-levels_8h.html#a0642beb7c883e910fcdee6837f76530f", null ],
           [ "HOURS_IN_DAY", "common-hydro-remix_8cpp.html#a7fa42ae4b19a8ce22936ba65edd4e753", null ],
           [ "HOURS_IN_WEEK", "common-hydro-remix_8cpp.html#a54a71b51cb2eb3d8729d18458dfd1004", null ],
-          [ "nbHoursInWeek", "post__process__commands_8cpp.html#ade1f5241a3e238698cafb0c5c17ea95a", null ]
+          [ "nbHoursInWeek", "post__process__commands_8cpp.html#ade1f5241a3e238698cafb0c5c17ea95a", null ],
+          [ "TOLERANCE", "storage-for-remix-no-levels_8h.html#a461c3cfcfd851024930c706a85e3feff", null ]
         ] ],
         [ "TimeSeriesNumbers", null, [
           [ "CheckNumberOfColumns", "timeseries-numbers_8h.html#af5a19cbc5fa3f30afd770d13fbfa8387", null ],
@@ -2485,9 +2535,6 @@ var namespaces_dup =
       [ "SimulationInfoCollector", "classBenchmarking_1_1SimulationInfoCollector.html", "classBenchmarking_1_1SimulationInfoCollector" ],
       [ "operator<<", "DurationCollector_8cpp.html#a809b83640ed2a281114744389980bffc", null ]
     ] ],
-    [ "boost", null, [
-      [ "hash< Antares::Optimization::PartialKey >", "structboost_1_1hash_3_01Antares_1_1Optimization_1_1PartialKey_01_4.html", "structboost_1_1hash_3_01Antares_1_1Optimization_1_1PartialKey_01_4" ]
-    ] ],
     [ "check_general", null, [
       [ "check_interface", "classcheck__general_1_1check__interface.html", "classcheck__general_1_1check__interface" ],
       [ "check_list", "classcheck__general_1_1check__list.html", "classcheck__general_1_1check__list" ]
@@ -2655,6 +2702,7 @@ var namespaces_dup =
       [ "modeler_study_path_is", "modeler__steps_8py.html#a4b60789db78871ca85f1563bc7f0070b", null ],
       [ "parse_output_folder_from_logs", "modeler__steps_8py.html#a62f8e382bb0f7b3ec9933dd1593b18c7", null ],
       [ "parse_simulation_table_from_logs", "modeler__steps_8py.html#a4f06003109779a9894c3d22799a73f0a", null ],
+      [ "read_int_range", "modeler__steps_8py.html#a76a36c51e375a6a7aa0f6ed0b352b904", null ],
       [ "run_antares_modeler", "modeler__steps_8py.html#a46943a258f11896089708a54ac5b0df2", null ],
       [ "run_modeler", "modeler__steps_8py.html#a9d99e3e1985a65e970317fcf0a7d30b2", null ]
     ] ],
@@ -2730,6 +2778,7 @@ var namespaces_dup =
       [ "check_unsupplied_energy_value", "solver__steps_8py.html#adcd0c95ef89acdffaf13726ef9f0931b", null ],
       [ "check_unsupplied_energy_value_for_date", "solver__steps_8py.html#acf92df42817fdf7a7c992480468401b7", null ],
       [ "check_week_ts_has_daily_values", "solver__steps_8py.html#ae7a40bd76bfc797c61586fa7d8b15152", null ],
+      [ "ckeck_log_exists", "solver__steps_8py.html#a67663c9898d825af30daa11963437920", null ],
       [ "create_temporary_copy", "solver__steps_8py.html#a4ab3e50370fefa91f351c1f9b700dccf", null ],
       [ "extract_week_ts", "solver__steps_8py.html#aab856c02ada388cf7223cdfae48aa6ad", null ],
       [ "get_linear_solver", "solver__steps_8py.html#aaa5700945636174fda3c68c92e2ada80", null ],
@@ -2793,7 +2842,7 @@ var namespaces_dup =
         [ "VariableData", "structTest_1_1Modeler_1_1VariableData.html", "structTest_1_1Modeler_1_1VariableData" ],
         [ "ConstraintData", "structTest_1_1Modeler_1_1ConstraintData.html", "structTest_1_1Modeler_1_1ConstraintData" ],
         [ "LinearProblemBuildingFixture", "structTest_1_1Modeler_1_1LinearProblemBuildingFixture.html", "structTest_1_1Modeler_1_1LinearProblemBuildingFixture" ],
-        [ "build_context_parameter_with", "inmemory-modeler_8h.html#a487d3f0e57742f36ba536b38ee210426", null ]
+        [ "build_context_parameter_with", "inmemory-modeler_8h.html#a07fe5876f9773e1f2e07cd93aae5f6a0", null ]
       ] ],
       [ "BasisStatus", "classTest_1_1BasisStatus.html", "classTest_1_1BasisStatus" ]
     ] ],

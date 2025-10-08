@@ -128,7 +128,7 @@ $(document).ready(function(){initNavTree('utils_8h_source.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">** Copyright 2007-2024, RTE (https://www.rte-france.com)</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">** Copyright 2007-2025, RTE (https://www.rte-france.com)</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">** See AUTHORS.txt</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">** SPDX-License-Identifier: MPL-2.0</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">** This file is part of Antares-Simulator,</span></div>
@@ -188,7 +188,7 @@ $(document).ready(function(){initNavTree('utils_8h_source.html',''); initResizab
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keywordtype">bool</span> checkAllElementsIdenticalOrOne(std::vector&lt;unsigned&gt; w);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordtype">bool</span> checkAllElementsIdenticalOrOne(std::vector&lt;std::pair&lt;unsigned, std::string&gt;&gt;&amp; p);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classAntares_1_1Utils_1_1TimeMeasurement.html">   70</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAntares_1_1Utils_1_1TimeMeasurement.html">TimeMeasurement</a></div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classAntares_1_1Utils_1_1TimeMeasurement.html">   70</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAntares_1_1Utils_1_1TimeMeasurement.html">TimeMeasurement</a> final</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;{</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">using</span> clock = std::chrono::steady_clock;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
@@ -198,18 +198,19 @@ $(document).ready(function(){initNavTree('utils_8h_source.html',''); initResizab
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">long</span> duration_ms() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    std::string toString() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    std::string toStringInSeconds() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    clock::time_point start_;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    clock::time_point end_;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;};</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <span class="comment">// namespace Utils</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;} <span class="comment">// namespace Antares</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#include &quot;utils.hxx&quot;</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __ANTARES_LIBS_UTILS_H__</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> reset();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    clock::time_point start_;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    clock::time_point end_;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;} <span class="comment">// namespace Utils</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;} <span class="comment">// namespace Antares</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#include &quot;utils.hxx&quot;</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __ANTARES_LIBS_UTILS_H__</span></div>
 <div class="ttc" id="aclassAntares_1_1Utils_1_1TimeMeasurement_html"><div class="ttname"><a href="classAntares_1_1Utils_1_1TimeMeasurement.html">Antares::Utils::TimeMeasurement</a></div><div class="ttdef"><b>Definition:</b> utils.h:71</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
